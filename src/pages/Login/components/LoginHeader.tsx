@@ -2,10 +2,10 @@ import { Button } from "antd";
 import JBaseHeader from "@/components/JBaseHeader";
 import JIcon from "@/components/JIcon";
 import { SunnyOutline } from "@ricons/ionicons5";
-import { BgColorsOutlined } from "@ricons/antd";
+import { BgColorsOutlined } from "@ant-design/icons";
 import ReactLogo from "@/assets/react.svg";
 
-const Header = () => {
+const LoginHeader = () => {
 	return (
 		<JBaseHeader
 			left={
@@ -16,7 +16,7 @@ const Header = () => {
 			}
 			right={
 				<div className="h-full float-right  flex items-center gap-3">
-					<Button type="text" icon={<JIcon icon={<BgColorsOutlined />} size={22} />} size="large" />
+					<Button type="text" icon={<BgColorsOutlined />} size="large" />
 					<Button type="text" icon={<JIcon icon={<SunnyOutline />} size={22} />} size="large" />
 				</div>
 			}
@@ -24,4 +24,4 @@ const Header = () => {
 	);
 };
 
-export default Header;
+export default LoginHeader;

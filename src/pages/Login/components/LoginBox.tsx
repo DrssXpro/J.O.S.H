@@ -1,7 +1,6 @@
 import { Card, Checkbox, Form, Input, Button } from "antd";
-import { UserOutlined, LockOutlined } from "@ricons/antd";
+import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import ReactLogo from "@/assets/react.svg";
-import JIcon from "@/components/JIcon";
 
 const LoginBox = () => {
 	return (
@@ -12,13 +11,10 @@ const LoginBox = () => {
 			</div>
 			<Form>
 				<Form.Item>
-					<Input prefix={<JIcon icon={<UserOutlined />} />} placeholder="请输入账号"></Input>
+					<Input prefix={<UserOutlined />} placeholder="请输入账号"></Input>
 				</Form.Item>
 				<Form.Item>
-					<Input.Password
-						prefix={<JIcon icon={<LockOutlined />} />}
-						placeholder="请输入密码"
-					></Input.Password>
+					<Input.Password prefix={<LockOutlined />} placeholder="请输入密码"></Input.Password>
 				</Form.Item>
 				<Form.Item>
 					<Checkbox>自动登录</Checkbox>

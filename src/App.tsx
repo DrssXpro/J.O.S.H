@@ -1,5 +1,11 @@
 import { ConfigProvider, theme } from "antd";
-import LayoutContainer from "./layout";
+import { Suspense, lazy } from "react";
+import { Route, Routes } from "react-router-dom";
+import JLoading from "./components/JLoading";
+
+const Login = lazy(() => import("@/pages/Login/index"));
+
+const Layout = lazy(() => import("@/layout/index"));
 
 function App() {
 	return (
@@ -8,7 +14,12 @@ function App() {
 				algorithm: theme.darkAlgorithm
 			}}
 		>
-			<LayoutContainer></LayoutContainer>
+			<Suspense fallback={<JLoading />}>
+				<Routes>
+					<Route element={<Login />} path="/"></Route>
+					<Route element={<Layout />} path="/application"></Route>
+				</Routes>
+			</Suspense>
 		</ConfigProvider>
 	);
 }
