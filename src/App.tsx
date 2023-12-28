@@ -1,14 +1,15 @@
-import React from "react";
-import { Route, Routes } from "react-router-dom";
-
-const Login = React.lazy(() => import("./pages/Login/index"));
+import { ConfigProvider, theme } from "antd";
+import LayoutContainer from "./layout";
 
 function App() {
 	return (
-		<Routes>
-			<Route element={<Login />} path="/"></Route>
-			<Route element={<Login />} path="/login"></Route>
-		</Routes>
+		<ConfigProvider
+			theme={{
+				algorithm: theme.darkAlgorithm
+			}}
+		>
+			<LayoutContainer></LayoutContainer>
+		</ConfigProvider>
 	);
 }
 
