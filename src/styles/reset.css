@@ -33,3 +33,7 @@ textarea {
 	border: none;
 	resize: none;
 }
+
+::-webkit-scrollbar {
+	width: 0;
+}

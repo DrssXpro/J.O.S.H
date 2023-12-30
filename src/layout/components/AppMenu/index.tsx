@@ -1,7 +1,6 @@
-import JIcon from "@/components/JIcon";
-import { AppstoreOutlined, ContainerOutlined, DesktopOutlined, PieChartOutlined } from "@ant-design/icons";
-import type { MenuProps } from "antd";
-import { Menu } from "antd";
+import ReactLogo from "@/assets/react.svg";
+import { HomeFilled, DesktopOutlined, PieChartOutlined } from "@ant-design/icons";
+import { Menu, type MenuProps } from "antd";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -22,21 +21,19 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-	getItem("Option 1", "1", <JIcon icon={<PieChartOutlined />} size={20} />),
-	getItem("Option 2", "2", <JIcon icon={<AppstoreOutlined />} size={20} />),
-	getItem("Option 3", "3", <JIcon icon={<ContainerOutlined />} size={20} />),
-
-	getItem("Navigation Two", "sub2", <JIcon icon={<DesktopOutlined />} size={20} />, [
-		getItem("Option 9", "9"),
-		getItem("Option 10", "10"),
-		getItem("Submenu", "sub3", null, [getItem("Option 11", "11"), getItem("Option 12", "12")])
-	])
+	getItem("首页", "1", <HomeFilled />),
+	getItem("模板市场", "2", <PieChartOutlined />),
+	getItem("应用中心", "3", <DesktopOutlined />)
 ];
 
 const SideMenu = () => {
 	return (
 		<div className="w-full">
-			<Menu defaultSelectedKeys={["1"]} defaultOpenKeys={["sub1"]} mode="inline" theme="dark" items={items} />
+			<div className="h-16 p-5 mb-5 border-b-1 border-[#303030] flex items-center  gap-5">
+				<img src={ReactLogo} />
+				<span className="text-white text-2xl tracking-widest italic">J.O.S.H</span>
+			</div>
+			<Menu defaultSelectedKeys={["1"]} mode="inline" items={items} />
 		</div>
 	);
 };
