@@ -15,7 +15,7 @@ const dropMenus: MenuProps["items"] = [
 const JBaseHeaderRightContent = (props: { isLogin?: boolean }) => {
 	const { isLogin = false } = props;
 	return (
-		<div className="h-full  flex items-center gap-5">
+		<div className="h-full  flex items-center gap-2">
 			<Button type="text" icon={<BgColorsOutlined />} size="large" />
 			<Button type="text" icon={<JIcon icon={<SunnyOutline />} size={24} />} size="large" />
 			{isLogin && (

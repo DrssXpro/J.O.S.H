@@ -11,7 +11,7 @@ import {
 	LaptopOutlined,
 	SendOutlined
 } from "@ant-design/icons";
-import { Button, Input, type InputRef } from "antd";
+import { Button, Input, Tooltip, type InputRef } from "antd";
 import { useState, useRef } from "react";
 
 const LeftOperator = () => {
@@ -19,13 +19,23 @@ const LeftOperator = () => {
 		<div className="flex items-center">
 			<Button icon={<HomeFilled />} type="text"></Button>
 			<div className="flex items-center ml-5 gap-4">
-				<Button ghost type="primary" icon={<BarChartOutlined />}></Button>
-				<Button ghost type="primary" icon={<PartitionOutlined />}></Button>
-				<Button ghost type="primary" icon={<SettingOutlined />}></Button>
+				<Tooltip title="图表组件">
+					<Button ghost type="primary" icon={<BarChartOutlined />}></Button>
+				</Tooltip>
+				<Tooltip title="图层控制">
+					<Button ghost type="primary" icon={<PartitionOutlined />}></Button>
+				</Tooltip>
+				<Tooltip title="详情设置">
+					<Button ghost type="primary" icon={<SettingOutlined />}></Button>
+				</Tooltip>
 			</div>
 			<div className="flex items-center ml-4 pl-4 gap-4 border-l-1 border-l-[#2D2D30]">
-				<Button ghost type="primary" icon={<ArrowLeftOutlined />}></Button>
-				<Button ghost type="primary" icon={<ArrowRightOutlined />}></Button>
+				<Tooltip title="后退">
+					<Button ghost type="primary" icon={<ArrowLeftOutlined />}></Button>
+				</Tooltip>
+				<Tooltip title="前进">
+					<Button ghost type="primary" icon={<ArrowRightOutlined />}></Button>
+				</Tooltip>
 			</div>
 		</div>
 	);
@@ -74,13 +84,9 @@ const CenterTitle = () => {
 
 const RightOperator = () => {
 	return (
-		<div className="flex items-center gap-3">
-			<Button icon={<LaptopOutlined />} size="large">
-				预览
-			</Button>
-			<Button icon={<SendOutlined />} size="large">
-				发布
-			</Button>
+		<div className="flex items-center gap-3 float-right">
+			<Button icon={<LaptopOutlined />}>预览</Button>
+			<Button icon={<SendOutlined />}>发布</Button>
 			<div className="ml-1">
 				<JBaseHeaderRightContent isLogin={true} />
 			</div>

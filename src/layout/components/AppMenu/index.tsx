@@ -1,4 +1,5 @@
-import ReactLogo from "@/assets/react.svg";
+import Logo from "@/assets/logo/logo.png";
+import LogoTitleDark from "@/assets/logo/title-dark.png";
 import { HomeFilled, DesktopOutlined, PieChartOutlined } from "@ant-design/icons";
 import { Menu, type MenuProps } from "antd";
 
@@ -29,9 +30,9 @@ const items: MenuItem[] = [
 const SideMenu = () => {
 	return (
 		<div className="w-full">
-			<div className="h-16 p-5 mb-5 border-b-1 border-[#303030] flex items-center  gap-5">
-				<img src={ReactLogo} />
-				<span className="text-white text-2xl tracking-widest italic">J.O.S.H</span>
+			<div className="h-16 p-5 mb-5 border-b-1 border-[#303030] flex items-center ">
+				<img src={Logo} className="w-15 h-10" />
+				<img src={LogoTitleDark} className="w-25" />
 			</div>
 			<Menu defaultSelectedKeys={["1"]} mode="inline" items={items} />
 		</div>

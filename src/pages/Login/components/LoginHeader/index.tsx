@@ -1,14 +1,15 @@
 import JBaseHeader from "@/components/JBaseHeader";
-import ReactLogo from "@/assets/react.svg";
+import Logo from "@/assets/logo/logo.png";
+import LogoTitleDark from "@/assets/logo/title-dark.png";
 import JBaseHeaderRightContent from "@/components/JHeaderRightContent";
 
 const LoginHeader = () => {
 	return (
 		<JBaseHeader
 			left={
-				<div className="flex items-center gap-5">
-					<img src={ReactLogo} />
-					<span className="text-2xl tracking-widest italic">J.O.S.H</span>
+				<div className="flex items-center">
+					<img src={Logo} className="w-15 h-10" />
+					<img src={LogoTitleDark} className="w-25" />
 				</div>
 			}
 			right={
