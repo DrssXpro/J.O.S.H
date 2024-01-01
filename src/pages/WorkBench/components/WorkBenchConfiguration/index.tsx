@@ -1,5 +1,5 @@
 const WorkBenchConfiguration = () => {
-	return <>123</>;
+	return <div></div>;
 };
 
 export default WorkBenchConfiguration;

@@ -1,5 +1,5 @@
 const WorkBenchCanvas = () => {
-	return <div className="text-[#eee] scale-[1.7]">123</div>;
+	return <div></div>;
 };
 
 export default WorkBenchCanvas;

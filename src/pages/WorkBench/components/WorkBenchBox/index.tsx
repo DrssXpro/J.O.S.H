@@ -9,7 +9,7 @@ interface WorkBenchBoxProps {
 	topIcon?: JSX.Element;
 	TopOperator?: JSX.Element;
 	hiddenBox?: () => void;
-	children: JSX.Element[];
+	children: JSX.Element[] | JSX.Element;
 }
 
 const WorkBenchBox = (props: WorkBenchBoxProps) => {
@@ -22,9 +22,9 @@ const WorkBenchBox = (props: WorkBenchBoxProps) => {
 			style={{ borderRadius: "0" }}
 			bordered={false}
 		>
-			<div className={` flex`}>
+			<div className="flex w-full">
 				{showTop && (
-					<div className="w-full flex items-center justify-between px-3 py-2 border-b-1 border-[#000]">
+					<div className="w-full flex items-center justify-between px-3 py-1 border-b-1 border-[#000]">
 						<div className="flex items-center gap-2">
 							<div>{topTitle}</div>
 							{topIcon}
@@ -40,7 +40,9 @@ const WorkBenchBox = (props: WorkBenchBoxProps) => {
 					</div>
 				)}
 			</div>
-			<div className="flex h-full">{children.map((child) => child)}</div>
+			<div className="flex w-full h-full">
+				{Array.isArray(children) ? children.map((child) => child) : children}
+			</div>
 		</Card>
 	);
 };

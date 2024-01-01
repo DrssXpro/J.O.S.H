@@ -12,7 +12,7 @@ import {
 	TableOutlined
 } from "@ant-design/icons";
 import "./menuItem.css";
-import MaterialCard from "../MaterialCard";
+import MaterialCard from "./components/MaterialCard";
 
 const MaterialsMenu = [
 	{
