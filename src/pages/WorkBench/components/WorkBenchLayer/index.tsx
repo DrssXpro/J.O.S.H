@@ -41,8 +41,8 @@ const WorkBenchLayer = () => {
 					className="w-full h-full"
 				>
 					<Row gutter={[1, 1]}>
-						{[1, 2, 3].map(() => (
-							<Col span={24}>
+						{[1, 2, 3].map((i) => (
+							<Col span={24} key={i}>
 								<LayerCard mode={mode} />
 							</Col>
 						))}
