@@ -1,7 +1,8 @@
 import JBaseHeader from "@/components/JBaseHeader";
 import JBaseHeaderRightContent from "@/components/JHeaderRightContent";
+import Logo from "@/assets/logo/logo.png";
+import LogoTitleDark from "@/assets/logo/title-dark.png";
 import {
-	HomeFilled,
 	BarChartOutlined,
 	PartitionOutlined,
 	SettingOutlined,
@@ -13,12 +14,17 @@ import {
 } from "@ant-design/icons";
 import { Button, Input, Tooltip, type InputRef } from "antd";
 import { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 const LeftOperator = () => {
+	const nav = useNavigate();
 	return (
 		<div className="flex items-center">
-			<Button icon={<HomeFilled />} type="text"></Button>
-			<div className="flex items-center ml-5 gap-4">
+			<div className="flex items-center cursor-pointer" onClick={() => nav("/application/projects")}>
+				<img src={Logo} className="w-15 h-10" />
+				<img src={LogoTitleDark} className="w-25" />
+			</div>
+			<div className="flex items-center  gap-4">
 				<Tooltip title="图表组件">
 					<Button ghost type="primary" icon={<BarChartOutlined />}></Button>
 				</Tooltip>
@@ -95,7 +101,15 @@ const RightOperator = () => {
 };
 
 const WorkBenchHeader = () => {
-	return <JBaseHeader left={<LeftOperator />} center={<CenterTitle />} right={<RightOperator />}></JBaseHeader>;
+	return (
+		<JBaseHeader
+			left={<LeftOperator />}
+			center={<CenterTitle />}
+			right={<RightOperator />}
+			leftWidth="40%"
+			rightWidth="40%"
+		></JBaseHeader>
+	);
 };
 
 export default WorkBenchHeader;
