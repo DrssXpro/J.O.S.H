@@ -8,6 +8,9 @@ dependencies:
   '@ant-design/icons':
     specifier: ^5.2.6
     version: registry.npmmirror.com/@ant-design/icons@5.2.6(react-dom@18.2.0)(react@18.2.0)
+  '@scena/react-ruler':
+    specifier: ^0.19.0
+    version: registry.npmmirror.com/@scena/react-ruler@0.19.0
   antd:
     specifier: ^5.12.5
     version: registry.npmmirror.com/antd@5.12.5(react-dom@18.2.0)(react@18.2.0)
@@ -673,6 +676,12 @@ packages:
     name: '@ctrl/tinycolor'
     version: 3.6.1
     engines: {node: '>=10'}
+    dev: false
+
+  registry.npmmirror.com/@daybrush/utils@1.13.0:
+    resolution: {integrity: sha512-ALK12C6SQNNHw1enXK+UO8bdyQ+jaWNQ1Af7Z3FNxeAwjYhQT7do+TRE4RASAJ3ObaS2+TJ7TXR3oz2Gzbw0PQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@daybrush/utils/-/utils-1.13.0.tgz}
+    name: '@daybrush/utils'
+    version: 1.13.0
     dev: false
 
   registry.npmmirror.com/@emotion/hash@0.8.0:
@@ -1366,6 +1375,15 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  registry.npmmirror.com/@scena/react-ruler@0.19.0:
+    resolution: {integrity: sha512-2OEOjLMOptDxdSuEqID2JAljQuYoeoV09MnLjiBeyzJxoUcVjzyBCPwkMbHRKj2Z3WrwztJAFBF+y6yNNM5Lcw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@scena/react-ruler/-/react-ruler-0.19.0.tgz}
+    name: '@scena/react-ruler'
+    version: 0.19.0
+    dependencies:
+      '@daybrush/utils': registry.npmmirror.com/@daybrush/utils@1.13.0
+      framework-utils: registry.npmmirror.com/framework-utils@1.1.0
+    dev: false
 
   registry.npmmirror.com/@types/babel__core@7.20.5:
     resolution: {integrity: sha512-qoQprZvz5wQFJwMDqeseRXWv3rqMvhgpbXFfVyWhbx9X47POIA6i/+dXefEmZKoAgOaTdaIgNSMqMIU61yRyzA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/babel__core/-/babel__core-7.20.5.tgz}
@@ -2673,6 +2691,12 @@ packages:
     name: flatted
     version: 3.2.9
     dev: true
+
+  registry.npmmirror.com/framework-utils@1.1.0:
+    resolution: {integrity: sha512-KAfqli5PwpFJ8o3psRNs8svpMGyCSAe8nmGcjQ0zZBWN2H6dZDnq+ABp3N3hdUmFeMrLtjOCTXD4yplUJIWceg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/framework-utils/-/framework-utils-1.1.0.tgz}
+    name: framework-utils
+    version: 1.1.0
+    dev: false
 
   registry.npmmirror.com/fs-extra@11.2.0:
     resolution: {integrity: sha512-PmDi3uwK5nFuXh7XDTlVnS17xJS7vW36is2+w3xcv8SVxiB4NyATf4ctkVY5bkSjX0Y4nbvZCq1/EjtEyr9ktw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/fs-extra/-/fs-extra-11.2.0.tgz}
