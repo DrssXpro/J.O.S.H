@@ -34,6 +34,9 @@ devDependencies:
   '@commitlint/config-conventional':
     specifier: ^18.4.3
     version: registry.npmmirror.com/@commitlint/config-conventional@18.4.3
+  '@ricons/carbon':
+    specifier: ^0.12.0
+    version: registry.npmmirror.com/@ricons/carbon@0.12.0
   '@ricons/ionicons5':
     specifier: ^0.12.0
     version: registry.npmmirror.com/@ricons/ionicons5@0.12.0
@@ -1202,6 +1205,12 @@ packages:
     version: 1.14.1
     engines: {node: '>=14.0.0'}
     dev: false
+
+  registry.npmmirror.com/@ricons/carbon@0.12.0:
+    resolution: {integrity: sha512-UtZtl67bPY12O6xU73veouPDPNyokzS81R7ktbcW8WVxWt9lgPS2hmxghRgCuwZNv2JFx6ruf9YD2FUjyVTHFQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@ricons/carbon/-/carbon-0.12.0.tgz}
+    name: '@ricons/carbon'
+    version: 0.12.0
+    dev: true
 
   registry.npmmirror.com/@ricons/ionicons5@0.12.0:
     resolution: {integrity: sha512-CzS43wP5XDZTBXmSvuW9XvTgiAeRWLHeeYoUtvHS/3h6yfjlr/T0vqdB8Zhqb7xPnto3li7yXZ4gU9VEgv4w7w==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@ricons/ionicons5/-/ionicons5-0.12.0.tgz}

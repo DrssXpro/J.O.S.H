@@ -4,7 +4,7 @@ import { PageTabList } from "./components/config";
 
 const WorkBenchConfiguration = () => {
 	return (
-		<div className="w-90 h-full">
+		<div className="w-[360px] h-full">
 			<WorkBenchBox showTop={false} bgColor="#232324">
 				<div className="p-2 w-full">
 					<Tabs

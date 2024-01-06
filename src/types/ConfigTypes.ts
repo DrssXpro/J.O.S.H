@@ -12,3 +12,10 @@ export interface TabConfig {
 	icon: JSX.Element;
 	configRender: JSX.Element;
 }
+
+export enum PreviewScaleEnum {
+	FIT = "fit",
+	SCROLL_Y = "scrollY",
+	SCROLL_X = "scrollX",
+	FULL = "full"
+}

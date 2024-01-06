@@ -18,7 +18,7 @@ const WorkBenchBox = (props: WorkBenchBoxProps) => {
 	return (
 		<Card
 			className="w-full h-full"
-			bodyStyle={{ padding: 0, height: "100%", backgroundColor: bgColor }}
+			bodyStyle={{ padding: 0, height: "100%", backgroundColor: bgColor, overflow: "auto" }}
 			style={{ borderRadius: "0" }}
 			bordered={false}
 		>
