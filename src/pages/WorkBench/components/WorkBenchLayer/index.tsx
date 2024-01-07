@@ -4,12 +4,17 @@ import { PartitionOutlined, LaptopOutlined, UnorderedListOutlined } from "@ant-d
 import WorkBenchBox from "../WorkBenchBox";
 import LayerCard from "./components/LayerCard";
 import { LayerModeEnum } from "@/types/LayerTypes";
+import useLayoutStore from "@/store/layoutStore";
 
 const WorkBenchLayer = () => {
-	const [isFold, setFold] = useState(false);
+	const { showLayer, controllLayer } = useLayoutStore();
 	const [mode, setMode] = useState<LayerModeEnum>(LayerModeEnum.THUMBNAIL);
 	return (
-		<div className={`${isFold ? "w-0" : "w-50"} h-full transition-all border-l-1 border-l-[#000]`}>
+		<div
+			className={`${showLayer ? "w-50" : "w-0"} ${
+				showLayer ? "" : "opacity-0"
+			} h-full transition-all border-l-1 border-l-[#000]`}
+		>
 			<WorkBenchBox
 				showTop
 				showTopHidden
@@ -34,7 +39,7 @@ const WorkBenchLayer = () => {
 						</Tooltip>
 					</div>
 				}
-				hiddenBox={() => setFold(true)}
+				hiddenBox={() => controllLayer(false)}
 			>
 				<Card
 					bodyStyle={{ padding: "5px", width: "100%", backgroundColor: "#232324", height: "100%" }}

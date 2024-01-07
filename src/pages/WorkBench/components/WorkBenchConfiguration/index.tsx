@@ -1,10 +1,12 @@
 import { Tabs } from "antd";
 import WorkBenchBox from "../WorkBenchBox";
 import { PageTabList } from "./components/config";
+import useLayoutStore from "@/store/layoutStore";
 
 const WorkBenchConfiguration = () => {
+	const { showConfiguration } = useLayoutStore();
 	return (
-		<div className="w-[360px] h-full">
+		<div className={`${showConfiguration ? "w-[360px]" : "w-0"} h-full transition-all`}>
 			<WorkBenchBox showTop={false} bgColor="#232324">
 				<div className="p-2 w-full">
 					<Tabs

@@ -15,24 +15,43 @@ import {
 import { Button, Input, Tooltip, type InputRef } from "antd";
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import useLayoutStore from "@/store/layoutStore";
 
 const LeftOperator = () => {
 	const nav = useNavigate();
+	const { showMaterials, showLayer, showConfiguration, controllMaterials, controllLayer, controllConfiguration } =
+		useLayoutStore();
+
 	return (
 		<div className="flex items-center">
 			<div className="flex items-center cursor-pointer" onClick={() => nav("/application/projects")}>
 				<img src={Logo} className="w-15 h-10" />
 				<img src={LogoTitleDark} className="w-25" />
 			</div>
-			<div className="flex items-center  gap-4">
+			<div className="flex items-center gap-4">
 				<Tooltip title="图表组件">
-					<Button ghost type="primary" icon={<BarChartOutlined />}></Button>
+					<Button
+						type={showMaterials ? "primary" : undefined}
+						ghost={showMaterials}
+						icon={<BarChartOutlined />}
+						onClick={() => controllMaterials(!showMaterials)}
+					></Button>
 				</Tooltip>
 				<Tooltip title="图层控制">
-					<Button ghost type="primary" icon={<PartitionOutlined />}></Button>
+					<Button
+						type={showLayer ? "primary" : undefined}
+						ghost={showLayer}
+						icon={<PartitionOutlined />}
+						onClick={() => controllLayer(!showLayer)}
+					></Button>
 				</Tooltip>
 				<Tooltip title="详情设置">
-					<Button ghost type="primary" icon={<SettingOutlined />}></Button>
+					<Button
+						type={showConfiguration ? "primary" : undefined}
+						ghost={showConfiguration}
+						icon={<SettingOutlined />}
+						onClick={() => controllConfiguration(!showConfiguration)}
+					></Button>
 				</Tooltip>
 			</div>
 			<div className="flex items-center ml-4 pl-4 gap-4 border-l-1 border-l-[#2D2D30]">

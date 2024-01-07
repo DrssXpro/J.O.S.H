@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Col, Input, Menu, Row } from "antd";
 import WorkBenchBox from "../WorkBenchBox";
 import JIcon from "@/components/JIcon";
@@ -13,6 +13,7 @@ import {
 } from "@ant-design/icons";
 import "./menuItem.css";
 import MaterialCard from "./components/MaterialCard";
+import useLayoutStore from "@/store/layoutStore";
 
 const MaterialsMenu = [
 	{
@@ -53,16 +54,26 @@ const TopRightOperator = () => {
 };
 
 const WorkBenchMaterials = () => {
+	const { showMaterials } = useLayoutStore();
+	// 展开时左侧文本(“组件”)抖动问题，针对于展开的情况将控制 TopOperator 显隐操作其推入宏任务
+	const [showTopOperator, setShowTopOperator] = useState(true);
+	useEffect(() => {
+		showMaterials
+			? setTimeout(() => {
+					setShowTopOperator(showMaterials);
+				}, 150)
+			: setShowTopOperator(showMaterials);
+	}, [showMaterials]);
 	return (
-		<div className="w-78 h-full">
+		<div className={`${showMaterials ? "w-78" : "w-17"} h-full transition-all`}>
 			<WorkBenchBox
 				showTop
 				bgColor="#232324"
 				topTitle="组件"
 				topIcon={<BarChartOutlined />}
-				TopOperator={<TopRightOperator />}
+				TopOperator={showTopOperator ? <TopRightOperator /> : undefined}
 			>
-				<div className="flex w-15 h-full p-1">
+				<div className="flex w-17 h-full p-1">
 					<Menu
 						mode="vertical"
 						className="w-full bg-[#232324]"
