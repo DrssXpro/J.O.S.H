@@ -7,7 +7,7 @@ const ThemeColor = () => {
 	return (
 		<div>
 			<Button ghost type="primary" block size="large">
-				<div className="flex items-center justify-between ">
+				<div className="flex items-center justify-between">
 					<div>自定义图表颜色</div>
 					<div>
 						<PlusOutlined />
@@ -17,7 +17,7 @@ const ThemeColor = () => {
 			<div className="mt-4 flex flex-col gap-4">
 				{chartColors.map((i, index1) => (
 					<div
-						className=" relative flex items-center cursor-pointer justify-between bg-[#2C2C2D] border-[rgba(255,255,255,0.09)] border-1 p-2 rounded-lg"
+						className="relative flex items-center cursor-pointer justify-between bg-[#2C2C2D] border-[rgba(255,255,255,0.09)] border-1 p-2 rounded-lg"
 						key={index1}
 					>
 						<div>{i.name}</div>

@@ -107,6 +107,7 @@ const PageConfiguration = () => {
 			</Form>
 			<Divider />
 			<ThemeColor />
+			<Divider />
 		</div>
 	);
 };

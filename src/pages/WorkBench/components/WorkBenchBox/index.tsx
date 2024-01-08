@@ -22,8 +22,8 @@ const WorkBenchBox = (props: WorkBenchBoxProps) => {
 			style={{ borderRadius: "0" }}
 			bordered={false}
 		>
-			<div className="flex w-full h-10">
-				{showTop && (
+			{showTop && (
+				<div className="flex w-full h-10">
 					<div className="w-full flex items-center justify-between px-2 py-1 border-b-1 border-[#000]">
 						<div className="flex items-center gap-1">
 							<div>{topTitle}</div>
@@ -38,9 +38,10 @@ const WorkBenchBox = (props: WorkBenchBoxProps) => {
 							)}
 						</div>
 					</div>
-				)}
-			</div>
-			<div className="flex w-full h-full">
+				</div>
+			)}
+
+			<div className="flex w-full" style={{ height: showTop ? "calc(100vh - 104px)" : "calc(100vh - 64px)" }}>
 				{Array.isArray(children) ? children.map((child) => child) : children}
 			</div>
 		</Card>
