@@ -1,5 +1,5 @@
 import ChartPng from "@/assets/bar_x.png";
-import { LayerModeEnum } from "@/types/LayerTypes";
+import { LayerModeEnum } from "@/types/LayoutTypes";
 import { UnlockOutlined, EyeOutlined } from "@ant-design/icons";
 
 interface LayerCardProps {

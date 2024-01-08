@@ -12,7 +12,7 @@ import {
 } from "antd";
 import { Scale, FitToScreen, FitToHeight, FitToWidth } from "@ricons/carbon";
 import UploadImage from "@/assets/upload.png";
-import { PreviewScaleEnum } from "@/types/ConfigTypes";
+import { PreviewScaleEnum } from "@/types/LayoutTypes";
 import ThemeColor from "./components/ThemeColor";
 import JIcon from "@/components/JIcon";
 

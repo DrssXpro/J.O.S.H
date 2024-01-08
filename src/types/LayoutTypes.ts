@@ -1,3 +1,13 @@
+export const enum MaterialsModeEnum {
+	SINGLE = "single",
+	DOUBLE = "double"
+}
+
+export const enum LayerModeEnum {
+	THUMBNAIL = "thumbnail",
+	TEXT = "text"
+}
+
 export const enum TabsEnum {
 	PAGE_SETTING = "pageSetting",
 	CHART_SETTING = "chartSetting",

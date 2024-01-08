@@ -3,7 +3,7 @@ import { Button, Card, Col, Row, Tooltip } from "antd";
 import { PartitionOutlined, LaptopOutlined, UnorderedListOutlined } from "@ant-design/icons";
 import WorkBenchBox from "../WorkBenchBox";
 import LayerCard from "./components/LayerCard";
-import { LayerModeEnum } from "@/types/LayerTypes";
+import { LayerModeEnum } from "@/types/LayoutTypes";
 import useLayoutStore from "@/store/layoutStore";
 
 const WorkBenchLayer = () => {

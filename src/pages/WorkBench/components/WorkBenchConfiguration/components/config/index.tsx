@@ -1,5 +1,5 @@
 import { lazy } from "react";
-import { type TabConfig, TabsEnum } from "@/types/ConfigTypes";
+import { type TabConfig, TabsEnum } from "@/types/LayoutTypes";
 import { FundProjectionScreenOutlined } from "@ant-design/icons";
 
 const PageConfiguration = lazy(() => import("../PageConfiguration"));

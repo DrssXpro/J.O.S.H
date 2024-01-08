@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Col, Input, Menu, Row } from "antd";
+import { Button, Col, Input, Menu, Row, Tooltip } from "antd";
 import WorkBenchBox from "../WorkBenchBox";
 import JIcon from "@/components/JIcon";
 import { Albums, Grid } from "@ricons/ionicons5";
@@ -46,8 +46,12 @@ const TopRightOperator = () => {
 		<div className="flex items-center gap-2 overflow-hidden w-50">
 			<Input.Search placeholder="搜索组件" onFocus={() => setFocus(true)} onBlur={() => setFocus(false)} />
 			<div className={`flex items-center transition-all ${isFocus ? "w-0" : "w-20"}`}>
-				<Button style={{ borderRadius: 0 }} icon={<JIcon icon={<Albums />} size={20} />}></Button>
-				<Button style={{ borderRadius: 0 }} icon={<JIcon icon={<Grid />} size={18} />}></Button>
+				<Tooltip title="单列">
+					<Button style={{ borderRadius: 0 }} icon={<JIcon icon={<Albums />} size={20} />}></Button>
+				</Tooltip>
+				<Tooltip title="双列">
+					<Button style={{ borderRadius: 0 }} icon={<JIcon icon={<Grid />} size={18} />}></Button>
+				</Tooltip>
 			</div>
 		</div>
 	);
