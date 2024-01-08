@@ -14,6 +14,7 @@ import {
 import "./menuItem.css";
 import MaterialCard from "./components/MaterialCard";
 import useLayoutStore from "@/store/layoutStore";
+import { MaterialsModeEnum } from "@/types/LayoutTypes";
 
 const MaterialsMenu = [
 	{
@@ -42,15 +43,28 @@ const CurrentMaterials = ["所有", "柱状图", "折线图", "饼图", "散点�
 
 const TopRightOperator = () => {
 	const [isFocus, setFocus] = useState(false);
+	const { materialsMode, controllMaterialsMode } = useLayoutStore();
 	return (
 		<div className="flex items-center gap-2 overflow-hidden w-50">
 			<Input.Search placeholder="搜索组件" onFocus={() => setFocus(true)} onBlur={() => setFocus(false)} />
 			<div className={`flex items-center transition-all ${isFocus ? "w-0" : "w-20"}`}>
 				<Tooltip title="单列">
-					<Button style={{ borderRadius: 0 }} icon={<JIcon icon={<Albums />} size={20} />}></Button>
+					<Button
+						style={{ borderRadius: 0, borderTopLeftRadius: "5px", borderBottomLeftRadius: "5px" }}
+						icon={<JIcon icon={<Albums />} size={20} />}
+						type={materialsMode === MaterialsModeEnum.SINGLE ? "primary" : undefined}
+						ghost={materialsMode === MaterialsModeEnum.SINGLE}
+						onClick={() => controllMaterialsMode(MaterialsModeEnum.SINGLE)}
+					></Button>
 				</Tooltip>
 				<Tooltip title="双列">
-					<Button style={{ borderRadius: 0 }} icon={<JIcon icon={<Grid />} size={18} />}></Button>
+					<Button
+						style={{ borderRadius: 0, borderTopRightRadius: "5px", borderBottomRightRadius: "5px" }}
+						icon={<JIcon icon={<Grid />} size={18} />}
+						type={materialsMode === MaterialsModeEnum.DOUBLE ? "primary" : undefined}
+						ghost={materialsMode === MaterialsModeEnum.DOUBLE}
+						onClick={() => controllMaterialsMode(MaterialsModeEnum.DOUBLE)}
+					></Button>
 				</Tooltip>
 			</div>
 		</div>
@@ -58,7 +72,7 @@ const TopRightOperator = () => {
 };
 
 const WorkBenchMaterials = () => {
-	const { showMaterials } = useLayoutStore();
+	const { showMaterials, materialsMode } = useLayoutStore();
 	// 展开时左侧文本(“组件”)抖动问题，针对于展开的情况将控制 TopOperator 显隐操作其推入宏任务
 	const [showTopOperator, setShowTopOperator] = useState(true);
 	useEffect(() => {
@@ -105,8 +119,8 @@ const WorkBenchMaterials = () => {
 				<div className="flex-1 bg-[#18181C] p-2">
 					<Row gutter={[10, 10]}>
 						{[1, 2, 3, 4].map((i) => (
-							<Col span={12} key={i}>
-								<MaterialCard />
+							<Col span={materialsMode === MaterialsModeEnum.DOUBLE ? 12 : 24} key={i}>
+								<MaterialCard mode={materialsMode} />
 							</Col>
 						))}
 					</Row>

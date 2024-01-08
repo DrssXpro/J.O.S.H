@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Button, Card, Col, Row, Tooltip } from "antd";
 import { PartitionOutlined, LaptopOutlined, UnorderedListOutlined } from "@ant-design/icons";
 import WorkBenchBox from "../WorkBenchBox";
@@ -7,8 +6,8 @@ import { LayerModeEnum } from "@/types/LayoutTypes";
 import useLayoutStore from "@/store/layoutStore";
 
 const WorkBenchLayer = () => {
-	const { showLayer, controllLayer } = useLayoutStore();
-	const [mode, setMode] = useState<LayerModeEnum>(LayerModeEnum.THUMBNAIL);
+	const { showLayer, layerMode, controllLayer, controllLayerMode } = useLayoutStore();
+
 	return (
 		<div
 			className={`${showLayer ? "w-50" : "w-0"} ${
@@ -25,16 +24,20 @@ const WorkBenchLayer = () => {
 					<div className="flex items-center">
 						<Tooltip title="缩略图">
 							<Button
-								style={{ borderRadius: 0 }}
+								style={{ borderRadius: 0, borderTopLeftRadius: "5px", borderBottomLeftRadius: "5px" }}
 								icon={<LaptopOutlined />}
-								onClick={() => setMode(LayerModeEnum.THUMBNAIL)}
+								type={layerMode === LayerModeEnum.THUMBNAIL ? "primary" : undefined}
+								ghost={layerMode === LayerModeEnum.THUMBNAIL}
+								onClick={() => controllLayerMode(LayerModeEnum.THUMBNAIL)}
 							></Button>
 						</Tooltip>
 						<Tooltip title="文本列表">
 							<Button
-								style={{ borderRadius: 0 }}
+								style={{ borderRadius: 0, borderTopRightRadius: "5px", borderBottomRightRadius: "5px" }}
 								icon={<UnorderedListOutlined />}
-								onClick={() => setMode(LayerModeEnum.TEXT)}
+								type={layerMode === LayerModeEnum.TEXT ? "primary" : undefined}
+								ghost={layerMode === LayerModeEnum.TEXT}
+								onClick={() => controllLayerMode(LayerModeEnum.TEXT)}
 							></Button>
 						</Tooltip>
 					</div>
@@ -48,7 +51,7 @@ const WorkBenchLayer = () => {
 					<Row gutter={[1, 1]}>
 						{[1, 2, 3].map((i) => (
 							<Col span={24} key={i}>
-								<LayerCard mode={mode} />
+								<LayerCard mode={layerMode} />
 							</Col>
 						))}
 					</Row>
