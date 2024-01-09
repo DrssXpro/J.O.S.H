@@ -1,11 +1,11 @@
-import JRulerContainer from "@/components/JRulerContainer";
+import WorkBenchRuler from "../WorkBenchRuler/index";
 
 const WorkBenchCanvas = () => {
 	return (
 		<div className="flex-1">
-			<JRulerContainer>
-				<div className="w-[800px] h-[600px] bg-[#232324] rounded-xl"></div>
-			</JRulerContainer>
+			<WorkBenchRuler>
+				<div className="text-light-50">123</div>
+			</WorkBenchRuler>
 		</div>
 	);
 };
