@@ -1,11 +1,11 @@
 import Ruler from "@scena/react-ruler";
 import { useEffect, useRef, useState } from "react";
 
-interface WorkBenchRulerProps {
+interface CanvasRulerProps {
 	children: JSX.Element;
 }
 
-const WorkBenchRuler = (props: WorkBenchRulerProps) => {
+const CanvasRuler = (props: CanvasRulerProps) => {
 	const { children } = props;
 	const width = 800,
 		height = 600;
@@ -176,4 +176,4 @@ const WorkBenchRuler = (props: WorkBenchRulerProps) => {
 	);
 };
 
-export default WorkBenchRuler;
+export default CanvasRuler;

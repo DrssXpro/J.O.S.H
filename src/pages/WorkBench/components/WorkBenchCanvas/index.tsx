@@ -1,11 +1,11 @@
-import WorkBenchRuler from "../WorkBenchRuler/index";
+import CanvasRuler from "./components/CanvasRuler/index";
 
 const WorkBenchCanvas = () => {
 	return (
 		<div className="flex-1">
-			<WorkBenchRuler>
+			<CanvasRuler>
 				<div className="text-light-50">123</div>
-			</WorkBenchRuler>
+			</CanvasRuler>
 		</div>
 	);
 };
