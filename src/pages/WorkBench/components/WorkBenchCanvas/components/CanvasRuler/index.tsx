@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Ruler from "@scena/react-ruler";
 import useCanvasStore from "@/store/canvasStore";
 
@@ -38,6 +38,15 @@ const CanvasRuler = (props: CanvasRulerProps) => {
 
 	useEffect(() => {
 		canvasDomRef.current && setRulerPos();
+	}, [scale]);
+
+	// 根据缩放比例 动态调整标尺的单位
+	const computedUnit = useMemo(() => {
+		if (scale > 1.5) return 25;
+		else if (scale > 0.75 && scale <= 1.5) return 50;
+		else if (scale > 0.4 && scale <= 0.75) return 100;
+		else if (scale > 0.2 && scale <= 0.4) return 200;
+		else return 400;
 	}, [scale]);
 
 	// 计算画布距离容器差值
@@ -116,6 +125,7 @@ const CanvasRuler = (props: CanvasRulerProps) => {
 					lineColor={"#444b4d"}
 					textColor={"#a6a6a6"}
 					negativeRuler={true}
+					unit={computedUnit}
 					segment={2}
 					textOffset={[10, 0]}
 					backgroundColor={"#1f1f1f"}
@@ -132,6 +142,7 @@ const CanvasRuler = (props: CanvasRulerProps) => {
 						lineColor={"#444b4d"}
 						textColor={"#a6a6a6"}
 						negativeRuler={true}
+						unit={computedUnit}
 						segment={2}
 						textOffset={[0, 10]}
 						backgroundColor={"#1f1f1f"}
