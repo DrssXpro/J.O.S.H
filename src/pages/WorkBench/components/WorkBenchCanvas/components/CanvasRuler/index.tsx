@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Ruler from "@scena/react-ruler";
 import useCanvasStore from "@/store/canvasStore";
+import { listen } from "@/utils/domUtils";
 
 interface CanvasRulerProps {
 	children: JSX.Element;
@@ -21,18 +22,16 @@ const CanvasRuler = (props: CanvasRulerProps) => {
 	const horizontalRulerRef = useRef<null | Ruler>(null);
 	const canvasDomRef = useRef<null | HTMLDivElement>(null);
 	const containerDomRef = useRef<null | HTMLDivElement>(null);
-	let startX = 0,
-		startY = 0,
-		prevMoveXValue = [0, 0],
+	let prevMoveXValue = [0, 0],
 		prevMoveYValue = [0, 0];
 
 	useEffect(() => {
 		setRulerPos();
-		window.addEventListener("resize", handlePageResize);
-		containerDomRef.current?.addEventListener("wheel", handleWheel, { passive: false });
+		const listenResize = listen(window, "resize", handlePageResize);
+		const listenWheel = listen(containerDomRef.current!, "wheel", handleWheel, { passive: false });
 		return () => {
-			window.removeEventListener("resize", handlePageResize);
-			containerDomRef.current?.removeEventListener("wheel", handleWheel);
+			listenResize();
+			listenWheel();
 		};
 	}, []);
 
@@ -82,30 +81,28 @@ const CanvasRuler = (props: CanvasRulerProps) => {
 	const handleDragCanvas = (e: any) => {
 		e.preventDefault();
 		e.stopPropagation();
-		startX = e.pageX;
-		startY = e.pageY;
-		window.addEventListener("mousemove", handleMouseMove);
-		window.addEventListener("mouseup", handleMouseUp);
-	};
+		const startX = e.pageX;
+		const startY = e.pageY;
 
-	const handleMouseMove = (e: any) => {
-		const [prevMoveX1, prevMoveX2] = prevMoveXValue;
-		const [prevMoveY1, prevMoveY2] = prevMoveYValue;
-		containerDomRef.current!.scrollLeft -=
-			prevMoveX2 > prevMoveX1 ? Math.abs(prevMoveX2 - prevMoveX1) : -Math.abs(prevMoveX2 - prevMoveX1);
-		containerDomRef.current!.scrollTop -=
-			prevMoveY2 > prevMoveY1 ? Math.abs(prevMoveY2 - prevMoveY1) : -Math.abs(prevMoveY2 - prevMoveY1);
-		const nx = e.pageX - startX;
-		const ny = e.pageY - startY;
-		prevMoveXValue = [prevMoveX2, nx];
-		prevMoveYValue = [prevMoveY2, ny];
-	};
+		const listenMouseMove = listen(window, "mousemove", (e: any) => {
+			const [prevMoveX1, prevMoveX2] = prevMoveXValue;
+			const [prevMoveY1, prevMoveY2] = prevMoveYValue;
+			containerDomRef.current!.scrollLeft -=
+				prevMoveX2 > prevMoveX1 ? Math.abs(prevMoveX2 - prevMoveX1) : -Math.abs(prevMoveX2 - prevMoveX1);
+			containerDomRef.current!.scrollTop -=
+				prevMoveY2 > prevMoveY1 ? Math.abs(prevMoveY2 - prevMoveY1) : -Math.abs(prevMoveY2 - prevMoveY1);
+			const nx = e.pageX - startX;
+			const ny = e.pageY - startY;
+			prevMoveXValue = [prevMoveX2, nx];
+			prevMoveYValue = [prevMoveY2, ny];
+		});
 
-	const handleMouseUp = () => {
-		window.removeEventListener("mousemove", handleMouseMove);
-		window.removeEventListener("mouseup", handleMouseUp);
-		prevMoveXValue = [0, 0];
-		prevMoveYValue = [0, 0];
+		const listenMouseUp = listen(window, "mouseup", () => {
+			listenMouseMove();
+			listenMouseUp();
+			prevMoveXValue = [0, 0];
+			prevMoveYValue = [0, 0];
+		});
 	};
 
 	const handlePageResize = () => {
