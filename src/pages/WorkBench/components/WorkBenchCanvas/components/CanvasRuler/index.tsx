@@ -1,15 +1,19 @@
-import Ruler from "@scena/react-ruler";
 import { useEffect, useRef, useState } from "react";
+import Ruler from "@scena/react-ruler";
+import useCanvasStore from "@/store/canvasStore";
 
 interface CanvasRulerProps {
 	children: JSX.Element;
 }
 
+// key: addEventListener 闭包问题: disableScale 在事件处理函数内部无法更新，借助闭包对象进行更新
+const disabledValue = { value: false };
+
 const CanvasRuler = (props: CanvasRulerProps) => {
 	const { children } = props;
-	const width = 800,
-		height = 600;
-	const [scale, setScale] = useState(1);
+
+	const { canvasWidth, canvasHeight, scale, disableScale, addScale, subScale } = useCanvasStore();
+	disabledValue.value = disableScale;
 	const [posX, setPosX] = useState(0);
 	const [posY, setPosY] = useState(0);
 
@@ -54,13 +58,13 @@ const CanvasRuler = (props: CanvasRulerProps) => {
 
 	// ctrl + 滚轮 更改缩放比例实现缩放效果
 	const handleWheel = (e: any) => {
-		if (e.ctrlKey) {
-			// 禁用默认浏览器的缩放
-			e.preventDefault();
+		// 禁用默认浏览器的缩放
+		e.preventDefault();
+		if (e.ctrlKey && !disabledValue.value) {
 			if (e.wheelDeltaY > 0 && scale < 2) {
-				setScale((scale) => scale + 0.1);
+				addScale(0.1);
 			} else if (e.wheelDeltaY < 0 && scale > 0.1) {
-				setScale((scale) => scale - 0.1);
+				subScale(0.1);
 			}
 		}
 	};
@@ -154,13 +158,13 @@ const CanvasRuler = (props: CanvasRulerProps) => {
 							>
 								<div
 									className="transition-all"
-									style={{ width: `${width * scale}px`, height: `${height * scale}px` }}
+									style={{ width: `${canvasWidth * scale}px`, height: `${canvasHeight * scale}px` }}
 								>
 									<div
 										className="origin-top-left transition-all"
 										style={{
-											width: `${width}px`,
-											height: `${height}px`,
+											width: `${canvasWidth}px`,
+											height: `${canvasHeight}px`,
 											transform: `scale(${scale})`
 										}}
 									>

@@ -1,7 +1,9 @@
-import { QuestionCircleOutlined, CodeOutlined, UnlockOutlined } from "@ant-design/icons";
+import useCanvasStore from "@/store/canvasStore";
+import { QuestionCircleOutlined, CodeOutlined, UnlockOutlined, LockOutlined } from "@ant-design/icons";
 import { Button, Popover, Select, Slider, Tooltip } from "antd";
 
 const CanvasTool = () => {
+	const { scale, disableScale, setScale, setScaleDisabled } = useCanvasStore();
 	return (
 		<div
 			className="absolute bottom-0 z-50 flex items-center justify-between left-[20px]  h-12 px-2 bg-[#232324] border-t-1 border-[#373739]"
@@ -21,8 +23,10 @@ const CanvasTool = () => {
 					<Button icon={<CodeOutlined />}></Button>
 				</Tooltip>
 				<Select
-					defaultValue="100%"
+					disabled={disableScale}
+					value={`${(scale * 100).toFixed(0)}%`}
 					style={{ width: "110px" }}
+					onChange={(value) => setScale(parseInt(value) / 100)}
 					options={[
 						{ value: "200%", label: "200%" },
 						{ value: "150%", label: "150%" },
@@ -31,10 +35,31 @@ const CanvasTool = () => {
 						{ value: "自适应", label: "自适应" }
 					]}
 				/>
-				<Tooltip title="锁定当前比例">
-					<UnlockOutlined style={{ fontSize: "18px", color: "#aaa" }} className="cursor-pointer" />
+				<Tooltip title={disableScale ? "解锁当前比例" : "锁定当前比例"}>
+					{disableScale ? (
+						<LockOutlined
+							style={{ fontSize: "18px", color: "#1677FF" }}
+							className="cursor-pointer"
+							onClick={() => setScaleDisabled(false)}
+						/>
+					) : (
+						<UnlockOutlined
+							style={{ fontSize: "18px", color: "#aaa" }}
+							className="cursor-pointer"
+							onClick={() => setScaleDisabled(true)}
+						/>
+					)}
 				</Tooltip>
-				<Slider defaultValue={100} min={0} max={200} className="w-25" />
+				<Slider
+					disabled={disableScale}
+					value={scale * 100}
+					min={0}
+					max={200}
+					step={5}
+					onChange={(value) => setScale(value / 100)}
+					tooltip={{ formatter: (value) => `${value}%` }}
+					className="w-25"
+				/>
 			</div>
 		</div>
 	);
