@@ -1,7 +1,15 @@
+import { useEffect } from "react";
 import CanvasRuler from "./components/CanvasRuler/index";
 import CanvasTool from "./components/CanvasTool";
+import { initKeyBoardEvent, removeKeyBoardEventListener } from "./utils/handleKeyBoardEvent";
 
 const WorkBenchCanvas = () => {
+	useEffect(() => {
+		initKeyBoardEvent();
+		return () => {
+			removeKeyBoardEventListener();
+		};
+	}, []);
 	return (
 		<div className="relative  flex-1">
 			<CanvasRuler>

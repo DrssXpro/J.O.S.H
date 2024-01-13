@@ -2,6 +2,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Ruler from "@scena/react-ruler";
 import useCanvasStore from "@/store/canvasStore";
 import { listen } from "@/utils/domUtils";
+import { bus } from "@/utils";
+import { KeyBoardEventName } from "../../utils/handleKeyBoardEvent";
 
 interface CanvasRulerProps {
 	children: JSX.Element;
@@ -17,6 +19,7 @@ const CanvasRuler = (props: CanvasRulerProps) => {
 	disabledValue.value = disableScale;
 	const [posX, setPosX] = useState(0);
 	const [posY, setPosY] = useState(0);
+	const [pressSpace, setPressSpace] = useState(false);
 
 	const verticalRulerRef = useRef<null | Ruler>(null);
 	const horizontalRulerRef = useRef<null | Ruler>(null);
@@ -29,15 +32,21 @@ const CanvasRuler = (props: CanvasRulerProps) => {
 		setRulerPos();
 		const listenResize = listen(window, "resize", handlePageResize);
 		const listenWheel = listen(containerDomRef.current!, "wheel", handleWheel, { passive: false });
+		bus.on(KeyBoardEventName.SpaceKeyPress, changePressSpace);
 		return () => {
 			listenResize();
 			listenWheel();
+			bus.off(KeyBoardEventName.SpaceKeyPress, changePressSpace);
 		};
 	}, []);
 
 	useEffect(() => {
 		canvasDomRef.current && setRulerPos();
 	}, [scale]);
+
+	const changePressSpace = (flag: boolean) => {
+		setPressSpace(flag);
+	};
 
 	// 根据缩放比例 动态调整标尺的单位
 	const computedUnit = useMemo(() => {
@@ -79,6 +88,7 @@ const CanvasRuler = (props: CanvasRulerProps) => {
 
 	// 拖动画布相当于 container scroll 效果
 	const handleDragCanvas = (e: any) => {
+		if (!pressSpace) return;
 		e.preventDefault();
 		e.stopPropagation();
 		const startX = e.pageX;
@@ -166,7 +176,11 @@ const CanvasRuler = (props: CanvasRulerProps) => {
 							>
 								<div
 									className="transition-all"
-									style={{ width: `${canvasWidth * scale}px`, height: `${canvasHeight * scale}px` }}
+									style={{
+										width: `${canvasWidth * scale}px`,
+										height: `${canvasHeight * scale}px`,
+										cursor: pressSpace ? "grab" : undefined
+									}}
 								>
 									<div
 										className="origin-top-left transition-all"

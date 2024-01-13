@@ -1,9 +1,25 @@
 import useCanvasStore from "@/store/canvasStore";
+import { bus } from "@/utils";
 import { QuestionCircleOutlined, CodeOutlined, UnlockOutlined, LockOutlined } from "@ant-design/icons";
 import { Button, Popover, Select, Slider, Tooltip } from "antd";
+import { useEffect, useState } from "react";
+import { KeyBoardEventName } from "../../utils/handleKeyBoardEvent";
 
 const CanvasTool = () => {
 	const { scale, disableScale, setScale, setScaleDisabled } = useCanvasStore();
+	const [keyBoardText, setKeyBoardText] = useState("");
+
+	useEffect(() => {
+		bus.on(KeyBoardEventName.ChangeKeyBoardText, handleChangeKeyBoardText);
+
+		return () => {
+			bus.off(KeyBoardEventName.ChangeKeyBoardText, handleChangeKeyBoardText);
+		};
+	}, []);
+
+	const handleChangeKeyBoardText = (text: string) => {
+		setKeyBoardText(text);
+	};
 	return (
 		<div
 			className="absolute bottom-0 z-50 flex items-center justify-between left-[20px]  h-12 px-2 bg-[#232324] border-t-1 border-[#373739]"
@@ -14,8 +30,9 @@ const CanvasTool = () => {
 					<Button>历史记录</Button>
 				</Popover>
 				<Tooltip title="最多保留 50 条记录">
-					<QuestionCircleOutlined style={{ fontSize: "18px", color: "#8F8F8F" }} />
+					<QuestionCircleOutlined style={{ fontSize: "18px", color: "#8F8F8F", marginTop: "3px" }} />
 				</Tooltip>
+				<div className="text-[#aaa]">{keyBoardText}</div>
 			</div>
 
 			<div className="flex items-center gap-2">
