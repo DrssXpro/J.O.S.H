@@ -2,12 +2,14 @@ import useCanvasStore from "@/store/canvasStore";
 import { bus } from "@/utils";
 import { QuestionCircleOutlined, CodeOutlined, UnlockOutlined, LockOutlined } from "@ant-design/icons";
 import { Button, Popover, Select, Slider, Tooltip } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { KeyBoardEventName } from "../../utils/handleKeyBoardEvent";
+import { CanvasLayoutEventName } from "@/types/EventTypes";
 
 const CanvasTool = () => {
 	const { scale, disableScale, setScale, setScaleDisabled } = useCanvasStore();
 	const [keyBoardText, setKeyBoardText] = useState("");
+	const selectRef = useRef<any>(null);
 
 	useEffect(() => {
 		bus.on(KeyBoardEventName.ChangeKeyBoardText, handleChangeKeyBoardText);
@@ -40,16 +42,24 @@ const CanvasTool = () => {
 					<Button icon={<CodeOutlined />}></Button>
 				</Tooltip>
 				<Select
+					ref={selectRef}
 					disabled={disableScale}
 					value={`${(scale * 100).toFixed(0)}%`}
 					style={{ width: "110px" }}
-					onChange={(value) => setScale(parseInt(value) / 100)}
+					onChange={(value) => {
+						if (value === "auto") {
+							bus.emit(CanvasLayoutEventName.AUTOLAYOUTCANVAS);
+						} else {
+							setScale(parseInt(value) / 100);
+						}
+						selectRef.current.blur();
+					}}
 					options={[
 						{ value: "200%", label: "200%" },
 						{ value: "150%", label: "150%" },
 						{ value: "100%", label: "100%" },
 						{ value: "50%", label: "50%" },
-						{ value: "自适应", label: "自适应" }
+						{ value: "auto", label: "自适应" }
 					]}
 				/>
 				<Tooltip title={disableScale ? "解锁当前比例" : "锁定当前比例"}>

@@ -4,6 +4,7 @@ import useCanvasStore from "@/store/canvasStore";
 import { listen } from "@/utils/domUtils";
 import { bus } from "@/utils";
 import { KeyBoardEventName } from "../../utils/handleKeyBoardEvent";
+import { CanvasLayoutEventName } from "@/types/EventTypes";
 
 interface CanvasRulerProps {
 	children: JSX.Element;
@@ -15,7 +16,17 @@ const disabledValue = { value: false };
 const CanvasRuler = (props: CanvasRulerProps) => {
 	const { children } = props;
 
-	const { canvasWidth, canvasHeight, scale, disableScale, addScale, subScale } = useCanvasStore();
+	const {
+		canvasWidth,
+		canvasHeight,
+		scale,
+		disableScale,
+		addScale,
+		subScale,
+		setCanvasDOM,
+		setcanvasContainerDOM,
+		autoLayoutCanvas
+	} = useCanvasStore();
 	disabledValue.value = disableScale;
 	const [posX, setPosX] = useState(0);
 	const [posY, setPosY] = useState(0);
@@ -30,13 +41,20 @@ const CanvasRuler = (props: CanvasRulerProps) => {
 
 	useEffect(() => {
 		setRulerPos();
+		setCanvasDOM(canvasDomRef.current!);
+		setcanvasContainerDOM(containerDomRef.current!);
+		autoLayoutCanvas();
 		const listenResize = listen(window, "resize", handlePageResize);
 		const listenWheel = listen(containerDomRef.current!, "wheel", handleWheel, { passive: false });
 		bus.on(KeyBoardEventName.SpaceKeyPress, changePressSpace);
+		bus.on(CanvasLayoutEventName.AUTOLAYOUTCANVAS, autoLayoutCanvas);
+		bus.on(CanvasLayoutEventName.AUTOLAYOUTCANVASPOS, setLayoutPos);
 		return () => {
 			listenResize();
 			listenWheel();
 			bus.off(KeyBoardEventName.SpaceKeyPress, changePressSpace);
+			bus.off(CanvasLayoutEventName.AUTOLAYOUTCANVAS, autoLayoutCanvas);
+			bus.off(CanvasLayoutEventName.AUTOLAYOUTCANVASPOS, setLayoutPos);
 		};
 	}, []);
 
@@ -71,6 +89,14 @@ const CanvasRuler = (props: CanvasRulerProps) => {
 		const { disX, disY } = computedCanvasDis();
 		setPosX(Math.floor(disX / scale));
 		setPosY(Math.floor(disY / scale));
+	};
+
+	// 调整画布在 container 中的位置，配合自适应操作，进行居中显示
+	const setLayoutPos = () => {
+		const { disX, disY } = computedCanvasDis();
+		containerDomRef.current!.scrollLeft += Math.abs(disX) - 20;
+		containerDomRef.current!.scrollTop +=
+			Math.abs(disY) - (containerDomRef.current!.clientHeight - canvasDomRef.current!.clientHeight) / 2;
 	};
 
 	// ctrl + 滚轮 更改缩放比例实现缩放效果
@@ -160,17 +186,21 @@ const CanvasRuler = (props: CanvasRulerProps) => {
 					style={{
 						backgroundImage:
 							"linear-gradient(#18181c 14px,transparent 0),linear-gradient(90deg,transparent 14px,#86909c 0)",
-						backgroundSize: "15px 15px , 15px 15px"
+						backgroundSize: "15px 15px , 15px 15px",
+						overflow: "auto"
 					}}
 				>
 					<div
-						className="absolute w-full h-full overflow-auto"
+						className="absolute top-0 left-0 w-full h-full overflow-auto"
 						onScroll={() => setRulerPos()}
 						ref={containerDomRef}
 					>
-						<div className="absolute top-0 left-0 w-[1600px] h-[1200px]">
+						<div
+							className="absolute top-0 left-0"
+							style={{ width: `${canvasWidth * 2}px`, height: `${canvasHeight * 2}px` }}
+						>
 							<div
-								className="absolute top-[25%] left-[50%] ml-[-600px] mb-[-300px] bg-[#232324] rounded-xl"
+								className="absolute top-[50%] left-[50%] ml-[-380px] transform -translate-y-[50%] bg-[#232324] rounded-xl"
 								ref={canvasDomRef}
 								onMouseDown={handleDragCanvas}
 							>
