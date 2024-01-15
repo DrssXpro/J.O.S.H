@@ -3,8 +3,7 @@ import { bus } from "@/utils";
 import { QuestionCircleOutlined, CodeOutlined, UnlockOutlined, LockOutlined } from "@ant-design/icons";
 import { Button, Popover, Select, Slider, Tooltip } from "antd";
 import { useEffect, useRef, useState } from "react";
-import { KeyBoardEventName } from "../../utils/handleKeyBoardEvent";
-import { CanvasLayoutEventName } from "@/types/EventTypes";
+import { KeyBoardEventName, CanvasLayoutEventName } from "@/types/EventTypes";
 
 const CanvasTool = () => {
 	const { scale, disableScale, setScale, setScaleDisabled } = useCanvasStore();

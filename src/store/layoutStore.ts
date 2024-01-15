@@ -26,11 +26,21 @@ const useLayoutStore = create(
 			showConfiguration: true,
 			layerMode: LayerModeEnum.THUMBNAIL,
 			materialsMode: MaterialsModeEnum.SINGLE,
-			controllMaterials: (val: boolean) => set(() => ({ showMaterials: val })),
-			controllLayer: (val: boolean) => set(() => ({ showLayer: val })),
-			controllConfiguration: (val: boolean) => set(() => ({ showConfiguration: val })),
-			controllMaterialsMode: (val: MaterialsModeEnum) => set(() => ({ materialsMode: val })),
-			controllLayerMode: (val: LayerModeEnum) => set(() => ({ layerMode: val }))
+			controllMaterials: (val) => {
+				set(() => ({ showMaterials: val }));
+			},
+			controllLayer: (val) => {
+				set(() => ({ showLayer: val }));
+			},
+			controllConfiguration: (val) => {
+				set(() => ({ showConfiguration: val }));
+			},
+			controllMaterialsMode: (val) => {
+				set(() => ({ materialsMode: val }));
+			},
+			controllLayerMode: (val) => {
+				set(() => ({ layerMode: val }));
+			}
 		}),
 		{
 			name: "layout",

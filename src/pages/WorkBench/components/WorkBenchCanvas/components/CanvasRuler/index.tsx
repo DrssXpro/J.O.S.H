@@ -3,8 +3,7 @@ import Ruler from "@scena/react-ruler";
 import useCanvasStore from "@/store/canvasStore";
 import { listen } from "@/utils/domUtils";
 import { bus } from "@/utils";
-import { KeyBoardEventName } from "../../utils/handleKeyBoardEvent";
-import { CanvasLayoutEventName } from "@/types/EventTypes";
+import { KeyBoardEventName, CanvasLayoutEventName } from "@/types/EventTypes";
 
 interface CanvasRulerProps {
 	children: JSX.Element;

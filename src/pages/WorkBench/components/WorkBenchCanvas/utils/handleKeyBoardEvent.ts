@@ -1,11 +1,6 @@
+import { KeyBoardEventName } from "@/types/EventTypes";
 import { bus } from "@/utils";
 
-export const enum KeyBoardEventName {
-	// 控制键盘按键展示文本
-	ChangeKeyBoardText = "changeKeyBoardText",
-	// 是否按下 space 键
-	SpaceKeyPress = "SpaceKeyPress"
-}
 export function initKeyBoardEvent() {
 	addKeyBoardListener();
 }
