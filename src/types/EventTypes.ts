@@ -7,7 +7,7 @@ export const enum CanvasLayoutEventName {
 
 export const enum KeyBoardEventName {
 	// 控制键盘按键展示文本
-	ChangeKeyBoardText = "changeKeyBoardText",
+	ChANGEKEYBOARDTEXT = "changeKeyBoardText",
 	// 是否按下 space 键
-	SpaceKeyPress = "SpaceKeyPress"
+	SPACEKEYPRESS = "SpaceKeyPress"
 }

@@ -20,8 +20,8 @@ function addKeyBoardListener() {
 
 	document.onkeyup = (e) => {
 		const { code } = e;
-		code === "Space" && bus.emit(KeyBoardEventName.SpaceKeyPress, false);
-		bus.emit(KeyBoardEventName.ChangeKeyBoardText, "");
+		code === "Space" && bus.emit(KeyBoardEventName.SPACEKEYPRESS, false);
+		bus.emit(KeyBoardEventName.ChANGEKEYBOARDTEXT, "");
 	};
 }
 
@@ -30,10 +30,10 @@ function showPressKeyText(code: string) {
 	switch (code) {
 		case "Space":
 			text = `按下了「Space」键`;
-			bus.emit(KeyBoardEventName.SpaceKeyPress, true);
+			bus.emit(KeyBoardEventName.SPACEKEYPRESS, true);
 			break;
 		default:
 			text = `按下了「Ctrl」键`;
 	}
-	bus.emit(KeyBoardEventName.ChangeKeyBoardText, text);
+	bus.emit(KeyBoardEventName.ChANGEKEYBOARDTEXT, text);
 }

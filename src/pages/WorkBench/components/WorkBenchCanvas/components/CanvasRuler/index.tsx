@@ -45,13 +45,13 @@ const CanvasRuler = (props: CanvasRulerProps) => {
 		autoLayoutCanvas();
 		const listenResize = listen(window, "resize", handlePageResize);
 		const listenWheel = listen(containerDomRef.current!, "wheel", handleWheel, { passive: false });
-		bus.on(KeyBoardEventName.SpaceKeyPress, changePressSpace);
+		bus.on(KeyBoardEventName.SPACEKEYPRESS, changePressSpace);
 		bus.on(CanvasLayoutEventName.AUTOLAYOUTCANVAS, autoLayoutCanvas);
 		bus.on(CanvasLayoutEventName.AUTOLAYOUTCANVASPOS, setLayoutPos);
 		return () => {
 			listenResize();
 			listenWheel();
-			bus.off(KeyBoardEventName.SpaceKeyPress, changePressSpace);
+			bus.off(KeyBoardEventName.SPACEKEYPRESS, changePressSpace);
 			bus.off(CanvasLayoutEventName.AUTOLAYOUTCANVAS, autoLayoutCanvas);
 			bus.off(CanvasLayoutEventName.AUTOLAYOUTCANVASPOS, setLayoutPos);
 		};
