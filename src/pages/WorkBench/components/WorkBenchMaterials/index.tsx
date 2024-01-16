@@ -3,43 +3,13 @@ import { Button, Col, Input, Menu, Row, Tooltip } from "antd";
 import WorkBenchBox from "../WorkBenchBox";
 import JIcon from "@/components/JIcon";
 import { Albums, Grid } from "@ricons/ionicons5";
-import {
-	BarChartOutlined,
-	PictureOutlined,
-	AimOutlined,
-	PieChartOutlined,
-	SketchOutlined,
-	TableOutlined
-} from "@ant-design/icons";
-import "./menuItem.css";
+import { BarChartOutlined } from "@ant-design/icons";
 import MaterialCard from "./components/MaterialCard";
 import useLayoutStore from "@/store/layoutStore";
 import { MaterialsModeEnum } from "@/types/LayoutTypes";
-
-const MaterialsMenu = [
-	{
-		icon: <PieChartOutlined style={{ fontSize: "20px" }} />,
-		label: "图表"
-	},
-	{
-		icon: <AimOutlined style={{ fontSize: "20px" }} />,
-		label: "信息"
-	},
-	{
-		icon: <TableOutlined style={{ fontSize: "20px" }} />,
-		label: "列表"
-	},
-	{
-		icon: <SketchOutlined style={{ fontSize: "20px" }} />,
-		label: "小组件"
-	},
-	{
-		icon: <PictureOutlined style={{ fontSize: "20px" }} />,
-		label: "图片"
-	}
-];
-
-const CurrentMaterials = ["所有", "柱状图", "折线图", "饼图", "散点图", "地图", "更多"];
+import { useMaterials } from "./hooks/useMaterials";
+import "./menuItem.css";
+import { MaterialCategoryEnum } from "@/materials/types";
 
 const TopRightOperator = () => {
 	const [isFocus, setFocus] = useState(false);
@@ -72,7 +42,10 @@ const TopRightOperator = () => {
 };
 
 const WorkBenchMaterials = () => {
+	const { menuOptions, categoryOptions, materialList, currentCategory, handleClickMenu, handleClickCategory } =
+		useMaterials();
 	const { showMaterials, materialsMode } = useLayoutStore();
+
 	// 展开时左侧文本(“组件”)抖动问题，针对于展开的情况将控制 TopOperator 显隐操作其推入宏任务
 	const [showTopOperator, setShowTopOperator] = useState(true);
 	useEffect(() => {
@@ -82,6 +55,7 @@ const WorkBenchMaterials = () => {
 				}, 150)
 			: setShowTopOperator(showMaterials);
 	}, [showMaterials]);
+
 	return (
 		<div className={`${showMaterials ? "w-78" : "w-17"} h-full transition-all`}>
 			<WorkBenchBox
@@ -95,14 +69,16 @@ const WorkBenchMaterials = () => {
 					<Menu
 						mode="vertical"
 						className="w-full bg-[#232324]"
-						items={MaterialsMenu.map((i, index) => ({
+						defaultSelectedKeys={[menuOptions[0]["key"]]}
+						onClick={(item) => handleClickMenu(item.key as MaterialCategoryEnum)}
+						items={menuOptions.map((i) => ({
 							label: (
 								<div className="flex flex-col justify-center items-center gap-1 py-1">
 									{i.icon}
 									<div className="text-sm">{i.label}</div>
 								</div>
 							),
-							key: index + 1
+							key: i.key
 						}))}
 					/>
 				</div>
@@ -110,17 +86,23 @@ const WorkBenchMaterials = () => {
 					<Menu
 						mode="vertical"
 						className="w-full bg-[#1E1E1F]"
-						items={CurrentMaterials.map((item, index) => ({
-							label: <div className="text-xs h-10 flex items-center justify-center">{item}</div>,
-							key: index + 1
+						selectedKeys={[currentCategory]}
+						onClick={(item) => {
+							handleClickCategory(item.key);
+						}}
+						items={categoryOptions.map((item) => ({
+							label: (
+								<div className="text-xs h-10 flex items-center justify-center">{item.categoryName}</div>
+							),
+							key: item.key
 						}))}
 					></Menu>
 				</div>
 				<div className="flex-1 bg-[#18181C] p-2">
 					<Row gutter={[10, 10]}>
-						{[1, 2, 3, 4].map((i) => (
-							<Col span={materialsMode === MaterialsModeEnum.DOUBLE ? 12 : 24} key={i}>
-								<MaterialCard mode={materialsMode} />
+						{materialList.map((i) => (
+							<Col span={materialsMode === MaterialsModeEnum.DOUBLE ? 12 : 24} key={i.key}>
+								<MaterialCard mode={materialsMode} detail={i} />
 							</Col>
 						))}
 					</Row>

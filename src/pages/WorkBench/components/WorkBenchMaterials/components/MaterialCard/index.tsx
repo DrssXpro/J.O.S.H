@@ -2,13 +2,15 @@ import { Card } from "antd";
 import { cardColorMap } from "@/config/color";
 import chartPng from "@/assets/bar_x.png";
 import { MaterialsModeEnum } from "@/types/LayoutTypes";
+import { IMaterialConfigType } from "@/materials/types";
 
 interface IMaterialCardProps {
 	mode: MaterialsModeEnum;
+	detail: IMaterialConfigType;
 }
 
 const MaterialCard = (props: IMaterialCardProps) => {
-	const { mode } = props;
+	const { mode, detail } = props;
 	return (
 		<Card
 			bodyStyle={{ padding: 0, backgroundColor: "#232324", overflow: "hidden", borderRadius: "8px" }}
@@ -35,7 +37,7 @@ const MaterialCard = (props: IMaterialCardProps) => {
 					className="text-[12px] text-[rgb(150,150,150)]"
 					style={{ display: mode === MaterialsModeEnum.SINGLE ? "block" : "none" }}
 				>
-					折线图
+					{detail.title}
 				</div>
 			</div>
 			<div
@@ -52,7 +54,7 @@ const MaterialCard = (props: IMaterialCardProps) => {
 				className="text-[12px] text-[rgb(150,150,150)] px-2 pb-2"
 				style={{ display: mode === MaterialsModeEnum.SINGLE ? "none" : "block" }}
 			>
-				折线图
+				{detail.title}
 			</div>
 		</Card>
 	);
