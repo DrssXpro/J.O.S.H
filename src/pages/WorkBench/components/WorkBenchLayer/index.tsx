@@ -4,9 +4,11 @@ import WorkBenchBox from "../WorkBenchBox";
 import LayerCard from "./components/LayerCard";
 import { LayerModeEnum } from "@/types/LayoutTypes";
 import useLayoutStore from "@/store/layoutStore";
+import useCanvasStore from "@/store/canvasStore";
 
 const WorkBenchLayer = () => {
 	const { showLayer, layerMode, controllLayer, controllLayerMode } = useLayoutStore();
+	const { autoLayoutCanvas } = useCanvasStore();
 
 	return (
 		<div
@@ -42,7 +44,12 @@ const WorkBenchLayer = () => {
 						</Tooltip>
 					</div>
 				}
-				hiddenBox={() => controllLayer(false)}
+				hiddenBox={() => {
+					controllLayer(false);
+					setTimeout(() => {
+						autoLayoutCanvas();
+					}, 500);
+				}}
 			>
 				<Card
 					bodyStyle={{ padding: "5px", width: "100%", backgroundColor: "#232324", height: "100%" }}

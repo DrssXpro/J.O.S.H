@@ -55,9 +55,10 @@ const useCanvasStore = create<ICanvasState & ICanvasAction>((set) => ({
 
 	autoLayoutCanvas: () => {
 		set((state) => {
-			const { canvasDOM, canvasWidth, canvasHeight, canvasContainerDOM } = state;
+			const { disableScale, canvasWidth, canvasHeight, canvasContainerDOM } = state;
+			if (disableScale) return { ...state };
 			let scale = state.scale;
-			if (canvasDOM && canvasContainerDOM) {
+			if (canvasContainerDOM) {
 				const containerWidth = canvasContainerDOM.clientWidth - 40;
 				const containerHeight = canvasContainerDOM.clientHeight;
 

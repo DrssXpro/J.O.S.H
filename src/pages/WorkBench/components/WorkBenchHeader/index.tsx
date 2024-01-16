@@ -16,11 +16,13 @@ import { Button, Input, Tooltip, type InputRef } from "antd";
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import useLayoutStore from "@/store/layoutStore";
+import useCanvasStore from "@/store/canvasStore";
 
 const LeftOperator = () => {
 	const nav = useNavigate();
 	const { showMaterials, showLayer, showConfiguration, controllMaterials, controllLayer, controllConfiguration } =
 		useLayoutStore();
+	const { autoLayoutCanvas } = useCanvasStore();
 
 	return (
 		<div className="flex items-center">
@@ -34,7 +36,12 @@ const LeftOperator = () => {
 						type={showMaterials ? "primary" : undefined}
 						ghost={showMaterials}
 						icon={<BarChartOutlined />}
-						onClick={() => controllMaterials(!showMaterials)}
+						onClick={() => {
+							controllMaterials(!showMaterials);
+							setTimeout(() => {
+								autoLayoutCanvas();
+							}, 500);
+						}}
 					></Button>
 				</Tooltip>
 				<Tooltip title="图层控制">
@@ -42,7 +49,12 @@ const LeftOperator = () => {
 						type={showLayer ? "primary" : undefined}
 						ghost={showLayer}
 						icon={<PartitionOutlined />}
-						onClick={() => controllLayer(!showLayer)}
+						onClick={() => {
+							controllLayer(!showLayer);
+							setTimeout(() => {
+								autoLayoutCanvas();
+							}, 500);
+						}}
 					></Button>
 				</Tooltip>
 				<Tooltip title="详情设置">
@@ -50,7 +62,12 @@ const LeftOperator = () => {
 						type={showConfiguration ? "primary" : undefined}
 						ghost={showConfiguration}
 						icon={<SettingOutlined />}
-						onClick={() => controllConfiguration(!showConfiguration)}
+						onClick={() => {
+							controllConfiguration(!showConfiguration);
+							setTimeout(() => {
+								autoLayoutCanvas();
+							}, 500);
+						}}
 					></Button>
 				</Tooltip>
 			</div>
