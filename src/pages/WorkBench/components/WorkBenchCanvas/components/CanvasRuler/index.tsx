@@ -93,9 +93,9 @@ const CanvasRuler = (props: CanvasRulerProps) => {
 	// 调整画布在 container 中的位置，配合自适应操作，进行居中显示
 	const setLayoutPos = () => {
 		const { disX, disY } = computedCanvasDis();
-		containerDomRef.current!.scrollLeft += Math.abs(disX) - 20;
+		containerDomRef.current!.scrollLeft += -disX - 20;
 		containerDomRef.current!.scrollTop +=
-			Math.abs(disY) - (containerDomRef.current!.clientHeight - canvasDomRef.current!.clientHeight) / 2;
+			-disY - (containerDomRef.current!.clientHeight - canvasDomRef.current!.clientHeight) / 2;
 	};
 
 	// ctrl + 滚轮 更改缩放比例实现缩放效果

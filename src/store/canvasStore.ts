@@ -65,14 +65,14 @@ const useCanvasStore = create<ICanvasState & ICanvasAction>((set) => ({
 				// 计算画布与容器宽高比
 				const containerRatio = parseFloat((containerWidth / containerHeight).toFixed(3));
 				const canvasRatio = parseFloat((canvasWidth / canvasHeight).toFixed(3));
-				// canvas: 4:3 container: 4:7, canvas 更宽
+				// canvas: 16:9（1920 * 1080） container: 20:13（1000 * 650）, canvas 更宽
 
 				if (canvasRatio > containerRatio) {
-					const scaleWidth = parseFloat(((containerHeight * containerRatio) / canvasWidth).toFixed(3));
+					const scaleWidth = parseFloat((containerWidth / canvasWidth).toFixed(3));
 					scale = scaleWidth > 1 ? 1 : scaleWidth;
 				} else {
 					// cavans: 4:3 container: 4:2 canvas 更高
-					const scaleHeight = parseFloat((containerWidth / containerRatio / canvasHeight).toFixed(3));
+					const scaleHeight = parseFloat((containerHeight / canvasHeight).toFixed(3));
 					scale = scaleHeight > 1 ? 1 : scaleHeight;
 				}
 				setTimeout(() => {
