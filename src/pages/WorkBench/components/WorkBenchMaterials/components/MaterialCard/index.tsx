@@ -1,8 +1,8 @@
-import { Card } from "antd";
+import { Card, Typography } from "antd";
 import { cardColorMap } from "@/config/color";
-import chartPng from "@/assets/bar_x.png";
 import { MaterialsModeEnum } from "@/types/LayoutTypes";
 import { IMaterialConfigType } from "@/materials/types";
+import ChartGlobImage from "../ChartGlobImage";
 
 interface IMaterialCardProps {
 	mode: MaterialsModeEnum;
@@ -45,17 +45,16 @@ const MaterialCard = (props: IMaterialCardProps) => {
 					mode === MaterialsModeEnum.SINGLE ? "h-24 py-2 px-4" : "h-12 p-2"
 				}  transition-all`}
 			>
-				<img
-					src={chartPng}
-					className="object-cover w-full h-full transform group-hover:scale-110 transition-all"
-				/>
+				<ChartGlobImage detail={detail} />
 			</div>
-			<div
+
+			<Typography.Text
+				ellipsis
 				className="text-[12px] text-[rgb(150,150,150)] px-2 pb-2"
 				style={{ display: mode === MaterialsModeEnum.SINGLE ? "none" : "block" }}
 			>
 				{detail.title}
-			</div>
+			</Typography.Text>
 		</Card>
 	);
 };
