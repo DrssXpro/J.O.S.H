@@ -8,6 +8,7 @@ interface IChartGlobImageProps {
 const ChartGlobImage = (props: IChartGlobImageProps) => {
 	const { detail } = props;
 	const [imageUrl, setImageUrl] = useState("");
+	const [show, setShow] = useState(false);
 
 	useEffect(() => {
 		fetchImageUrl();
@@ -15,15 +16,39 @@ const ChartGlobImage = (props: IChartGlobImageProps) => {
 
 	const fetchImageUrl = async () => {
 		const image = await fetchImages(detail);
+		await imageLoad(image);
+		setShow(true);
 		setImageUrl(image);
 	};
 
+	const imageLoad = (url: string) => {
+		return new Promise((resolve, reject) => {
+			const image = new Image();
+			image.src = url;
+			image.onload = () => {
+				resolve("load");
+			};
+			image.onerror = () => {
+				reject("error");
+			};
+		});
+	};
+
 	return (
-		<img
-			src={imageUrl}
-			alt="图标图片"
-			className="object-cover w-full h-full transform group-hover:scale-110 transition-all"
-		/>
+		<>
+			{show ? (
+				<img
+					src={imageUrl}
+					alt="图标图片"
+					onLoad={() => {
+						setShow(true);
+					}}
+					className="object-cover w-full h-full transform group-hover:scale-110 transition-all"
+				/>
+			) : (
+				<div className="w-full h-full"></div>
+			)}
+		</>
 	);
 };
 

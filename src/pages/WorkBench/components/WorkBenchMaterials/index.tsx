@@ -98,7 +98,7 @@ const WorkBenchMaterials = () => {
 						}))}
 					></Menu>
 				</div>
-				<div className="flex-1 bg-[#18181C] p-2">
+				<div className="flex-1 bg-[#18181C] p-2 overflow-auto">
 					<Row gutter={[10, 10]}>
 						{materialList.map((i) => (
 							<Col span={materialsMode === MaterialsModeEnum.DOUBLE ? 12 : 24} key={i.key}>
