@@ -17,7 +17,11 @@ const WorkBenchCanvas = () => {
 	const computedCanvasStyle = useMemo(() => {
 		const backgroundStyle = canvasBackground
 			? { background: canvasBackground }
-			: { background: `url(${canvasBackgroundImage}) no-repeat center center / cover` };
+			: {
+					background: canvasBackgroundImage
+						? `url(${canvasBackgroundImage}) no-repeat center center / cover`
+						: undefined
+				};
 		return {
 			...backgroundStyle,
 			width: "inherit",
