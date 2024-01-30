@@ -15,6 +15,7 @@ import UploadImage from "@/assets/upload.png";
 import { PreviewScaleEnum } from "@/types/LayoutTypes";
 import ThemeColor from "./components/ThemeColor";
 import JIcon from "@/components/JIcon";
+import useCanvasStore from "@/store/canvasStore/canvasStore";
 
 const props: UploadProps = {
 	name: "file",
@@ -65,15 +66,34 @@ const previewTypeList = [
 
 const PageConfiguration = () => {
 	const handleRadioChange = () => {};
+
+	const { canvasConfig, setCanvasSize } = useCanvasStore();
+	const { canvasWidth, canvasHeight } = canvasConfig;
 	return (
 		<div className="w-full">
 			<Form>
 				<div className="flex items-center gap-4">
 					<Form.Item label="宽度" className="flex-1">
-						<InputNumber className="w-30" min={1} max={10000} defaultValue={1920} />
+						<InputNumber
+							className="w-30"
+							min={192}
+							max={10000}
+							defaultValue={canvasWidth}
+							onChange={(width) => {
+								width !== null && setCanvasSize(width, canvasHeight);
+							}}
+						/>
 					</Form.Item>
 					<Form.Item label="高度" className="flex-1">
-						<InputNumber className="w-30" min={1} max={10000} defaultValue={1080} />
+						<InputNumber
+							className="w-30"
+							min={108}
+							max={10000}
+							defaultValue={canvasHeight}
+							onChange={(height) => {
+								height !== null && setCanvasSize(canvasWidth, height);
+							}}
+						/>
 					</Form.Item>
 				</div>
 				<Upload.Dragger {...props}>

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Ruler from "@scena/react-ruler";
-import useCanvasStore from "@/store/canvasStore";
+import useCanvasStore from "@/store/canvasStore/canvasStore";
 import { listen } from "@/utils/domUtils";
 import { bus } from "@/utils";
 import { KeyBoardEventName, CanvasLayoutEventName } from "@/types/EventTypes";
@@ -9,24 +9,19 @@ interface CanvasRulerProps {
 	children: JSX.Element;
 }
 
-// key: addEventListener 闭包问题: disableScale 在事件处理函数内部无法更新，借助闭包对象进行更新
+// key: addEventListener 闭包问题: lockScale 在事件处理函数内部无法更新，借助闭包对象进行更新
 const disabledValue = { value: false };
 
 const CanvasRuler = (props: CanvasRulerProps) => {
 	const { children } = props;
 
-	const {
-		canvasWidth,
-		canvasHeight,
-		scale,
-		disableScale,
-		addScale,
-		subScale,
-		setCanvasDOM,
-		setcanvasContainerDOM,
-		autoLayoutCanvas
-	} = useCanvasStore();
-	disabledValue.value = disableScale;
+	const { canvasConfig, canvasGlobal, addScale, subScale, setCanvasDOM, setcanvasContainerDOM, autoLayoutCanvas } =
+		useCanvasStore();
+	const { canvasWidth, canvasHeight } = canvasConfig;
+	const { scale, lockScale } = canvasGlobal;
+
+	disabledValue.value = lockScale;
+
 	const [posX, setPosX] = useState(0);
 	const [posY, setPosY] = useState(0);
 	const [pressSpace, setPressSpace] = useState(false);

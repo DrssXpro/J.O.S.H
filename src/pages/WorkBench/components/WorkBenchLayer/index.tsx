@@ -4,7 +4,7 @@ import WorkBenchBox from "../WorkBenchBox";
 import LayerCard from "./components/LayerCard";
 import { LayerModeEnum } from "@/types/LayoutTypes";
 import useLayoutStore from "@/store/layoutStore";
-import useCanvasStore from "@/store/canvasStore";
+import useCanvasStore from "@/store/canvasStore/canvasStore";
 
 const WorkBenchLayer = () => {
 	const { showLayer, layerMode, controllLayer, controllLayerMode } = useLayoutStore();

@@ -1,4 +1,4 @@
-import useCanvasStore from "@/store/canvasStore";
+import useCanvasStore from "@/store/canvasStore/canvasStore";
 import { bus } from "@/utils";
 import { QuestionCircleOutlined, CodeOutlined, UnlockOutlined, LockOutlined } from "@ant-design/icons";
 import { Button, Popover, Select, Slider, Tooltip } from "antd";
@@ -6,15 +6,16 @@ import { useEffect, useRef, useState } from "react";
 import { KeyBoardEventName, CanvasLayoutEventName } from "@/types/EventTypes";
 
 const CanvasTool = () => {
-	const { scale, disableScale, setScale, setScaleDisabled } = useCanvasStore();
+	const { canvasGlobal, setScale, setScaleDisabled } = useCanvasStore();
+	const { scale, lockScale } = canvasGlobal;
 	const [keyBoardText, setKeyBoardText] = useState("");
 	const selectRef = useRef<any>(null);
 
 	useEffect(() => {
-		bus.on(KeyBoardEventName.ChangeKeyBoardText, handleChangeKeyBoardText);
+		bus.on(KeyBoardEventName.ChANGEKEYBOARDTEXT, handleChangeKeyBoardText);
 
 		return () => {
-			bus.off(KeyBoardEventName.ChangeKeyBoardText, handleChangeKeyBoardText);
+			bus.off(KeyBoardEventName.ChANGEKEYBOARDTEXT, handleChangeKeyBoardText);
 		};
 	}, []);
 
@@ -42,7 +43,7 @@ const CanvasTool = () => {
 				</Tooltip>
 				<Select
 					ref={selectRef}
-					disabled={disableScale}
+					disabled={lockScale}
 					value={`${(scale * 100).toFixed(0)}%`}
 					style={{ width: "110px" }}
 					onChange={(value) => {
@@ -61,8 +62,8 @@ const CanvasTool = () => {
 						{ value: "auto", label: "自适应" }
 					]}
 				/>
-				<Tooltip title={disableScale ? "解锁当前比例" : "锁定当前比例"}>
-					{disableScale ? (
+				<Tooltip title={lockScale ? "解锁当前比例" : "锁定当前比例"}>
+					{lockScale ? (
 						<LockOutlined
 							style={{ fontSize: "18px", color: "#1677FF" }}
 							className="cursor-pointer"
@@ -77,7 +78,7 @@ const CanvasTool = () => {
 					)}
 				</Tooltip>
 				<Slider
-					disabled={disableScale}
+					disabled={lockScale}
 					value={scale * 100}
 					min={0}
 					max={200}
