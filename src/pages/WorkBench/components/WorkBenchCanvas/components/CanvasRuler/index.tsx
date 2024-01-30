@@ -194,7 +194,7 @@ const CanvasRuler = (props: CanvasRulerProps) => {
 							style={{ width: `${canvasWidth * 2}px`, height: `${canvasHeight * 2}px` }}
 						>
 							<div
-								className="absolute top-[50%] left-[50%] ml-[-380px] transform -translate-y-[50%] bg-[#232324] rounded-xl"
+								className="absolute top-[50%] left-[50%] ml-[-380px] transform -translate-y-[50%] bg-[#232324] rounded-xl  overflow-hidden"
 								ref={canvasDomRef}
 								onMouseDown={handleDragCanvas}
 							>

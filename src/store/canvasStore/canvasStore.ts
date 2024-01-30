@@ -21,6 +21,9 @@ interface ICanvasGlobalAction {
 
 interface ICanvasConfigAction {
 	setCanvasSize: (width: number, height: number) => void;
+	setCanvasBackground: (color: string) => void;
+	setCanvasBackgroundImage: (url: string) => void;
+	setCanvasPreviewType: (type: PreviewScaleEnum) => void;
 }
 
 const useCanvasStore = create<ICanvasState & ICanvasGlobalAction & ICanvasConfigAction>((set) => ({
@@ -58,6 +61,15 @@ const useCanvasStore = create<ICanvasState & ICanvasGlobalAction & ICanvasConfig
 	},
 	setCanvasSize: (width, height) => {
 		set(({ canvasConfig }) => ({ canvasConfig: { ...canvasConfig, canvasWidth: width, canvasHeight: height } }));
+	},
+	setCanvasBackground: (color) => {
+		set(({ canvasConfig }) => ({ canvasConfig: { ...canvasConfig, canvasBackground: color } }));
+	},
+	setCanvasBackgroundImage: (url) => {
+		set(({ canvasConfig }) => ({ canvasConfig: { ...canvasConfig, canvasBackgroundImage: url } }));
+	},
+	setCanvasPreviewType: (type) => {
+		set(({ canvasConfig }) => ({ canvasConfig: { ...canvasConfig, canvasPreviewType: type } }));
 	},
 	autoLayoutCanvas: () => {
 		set((state) => {

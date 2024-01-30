@@ -16,26 +16,8 @@ import { PreviewScaleEnum } from "@/types/LayoutTypes";
 import ThemeColor from "./components/ThemeColor";
 import JIcon from "@/components/JIcon";
 import useCanvasStore from "@/store/canvasStore/canvasStore";
-
-const props: UploadProps = {
-	name: "file",
-	multiple: false,
-	action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
-	onChange(info) {
-		const { status } = info.file;
-		if (status !== "uploading") {
-			console.log(info.file, info.fileList);
-		}
-		if (status === "done") {
-			message.success(`${info.file.name} file uploaded successfully.`);
-		} else if (status === "error") {
-			message.error(`${info.file.name} file upload failed.`);
-		}
-	},
-	onDrop(e) {
-		console.log("Dropped files", e.dataTransfer.files);
-	}
-};
+import { FileTypeEnum } from "@/types/FileTypes";
+import { fileToUrl } from "@/utils/utils";
 
 const previewTypeList = [
 	{
@@ -65,12 +47,41 @@ const previewTypeList = [
 ];
 
 const PageConfiguration = () => {
-	const handleRadioChange = () => {};
+	const { canvasConfig, setCanvasSize, setCanvasBackground, setCanvasBackgroundImage, setCanvasPreviewType } =
+		useCanvasStore();
+	const { canvasWidth, canvasHeight, canvasBackground, canvasBackgroundImage } = canvasConfig;
 
-	const { canvasConfig, setCanvasSize } = useCanvasStore();
-	const { canvasWidth, canvasHeight } = canvasConfig;
+	const [messageApi, contextHolder] = message.useMessage();
+
+	const uploadProps: UploadProps = {
+		showUploadList: false,
+		customRequest(options) {
+			const { file } = options;
+			const url = fileToUrl(file as File);
+			setCanvasBackgroundImage(url);
+		},
+		onDrop(e) {
+			const url = fileToUrl(e.dataTransfer.files[0] as File);
+			setCanvasBackgroundImage(url);
+		},
+		beforeUpload(file) {
+			const type = file.type;
+			const size = file.size;
+			if (size > 1024 * 1024 * 3) {
+				messageApi.warning(`图片超出 3M 限制，请重新上传`);
+				return false;
+			}
+			if (type !== FileTypeEnum.PNG && type !== FileTypeEnum.JPEG && type !== FileTypeEnum.GIF) {
+				messageApi.warning("文件格式不符合，请重新上传!");
+				return false;
+			}
+			return true;
+		}
+	};
+
 	return (
 		<div className="w-full">
+			{contextHolder}
 			<Form>
 				<div className="flex items-center gap-4">
 					<Form.Item label="宽度" className="flex-1">
@@ -96,23 +107,48 @@ const PageConfiguration = () => {
 						/>
 					</Form.Item>
 				</div>
-				<Upload.Dragger {...props}>
-					<div className="w-full h-full flex flex-col items-center justify-center">
-						<img src={UploadImage} className="w-[60%] h-[50%]" />
-						<div className="mt-2">背景图需小于 3M, 格式为 png/jpg 的文件</div>
-					</div>
+				<Upload.Dragger {...uploadProps}>
+					{canvasBackgroundImage ? (
+						<img className="w-full h-full" src={canvasBackgroundImage}></img>
+					) : (
+						<div className="w-full h-full flex flex-col items-center justify-center">
+							<img src={UploadImage} className="w-[60%] h-[50%]" />
+							<div className="mt-2">背景图需小于 3M, 格式为 png/jpg 的文件</div>
+						</div>
+					)}
 				</Upload.Dragger>
 				<Form.Item label="背景颜色" className="mt-6">
-					<ColorPicker showText format="rgb" className="w-full" />
+					<ColorPicker
+						showText
+						format="rgb"
+						className="w-full"
+						value={canvasBackground || "rgba(0, 0, 0, 1)"}
+						onChange={(color) => {
+							setCanvasBackground(color.toRgbString());
+						}}
+					/>
 				</Form.Item>
 				<Form.Item label="背景控制">
 					<div className="w-full flex gap-3">
-						<Button className="flex-1">清除背景</Button>
-						<Button className="flex-1">清除颜色</Button>
+						<Button
+							className="flex-1"
+							disabled={!canvasBackgroundImage}
+							onClick={() => setCanvasBackgroundImage("")}
+						>
+							清除背景
+						</Button>
+						<Button className="flex-1" disabled={!canvasBackground} onClick={() => setCanvasBackground("")}>
+							清除颜色
+						</Button>
 					</div>
 				</Form.Item>
 				<Form.Item label="适配方式">
-					<Radio.Group onChange={handleRadioChange} defaultValue={PreviewScaleEnum.FIT}>
+					<Radio.Group
+						onChange={(e) => {
+							setCanvasPreviewType(e.target.value);
+						}}
+						defaultValue={PreviewScaleEnum.FIT}
+					>
 						{previewTypeList.map((i) => (
 							<Tooltip title={i.desc} key={i.key}>
 								<Radio.Button value={i.key}>
