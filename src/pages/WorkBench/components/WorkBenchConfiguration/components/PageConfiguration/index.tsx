@@ -18,6 +18,7 @@ import JIcon from "@/components/JIcon";
 import useCanvasStore from "@/store/canvasStore/canvasStore";
 import { FileTypeEnum } from "@/types/FileTypes";
 import { fileToUrl } from "@/utils/utils";
+import { CanvasConfigTypeEnum } from "@/store/canvasStore/types";
 
 const previewTypeList = [
 	{
@@ -47,8 +48,7 @@ const previewTypeList = [
 ];
 
 const PageConfiguration = () => {
-	const { canvasConfig, setCanvasSize, setCanvasBackground, setCanvasBackgroundImage, setCanvasPreviewType } =
-		useCanvasStore();
+	const { canvasConfig, setCanvasConfig } = useCanvasStore();
 	const { canvasWidth, canvasHeight, canvasBackground, canvasBackgroundImage } = canvasConfig;
 
 	const [messageApi, contextHolder] = message.useMessage();
@@ -58,11 +58,11 @@ const PageConfiguration = () => {
 		customRequest(options) {
 			const { file } = options;
 			const url = fileToUrl(file as File);
-			setCanvasBackgroundImage(url);
+			setCanvasConfig(CanvasConfigTypeEnum.CANVAS_BACKGROUND_IMAGE, url);
 		},
 		onDrop(e) {
 			const url = fileToUrl(e.dataTransfer.files[0] as File);
-			setCanvasBackgroundImage(url);
+			setCanvasConfig(CanvasConfigTypeEnum.CANVAS_BACKGROUND_IMAGE, url);
 		},
 		beforeUpload(file) {
 			const type = file.type;
@@ -91,7 +91,7 @@ const PageConfiguration = () => {
 							max={10000}
 							defaultValue={canvasWidth}
 							onChange={(width) => {
-								width !== null && setCanvasSize(width, canvasHeight);
+								width !== null && setCanvasConfig(CanvasConfigTypeEnum.CANVAS_WIDTH, width);
 							}}
 						/>
 					</Form.Item>
@@ -102,7 +102,7 @@ const PageConfiguration = () => {
 							max={10000}
 							defaultValue={canvasHeight}
 							onChange={(height) => {
-								height !== null && setCanvasSize(canvasWidth, height);
+								height !== null && setCanvasConfig(CanvasConfigTypeEnum.CANVAS_HEIGHT, height);
 							}}
 						/>
 					</Form.Item>
@@ -124,7 +124,7 @@ const PageConfiguration = () => {
 						className="w-full"
 						value={canvasBackground || "rgba(0, 0, 0, 1)"}
 						onChange={(color) => {
-							setCanvasBackground(color.toRgbString());
+							setCanvasConfig(CanvasConfigTypeEnum.CANVAS_BACKGROUND, color.toRgbString());
 						}}
 					/>
 				</Form.Item>
@@ -133,11 +133,15 @@ const PageConfiguration = () => {
 						<Button
 							className="flex-1"
 							disabled={!canvasBackgroundImage}
-							onClick={() => setCanvasBackgroundImage("")}
+							onClick={() => setCanvasConfig(CanvasConfigTypeEnum.CANVAS_BACKGROUND_IMAGE, "")}
 						>
 							清除背景
 						</Button>
-						<Button className="flex-1" disabled={!canvasBackground} onClick={() => setCanvasBackground("")}>
+						<Button
+							className="flex-1"
+							disabled={!canvasBackground}
+							onClick={() => setCanvasConfig(CanvasConfigTypeEnum.CANVAS_BACKGROUND, "")}
+						>
 							清除颜色
 						</Button>
 					</div>
@@ -145,7 +149,7 @@ const PageConfiguration = () => {
 				<Form.Item label="适配方式">
 					<Radio.Group
 						onChange={(e) => {
-							setCanvasPreviewType(e.target.value);
+							setCanvasConfig(CanvasConfigTypeEnum.CANVAS_PREVIEW_TYPE, e.target.value);
 						}}
 						defaultValue={PreviewScaleEnum.FIT}
 					>

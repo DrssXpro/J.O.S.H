@@ -4,9 +4,10 @@ import { QuestionCircleOutlined, CodeOutlined, UnlockOutlined, LockOutlined } fr
 import { Button, Popover, Select, Slider, Tooltip } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { KeyBoardEventName, CanvasLayoutEventName } from "@/types/EventTypes";
+import { CanvasGlobalTypeEnum } from "@/store/canvasStore/types";
 
 const CanvasTool = () => {
-	const { canvasGlobal, setScale, setScaleDisabled } = useCanvasStore();
+	const { canvasGlobal, setCanvasGlobal } = useCanvasStore();
 	const { scale, lockScale } = canvasGlobal;
 	const [keyBoardText, setKeyBoardText] = useState("");
 	const selectRef = useRef<any>(null);
@@ -50,7 +51,7 @@ const CanvasTool = () => {
 						if (value === "auto") {
 							bus.emit(CanvasLayoutEventName.AUTOLAYOUTCANVAS);
 						} else {
-							setScale(parseInt(value) / 100);
+							setCanvasGlobal(CanvasGlobalTypeEnum.SCALE, parseInt(value) / 100);
 						}
 						selectRef.current.blur();
 					}}
@@ -67,13 +68,13 @@ const CanvasTool = () => {
 						<LockOutlined
 							style={{ fontSize: "18px", color: "#1677FF" }}
 							className="cursor-pointer"
-							onClick={() => setScaleDisabled(false)}
+							onClick={() => setCanvasGlobal(CanvasGlobalTypeEnum.LOCK_SCALE, false)}
 						/>
 					) : (
 						<UnlockOutlined
 							style={{ fontSize: "18px", color: "#aaa" }}
 							className="cursor-pointer"
-							onClick={() => setScaleDisabled(true)}
+							onClick={() => setCanvasGlobal(CanvasGlobalTypeEnum.LOCK_SCALE, true)}
 						/>
 					)}
 				</Tooltip>
@@ -83,7 +84,7 @@ const CanvasTool = () => {
 					min={0}
 					max={200}
 					step={5}
-					onChange={(value) => setScale(value / 100)}
+					onChange={(value) => setCanvasGlobal(CanvasGlobalTypeEnum.SCALE, value / 100)}
 					tooltip={{ formatter: (value) => `${value}%` }}
 					className="w-25"
 				/>

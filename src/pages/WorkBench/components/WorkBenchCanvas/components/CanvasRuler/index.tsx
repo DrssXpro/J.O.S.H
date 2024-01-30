@@ -4,6 +4,7 @@ import useCanvasStore from "@/store/canvasStore/canvasStore";
 import { listen } from "@/utils/domUtils";
 import { bus } from "@/utils";
 import { KeyBoardEventName, CanvasLayoutEventName } from "@/types/EventTypes";
+import { CanvasGlobalTypeEnum } from "@/store/canvasStore/types";
 
 interface CanvasRulerProps {
 	children: JSX.Element;
@@ -15,8 +16,7 @@ const disabledValue = { value: false };
 const CanvasRuler = (props: CanvasRulerProps) => {
 	const { children } = props;
 
-	const { canvasConfig, canvasGlobal, addScale, subScale, setCanvasDOM, setcanvasContainerDOM, autoLayoutCanvas } =
-		useCanvasStore();
+	const { canvasConfig, canvasGlobal, addScale, subScale, setCanvasGlobal, autoLayoutCanvas } = useCanvasStore();
 	const { canvasWidth, canvasHeight } = canvasConfig;
 	const { scale, lockScale } = canvasGlobal;
 
@@ -35,8 +35,8 @@ const CanvasRuler = (props: CanvasRulerProps) => {
 
 	useEffect(() => {
 		setRulerPos();
-		setCanvasDOM(canvasDomRef.current!);
-		setcanvasContainerDOM(containerDomRef.current!);
+		setCanvasGlobal(CanvasGlobalTypeEnum.CANVAS_DOM, canvasDomRef.current!);
+		setCanvasGlobal(CanvasGlobalTypeEnum.CANVAS_CONTAINER_DOM, containerDomRef.current!);
 		autoLayoutCanvas();
 		const listenResize = listen(window, "resize", handlePageResize);
 		const listenWheel = listen(containerDomRef.current!, "wheel", handleWheel, { passive: false });

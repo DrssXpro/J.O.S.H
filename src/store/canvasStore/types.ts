@@ -1,7 +1,7 @@
 import { PreviewScaleEnum } from "@/types/LayoutTypes";
 
 // 画布区域
-export enum CanvasTypeEnum {
+export enum CanvasGlobalTypeEnum {
 	// 画布 DOM
 	CANVAS_DOM = "canvasDOM",
 	// 画布 Container DOM
@@ -29,10 +29,10 @@ export enum CanvasConfigTypeEnum {
 }
 
 export interface ICanvasGlobal {
-	[CanvasTypeEnum.CANVAS_DOM]: HTMLDivElement | null;
-	[CanvasTypeEnum.CANVAS_CONTAINER_DOM]: HTMLDivElement | null;
-	[CanvasTypeEnum.SCALE]: number;
-	[CanvasTypeEnum.LOCK_SCALE]: boolean;
+	[CanvasGlobalTypeEnum.CANVAS_DOM]: HTMLDivElement | null;
+	[CanvasGlobalTypeEnum.CANVAS_CONTAINER_DOM]: HTMLDivElement | null;
+	[CanvasGlobalTypeEnum.SCALE]: number;
+	[CanvasGlobalTypeEnum.LOCK_SCALE]: boolean;
 }
 
 export interface ICanvasConfig {

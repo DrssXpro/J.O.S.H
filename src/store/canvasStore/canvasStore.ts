@@ -1,7 +1,7 @@
-import { CanvasLayoutEventName } from "@/types/EventTypes";
 import { bus } from "@/utils";
 import { create } from "zustand";
 import { ICanvasConfig, ICanvasGlobal } from "./types";
+import { CanvasLayoutEventName } from "@/types/EventTypes";
 import { PreviewScaleEnum } from "@/types/LayoutTypes";
 
 interface ICanvasState {
@@ -10,20 +10,14 @@ interface ICanvasState {
 }
 
 interface ICanvasGlobalAction {
-	setCanvasDOM: (dom: HTMLDivElement) => void;
-	setcanvasContainerDOM: (dom: HTMLDivElement) => void;
-	setScale: (scale: number) => void;
 	addScale: (value: number) => void;
 	subScale: (value: number) => void;
-	setScaleDisabled: (lockScale: boolean) => void;
+	setCanvasGlobal: <K extends keyof ICanvasGlobal, V extends ICanvasGlobal[K]>(key: K, value: V) => void;
 	autoLayoutCanvas: () => void;
 }
 
 interface ICanvasConfigAction {
-	setCanvasSize: (width: number, height: number) => void;
-	setCanvasBackground: (color: string) => void;
-	setCanvasBackgroundImage: (url: string) => void;
-	setCanvasPreviewType: (type: PreviewScaleEnum) => void;
+	setCanvasConfig: <K extends keyof ICanvasConfig, V extends ICanvasConfig[K]>(key: K, value: V) => void;
 }
 
 const useCanvasStore = create<ICanvasState & ICanvasGlobalAction & ICanvasConfigAction>((set) => ({
@@ -41,35 +35,17 @@ const useCanvasStore = create<ICanvasState & ICanvasGlobalAction & ICanvasConfig
 		canvasBackgroundImage: "",
 		canvasPreviewType: PreviewScaleEnum.FIT
 	},
-	setCanvasDOM: (dom) => {
-		set(({ canvasGlobal }) => ({ canvasGlobal: { ...canvasGlobal, canvasDOM: dom } }));
-	},
-	setcanvasContainerDOM: (dom) => {
-		set(({ canvasGlobal }) => ({ canvasGlobal: { ...canvasGlobal, canvasContainerDOM: dom } }));
-	},
-	setScale: (scale) => {
-		set(({ canvasGlobal }) => ({ canvasGlobal: { ...canvasGlobal, scale } }));
-	},
 	addScale: (value) => {
 		set(({ canvasGlobal }) => ({ canvasGlobal: { ...canvasGlobal, scale: canvasGlobal.scale + value } }));
 	},
 	subScale: (value) => {
 		set(({ canvasGlobal }) => ({ canvasGlobal: { ...canvasGlobal, scale: canvasGlobal.scale - value } }));
 	},
-	setScaleDisabled: (lockScale) => {
-		set(({ canvasGlobal }) => ({ canvasGlobal: { ...canvasGlobal, lockScale } }));
+	setCanvasGlobal: (key, value) => {
+		set(({ canvasGlobal }) => ({ canvasGlobal: { ...canvasGlobal, [key]: value } }));
 	},
-	setCanvasSize: (width, height) => {
-		set(({ canvasConfig }) => ({ canvasConfig: { ...canvasConfig, canvasWidth: width, canvasHeight: height } }));
-	},
-	setCanvasBackground: (color) => {
-		set(({ canvasConfig }) => ({ canvasConfig: { ...canvasConfig, canvasBackground: color } }));
-	},
-	setCanvasBackgroundImage: (url) => {
-		set(({ canvasConfig }) => ({ canvasConfig: { ...canvasConfig, canvasBackgroundImage: url } }));
-	},
-	setCanvasPreviewType: (type) => {
-		set(({ canvasConfig }) => ({ canvasConfig: { ...canvasConfig, canvasPreviewType: type } }));
+	setCanvasConfig: (key, value) => {
+		set(({ canvasConfig }) => ({ canvasConfig: { ...canvasConfig, [key]: value } }));
 	},
 	autoLayoutCanvas: () => {
 		set((state) => {
