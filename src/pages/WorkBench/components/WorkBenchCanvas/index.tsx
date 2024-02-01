@@ -50,7 +50,9 @@ const WorkBenchCanvas = () => {
 					}}
 				>
 					{componentList.map((i, index) => (
-						<div key={index}>{i.component()}</div>
+						<div key={index} style={{ width: "400px", height: "300px" }}>
+							{i.component()}
+						</div>
 					))}
 				</div>
 			</CanvasRuler>
