@@ -5,7 +5,7 @@ import JIcon from "@/components/JIcon";
 import { Albums, Grid } from "@ricons/ionicons5";
 import { BarChartOutlined } from "@ant-design/icons";
 import MaterialCard from "./components/MaterialCard";
-import useLayoutStore from "@/store/layoutStore";
+import useLayoutStore from "@/store/layoutStore/layoutStore";
 import { MaterialsModeEnum } from "@/types/LayoutTypes";
 import { useMaterials } from "./hooks/useMaterials";
 import "./menuItem.css";

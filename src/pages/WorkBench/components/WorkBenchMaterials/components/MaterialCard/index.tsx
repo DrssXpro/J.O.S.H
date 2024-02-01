@@ -1,8 +1,10 @@
+import { DragEvent } from "react";
 import { Card, Typography } from "antd";
 import { cardColorMap } from "@/config/color";
 import { MaterialsModeEnum } from "@/types/LayoutTypes";
 import { IMaterialConfigType } from "@/materials/types";
 import ChartGlobImage from "../ChartGlobImage";
+import { DragKeyEnum } from "@/types/EditCanvasTypes";
 
 interface IMaterialCardProps {
 	mode: MaterialsModeEnum;
@@ -11,6 +13,11 @@ interface IMaterialCardProps {
 
 const MaterialCard = (props: IMaterialCardProps) => {
 	const { mode, detail } = props;
+
+	const handleDragStart = (e: DragEvent<HTMLDivElement>) => {
+		e.dataTransfer.setData(DragKeyEnum.DRAG_KEY, JSON.stringify(detail));
+	};
+
 	return (
 		<Card
 			bodyStyle={{ padding: 0, backgroundColor: "#232324", overflow: "hidden", borderRadius: "8px" }}
@@ -44,6 +51,8 @@ const MaterialCard = (props: IMaterialCardProps) => {
 				className={`w-full ${
 					mode === MaterialsModeEnum.SINGLE ? "h-24 py-2 px-4" : "h-12 p-2"
 				}  transition-all`}
+				draggable
+				onDragStart={handleDragStart}
 			>
 				<ChartGlobImage detail={detail} />
 			</div>

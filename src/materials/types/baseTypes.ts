@@ -18,4 +18,8 @@ export interface IMaterialConfigType {
 	image: string;
 	// 配置事件
 	configEvents?: Record<string, (...args: any[]) => any>;
+	// component
+	component?: JSX.Element;
+	// configElement
+	componentConfig?: JSX.Element;
 }

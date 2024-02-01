@@ -43,3 +43,19 @@ export interface ICanvasConfig {
 	[CanvasConfigTypeEnum.CANVAS_BACKGROUND_IMAGE]: string;
 	[CanvasConfigTypeEnum.CANVAS_PREVIEW_TYPE]: PreviewScaleEnum;
 }
+
+export interface ICanvasState {
+	canvasGlobal: ICanvasGlobal;
+	canvasConfig: ICanvasConfig;
+}
+
+export interface ICanvasGlobalAction {
+	addScale: (value: number) => void;
+	subScale: (value: number) => void;
+	setCanvasGlobal: <K extends keyof ICanvasGlobal, V extends ICanvasGlobal[K]>(key: K, value: V) => void;
+	autoLayoutCanvas: () => void;
+}
+
+export interface ICanvasConfigAction {
+	setCanvasConfig: <K extends keyof ICanvasConfig, V extends ICanvasConfig[K]>(key: K, value: V) => void;
+}

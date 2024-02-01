@@ -1,7 +1,7 @@
 import { Tabs } from "antd";
 import WorkBenchBox from "../WorkBenchBox";
 import { PageTabList } from "./components/config";
-import useLayoutStore from "@/store/layoutStore";
+import useLayoutStore from "@/store/layoutStore/layoutStore";
 
 const WorkBenchConfiguration = () => {
 	const { showConfiguration } = useLayoutStore();

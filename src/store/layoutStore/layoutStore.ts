@@ -1,22 +1,7 @@
 import { LayerModeEnum, MaterialsModeEnum } from "@/types/LayoutTypes";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-
-interface ILayoutState {
-	showMaterials: boolean;
-	showLayer: boolean;
-	showConfiguration: boolean;
-	layerMode: LayerModeEnum;
-	materialsMode: MaterialsModeEnum;
-}
-
-interface ILayoutAction {
-	controllMaterials: (flag: boolean) => void;
-	controllLayer: (flag: boolean) => void;
-	controllConfiguration: (flag: boolean) => void;
-	controllMaterialsMode: (flag: MaterialsModeEnum) => void;
-	controllLayerMode: (flag: LayerModeEnum) => void;
-}
+import { ILayoutAction, ILayoutState } from "./types";
 
 const useLayoutStore = create(
 	persist<ILayoutState & ILayoutAction>(

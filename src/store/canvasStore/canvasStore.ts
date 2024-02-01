@@ -1,24 +1,8 @@
 import { bus } from "@/utils";
 import { create } from "zustand";
-import { ICanvasConfig, ICanvasGlobal } from "./types";
+import { ICanvasConfigAction, ICanvasGlobalAction, ICanvasState } from "./types";
 import { CanvasLayoutEventName } from "@/types/EventTypes";
 import { PreviewScaleEnum } from "@/types/LayoutTypes";
-
-interface ICanvasState {
-	canvasGlobal: ICanvasGlobal;
-	canvasConfig: ICanvasConfig;
-}
-
-interface ICanvasGlobalAction {
-	addScale: (value: number) => void;
-	subScale: (value: number) => void;
-	setCanvasGlobal: <K extends keyof ICanvasGlobal, V extends ICanvasGlobal[K]>(key: K, value: V) => void;
-	autoLayoutCanvas: () => void;
-}
-
-interface ICanvasConfigAction {
-	setCanvasConfig: <K extends keyof ICanvasConfig, V extends ICanvasConfig[K]>(key: K, value: V) => void;
-}
 
 const useCanvasStore = create<ICanvasState & ICanvasGlobalAction & ICanvasConfigAction>((set) => ({
 	canvasGlobal: {

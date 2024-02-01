@@ -40,6 +40,7 @@ const ChartGlobImage = (props: IChartGlobImageProps) => {
 				<img
 					src={imageUrl}
 					alt="图标图片"
+					draggable={false}
 					onLoad={() => {
 						setShow(true);
 					}}

@@ -15,7 +15,7 @@ import {
 import { Button, Input, Tooltip, type InputRef } from "antd";
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import useLayoutStore from "@/store/layoutStore";
+import useLayoutStore from "@/store/layoutStore/layoutStore";
 import useCanvasStore from "@/store/canvasStore/canvasStore";
 
 const LeftOperator = () => {

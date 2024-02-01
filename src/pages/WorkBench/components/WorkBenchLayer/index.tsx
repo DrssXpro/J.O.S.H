@@ -3,7 +3,7 @@ import { PartitionOutlined, LaptopOutlined, UnorderedListOutlined } from "@ant-d
 import WorkBenchBox from "../WorkBenchBox";
 import LayerCard from "./components/LayerCard";
 import { LayerModeEnum } from "@/types/LayoutTypes";
-import useLayoutStore from "@/store/layoutStore";
+import useLayoutStore from "@/store/layoutStore/layoutStore";
 import useCanvasStore from "@/store/canvasStore/canvasStore";
 
 const WorkBenchLayer = () => {

@@ -6,9 +6,22 @@ import { PhotosConfig } from "./photos";
 import { TableListConfig } from "./tables";
 import { IMaterialConfigType } from "../types";
 
+const componentModules: Record<string, { default: string }> = import.meta.glob("./**/component.tsx", {
+	eager: true
+});
+
 const imagesModules: Record<string, { default: string }> = import.meta.glob("../../assets/chart/**", {
 	eager: true
 });
+
+export const fetchComponent = (chartName: string) => {
+	const module = componentModules;
+	for (const key in module) {
+		if (key.includes(chartName)) {
+			return module[key].default;
+		}
+	}
+};
 
 export const materialsList: Record<MaterialCategoryEnum, IMaterialConfigType[]> = {
 	[MaterialCategoryEnum.CHARTS]: ChartListConfig,
