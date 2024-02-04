@@ -4,8 +4,9 @@ import CanvasTool from "./components/CanvasTool";
 import { initKeyBoardEvent, removeKeyBoardEventListener } from "./utils/handleKeyBoardEvent";
 import useCanvasStore from "@/store/canvasStore/canvasStore";
 import { DragKeyEnum } from "@/types/EditCanvasTypes";
-import { fetchComponent } from "@/materials/components";
+import { createComponentConfig, fetchComponent } from "@/materials/components";
 import useChartStore from "@/store/chartStore/charStore";
+import { ComponentType, FetchComFlagType } from "@/materials/types";
 
 const WorkBenchCanvas = () => {
 	const { canvasConfig } = useCanvasStore();
@@ -39,11 +40,16 @@ const WorkBenchCanvas = () => {
 				<div
 					className="text-light-50"
 					style={computedCanvasStyle}
-					onDrop={(e) => {
+					onDrop={async (e) => {
 						const dropString = e.dataTransfer.getData(DragKeyEnum.DRAG_KEY);
 						const dropData = JSON.parse(dropString);
-						dropData.component = fetchComponent(dropData.key);
-						addComponentList(dropData);
+						// 创建图表组件所有配置对象
+						const componentConifg: ComponentType = await createComponentConfig(dropData);
+						// 获取图表组件
+						const ChartComponent: any = fetchComponent(dropData.key, FetchComFlagType.VIEW);
+						// 获取图表配置组件
+						const ChartConfigComponent: any = fetchComponent(dropData.key, FetchComFlagType.CONFIG);
+						addComponentList({ ...componentConifg, ChartComponent, ChartConfigComponent });
 					}}
 					onDragOver={(e) => {
 						e.preventDefault();
@@ -51,7 +57,7 @@ const WorkBenchCanvas = () => {
 				>
 					{componentList.map((i, index) => (
 						<div key={index} style={{ width: "400px", height: "300px" }}>
-							{i.component()}
+							{i.ChartComponent({ chartConfig: i })}
 						</div>
 					))}
 				</div>

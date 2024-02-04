@@ -1,10 +1,10 @@
 export enum ChartCategoryEnum {
-	BAR = "bars",
-	PIE = "pies",
-	LINE = "lines",
-	SCATTER = "scatters",
-	MAP = "maps",
-	MORE = "mores"
+	BAR = "Bars",
+	PIE = "Pies",
+	LINE = "Lines",
+	SCATTER = "Scatters",
+	MAP = "Maps",
+	MORE = "Mores"
 }
 
 export enum ChartNameEnum {
