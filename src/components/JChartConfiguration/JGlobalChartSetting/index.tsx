@@ -1,7 +1,7 @@
 import { ColorPicker, Input, InputNumber, Select, Switch } from "antd";
-import JCollapseBox from "../JCollapseBox";
-import JSettingBox from "../JSettingBox";
-import JSettingItem from "../JSettingItem";
+import JCollapseBox from "../public/JCollapseBox";
+import JSettingBox from "../public/JSettingBox";
+import JSettingItem from "../public/JSettingItem";
 import { axisConfig, legendConfig } from "@/materials/echartsConfig";
 
 const JGlobalChartSetting = () => {

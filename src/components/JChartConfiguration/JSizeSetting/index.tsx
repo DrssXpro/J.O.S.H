@@ -1,5 +1,5 @@
 import { InputNumber, Typography } from "antd";
-import JSettingBox from "../JSettingBox";
+import JSettingBox from "../public/JSettingBox";
 
 const JSizeSetting = () => {
 	return (

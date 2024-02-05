@@ -1,5 +1,5 @@
 import { Input } from "antd";
-import JSettingBox from "../JSettingBox";
+import JSettingBox from "../public/JSettingBox";
 
 const JNameSetting = () => {
 	return (

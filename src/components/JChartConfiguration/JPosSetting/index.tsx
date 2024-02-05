@@ -1,5 +1,5 @@
 import { Button, Divider, InputNumber, Tooltip, Typography } from "antd";
-import JSettingBox from "../JSettingBox";
+import JSettingBox from "../public/JSettingBox";
 import JIcon from "@/components/JIcon";
 import {
 	AlignHorizontalCenter,

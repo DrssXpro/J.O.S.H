@@ -1,7 +1,7 @@
 import { InputNumber, Slider, Switch } from "antd";
-import JCollapseBox from "../JCollapseBox";
-import JSettingBox from "../JSettingBox";
-import JSettingItem from "../JSettingItem";
+import JCollapseBox from "../public/JCollapseBox";
+import JSettingBox from "../public/JSettingBox";
+import JSettingItem from "../public/JSettingItem";
 
 const JStylesSetting = () => {
 	return (
