@@ -28,7 +28,7 @@ const JCollapseBox = (props: IJCollapseBoxProps) => {
 	];
 	return (
 		<>
-			<Divider style={{ margin: "0", marginTop: "20px" }} />
+			<Divider style={{ margin: 0 }} />
 			<Collapse ghost items={items} />
 		</>
 	);

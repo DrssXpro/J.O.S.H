@@ -46,8 +46,8 @@ const positionList = [
 const JPosSetting = () => {
 	return (
 		<>
-			<Divider style={{ margin: "20px 0" }} />
-			<div className="flex items-center gap-2 mb-6">
+			<Divider className="my-4" />
+			<div className="flex items-center gap-2 mb-4">
 				{positionList.map((item) => (
 					<Tooltip title={item.label}>
 						<Button key={item.key} icon={item.icon} size="large" className="flex-1" />
