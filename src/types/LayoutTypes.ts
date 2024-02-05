@@ -19,7 +19,6 @@ export const enum TabsEnum {
 export interface TabConfig {
 	key: TabsEnum;
 	label: JSX.Element | string;
-	icon: JSX.Element;
 	configRender: JSX.Element;
 }
 
