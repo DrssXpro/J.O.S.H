@@ -1,11 +1,14 @@
-import { InputNumber, Slider } from "antd";
+import { InputNumber, Slider, Switch } from "antd";
 import JCollapseBox from "../JCollapseBox";
 import JSettingBox from "../JSettingBox";
 import JSettingItem from "../JSettingItem";
 
 const JStylesSetting = () => {
 	return (
-		<JCollapseBox name="滤镜 / 变换">
+		<JCollapseBox
+			name="滤镜 / 变换"
+			operator={<Switch defaultChecked checkedChildren="启用" unCheckedChildren="关闭" />}
+		>
 			<div>
 				<JSettingBox name="亮度">
 					<JSettingItem text="值: 100 deg">

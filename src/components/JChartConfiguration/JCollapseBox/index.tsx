@@ -1,26 +1,29 @@
-import { Collapse, CollapseProps, Divider, Switch, Typography } from "antd";
+import { Collapse, CollapseProps, Divider, Typography } from "antd";
 
 interface IJCollapseBoxProps {
 	name: string;
+	operator?: JSX.Element;
 	children: JSX.Element;
 }
 
 const JCollapseBox = (props: IJCollapseBoxProps) => {
-	const { name, children } = props;
+	const { name, children, operator } = props;
 	const items: CollapseProps["items"] = [
 		{
 			key: "1",
 			label: (
 				<div className="w-full flex items-center justify-between">
 					<Typography.Text>{name}</Typography.Text>
-					<div
-						onClick={(e) => {
-							// Collapse 与 Switch 冲突问题
-							e.stopPropagation();
-						}}
-					>
-						<Switch defaultChecked checkedChildren="开启" unCheckedChildren="关闭" />
-					</div>
+					{operator && (
+						<div
+							onClick={(e) => {
+								// Collapse 与 Switch 冲突问题
+								e.stopPropagation();
+							}}
+						>
+							{operator}
+						</div>
+					)}
 				</div>
 			),
 			children
