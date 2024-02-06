@@ -207,7 +207,10 @@ const JGlobalChartSetting = () => {
 					</JSettingBox>
 				</>
 			</JCollapseBox>
-			<JCollapseBox name="图例">
+			<JCollapseBox
+				name="图例"
+				operator={<Switch defaultChecked checkedChildren="启用" unCheckedChildren="关闭" />}
+			>
 				<>
 					<JSettingBox name="图例文字">
 						<div className="grid grid-cols-2 gap-2">
