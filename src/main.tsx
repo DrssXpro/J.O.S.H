@@ -2,6 +2,9 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App.tsx";
 import "./styles/reset.css";
+// 引入动画
+import "animate.css/animate.min.css";
+// 引入 windicss
 import "virtual:windi.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

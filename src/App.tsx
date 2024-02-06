@@ -20,6 +20,10 @@ function App() {
 					Menu: {
 						// menu 侧边 border 设置为 0
 						activeBarBorderWidth: 0
+					},
+					Collapse: {
+						headerPadding: "10px 0",
+						contentPadding: "0"
 					}
 				}
 			}}

@@ -6,6 +6,7 @@ import JIcon from "@/components/JIcon";
 
 const PageConfiguration = lazy(() => import("./PageConfiguration"));
 const ChartConfiguration = lazy(() => import("./ChartConfiguration"));
+const AnimationConfiguration = lazy(() => import("./AnimationConfiguration"));
 
 const PageTabList: TabConfig[] = [
 	{
@@ -39,7 +40,7 @@ const ChartTabList: TabConfig[] = [
 				<JIcon icon={<Leaf />} />
 			</div>
 		),
-		configRender: <ChartConfiguration />
+		configRender: <AnimationConfiguration />
 	},
 	{
 		key: TabsEnum.CHART_DATA,
