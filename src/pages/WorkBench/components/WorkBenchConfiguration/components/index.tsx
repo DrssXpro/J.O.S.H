@@ -7,6 +7,7 @@ import JIcon from "@/components/JIcon";
 const PageConfiguration = lazy(() => import("./PageConfiguration"));
 const ChartConfiguration = lazy(() => import("./ChartConfiguration"));
 const AnimationConfiguration = lazy(() => import("./AnimationConfiguration"));
+const DataConfiguration = lazy(() => import("./DataConfiguration"));
 
 const PageTabList: TabConfig[] = [
 	{
@@ -50,7 +51,7 @@ const ChartTabList: TabConfig[] = [
 				<JIcon icon={<Flash />} />
 			</div>
 		),
-		configRender: <ChartConfiguration />
+		configRender: <DataConfiguration />
 	},
 	{
 		key: TabsEnum.CHART_EVENT,
