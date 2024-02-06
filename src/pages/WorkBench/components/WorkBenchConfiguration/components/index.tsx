@@ -2,10 +2,10 @@ import { lazy } from "react";
 import { type TabConfig, TabsEnum } from "@/types/LayoutTypes";
 import { FundProjectionScreenOutlined } from "@ant-design/icons";
 import { Construct, Leaf, Flash, Rocket } from "@ricons/ionicons5";
-import ChartConfiguration from "../ChartConfiguration";
 import JIcon from "@/components/JIcon";
 
-const PageConfiguration = lazy(() => import("../PageConfiguration"));
+const PageConfiguration = lazy(() => import("./PageConfiguration"));
+const ChartConfiguration = lazy(() => import("./ChartConfiguration"));
 
 const PageTabList: TabConfig[] = [
 	{
