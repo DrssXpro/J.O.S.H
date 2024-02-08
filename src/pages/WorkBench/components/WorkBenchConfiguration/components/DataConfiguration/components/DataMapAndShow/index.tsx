@@ -2,6 +2,7 @@ import { Badge, Button, Steps, Table, TableProps, Tooltip } from "antd";
 import { DocumentAdd, DocumentDownload } from "@ricons/carbon";
 import { HelpCircleOutline } from "@ricons/ionicons5";
 import JIcon from "@/components/JIcon";
+import JCodeMirror from "@/components/JCodeMirror";
 
 interface IDataType {
 	key: string;
@@ -56,6 +57,11 @@ const columns: TableProps<IDataType>["columns"] = [
 ];
 
 const DataShow = () => {
+	const code = `const a = 100; const b = 200;
+function test() {
+	console.log("123")console.log("123")console.log("123")console.log("123")console.log("123")
+}
+						`;
 	return (
 		<>
 			<div className="flex items-center gap-2">
@@ -66,6 +72,9 @@ const DataShow = () => {
 						<JIcon icon={<HelpCircleOutline />} size={22} />
 					</div>
 				</Tooltip>
+			</div>
+			<div className="my-2">
+				<JCodeMirror code={code} lan="javascript" disabled={true} height={400} />
 			</div>
 		</>
 	);
