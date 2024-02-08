@@ -1,11 +1,20 @@
 import { useState } from "react";
-import { Badge, Button, Steps, Table, TableProps, Tooltip, Upload, UploadProps, message } from "antd";
-import { DocumentAdd, DocumentDownload } from "@ricons/carbon";
+import { Badge, Button, Steps, Table, TableProps, Tooltip, Typography, Upload, UploadProps, message } from "antd";
+import { DocumentAdd, Filter, DocumentDownload } from "@ricons/carbon";
 import { HelpCircleOutline } from "@ricons/ionicons5";
 import JIcon from "@/components/JIcon";
 import JCodeMirror from "@/components/JCodeMirror";
 import { FileTypeEnum } from "@/types/FileTypes";
 import { downloadTextFile, readFile } from "@/utils/fileUtils";
+
+const DataFilber = () => {
+	return (
+		<div className="flex flex-col gap-2">
+			<Typography.Text type="secondary">过滤器默认处理接口返回值的「data」字段</Typography.Text>
+			<Button icon={<JIcon icon={<Filter />} size={18} />}>新增过滤器</Button>
+		</div>
+	);
+};
 
 const DataShow = () => {
 	const [messageApi, contextHolder] = message.useMessage();
@@ -130,7 +139,7 @@ const DataMapAndShow = () => {
 		<Steps
 			direction="vertical"
 			progressDot
-			current={1}
+			current={4}
 			items={[
 				{
 					title: "数据映射",
@@ -142,6 +151,10 @@ const DataMapAndShow = () => {
 							rowClassName={(_, i) => (i % 2 !== 1 ? "bg-[#141414]" : "bg-[#1D1D1D]")}
 						/>
 					)
+				},
+				{
+					title: "数据过滤",
+					description: <DataFilber />
 				},
 				{
 					title: "数据内容",

@@ -1,7 +1,10 @@
-import JSettingBox from "@/components/JChartConfiguration/public/JSettingBox";
-import { RequestDataLabelEnum, RequestDataValueEnum } from "@/types/HttpTypes";
+import { useState } from "react";
 import { Select } from "antd";
+import { RequestDataLabelEnum, RequestDataValueEnum } from "@/types/HttpTypes";
+import JSettingBox from "@/components/JChartConfiguration/public/JSettingBox";
 import StaticData from "./components/StaticData";
+import DynamicData from "./components/DynamicData";
+import PublicData from "./components/PublicData";
 
 interface IDataOptions {
 	label: RequestDataLabelEnum;
@@ -15,22 +18,36 @@ const dataOptions: IDataOptions[] = [
 		value: RequestDataValueEnum.STATIC
 	},
 	{
-		label: RequestDataLabelEnum.AJAX,
-		value: RequestDataValueEnum.AJAX
+		label: RequestDataLabelEnum.DYNAMIC,
+		value: RequestDataValueEnum.DYNAMIC
 	},
 	{
-		label: RequestDataLabelEnum.Pond,
-		value: RequestDataValueEnum.Pond
+		label: RequestDataLabelEnum.PUBLIC,
+		value: RequestDataValueEnum.PUBLIC
 	}
 ];
 
+const ConfigurationComponentMap: Record<RequestDataValueEnum, JSX.Element> = {
+	[RequestDataValueEnum.STATIC]: <StaticData />,
+	[RequestDataValueEnum.DYNAMIC]: <DynamicData />,
+	[RequestDataValueEnum.PUBLIC]: <PublicData />
+};
+
 const DataConfiguration = () => {
+	const [currentSelect, setCurrentSelect] = useState<RequestDataValueEnum>(RequestDataValueEnum.STATIC);
 	return (
 		<>
 			<JSettingBox name="请求方式">
-				<Select className="w-full" defaultValue={RequestDataLabelEnum.STATIC} options={dataOptions} />
+				<Select
+					className="w-full"
+					defaultValue={RequestDataValueEnum.STATIC}
+					options={dataOptions}
+					onChange={(value) => {
+						setCurrentSelect(value);
+					}}
+				/>
 			</JSettingBox>
-			<StaticData />
+			{ConfigurationComponentMap[currentSelect]}
 		</>
 	);
 };
