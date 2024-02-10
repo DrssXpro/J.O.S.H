@@ -1,8 +1,8 @@
 import { ConfigProvider, theme } from "antd";
-import { Suspense, lazy } from "react";
+import { lazy } from "react";
 import { Route, Routes } from "react-router-dom";
-import JLoading from "./components/JLoading";
 import zhCN from "antd/locale/zh_CN";
+import JWithLoading from "./components/JWithLoading";
 
 const Login = lazy(() => import("@/pages/Login/index"));
 
@@ -28,15 +28,18 @@ function App() {
 				}
 			}}
 		>
-			<Suspense fallback={<JLoading />}>
-				<Routes>
-					<Route element={<Login />} path="/"></Route>
-					<Route element={<Layout />} path="/application">
-						<Route element={<Projects />} path="projects"></Route>
-					</Route>
-					<Route element={<WorkBench />} path="/workBench"></Route>
-				</Routes>
-			</Suspense>
+			<JWithLoading
+				element={
+					<Routes>
+						<Route element={<Login />} path="/"></Route>
+						<Route element={<Layout />} path="/application">
+							<Route element={<Projects />} path="projects"></Route>
+						</Route>
+						<Route element={<WorkBench />} path="/workBench"></Route>
+					</Routes>
+				}
+				loadingStyle={{ width: "100vw", height: "100vh" }}
+			/>
 		</ConfigProvider>
 	);
 }

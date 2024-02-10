@@ -3,6 +3,7 @@ import { type TabConfig, TabsEnum } from "@/types/LayoutTypes";
 import { FundProjectionScreenOutlined } from "@ant-design/icons";
 import { Construct, Leaf, Flash, Rocket } from "@ricons/ionicons5";
 import JIcon from "@/components/JIcon";
+import JWithLoading from "@/components/JWithLoading";
 
 const PageConfiguration = lazy(() => import("./PageConfiguration"));
 const ChartConfiguration = lazy(() => import("./ChartConfiguration"));
@@ -18,7 +19,7 @@ const PageTabList: TabConfig[] = [
 				<FundProjectionScreenOutlined style={{ fontSize: "18px" }} />
 			</div>
 		),
-		configRender: <PageConfiguration />
+		configRender: <JWithLoading element={<PageConfiguration />} loadingStyle={{ background: "none" }} />
 	}
 ];
 
@@ -31,7 +32,7 @@ const ChartTabList: TabConfig[] = [
 				<JIcon icon={<Construct />} />
 			</div>
 		),
-		configRender: <ChartConfiguration />
+		configRender: <JWithLoading element={<ChartConfiguration />} loadingStyle={{ background: "none" }} />
 	},
 	{
 		key: TabsEnum.CHART_ANIMATION,
@@ -41,7 +42,7 @@ const ChartTabList: TabConfig[] = [
 				<JIcon icon={<Leaf />} />
 			</div>
 		),
-		configRender: <AnimationConfiguration />
+		configRender: <JWithLoading element={<AnimationConfiguration />} loadingStyle={{ background: "none" }} />
 	},
 	{
 		key: TabsEnum.CHART_DATA,
@@ -51,7 +52,7 @@ const ChartTabList: TabConfig[] = [
 				<JIcon icon={<Flash />} />
 			</div>
 		),
-		configRender: <DataConfiguration />
+		configRender: <JWithLoading element={<DataConfiguration />} loadingStyle={{ background: "none" }} />
 	},
 	{
 		key: TabsEnum.CHART_EVENT,
@@ -61,7 +62,7 @@ const ChartTabList: TabConfig[] = [
 				<JIcon icon={<Rocket />} />
 			</div>
 		),
-		configRender: <ChartConfiguration />
+		configRender: <JWithLoading element={<ChartConfiguration />} loadingStyle={{ background: "none" }} />
 	}
 ];
 

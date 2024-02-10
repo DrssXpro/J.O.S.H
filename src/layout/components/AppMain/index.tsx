@@ -1,15 +1,8 @@
-import { Suspense } from "react";
 import { Outlet } from "react-router-dom";
-import JLoading from "@/components/JLoading";
+import JWithLoading from "@/components/JWithLoading";
 
 const Main = () => {
-	return (
-		<>
-			<Suspense fallback={<JLoading />}>
-				<Outlet />
-			</Suspense>
-		</>
-	);
+	return <JWithLoading element={<Outlet />} loadingStyle={{ width: "100vw", height: "100vh" }} />;
 };
 
 export default Main;
