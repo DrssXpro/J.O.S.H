@@ -1,6 +1,20 @@
 import { useState } from "react";
-import { Badge, Button, Steps, Table, TableProps, Tooltip, Typography, Upload, UploadProps, message } from "antd";
-import { DocumentAdd, Filter, DocumentDownload } from "@ricons/carbon";
+import {
+	Badge,
+	Button,
+	Divider,
+	Modal,
+	Steps,
+	Table,
+	TableProps,
+	Tag,
+	Tooltip,
+	Typography,
+	Upload,
+	UploadProps,
+	message
+} from "antd";
+import { DocumentAdd, Filter, DocumentDownload, Document } from "@ricons/carbon";
 import { HelpCircleOutline } from "@ricons/ionicons5";
 import JIcon from "@/components/JIcon";
 import JCodeMirror from "@/components/JCodeMirror";
@@ -8,11 +22,79 @@ import { FileTypeEnum } from "@/types/FileTypes";
 import { downloadTextFile, readFile } from "@/utils/fileUtils";
 
 const DataFilber = () => {
+	const [isOpen, setIsOpen] = useState(false);
+	const code = `function test() {
+console.log('hello');
+}`;
 	return (
-		<div className="flex flex-col gap-2">
-			<Typography.Text type="secondary">过滤器默认处理接口返回值的「data」字段</Typography.Text>
-			<Button icon={<JIcon icon={<Filter />} size={18} />}>新增过滤器</Button>
-		</div>
+		<>
+			<div className="flex flex-col gap-2">
+				<Typography.Text type="secondary">过滤器默认处理接口返回值的「data」字段</Typography.Text>
+				<Button icon={<JIcon icon={<Filter />} size={18} />} onClick={() => setIsOpen(true)}>
+					新增过滤器
+				</Button>
+			</div>
+			<Modal
+				open={isOpen}
+				width={1200}
+				closable={false}
+				styles={{ header: { background: "none" } }}
+				title="过滤器：函数编辑器"
+				centered
+				footer={
+					<div className="w-full h-10 flex items-center justify-between">
+						<div className="flex items-center justify-center">
+							<Tag icon={<JIcon icon={<Document />} />} color="processing">
+								规则
+							</Tag>
+							<Typography.Text type="secondary">过滤器默认处理接口返回值的「data」字段</Typography.Text>
+						</div>
+						<div className="flex items-center justify-center">
+							<Button onClick={() => setIsOpen(false)}>取消</Button>
+							<Button type="primary" onClick={() => setIsOpen(false)}>
+								保存
+							</Button>
+						</div>
+					</div>
+				}
+			>
+				<div className="w-full h-[70vh] flex gap-5">
+					<div className="flex-1 h-[100%]">
+						<Tag
+							color="processing"
+							className="mb-2 text-base border-1 inline-block px-1"
+							style={{ borderColor: "rgba(112, 192, 232, 0.3)" }}
+						>
+							<span className="text-[#b478cf]">function</span>&nbsp;&nbsp;filter(data, res)&nbsp;&nbsp;
+							{"{"}
+						</Tag>
+						<JCodeMirror code={code} lan="javascript" height={440} />
+						<Tag
+							color="processing"
+							className="mt-2 text-base border-1 px-1 inline-block"
+							style={{ borderColor: "rgba(112, 192, 232, 0.3)" }}
+						>
+							{"}"}
+						</Tag>
+					</div>
+					<Divider type="vertical" style={{ height: "100%" }} />
+					<div className="flex-1">
+						<div className="flex items-center gap-2 p-5 mb-4 bg-[#212122] rounded">
+							<Typography.Text type="secondary">默认过滤数据(data)：</Typography.Text>
+							<div>暂无</div>
+						</div>
+						<div className="flex items-center gap-2 p-5 mb-4 bg-[#212122] rounded">
+							<Typography.Text type="secondary">接口返回数据(res)：</Typography.Text>
+							<div>暂无</div>
+						</div>
+						<div className="flex items-center gap-2 p-5 mb-4 bg-[#212122] rounded">
+							<Typography.Text type="secondary">过滤器结果：</Typography.Text>
+							<div>暂无</div>
+						</div>
+					</div>
+				</div>
+			</Modal>
+		</>
 	);
 };
 

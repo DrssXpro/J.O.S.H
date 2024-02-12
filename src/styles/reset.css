@@ -38,8 +38,22 @@ textarea {
 	width: 0;
 }
 
+/* Button 解决图标与文本对齐问题 */
 .ant-btn {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+}
+
+/* Tag 解决图标与文本对齐问题 */
+.ant-tag {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* Modal 组件统一增加透明过滤效果 */
+.ant-modal-content {
+	backdrop-filter: blur(5px);
+	background: #232324b3 !important;
 }
