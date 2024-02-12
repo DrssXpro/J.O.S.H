@@ -57,3 +57,8 @@ textarea {
 	backdrop-filter: blur(5px);
 	background: #232324b3 !important;
 }
+
+/* codemirror 移除背景颜色 */
+.ͼ16 {
+	background: none;
+}

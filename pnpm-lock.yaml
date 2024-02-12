@@ -17,7 +17,7 @@ dependencies:
   '@scena/react-ruler':
     specifier: ^0.19.0
     version: 0.19.0
-  '@uiw/codemirror-theme-basic':
+  '@uiw/codemirror-theme-vscode':
     specifier: ^4.21.21
     version: 4.21.21(@codemirror/language@6.10.1)(@codemirror/state@6.4.0)(@codemirror/view@6.23.1)
   '@uiw/react-codemirror':
@@ -1508,8 +1508,8 @@ packages:
       '@codemirror/view': 6.23.1
     dev: false
 
-  /@uiw/codemirror-theme-basic@4.21.21(@codemirror/language@6.10.1)(@codemirror/state@6.4.0)(@codemirror/view@6.23.1):
-    resolution: {integrity: sha512-xWDxch2Gkltsj5GTKmRoRga2fe+tw2a2mIIJARHWM5oyE3FfAF8J8Tgx4acaU6hlXRgQa4qPLaYA5kK43yj1hg==}
+  /@uiw/codemirror-theme-vscode@4.21.21(@codemirror/language@6.10.1)(@codemirror/state@6.4.0)(@codemirror/view@6.23.1):
+    resolution: {integrity: sha512-NUD2l/PqnvzNtxscXk99hm5a5avFsE4lxG2MUtPRuOZRRNXHxNsYeXGlab6R5hUO+v/Lxy6mrMmTRyL0Gj6dIw==}
     dependencies:
       '@uiw/codemirror-themes': 4.21.21(@codemirror/language@6.10.1)(@codemirror/state@6.4.0)(@codemirror/view@6.23.1)
     transitivePeerDependencies:

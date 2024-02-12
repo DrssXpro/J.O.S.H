@@ -23,9 +23,7 @@ import { downloadTextFile, readFile } from "@/utils/fileUtils";
 
 const DataFilber = () => {
 	const [isOpen, setIsOpen] = useState(false);
-	const code = `function test() {
-console.log('hello');
-}`;
+	const code = `return data`;
 	return (
 		<>
 			<div className="flex flex-col gap-2">
@@ -60,22 +58,33 @@ console.log('hello');
 			>
 				<div className="w-full h-[70vh] flex gap-5">
 					<div className="flex-1 h-[100%]">
-						<Tag
+						<div
 							color="processing"
-							className="mb-2 text-base border-1 inline-block px-1"
-							style={{ borderColor: "rgba(112, 192, 232, 0.3)" }}
+							className="mb-2 font-semibold text-lg border-1 inline-block px-1"
+							style={{
+								borderColor: "rgba(112, 192, 232, 0.3)",
+								fontFamily:
+									'Menlo, Monaco, Consolas, "Andale Mono", "Ubuntu Mono", "Courier New", monospace'
+							}}
 						>
-							<span className="text-[#b478cf]">function</span>&nbsp;&nbsp;filter(data, res)&nbsp;&nbsp;
+							<span className="text-[#569cd6]">function</span>&nbsp;
+							<span className="text-[#dcdcaa]">filter</span>(<span className="text-[#9cdcfe]">data</span>
+							,&nbsp;
+							<span className="text-[#9cdcfe]">res</span>)&nbsp;
 							{"{"}
-						</Tag>
+						</div>
 						<JCodeMirror code={code} lan="javascript" height={440} />
-						<Tag
+						<div
 							color="processing"
 							className="mt-2 text-base border-1 px-1 inline-block"
-							style={{ borderColor: "rgba(112, 192, 232, 0.3)" }}
+							style={{
+								borderColor: "rgba(112, 192, 232, 0.3)",
+								fontFamily:
+									'Menlo, Monaco, Consolas, "Andale Mono", "Ubuntu Mono", "Courier New", monospace'
+							}}
 						>
 							{"}"}
-						</Tag>
+						</div>
 					</div>
 					<Divider type="vertical" style={{ height: "100%" }} />
 					<div className="flex-1">

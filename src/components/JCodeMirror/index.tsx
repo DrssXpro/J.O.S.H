@@ -1,5 +1,5 @@
 import CodeMirror from "@uiw/react-codemirror";
-import { basicDark } from "@uiw/codemirror-theme-basic";
+import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 import language from "./config";
 
 interface IJCodeMirrorProps {
@@ -24,7 +24,7 @@ const JCodeMirror = (props: IJCodeMirrorProps) => {
 			basicSetup={{ highlightActiveLine: false, lineNumbers: false, foldGutter: false }}
 			tabIndex={2}
 			editable={!disabled}
-			theme={basicDark}
+			theme={vscodeDark}
 			extensions={language[lan]}
 			onChange={changeCode}
 		></CodeMirror>
