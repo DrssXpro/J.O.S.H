@@ -7,12 +7,13 @@ interface IJCodeMirrorProps {
 	lan: "javascript" | "json";
 	height?: number;
 	disabled?: boolean;
+	placeHolder?: string;
 	changeCode?: (code: string) => void;
 }
 
 // react-codemirror documnet: https://uiwjs.github.io/react-codemirror/#/
 const JCodeMirror = (props: IJCodeMirrorProps) => {
-	const { code, height, disabled = false, lan, changeCode } = props;
+	const { code, height, disabled = false, placeHolder = "", lan, changeCode } = props;
 	return (
 		<CodeMirror
 			value={code}
@@ -27,6 +28,7 @@ const JCodeMirror = (props: IJCodeMirrorProps) => {
 			theme={vscodeDark}
 			extensions={language[lan]}
 			onChange={changeCode}
+			placeholder={placeHolder}
 		></CodeMirror>
 	);
 };

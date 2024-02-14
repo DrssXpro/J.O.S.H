@@ -1,12 +1,13 @@
 import { Button, Card, Divider, Input, InputNumber, Modal, Select, Tag, Typography } from "antd";
 import JSettingBox from "@/components/JChartConfiguration/public/JSettingBox";
 import JSettingItem from "@/components/JChartConfiguration/public/JSettingItem";
-import { Flash, Pulse, Pencil } from "@ricons/ionicons5";
+import { Flash, Pulse, Pencil, ChevronUpOutline } from "@ricons/ionicons5";
 import JIcon from "@/components/JIcon";
 import DataMapAndShow from "../DataMapAndShow";
 import { forwardRef, useImperativeHandle, useRef, useState } from "react";
 import { selectTimeOptions, selectTypeOptions } from "@/types/HttpTypes";
-import RequestConfigTable from "./components/RequestConfigTable";
+import NormalRequestConfig from "./components/NormalRequestConfig";
+import PublicRequestConfig from "./components/PublicRequestConfig";
 
 const DynamicData = () => {
 	const modalRef = useRef<any>(null);
@@ -69,6 +70,8 @@ const DynamicData = () => {
 
 const DynamicDataModal = forwardRef((_, ref) => {
 	const [isOpen, setIsOpen] = useState(false);
+	const [hideTable, setHideTable] = useState(false);
+	const [isHover, setIsHover] = useState(false);
 	const [editPublic, setEditPublic] = useState(false);
 	useImperativeHandle(ref, () => {
 		return {
@@ -78,7 +81,7 @@ const DynamicDataModal = forwardRef((_, ref) => {
 	return (
 		<Modal
 			open={isOpen}
-			width={900}
+			width={950}
 			closable={false}
 			styles={{ header: { background: "none" } }}
 			footer={
@@ -131,34 +134,55 @@ const DynamicDataModal = forwardRef((_, ref) => {
 						)}
 					</div>
 				</JSettingBox>
+				<div style={{ display: hideTable ? "block" : "none" }}>
+					<PublicRequestConfig isEdit={!editPublic} />
+				</div>
+				<div
+					className={`flex items-center justify-center cursor-pointer transform ${
+						!hideTable ? "rotate-180" : ""
+					}`}
+					onClick={() => setHideTable(!hideTable)}
+					onMouseEnter={() => setIsHover(true)}
+					onMouseLeave={() => setIsHover(false)}
+				>
+					<JIcon icon={<ChevronUpOutline />} size={35} color={isHover ? "#1668DC" : ""} />
+				</div>
 			</Card>
 
 			<Divider />
-			<JSettingBox name="地址">
-				<div className="grid gap-3" style={{ gridTemplateColumns: "6fr 2fr" }}>
-					<JSettingItem text="请求方式 & URL 地址">
-						<Input
-							placeholder="请输入地址（去除前置 URL）"
-							addonBefore={
-								<Select
-									defaultValue={selectTypeOptions[0].value}
-									options={selectTypeOptions}
-									className="w-20"
-								/>
-							}
-						/>
-					</JSettingItem>
-					<JSettingItem text="更新间隔, 为 0 只会初始化">
-						<InputNumber
-							placeholder="默认使用全局数据"
-							addonAfter={
-								<Select defaultValue={selectTimeOptions[0].value} options={selectTimeOptions} />
-							}
-						/>
-					</JSettingItem>
-				</div>
-			</JSettingBox>
-			<RequestConfigTable />
+			<Card
+				bodyStyle={{ padding: "20px 10px", background: "#232324" }}
+				className="hover:border-[#1668DC] transition-all"
+			>
+				<Tag color="processing" className="inline-block mb-4">
+					<div className="p-2 text-sm">接口 API 配置</div>
+				</Tag>
+				<JSettingBox name="地址">
+					<div className="grid gap-3" style={{ gridTemplateColumns: "6fr 2fr" }}>
+						<JSettingItem text="请求方式 & URL 地址">
+							<Input
+								placeholder="请输入地址（去除前置 URL）"
+								addonBefore={
+									<Select
+										defaultValue={selectTypeOptions[0].value}
+										options={selectTypeOptions}
+										className="w-20"
+									/>
+								}
+							/>
+						</JSettingItem>
+						<JSettingItem text="更新间隔, 为 0 只会初始化">
+							<InputNumber
+								placeholder="默认使用全局数据"
+								addonAfter={
+									<Select defaultValue={selectTimeOptions[0].value} options={selectTimeOptions} />
+								}
+							/>
+						</JSettingItem>
+					</div>
+				</JSettingBox>
+				<NormalRequestConfig />
+			</Card>
 		</Modal>
 	);
 });

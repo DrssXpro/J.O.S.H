@@ -35,6 +35,14 @@ export enum RequestHttpIntervalEnum {
 	DAY = "day"
 }
 
+// 请求头部类型
+export enum RequestBodyEnum {
+	NONE = "none",
+	FORM_DATA = "form-data",
+	X_WWW_FORM_URLENCODED = "x-www-form-urlencoded",
+	JSON = "json"
+}
+
 // ajax 请求类型
 export interface SelectHttpType {
 	label: RequestHttpEnum;
@@ -102,7 +110,7 @@ export interface SelectHttpTimeType {
 	disabled?: boolean;
 }
 
-// 时间选项
+// 设置时间间隔选项
 export const selectTimeOptions: SelectHttpTimeType[] = [
 	{
 		label: SelectHttpTimeNameObj[RequestHttpIntervalEnum.SECOND],
@@ -120,4 +128,12 @@ export const selectTimeOptions: SelectHttpTimeType[] = [
 		label: SelectHttpTimeNameObj[RequestHttpIntervalEnum.DAY],
 		value: RequestHttpIntervalEnum.DAY
 	}
+];
+
+// 设置 RequestBody 选项
+export const RequestBodyEnumList = [
+	RequestBodyEnum.NONE,
+	RequestBodyEnum.FORM_DATA,
+	RequestBodyEnum.X_WWW_FORM_URLENCODED,
+	RequestBodyEnum.JSON
 ];
