@@ -78,7 +78,7 @@ const RequestConfigTable = (props: IRequestConfigTableProps) => {
 			align: "center",
 			width: 100,
 			render: (_, { id }, index) => (
-				<div className="flex items-center gap-2">
+				<div className="flex items-center justify-center gap-2">
 					<Button type="primary" ghost size="small" disabled={disabled} onClick={() => addItem(index + 1)}>
 						+
 					</Button>
@@ -99,6 +99,7 @@ const RequestConfigTable = (props: IRequestConfigTableProps) => {
 	];
 	return (
 		<Table
+			size="small"
 			bordered
 			rowKey={"id"}
 			columns={columns}
