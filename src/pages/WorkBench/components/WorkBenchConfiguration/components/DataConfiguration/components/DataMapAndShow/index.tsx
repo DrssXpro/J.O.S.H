@@ -20,10 +20,11 @@ import JIcon from "@/components/JIcon";
 import JCodeMirror from "@/components/JCodeMirror";
 import { FileTypeEnum } from "@/types/FileTypes";
 import { downloadTextFile, readFile } from "@/utils/fileUtils";
+import JEditCode from "@/components/JChartConfiguration/JEditCode";
 
 const DataFilber = () => {
 	const [isOpen, setIsOpen] = useState(false);
-	const code = `return data`;
+	const [code, setCode] = useState("return data;");
 	return (
 		<>
 			<div className="flex flex-col gap-2">
@@ -58,33 +59,21 @@ const DataFilber = () => {
 			>
 				<div className="w-full h-[70vh] flex gap-5">
 					<div className="flex-1 h-[100%]">
-						<div
-							color="processing"
-							className="mb-2 font-semibold text-lg border-1 inline-block px-1"
-							style={{
-								borderColor: "rgba(112, 192, 232, 0.3)",
-								fontFamily:
-									'Menlo, Monaco, Consolas, "Andale Mono", "Ubuntu Mono", "Courier New", monospace'
-							}}
-						>
-							<span className="text-[#569cd6]">function</span>&nbsp;
-							<span className="text-[#dcdcaa]">filter</span>(<span className="text-[#9cdcfe]">data</span>
-							,&nbsp;
-							<span className="text-[#9cdcfe]">res</span>)&nbsp;
-							{"{"}
-						</div>
-						<JCodeMirror code={code} lan="javascript" height={440} />
-						<div
-							color="processing"
-							className="mt-2 text-base border-1 px-1 inline-block"
-							style={{
-								borderColor: "rgba(112, 192, 232, 0.3)",
-								fontFamily:
-									'Menlo, Monaco, Consolas, "Andale Mono", "Ubuntu Mono", "Courier New", monospace'
-							}}
-						>
-							{"}"}
-						</div>
+						<JEditCode
+							code={code}
+							codeChange={(code) => setCode(code)}
+							headCodeTooltip={
+								<>
+									<span className="text-[#569cd6]">function</span>&nbsp;
+									<span className="text-[#dcdcaa]">filter</span>(
+									<span className="text-[#9cdcfe]">data</span>
+									,&nbsp;
+									<span className="text-[#9cdcfe]">res</span>)&nbsp;
+									{"{"}
+								</>
+							}
+							tailCodeTooltip={<>{"}"}</>}
+						/>
 					</div>
 					<Divider type="vertical" style={{ height: "100%" }} />
 					<div className="flex-1">
