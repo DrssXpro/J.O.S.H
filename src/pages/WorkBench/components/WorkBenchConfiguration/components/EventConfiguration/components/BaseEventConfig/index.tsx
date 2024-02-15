@@ -5,7 +5,7 @@ import JCodeMirror from "@/components/JCodeMirror";
 import JIcon from "@/components/JIcon";
 import { Document, Pencil } from "@ricons/ionicons5";
 import { initBaseEventCode } from "../codeConfig";
-import { BaseEvent, VaildError } from "@/types/EventTypes";
+import { BaseEvent, ErrorTypeName, VaildError } from "@/types/EventTypes";
 import JEditCode from "@/components/JChartConfiguration/JEditCode";
 
 const EventTypeName = {
@@ -13,12 +13,6 @@ const EventTypeName = {
 	[BaseEvent.ON_DBL_CLICK]: "双击",
 	[BaseEvent.ON_MOUSE_ENTER]: "鼠标进入",
 	[BaseEvent.ON_MOUSE_LEAVE]: "鼠标移出"
-};
-
-const ErrorTypeName = {
-	[VaildError.ERROR_FN]: "错误函数",
-	[VaildError.ERROR_INFO]: "错误信息",
-	[VaildError.ERROR_STACK]: "堆栈信息"
 };
 
 const BaseEventConfig = () => {
@@ -98,7 +92,6 @@ const BaseEventConfig = () => {
 											}}
 											headCodeTooltip={
 												<>
-													{" "}
 													<span className="text-[#9cdcfe]">async</span>&nbsp;
 													<span className="text-[#569cd6]">function</span>&nbsp;
 													<span className="text-[#dcdcaa]">{key}</span>(
