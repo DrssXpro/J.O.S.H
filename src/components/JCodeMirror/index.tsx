@@ -6,6 +6,7 @@ interface IJCodeMirrorProps {
 	code: string;
 	lan: "javascript" | "json";
 	height?: number;
+	fontSize?: number;
 	disabled?: boolean;
 	placeHolder?: string;
 	changeCode?: (code: string) => void;
@@ -13,14 +14,14 @@ interface IJCodeMirrorProps {
 
 // react-codemirror documnet: https://uiwjs.github.io/react-codemirror/#/
 const JCodeMirror = (props: IJCodeMirrorProps) => {
-	const { code, height, disabled = false, placeHolder = "", lan, changeCode } = props;
+	const { code, height, disabled = false, placeHolder = "", fontSize = 18, lan, changeCode } = props;
 	return (
 		<CodeMirror
 			value={code}
 			height={height ? `${height}px` : "auto"}
 			style={{
 				width: "100%",
-				fontSize: "18px"
+				fontSize: `${fontSize}px`
 			}}
 			basicSetup={{ highlightActiveLine: false, lineNumbers: false, foldGutter: false }}
 			tabIndex={2}

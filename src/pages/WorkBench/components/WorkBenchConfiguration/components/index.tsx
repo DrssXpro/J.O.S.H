@@ -9,6 +9,7 @@ const PageConfiguration = lazy(() => import("./PageConfiguration"));
 const ChartConfiguration = lazy(() => import("./ChartConfiguration"));
 const AnimationConfiguration = lazy(() => import("./AnimationConfiguration"));
 const DataConfiguration = lazy(() => import("./DataConfiguration"));
+const EventConfiguration = lazy(() => import("./EventConfiguration"));
 
 const PageTabList: TabConfig[] = [
 	{
@@ -62,7 +63,7 @@ const ChartTabList: TabConfig[] = [
 				<JIcon icon={<Rocket />} />
 			</div>
 		),
-		configRender: <JWithLoading element={<ChartConfiguration />} loadingStyle={{ background: "none" }} />
+		configRender: <JWithLoading element={<EventConfiguration />} loadingStyle={{ background: "none" }} />
 	}
 ];
 

@@ -3,11 +3,12 @@ import { Collapse, CollapseProps, Divider, Typography } from "antd";
 interface IJCollapseBoxProps {
 	name: string;
 	operator?: JSX.Element;
+	unfold?: boolean;
 	children: JSX.Element;
 }
 
 const JCollapseBox = (props: IJCollapseBoxProps) => {
-	const { name, children, operator } = props;
+	const { name, children, operator, unfold = false } = props;
 	const items: CollapseProps["items"] = [
 		{
 			key: "1",
@@ -32,7 +33,7 @@ const JCollapseBox = (props: IJCollapseBoxProps) => {
 	return (
 		<>
 			<Divider style={{ margin: 0 }} />
-			<Collapse ghost items={items} />
+			<Collapse ghost items={items} defaultActiveKey={unfold ? "1" : undefined} />
 		</>
 	);
 };
