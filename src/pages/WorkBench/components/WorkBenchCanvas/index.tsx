@@ -11,7 +11,7 @@ import EditShapeBox from "./components/EditShapeBox";
 
 const WorkBenchCanvas = () => {
 	const { canvasConfig } = useCanvasStore();
-	const { componentList, addComponentList } = useChartStore();
+	const { componentList, addComponentList, setTargetSelectChart } = useChartStore();
 	const { canvasBackground, canvasBackgroundImage } = canvasConfig;
 	useEffect(() => {
 		initKeyBoardEvent();
@@ -50,7 +50,10 @@ const WorkBenchCanvas = () => {
 						const ChartComponent: any = fetchComponent(dropData.key, FetchComFlagType.VIEW);
 						// 获取图表配置组件
 						const ChartConfigComponent: any = fetchComponent(dropData.key, FetchComFlagType.CONFIG);
+						// 添加组件配置至全局 store
 						addComponentList({ ...componentConifg, ChartComponent, ChartConfigComponent });
+						// 选中当前添加图表
+						setTargetSelectChart(componentConifg.id);
 					}}
 					onDragOver={(e) => {
 						e.preventDefault();

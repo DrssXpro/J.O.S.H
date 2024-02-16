@@ -8,8 +8,10 @@ interface IComponent extends ComponentType {
 
 export interface IChartState {
 	componentList: IComponent[];
+	selectId: string[];
 }
 
 export interface IChartAction {
 	addComponentList: (component: IComponent) => void;
+	setTargetSelectChart: (select?: string | string[], push?: boolean) => void;
 }

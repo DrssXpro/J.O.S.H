@@ -11,7 +11,7 @@ const BarLineConfigComponent = () => {
 		<>
 			<JGlobalChartSetting />
 			{list.map((i) => (
-				<JCollapseBox name={i === "bar" ? "柱状图" : "折线图"} key={i}>
+				<JCollapseBox name={i === "bar" ? "柱状图" : "折线图"} key={i} unfold>
 					<>
 						{i === "bar" && (
 							<JSettingBox name="圆形">
