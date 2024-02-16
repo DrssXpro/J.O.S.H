@@ -7,6 +7,7 @@ import { DragKeyEnum } from "@/types/EditCanvasTypes";
 import { createComponentConfig, fetchComponent } from "@/materials/components";
 import useChartStore from "@/store/chartStore/charStore";
 import { ComponentType, FetchComFlagType } from "@/materials/types";
+import EditShapeBox from "./components/EditShapeBox";
 
 const WorkBenchCanvas = () => {
 	const { canvasConfig } = useCanvasStore();
@@ -56,9 +57,7 @@ const WorkBenchCanvas = () => {
 					}}
 				>
 					{componentList.map((i, index) => (
-						<div key={index} style={{ width: "400px", height: "300px" }}>
-							{i.ChartComponent({ chartConfig: i })}
-						</div>
+						<EditShapeBox key={index}>{i.ChartComponent({ chartConfig: i })}</EditShapeBox>
 					))}
 				</div>
 			</CanvasRuler>
