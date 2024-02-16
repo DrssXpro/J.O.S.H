@@ -1,4 +1,4 @@
-import useChartStore from "@/store/chartStore/charStore";
+import useChartStore from "@/store/chartStore/chartStore";
 
 const useEditCharts = () => {
 	const { selectId, componentList } = useChartStore();

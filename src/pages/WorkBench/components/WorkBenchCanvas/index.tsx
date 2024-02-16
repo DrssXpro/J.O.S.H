@@ -5,7 +5,7 @@ import { initKeyBoardEvent, removeKeyBoardEventListener } from "./utils/handleKe
 import useCanvasStore from "@/store/canvasStore/canvasStore";
 import { DragKeyEnum } from "@/types/EditCanvasTypes";
 import { createComponentConfig, fetchComponent } from "@/materials/components";
-import useChartStore from "@/store/chartStore/charStore";
+import useChartStore from "@/store/chartStore/chartStore";
 import { ComponentType, FetchComFlagType } from "@/materials/types";
 import EditShapeBox from "./components/EditShapeBox";
 
