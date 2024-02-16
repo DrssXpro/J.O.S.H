@@ -13,7 +13,7 @@ const ChartConfiguration = () => {
 			<JSizeSetting />
 			<JPosSetting />
 			<JStylesSetting />
-			{component && component.ChartConfigComponent({})}
+			{component && <component.ChartConfigComponent />}
 		</>
 	);
 };

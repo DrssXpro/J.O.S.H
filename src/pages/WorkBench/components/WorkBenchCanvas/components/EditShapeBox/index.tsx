@@ -117,6 +117,7 @@ const EditShapeBox = (props: IEditShapeBoxProps) => {
 				points.map(({ direction, style }) => (
 					<div
 						className="absolute z-11 w-3 h-3 border-3 border-[#1668DC] bg-[#fff]"
+						key={direction}
 						style={{ borderRadius: "5px", cursor: `${PointCursorStyleMap[direction]}-resize`, ...style }}
 					></div>
 				))}

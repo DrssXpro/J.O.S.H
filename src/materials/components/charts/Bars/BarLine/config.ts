@@ -3,7 +3,7 @@ import { BarLine } from ".";
 import { PublicConfigClass } from "@/materials/public/publicConfig";
 import { ComponentType } from "@/materials/types";
 
-const barSeriesItem = {
+export const barSeriesItem = {
 	type: "bar",
 	barWidth: 15,
 	label: {
@@ -18,7 +18,7 @@ const barSeriesItem = {
 	}
 };
 
-const lineSeriesItem = {
+export const lineSeriesItem = {
 	type: "line",
 	symbol: "circle",
 	label: {

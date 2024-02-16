@@ -60,7 +60,9 @@ const WorkBenchCanvas = () => {
 					}}
 				>
 					{componentList.map((i, index) => (
-						<EditShapeBox key={index}>{i.ChartComponent({ chartConfig: i })}</EditShapeBox>
+						<EditShapeBox key={index}>
+							<i.ChartComponent chartConfig={i} />
+						</EditShapeBox>
 					))}
 				</div>
 			</CanvasRuler>

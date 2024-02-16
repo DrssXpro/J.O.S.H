@@ -14,4 +14,5 @@ export interface IChartState {
 export interface IChartAction {
 	addComponentList: (component: IComponent) => void;
 	setTargetSelectChart: (select?: string | string[], push?: boolean) => void;
+	updateChartConfig: (index: number, key: string, value: any) => void;
 }
