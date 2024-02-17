@@ -2,6 +2,9 @@ import dataJson from "./data.json";
 import { BarLine } from ".";
 import { PublicConfigClass } from "@/materials/public/publicConfig";
 import { ComponentType } from "@/materials/types";
+import { echartOptionProfixHandle } from "@/materials/public/charts";
+
+export const includes = ["legend", "xAxis", "yAxis", "grid"];
 
 export const barSeriesItem = {
 	type: "bar",
@@ -66,5 +69,5 @@ export const options = {
 export default class Config extends PublicConfigClass implements ComponentType {
 	public key = BarLine.key;
 	public chartConfig = BarLine;
-	public option = options;
+	public option = echartOptionProfixHandle(options, includes);
 }
