@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { produce } from "immer";
 import JGlobalChartSetting from "@/components/JChartConfiguration/JGlobalChartSetting";
 import JCollapseBox from "@/components/JChartConfiguration/public/JCollapseBox";
 import JSettingBox from "@/components/JChartConfiguration/public/JSettingBox";
@@ -33,7 +34,11 @@ const BarLineConfigComponent = () => {
 											className="w-full"
 											defaultValue={i.barWidth}
 											onChange={(val) => {
-												setBarConfig({ ...barConfig, barWidth: val });
+												setBarConfig(
+													produce((draft) => {
+														draft.barWidth = val;
+													})
+												);
 											}}
 										/>
 									</JSettingItem>
@@ -42,10 +47,11 @@ const BarLineConfigComponent = () => {
 											className="w-full"
 											defaultValue={i.itemStyle.borderRadius}
 											onChange={(val) => {
-												setBarConfig({
-													...barConfig,
-													itemStyle: { ...i.itemStyle, borderRadius: val }
-												});
+												setBarConfig(
+													produce((draft) => {
+														draft.itemStyle.borderRadius = val;
+													})
+												);
 											}}
 										/>
 									</JSettingItem>
@@ -61,10 +67,11 @@ const BarLineConfigComponent = () => {
 												className="w-full"
 												defaultValue={i.lineStyle.width}
 												onChange={(val) => {
-													setLineConfig({
-														...lineConfig,
-														lineStyle: { ...i.lineStyle, width: val }
-													});
+													setLineConfig(
+														produce((draft) => {
+															draft.lineStyle.width = val;
+														})
+													);
 												}}
 											/>
 										</JSettingItem>
@@ -74,10 +81,11 @@ const BarLineConfigComponent = () => {
 												className="w-full"
 												options={axisConfig.splitLint.lineStyle}
 												onChange={(val) => {
-													setLineConfig({
-														...lineConfig,
-														lineStyle: { ...i.lineStyle, type: val }
-													});
+													setLineConfig(
+														produce((draft) => {
+															draft.lineStyle.type = val;
+														})
+													);
 												}}
 											/>
 										</JSettingItem>
@@ -90,10 +98,11 @@ const BarLineConfigComponent = () => {
 												className="w-full"
 												defaultValue={i.symbolSize}
 												onChange={(val) => {
-													setLineConfig({
-														...lineConfig,
-														symbolSize: val
-													});
+													setLineConfig(
+														produce((draft) => {
+															draft.symbolSize = val;
+														})
+													);
 												}}
 											/>
 										</JSettingItem>
@@ -108,14 +117,16 @@ const BarLineConfigComponent = () => {
 										defaultValue={i.label.show}
 										onChange={(val) => {
 											i.type === "bar"
-												? setBarConfig({
-														...barConfig,
-														label: { ...barConfig.label, show: val }
-													})
-												: setLineConfig({
-														...lineConfig,
-														label: { ...lineConfig.label, show: val }
-													});
+												? setBarConfig(
+														produce((draft) => {
+															draft.label.show = val;
+														})
+													)
+												: setLineConfig(
+														produce((draft) => {
+															draft.label.show = val;
+														})
+													);
 										}}
 									/>
 								</JSettingItem>
@@ -126,14 +137,16 @@ const BarLineConfigComponent = () => {
 										onChange={(val) => {
 											val &&
 												(i.type === "bar"
-													? setBarConfig({
-															...barConfig,
-															label: { ...barConfig.label, fontSize: val }
-														})
-													: setLineConfig({
-															...lineConfig,
-															label: { ...lineConfig.label, fontSize: val }
-														}));
+													? setBarConfig(
+															produce((draft) => {
+																draft.label.fontSize = val;
+															})
+														)
+													: setLineConfig(
+															produce((draft) => {
+																draft.label.fontSize = val;
+															})
+														));
 										}}
 									/>
 								</JSettingItem>
@@ -145,14 +158,16 @@ const BarLineConfigComponent = () => {
 										onChange={(val) => {
 											const color = val.toHexString();
 											i.type === "bar"
-												? setBarConfig({
-														...barConfig,
-														label: { ...barConfig.label, color }
-													})
-												: setLineConfig({
-														...lineConfig,
-														label: { ...lineConfig.label, color }
-													});
+												? setBarConfig(
+														produce((draft) => {
+															draft.label.color = color;
+														})
+													)
+												: setLineConfig(
+														produce((draft) => {
+															draft.label.color = color;
+														})
+													);
 										}}
 									/>
 								</JSettingItem>
@@ -168,14 +183,16 @@ const BarLineConfigComponent = () => {
 										]}
 										onChange={(val) => {
 											i.type === "bar"
-												? setBarConfig({
-														...barConfig,
-														label: { ...barConfig.label, position: val }
-													})
-												: setLineConfig({
-														...lineConfig,
-														label: { ...lineConfig.label, position: val }
-													});
+												? setBarConfig(
+														produce((draft) => {
+															draft.label.position = val;
+														})
+													)
+												: setLineConfig(
+														produce((draft) => {
+															draft.label.position = val;
+														})
+													);
 										}}
 									/>
 								</JSettingItem>
