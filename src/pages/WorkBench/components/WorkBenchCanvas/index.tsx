@@ -8,10 +8,12 @@ import { createComponentConfig, fetchComponent } from "@/materials/components";
 import useChartStore from "@/store/chartStore/chartStore";
 import { ComponentType, FetchComFlagType } from "@/materials/types";
 import EditShapeBox from "./components/EditShapeBox";
+import useMouseHandle from "./hooks/useMouseHandle";
 
 const WorkBenchCanvas = () => {
 	const { canvasConfig } = useCanvasStore();
 	const { componentList, addComponentList, setTargetSelectChart } = useChartStore();
+	const { handleMouseDown, mousedownHandleUnStop } = useMouseHandle();
 	const { canvasBackground, canvasBackgroundImage } = canvasConfig;
 	useEffect(() => {
 		initKeyBoardEvent();
@@ -36,7 +38,7 @@ const WorkBenchCanvas = () => {
 	}, [canvasBackground, canvasBackgroundImage]);
 
 	return (
-		<div className="relative flex-1">
+		<div className="relative flex-1" onMouseDown={(e) => mousedownHandleUnStop(e)}>
 			<CanvasRuler>
 				<div
 					className="text-light-50"
@@ -60,9 +62,11 @@ const WorkBenchCanvas = () => {
 					}}
 				>
 					{componentList.map((i, index) => (
-						<EditShapeBox key={index}>
-							<i.ChartComponent chartConfig={i} />
-						</EditShapeBox>
+						<div key={index} className="w-100 h-80" onMouseDown={(e) => handleMouseDown(e, i)}>
+							<EditShapeBox chartConfig={i}>
+								<i.ChartComponent chartConfig={i} />
+							</EditShapeBox>
+						</div>
 					))}
 				</div>
 			</CanvasRuler>

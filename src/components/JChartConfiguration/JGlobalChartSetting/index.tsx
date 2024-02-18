@@ -8,7 +8,12 @@ import { useEffect, useState } from "react";
 import { produce } from "immer";
 import useChartStore from "@/store/chartStore/chartStore";
 
-const JGlobalChartSetting = () => {
+interface IJGlobalChartSettingProps {
+	chartIndex: number;
+}
+
+const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
+	const { chartIndex } = props;
 	const { updateChartConfig } = useChartStore();
 	const { getTargetData } = useEditCharts();
 	const component = getTargetData();
@@ -18,7 +23,7 @@ const JGlobalChartSetting = () => {
 	});
 
 	useEffect(() => {
-		updateChartConfig(0, globalConfig.updateKey, globalConfig["options"][globalConfig.updateKey]);
+		updateChartConfig(chartIndex, globalConfig.updateKey, globalConfig["options"][globalConfig.updateKey]);
 	}, [globalConfig]);
 	return (
 		<>

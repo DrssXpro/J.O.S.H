@@ -1,6 +1,9 @@
-import { CSSProperties, useState } from "react";
+import { ComponentType } from "@/materials/types";
+import useChartStore from "@/store/chartStore/chartStore";
+import { CSSProperties, useMemo } from "react";
 
 interface IEditShapeBoxProps {
+	chartConfig: ComponentType;
 	children: any;
 }
 
@@ -103,13 +106,14 @@ const points: Point[] = [
 ];
 
 const EditShapeBox = (props: IEditShapeBoxProps) => {
-	const { children } = props;
-	const [isSelect, setIsSelect] = useState(false);
+	const { children, chartConfig } = props;
+	const { selectId } = useChartStore();
+
+	const isSelect = useMemo(() => {
+		return selectId.find((i) => chartConfig.id === i);
+	}, [selectId]);
 	return (
-		<div
-			className="relative w-100 h-80 top-10 left-20 flex items-center justify-center"
-			onClick={() => setIsSelect(!isSelect)}
-		>
+		<div className="relative w-100 h-80 top-10 left-20 flex items-center justify-center">
 			{children}
 
 			{/*  points style */}

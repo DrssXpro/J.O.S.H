@@ -8,21 +8,24 @@ import { ColorPicker, InputNumber, Select, Switch } from "antd";
 import { axisConfig } from "@/materials/echartsConfig";
 import { barSeriesItem, lineSeriesItem } from "../config";
 import useChartStore from "@/store/chartStore/chartStore";
+import useEditCharts from "@/hooks/useEditCharts";
 
 const optionsConfig = [barSeriesItem, lineSeriesItem];
 
 const BarLineConfigComponent = () => {
 	const { updateChartConfig } = useChartStore();
+	const { getTargetChartIndex } = useEditCharts();
+	const chartIndex = getTargetChartIndex()!;
 	const [barConfig, setBarConfig] = useState(barSeriesItem);
 	const [lineConfig, setLineConfig] = useState(lineSeriesItem);
 
 	useEffect(() => {
-		updateChartConfig(0, "series", [{ ...barConfig }, { ...lineConfig }]);
+		updateChartConfig(chartIndex, "series", [{ ...barConfig }, { ...lineConfig }]);
 	}, [barConfig, lineConfig]);
 
 	return (
 		<>
-			<JGlobalChartSetting />
+			<JGlobalChartSetting chartIndex={chartIndex} />
 			{optionsConfig.map((i: any, index: number) => (
 				<JCollapseBox name={i.type === "bar" ? "柱状图" : "折线图"} key={index} unfold>
 					<>
