@@ -20,3 +20,10 @@ export const setChartSizeStyle = (attr: AttrType, scale?: number): CSSProperties
 		height: `${scale ? scale * attr.h : attr.h}px`
 	};
 };
+
+export const setChartAnimateStyle = (animations: string[]) => {
+	if (animations.length) {
+		return `animate__animated  animate__${animations[0]}`;
+	}
+	return "";
+};

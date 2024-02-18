@@ -9,7 +9,7 @@ import useChartStore from "@/store/chartStore/chartStore";
 import { ComponentType, FetchComFlagType } from "@/materials/types";
 import EditShapeBox from "./components/EditShapeBox";
 import useMouseHandle from "./hooks/useMouseHandle";
-import { setChartPosStyle, setChartSizeStyle } from "./utils/handleChartStyle";
+import { setChartAnimateStyle, setChartPosStyle, setChartSizeStyle } from "./utils/handleChartStyle";
 
 const WorkBenchCanvas = () => {
 	const { canvasConfig } = useCanvasStore();
@@ -65,7 +65,7 @@ const WorkBenchCanvas = () => {
 				>
 					{componentList.map((i, index) => (
 						<div
-							className="absolute"
+							className={`absolute ${setChartAnimateStyle(i.styles.animations)}`}
 							key={index}
 							style={{ ...setChartPosStyle(i.attr, index), ...setChartSizeStyle(i.attr) }}
 							onMouseDown={(e) => handleMouseDown(e, i)}

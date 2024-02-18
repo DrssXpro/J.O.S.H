@@ -1,25 +1,35 @@
 import JCollapseBox from "@/components/JChartConfiguration/public/JCollapseBox";
+import useEditCharts from "@/hooks/useEditCharts";
 import { animations } from "@/settings/animationSetting";
+import useChartStore from "@/store/chartStore/chartStore";
 import { Button, Col, Row } from "antd";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 const AnimationConfiguration = () => {
+	const { updateChartConfig } = useChartStore();
+	const { getTargetChartIndex, getTargetData } = useEditCharts();
+	const chartIndex = getTargetChartIndex()!;
+	const component = getTargetData()!;
+
+	const selectAnimate = useMemo(
+		() => (component.styles.animations.length ? component.styles.animations[0] : ""),
+		[component]
+	);
 	const [hoverAnimate, setHoverAnimate] = useState("");
-	const [selectAnimate, setSelectAnimate] = useState("");
 	return (
 		<div className="flex flex-col gap-4">
 			<Button
 				block
 				disabled={!selectAnimate}
 				onClick={() => {
-					setSelectAnimate("");
+					updateChartConfig(chartIndex, "styles", "animations", [""]);
 				}}
 			>
 				清除动画
 			</Button>
 			<div>
 				{animations.map((item, index) => (
-					<JCollapseBox name={item.label} key={index}>
+					<JCollapseBox name={item.label} key={index} unfold>
 						<Row gutter={[10, 10]}>
 							{item.children.map((i) => (
 								<Col className="gutter-row" key={i.value} span={8}>
@@ -33,7 +43,7 @@ const AnimationConfiguration = () => {
 											setHoverAnimate(i.value);
 										}}
 										onClick={() => {
-											setSelectAnimate(i.value);
+											updateChartConfig(chartIndex, "styles", "animations", [i.value]);
 										}}
 									>
 										{i.label}
