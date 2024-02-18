@@ -9,6 +9,7 @@ import useChartStore from "@/store/chartStore/chartStore";
 import { ComponentType, FetchComFlagType } from "@/materials/types";
 import EditShapeBox from "./components/EditShapeBox";
 import useMouseHandle from "./hooks/useMouseHandle";
+import { setChartPosStyle, setChartSizeStyle } from "./utils/handleChartStyle";
 
 const WorkBenchCanvas = () => {
 	const { canvasConfig } = useCanvasStore();
@@ -38,11 +39,12 @@ const WorkBenchCanvas = () => {
 	}, [canvasBackground, canvasBackgroundImage]);
 
 	return (
-		<div className="relative flex-1" onMouseDown={(e) => mousedownHandleUnStop(e)}>
+		<div className="relative flex-1">
 			<CanvasRuler>
 				<div
-					className="text-light-50"
+					className="relative"
 					style={computedCanvasStyle}
+					onMouseDown={(e) => mousedownHandleUnStop(e)}
 					onDrop={async (e) => {
 						const dropString = e.dataTransfer.getData(DragKeyEnum.DRAG_KEY);
 						const dropData = JSON.parse(dropString);
@@ -62,7 +64,12 @@ const WorkBenchCanvas = () => {
 					}}
 				>
 					{componentList.map((i, index) => (
-						<div key={index} className="w-100 h-80" onMouseDown={(e) => handleMouseDown(e, i)}>
+						<div
+							className="absolute"
+							key={index}
+							style={{ ...setChartPosStyle(i.attr, index), ...setChartSizeStyle(i.attr) }}
+							onMouseDown={(e) => handleMouseDown(e, i)}
+						>
 							<EditShapeBox chartConfig={i}>
 								<i.ChartComponent chartConfig={i} />
 							</EditShapeBox>

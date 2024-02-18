@@ -6,27 +6,35 @@ import JSettingBox from "@/components/JChartConfiguration/public/JSettingBox";
 import JSettingItem from "@/components/JChartConfiguration/public/JSettingItem";
 import { ColorPicker, InputNumber, Select, Switch } from "antd";
 import { axisConfig } from "@/materials/echartsConfig";
-import { barSeriesItem, lineSeriesItem } from "../config";
 import useChartStore from "@/store/chartStore/chartStore";
 import useEditCharts from "@/hooks/useEditCharts";
 
-const optionsConfig = [barSeriesItem, lineSeriesItem];
-
 const BarLineConfigComponent = () => {
 	const { updateChartConfig } = useChartStore();
-	const { getTargetChartIndex } = useEditCharts();
+	const { getTargetChartIndex, getTargetData } = useEditCharts();
 	const chartIndex = getTargetChartIndex()!;
-	const [barConfig, setBarConfig] = useState(barSeriesItem);
-	const [lineConfig, setLineConfig] = useState(lineSeriesItem);
+	const component = getTargetData()!;
+	const [globalConfig, setGlobalConfig] = useState({
+		series: [component!.option.series[0], component!.option.series[1]],
+		updateKey: ""
+	});
 
 	useEffect(() => {
-		updateChartConfig(chartIndex, "series", [{ ...barConfig }, { ...lineConfig }]);
-	}, [barConfig, lineConfig]);
+		globalConfig.updateKey && updateChartConfig(chartIndex, "option", "series", globalConfig.series);
+	}, [globalConfig]);
+
+	useEffect(() => {
+		component &&
+			setGlobalConfig({
+				series: component.option.series,
+				updateKey: ""
+			});
+	}, [chartIndex]);
 
 	return (
 		<>
 			<JGlobalChartSetting chartIndex={chartIndex} />
-			{optionsConfig.map((i: any, index: number) => (
+			{globalConfig.series.map((i: any, index: number) => (
 				<JCollapseBox name={i.type === "bar" ? "柱状图" : "折线图"} key={index} unfold>
 					<>
 						{i.type === "bar" && (
@@ -35,11 +43,12 @@ const BarLineConfigComponent = () => {
 									<JSettingItem text="宽度">
 										<InputNumber
 											className="w-full"
-											defaultValue={i.barWidth}
+											value={i.barWidth}
 											onChange={(val) => {
-												setBarConfig(
+												setGlobalConfig(
 													produce((draft) => {
-														draft.barWidth = val;
+														draft.series[0].barWidth = val;
+														draft.updateKey = "bar";
 													})
 												);
 											}}
@@ -48,11 +57,12 @@ const BarLineConfigComponent = () => {
 									<JSettingItem text="圆角">
 										<InputNumber
 											className="w-full"
-											defaultValue={i.itemStyle.borderRadius}
+											value={i.itemStyle.borderRadius}
 											onChange={(val) => {
-												setBarConfig(
+												setGlobalConfig(
 													produce((draft) => {
-														draft.itemStyle.borderRadius = val;
+														draft.series[0].itemStyle.borderRadius = val;
+														draft.updateKey = "bar";
 													})
 												);
 											}}
@@ -68,11 +78,12 @@ const BarLineConfigComponent = () => {
 										<JSettingItem text="宽度">
 											<InputNumber
 												className="w-full"
-												defaultValue={i.lineStyle.width}
+												value={i.lineStyle.width}
 												onChange={(val) => {
-													setLineConfig(
+													setGlobalConfig(
 														produce((draft) => {
-															draft.lineStyle.width = val;
+															draft.series[1].lineStyle.width = val;
+															draft.updateKey = "line";
 														})
 													);
 												}}
@@ -80,13 +91,14 @@ const BarLineConfigComponent = () => {
 										</JSettingItem>
 										<JSettingItem text="类型">
 											<Select
-												defaultValue={i.lineStyle.type}
+												value={i.lineStyle.type}
 												className="w-full"
 												options={axisConfig.splitLint.lineStyle}
 												onChange={(val) => {
-													setLineConfig(
+													setGlobalConfig(
 														produce((draft) => {
-															draft.lineStyle.type = val;
+															draft.series[1].lineStyle.type = val;
+															draft.updateKey = "line";
 														})
 													);
 												}}
@@ -99,11 +111,12 @@ const BarLineConfigComponent = () => {
 										<JSettingItem text="宽度">
 											<InputNumber
 												className="w-full"
-												defaultValue={i.symbolSize}
+												value={i.symbolSize}
 												onChange={(val) => {
-													setLineConfig(
+													setGlobalConfig(
 														produce((draft) => {
-															draft.symbolSize = val;
+															draft.series[1].symbolSize = val;
+															draft.updateKey = "line";
 														})
 													);
 												}}
@@ -117,17 +130,19 @@ const BarLineConfigComponent = () => {
 							<div className="grid grid-cols-2 gap-2">
 								<JSettingItem text="展示">
 									<Switch
-										defaultValue={i.label.show}
+										value={i.label.show}
 										onChange={(val) => {
 											i.type === "bar"
-												? setBarConfig(
+												? setGlobalConfig(
 														produce((draft) => {
-															draft.label.show = val;
+															draft.series[0].label.show = val;
+															draft.updateKey = "bar";
 														})
 													)
-												: setLineConfig(
+												: setGlobalConfig(
 														produce((draft) => {
-															draft.label.show = val;
+															draft.series[1].label.show = val;
+															draft.updateKey = "line";
 														})
 													);
 										}}
@@ -136,18 +151,20 @@ const BarLineConfigComponent = () => {
 								<JSettingItem text="大小">
 									<InputNumber
 										className="w-full"
-										defaultValue={i.label.fontSize}
+										value={i.label.fontSize}
 										onChange={(val) => {
 											val &&
 												(i.type === "bar"
-													? setBarConfig(
+													? setGlobalConfig(
 															produce((draft) => {
-																draft.label.fontSize = val;
+																draft.series[0].label.fontSize = val;
+																draft.updateKey = "bar";
 															})
 														)
-													: setLineConfig(
+													: setGlobalConfig(
 															produce((draft) => {
-																draft.label.fontSize = val;
+																draft.series[1].label.fontSize = val;
+																draft.updateKey = "line";
 															})
 														));
 										}}
@@ -157,18 +174,20 @@ const BarLineConfigComponent = () => {
 									<ColorPicker
 										className="w-full"
 										showText
-										defaultValue={i.label.color}
+										value={i.label.color}
 										onChange={(val) => {
 											const color = val.toHexString();
 											i.type === "bar"
-												? setBarConfig(
+												? setGlobalConfig(
 														produce((draft) => {
-															draft.label.color = color;
+															draft.series[0].label.color = color;
+															draft.updateKey = "bar";
 														})
 													)
-												: setLineConfig(
+												: setGlobalConfig(
 														produce((draft) => {
-															draft.label.color = color;
+															draft.series[1].label.color = color;
+															draft.updateKey = "line";
 														})
 													);
 										}}
@@ -176,7 +195,7 @@ const BarLineConfigComponent = () => {
 								</JSettingItem>
 								<JSettingItem text="位置">
 									<Select
-										defaultValue={i.label.position}
+										value={i.label.position}
 										className="w-full"
 										options={[
 											{ label: "top", value: "top" },
@@ -186,14 +205,16 @@ const BarLineConfigComponent = () => {
 										]}
 										onChange={(val) => {
 											i.type === "bar"
-												? setBarConfig(
+												? setGlobalConfig(
 														produce((draft) => {
-															draft.label.position = val;
+															draft.series[0].label.position = val;
+															draft.updateKey = "bar";
 														})
 													)
-												: setLineConfig(
+												: setGlobalConfig(
 														produce((draft) => {
-															draft.label.position = val;
+															draft.series[1].label.position = val;
+															draft.updateKey = "line";
 														})
 													);
 										}}

@@ -30,10 +30,10 @@ const useChartStore = create<IChartState & IChartAction>()(
 				}
 			});
 		},
-		updateChartConfig(index, key, value) {
+		updateChartConfig(index, category, key, value) {
 			set((state) => {
 				const component = state.componentList[index];
-				component["option"][key] = value;
+				component[category][key] = value;
 			});
 		}
 	}))

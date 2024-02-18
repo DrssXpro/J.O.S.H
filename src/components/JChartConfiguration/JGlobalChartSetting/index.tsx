@@ -23,8 +23,22 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 	});
 
 	useEffect(() => {
-		updateChartConfig(chartIndex, globalConfig.updateKey, globalConfig["options"][globalConfig.updateKey]);
+		globalConfig.updateKey &&
+			updateChartConfig(
+				chartIndex,
+				"option",
+				globalConfig.updateKey,
+				globalConfig["options"][globalConfig.updateKey]
+			);
 	}, [globalConfig]);
+
+	useEffect(() => {
+		component &&
+			setGlobalGonfig({
+				options: component!.option,
+				updateKey: ""
+			});
+	}, [chartIndex]);
 	return (
 		<>
 			{globalConfig.options.grid && (
