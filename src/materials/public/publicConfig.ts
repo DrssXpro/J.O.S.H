@@ -1,7 +1,34 @@
+import { nanoid } from "nanoid";
+import { cloneDeep } from "lodash-es";
 import { chartInitConfig } from "@/settings/designSetting";
 import { PublicConfigType } from "../types";
-import { nanoid } from "nanoid";
 import { BaseEvent, EventLife } from "../types/eventTypes";
+import {
+	RequestBodyEnum,
+	RequestConfigType,
+	RequestDataValueEnum,
+	RequestHttpEnum,
+	RequestHttpIntervalEnum
+} from "@/types/HttpTypes";
+
+// 请求基础属性
+export const requestConfig: RequestConfigType = {
+	requestDataType: RequestDataValueEnum.STATIC,
+	requestHttpType: RequestHttpEnum.GET,
+	requestUrl: "",
+	requestInterval: undefined,
+	requestIntervalUnit: RequestHttpIntervalEnum.SECOND,
+	requestParamsBodyType: RequestBodyEnum.NONE,
+	requestParams: {
+		Body: {
+			"form-data": {},
+			"x-www-form-urlencoded": {},
+			json: ""
+		},
+		Header: {},
+		Params: {}
+	}
+};
 
 // 单实例类
 export class PublicConfigClass implements PublicConfigType {
@@ -49,6 +76,7 @@ export class PublicConfigClass implements PublicConfigType {
 		hide: false
 	};
 	// 请求
+	public request = cloneDeep(requestConfig);
 	// 数据过滤
 	public filter = undefined;
 	// 事件

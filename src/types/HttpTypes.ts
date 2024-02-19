@@ -43,6 +43,13 @@ export enum RequestBodyEnum {
 	JSON = "json"
 }
 
+// 请求参数类型
+export enum RequestParamsTypeEnum {
+	PARAMS = "Params",
+	BODY = "Body",
+	HEADER = "Header"
+}
+
 // ajax 请求类型
 export interface SelectHttpType {
 	label: RequestHttpEnum;
@@ -137,3 +144,40 @@ export const RequestBodyEnumList = [
 	RequestBodyEnum.X_WWW_FORM_URLENCODED,
 	RequestBodyEnum.JSON
 ];
+
+export type RequestParamsObjType = {
+	[T: string]: string;
+};
+export type RequestParams = {
+	[RequestParamsTypeEnum.PARAMS]: RequestParamsObjType;
+	[RequestParamsTypeEnum.HEADER]: RequestParamsObjType;
+	[RequestParamsTypeEnum.BODY]: {
+		[RequestBodyEnum.FORM_DATA]: RequestParamsObjType;
+		[RequestBodyEnum.X_WWW_FORM_URLENCODED]: RequestParamsObjType;
+		[RequestBodyEnum.JSON]: string;
+	};
+};
+
+// 请求公共类型
+type RequestPublicConfigType = {
+	// 时间单位（时分秒）
+	requestIntervalUnit: RequestHttpIntervalEnum;
+	// 请求内容
+	requestParams: RequestParams;
+};
+
+// 单个图表请求配置
+export interface RequestConfigType extends RequestPublicConfigType {
+	// 所选全局数据池的对应 id
+	requestDataPondId?: string;
+	// 组件定制轮询时间
+	requestInterval?: number;
+	// 获取数据的方式
+	requestDataType: RequestDataValueEnum;
+	// 请求方式 get/post/del/put/patch
+	requestHttpType: RequestHttpEnum;
+	// 源后续的 url
+	requestUrl?: string;
+	// 请求体类型
+	requestParamsBodyType: RequestBodyEnum;
+}

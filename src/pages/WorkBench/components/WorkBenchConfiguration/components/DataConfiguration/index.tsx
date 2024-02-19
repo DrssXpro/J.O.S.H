@@ -1,10 +1,11 @@
-import { useState } from "react";
 import { Select } from "antd";
 import { RequestDataLabelEnum, RequestDataValueEnum } from "@/types/HttpTypes";
 import JSettingBox from "@/components/JChartConfiguration/public/JSettingBox";
 import StaticData from "./components/StaticData";
 import DynamicData from "./components/DynamicData";
 import PublicData from "./components/PublicData";
+import useEditCharts from "@/hooks/useEditCharts";
+import useChartStore from "@/store/chartStore/chartStore";
 
 interface IDataOptions {
 	label: RequestDataLabelEnum;
@@ -34,20 +35,24 @@ const ConfigurationComponentMap: Record<RequestDataValueEnum, JSX.Element> = {
 };
 
 const DataConfiguration = () => {
-	const [currentSelect, setCurrentSelect] = useState<RequestDataValueEnum>(RequestDataValueEnum.STATIC);
+	const { updateChartConfig } = useChartStore();
+	const { getTargetChartIndex, getTargetData } = useEditCharts();
+	const chartIndex = getTargetChartIndex()!;
+	const component = getTargetData()!;
+
 	return (
 		<>
 			<JSettingBox name="请求方式">
 				<Select
 					className="w-full"
-					defaultValue={RequestDataValueEnum.STATIC}
 					options={dataOptions}
+					value={component.request.requestDataType}
 					onChange={(value) => {
-						setCurrentSelect(value);
+						updateChartConfig(chartIndex, "request", "requestDataType", value);
 					}}
 				/>
 			</JSettingBox>
-			{ConfigurationComponentMap[currentSelect]}
+			{ConfigurationComponentMap[component.request.requestDataType]}
 		</>
 	);
 };

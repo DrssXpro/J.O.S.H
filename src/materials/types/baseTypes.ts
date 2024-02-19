@@ -1,3 +1,4 @@
+import { RequestConfigType } from "@/types/HttpTypes";
 import { BaseEvent, EventLife } from "./eventTypes";
 
 // 获取组件
@@ -86,6 +87,7 @@ export interface PublicConfigType {
 
 		animations: string[];
 	};
+	request: RequestConfigType;
 	preview?: {
 		// 预览超出隐藏
 		overFlowHidden?: boolean;
