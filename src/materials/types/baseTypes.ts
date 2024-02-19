@@ -1,6 +1,17 @@
 import { RequestConfigType } from "@/types/HttpTypes";
 import { BaseEvent, EventLife } from "./eventTypes";
 
+export enum ChartFrameEnum {
+	// 支持 dataset 的 echarts 框架
+	ECHARTS = "echarts",
+	// UI 组件框架
+	ANT_DESIGN = "antDesign",
+	// 自定义带数据组件
+	COMMON = "common",
+	// 无数据变更
+	STATIC = "static"
+}
+
 // 获取组件
 export enum FetchComFlagType {
 	VIEW,
@@ -62,6 +73,12 @@ export interface IMaterialConfigType {
 	menu: string;
 	// 组件预览图
 	image: string;
+	// 区分组件类型（是否支持 dataset 设置）
+	chartFrame?: ChartFrameEnum;
+	// 组件预设的 dataset 值（图片/图标）
+	dataset?: any;
+	// 禁用 拖拽或双击生成组件
+	disabled?: boolean;
 	// 配置事件
 	configEvents?: Record<string, (...args: any[]) => any>;
 }

@@ -24,34 +24,22 @@ import JEditCode from "@/components/JChartConfiguration/JEditCode";
 import useEditCharts from "@/hooks/useEditCharts";
 import useChartStore from "@/store/chartStore/chartStore";
 import { RequestDataValueEnum } from "@/types/HttpTypes";
+import { ChartFrameEnum } from "@/materials/types";
 
+// 数据映射 table 结构
 interface IDataType {
 	key: string;
 	field: string;
 	mapping: string;
-	result: string;
+	result: DataResultEnum;
 }
 
-const dataSource: IDataType[] = [
-	{
-		key: "1",
-		field: "通用标识",
-		mapping: "product",
-		result: "无"
-	},
-	{
-		key: "2",
-		field: "数据项-1",
-		mapping: "data1",
-		result: "匹配成功"
-	},
-	{
-		key: "3",
-		field: "数据项-2",
-		mapping: "data2",
-		result: "匹配成功"
-	}
-];
+// 数据映射匹配结果
+enum DataResultEnum {
+	NULL = 0,
+	SUCCESS = 1,
+	FAILURE = 2
+}
 
 const columns: TableProps<IDataType>["columns"] = [
 	{
@@ -71,7 +59,7 @@ const columns: TableProps<IDataType>["columns"] = [
 		render: (value) => (
 			<div className="flex items-center gap-2">
 				<Badge color={"magenta"} />
-				<div>{value}</div>
+				{value === 0 ? "无" : <div>匹配{value === 1 ? "成功" : "失败"}</div>}
 			</div>
 		)
 	}
@@ -82,16 +70,60 @@ const DataMapAndShow = () => {
 	const { getTargetChartIndex, getTargetData } = useEditCharts();
 	const chartIndex = getTargetChartIndex()!;
 	const component = getTargetData()!;
+	// filter modal 控制
 	const [isOpen, setIsOpen] = useState(false);
-	const [code, setCode] = useState(JSON.stringify(component.option.dataset, null, 2));
+	// filter code
 	const [filterCode, setFilterCode] = useState("return data;");
+	// 图表数据源展示
+	const [code, setCode] = useState(component.option.dataset);
+
 	const [messageApi, contextHolder] = message.useMessage();
 
 	const showFilter = useMemo(() => component.request.requestDataType !== RequestDataValueEnum.STATIC, [component]);
 
-	useEffect(() => {
-		setCode(JSON.stringify(component.option.dataset, null, 2));
+	const isCharts = useMemo(() => component.chartConfig.chartFrame === ChartFrameEnum.ECHARTS, [component]);
+	// 针对 dataset 图表显示映射
+	const dimensionsAndSource = useMemo<IDataType[]>(() => {
+		const dimensions = component.option.dataset.dimensions;
+		if (!dimensions) return [];
+		return dimensions.map((i: string, index: number) => {
+			return index === 0
+				? {
+						key: i,
+						// 字段
+						field: "通用标识",
+						// 映射
+						mapping: i,
+						// 结果
+						result: DataResultEnum.NULL
+					}
+				: {
+						key: i,
+						field: `数据项-${index}`,
+						mapping: i,
+						result: matchingHandle(i)
+					};
+		});
 	}, [component]);
+
+	useEffect(() => {
+		// 支持 dataset 图表，设置数据展示并计算数据映射
+		if (component.option.dataset && isCharts) {
+			setCode(component.option.dataset);
+		}
+	}, [component.option.dataset]);
+
+	// 处理映射列表状态结果
+	function matchingHandle(mapping: string) {
+		let res = DataResultEnum.SUCCESS;
+		for (let i = 0; i < code.length; i++) {
+			if (code[i][mapping as any] === undefined) {
+				res = DataResultEnum.FAILURE;
+				return res;
+			}
+		}
+		return DataResultEnum.SUCCESS;
+	}
 
 	// 导入 json 文件操作配置
 	const uploadProps: UploadProps = {
@@ -122,10 +154,11 @@ const DataMapAndShow = () => {
 			return true;
 		}
 	};
+
 	// 下载数据形成文件
 	const downloadData = () => {
 		try {
-			downloadTextFile(code, undefined, "json");
+			downloadTextFile(JSON.stringify(code, null, 2), undefined, "json");
 			messageApi.success("下载成功!");
 		} catch (error) {
 			messageApi.error("下载失败，数据错误!");
@@ -142,7 +175,7 @@ const DataMapAndShow = () => {
 					title: "数据映射",
 					description: (
 						<Table
-							dataSource={dataSource}
+							dataSource={dimensionsAndSource}
 							columns={columns}
 							pagination={false}
 							rowClassName={(_, i) => (i % 2 !== 1 ? "bg-[#141414]" : "bg-[#1D1D1D]")}
@@ -242,7 +275,12 @@ const DataMapAndShow = () => {
 								</Tooltip>
 							</div>
 							<div className="my-2 border-1 border-[#303030]">
-								<JCodeMirror code={code} lan="json" disabled={true} height={400} />
+								<JCodeMirror
+									code={JSON.stringify(code, null, 2)}
+									lan="json"
+									disabled={true}
+									height={400}
+								/>
 							</div>
 							{contextHolder}
 						</>
