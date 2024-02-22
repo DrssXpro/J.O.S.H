@@ -34,6 +34,7 @@ const AdvancedEventConfig = () => {
 	return (
 		<>
 			<JCollapseBox
+				unfold
 				name="高级事件配置"
 				operator={
 					<Button

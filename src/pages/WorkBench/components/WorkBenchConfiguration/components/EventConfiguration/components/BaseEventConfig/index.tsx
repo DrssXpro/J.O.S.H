@@ -1,12 +1,14 @@
-import { useState } from "react";
-import { Button, Divider, Modal, Tabs, Tag, Typography } from "antd";
+import { useEffect, useMemo, useState } from "react";
+import { Button, Divider, Modal, Tabs, Tag, Typography, message } from "antd";
 import JCollapseBox from "@/components/JChartConfiguration/public/JCollapseBox";
 import JCodeMirror from "@/components/JCodeMirror";
 import JIcon from "@/components/JIcon";
 import { Document, Pencil } from "@ricons/ionicons5";
-import { initBaseEventCode } from "../codeConfig";
+import { computedBaseEventCode } from "../codeConfig";
 import { BaseEvent, ErrorTypeName, VaildError } from "@/types/EventTypes";
 import JEditCode from "@/components/JChartConfiguration/JEditCode";
+import useEditCharts from "@/hooks/useEditCharts";
+import useChartStore from "@/store/chartStore/chartStore";
 
 const EventTypeName = {
 	[BaseEvent.ON_CLICK]: "单击",
@@ -16,22 +18,63 @@ const EventTypeName = {
 };
 
 const BaseEventConfig = () => {
-	const [baseEvent, setBaseEvent] = useState({
-		[BaseEvent.ON_CLICK]: "",
-		[BaseEvent.ON_DBL_CLICK]: "",
-		[BaseEvent.ON_MOUSE_ENTER]: "",
-		[BaseEvent.ON_MOUSE_LEAVE]: ""
-	});
-	const [errorInfo] = useState({
+	const [messageApi, contextHolder] = message.useMessage();
+	const [errorInfo, setErrorInfo] = useState({
 		[VaildError.ERROR_FN]: "",
 		[VaildError.ERROR_INFO]: "",
 		[VaildError.ERROR_STACK]: ""
 	});
-	const [baseCode] = useState(initBaseEventCode);
+	const { updateChartConfig } = useChartStore();
+	const { getTargetChartIndex, getTargetData } = useEditCharts();
+	const chartIndex = getTargetChartIndex()!;
+	const component = getTargetData()!;
+	const [baseEvent, setBaseEvent] = useState({
+		...component.events.baseEvent
+	});
 	const [isOpen, setIsOpen] = useState(false);
+
+	// 组件图表绑定事件代码展示
+	const showCode = useMemo(() => {
+		const codes = Object.entries(component.events.baseEvent).map(([, body]) => (body ? body : ""));
+		return computedBaseEventCode(codes);
+	}, [component.events.baseEvent]);
+
+	// 处理编写的事件函数错误信息上报展示
+	useEffect(() => {
+		let eventN = "",
+			message = "",
+			name = "";
+		Object.entries(baseEvent).forEach(([eventName, body]) => {
+			const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
+			try {
+				new AsyncFunction(body);
+			} catch (error: any) {
+				eventN = eventName;
+				message = error.message;
+				name = error.name;
+			}
+			setErrorInfo({
+				[VaildError.ERROR_FN]: eventN,
+				[VaildError.ERROR_INFO]: message,
+				[VaildError.ERROR_STACK]: name
+			});
+		});
+	}, [baseEvent]);
+
+	const closeModal = () => {
+		if (errorInfo[VaildError.ERROR_FN]) {
+			messageApi.error("事件函数错误，无法进行保存");
+			return;
+		}
+		updateChartConfig(chartIndex, "events", "baseEvent", baseEvent);
+		setIsOpen(false);
+	};
+
 	return (
 		<>
+			{contextHolder}
 			<JCollapseBox
+				unfold
 				name="基础事件配置"
 				operator={
 					<Button
@@ -46,7 +89,7 @@ const BaseEventConfig = () => {
 				}
 			>
 				<div className="p-1 border-1 border-[#3E3E3F]">
-					<JCodeMirror lan="javascript" fontSize={14} code={baseCode} disabled />
+					<JCodeMirror lan="javascript" fontSize={14} code={showCode} disabled />
 				</div>
 			</JCollapseBox>
 			<Modal
@@ -69,7 +112,7 @@ const BaseEventConfig = () => {
 
 						<div className="flex items-center justify-center">
 							<Button onClick={() => setIsOpen(false)}>取消</Button>
-							<Button type="primary" onClick={() => setIsOpen(false)}>
+							<Button type="primary" onClick={closeModal}>
 								保存
 							</Button>
 						</div>
