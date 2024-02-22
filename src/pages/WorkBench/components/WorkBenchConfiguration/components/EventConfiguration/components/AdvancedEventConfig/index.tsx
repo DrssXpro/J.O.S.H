@@ -1,12 +1,14 @@
-import { useState } from "react";
-import { Button, Divider, Modal, Tabs, Tag, Typography } from "antd";
+import { useEffect, useMemo, useState } from "react";
+import { Button, Divider, Modal, Tabs, Tag, Typography, message } from "antd";
 import JCollapseBox from "@/components/JChartConfiguration/public/JCollapseBox";
 import JCodeMirror from "@/components/JCodeMirror";
 import JIcon from "@/components/JIcon";
 import { Document, Pencil } from "@ricons/ionicons5";
-import { initAdvancedEventCode } from "../codeConfig";
+import { computedAdvancedEventCode } from "../codeConfig";
 import { ErrorTypeName, EventLife, VaildError } from "@/types/EventTypes";
 import JEditCode from "@/components/JChartConfiguration/JEditCode";
+import useChartStore from "@/store/chartStore/chartStore";
+import useEditCharts from "@/hooks/useEditCharts";
 
 const EventLifeName = {
 	[EventLife.VNODE_BEFORE_MOUNT]: "渲染之前",
@@ -19,20 +21,61 @@ const EventLifeTip = {
 };
 
 const AdvancedEventConfig = () => {
-	const [advancedEvent, setAdvancedEvent] = useState({
-		[EventLife.VNODE_BEFORE_MOUNT]: "",
-		[EventLife.VNODE_MOUNTED]: ""
-	});
-	const [errorInfo] = useState({
+	const [messageApi, contextHolder] = message.useMessage();
+	const [errorInfo, setErrorInfo] = useState({
 		[VaildError.ERROR_FN]: "",
 		[VaildError.ERROR_INFO]: "",
 		[VaildError.ERROR_STACK]: ""
 	});
-	const [currentEvent, setCurrentEvent] = useState(EventLife.VNODE_BEFORE_MOUNT);
-	const [advancedCode] = useState(initAdvancedEventCode);
+	const { updateChartConfig } = useChartStore();
+	const { getTargetChartIndex, getTargetData } = useEditCharts();
+	const chartIndex = getTargetChartIndex()!;
+	const component = getTargetData()!;
+	const [advancedEvent, setAdvancedEvent] = useState({
+		...component.events.advancedEvents
+	});
+	const [currentEvent, setCurrentEvent] = useState(EventLife.VNODE_MOUNTED);
 	const [isOpen, setIsOpen] = useState(false);
+
+	// 组件图表绑定事件代码展示
+	const showCode = useMemo(() => {
+		const codes = Object.entries(component.events.advancedEvents).map(([, body]) => (body ? body : ""));
+		return computedAdvancedEventCode(codes);
+	}, [component.events.advancedEvents]);
+
+	// 处理编写的事件函数错误信息上报展示
+	useEffect(() => {
+		let eventN = "",
+			message = "",
+			name = "";
+		Object.entries(advancedEvent).forEach(([eventName, body]) => {
+			const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
+			try {
+				new AsyncFunction(body);
+			} catch (error: any) {
+				eventN = eventName;
+				message = error.message;
+				name = error.name;
+			}
+			setErrorInfo({
+				[VaildError.ERROR_FN]: eventN,
+				[VaildError.ERROR_INFO]: message,
+				[VaildError.ERROR_STACK]: name
+			});
+		});
+	}, [advancedEvent]);
+
+	const closeModal = () => {
+		if (errorInfo[VaildError.ERROR_FN]) {
+			messageApi.error("事件函数错误，无法进行保存");
+			return;
+		}
+		updateChartConfig(chartIndex, "events", "advancedEvents", advancedEvent);
+		setIsOpen(false);
+	};
 	return (
 		<>
+			{contextHolder}
 			<JCollapseBox
 				unfold
 				name="高级事件配置"
@@ -49,7 +92,7 @@ const AdvancedEventConfig = () => {
 				}
 			>
 				<div className="p-1 border-1 border-[#3E3E3F]">
-					<JCodeMirror lan="javascript" fontSize={14} code={advancedCode} disabled />
+					<JCodeMirror lan="javascript" fontSize={14} code={showCode} disabled />
 				</div>
 			</JCollapseBox>
 			<Modal
@@ -71,7 +114,7 @@ const AdvancedEventConfig = () => {
 						</div>
 						<div className="flex items-center justify-center">
 							<Button onClick={() => setIsOpen(false)}>取消</Button>
-							<Button type="primary" onClick={() => setIsOpen(false)}>
+							<Button type="primary" onClick={closeModal}>
 								保存
 							</Button>
 						</div>

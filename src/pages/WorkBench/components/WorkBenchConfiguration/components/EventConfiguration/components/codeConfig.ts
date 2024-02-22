@@ -20,15 +20,17 @@ ${codes[3]}
 }`;
 };
 
-const initAdvancedEventCode = `// 渲染之后
+const computedAdvancedEventCode = (codes: string[]) => {
+	return `// 渲染之后
 async function vnodeMounted (e,components,echarts,node_modules) {
-
+${codes[0]}
 },
 
 // 渲染之前
 async function vnodeBeforeMount (e,components,echarts,node_modules) {
-
+${codes[1]}
 },
 `;
+};
 
-export { computedBaseEventCode, initAdvancedEventCode };
+export { computedBaseEventCode, computedAdvancedEventCode };
