@@ -21,7 +21,8 @@ const JCodeMirror = (props: IJCodeMirrorProps) => {
 			height={height ? `${height}px` : "auto"}
 			style={{
 				width: "100%",
-				fontSize: `${fontSize}px`
+				fontSize: `${fontSize}px`,
+				fontWeight: "700"
 			}}
 			basicSetup={{ highlightActiveLine: false, lineNumbers: false, foldGutter: false }}
 			tabIndex={2}
