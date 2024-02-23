@@ -4,9 +4,16 @@ import { IChartAction, IChartState } from "./types";
 import { RequestHttpIntervalEnum } from "@/types/HttpTypes";
 
 const useChartStore = create<IChartState & IChartAction>()(
-	immer((set) => ({
+	immer((set, get) => ({
 		componentList: [],
 		selectId: [],
+		// 鼠标定位
+		mousePosition: {
+			startX: 0,
+			startY: 0,
+			x: 0,
+			y: 0
+		},
 		requestGlobalConfig: {
 			requestOriginUrl: "",
 			requestInterval: 30,
@@ -21,6 +28,19 @@ const useChartStore = create<IChartState & IChartAction>()(
 				Header: {},
 				Params: {}
 			}
+		},
+		// selectId 更新后立刻使用需要通过 get 获取最新值
+		getSelectId: () => {
+			return get().selectId;
+		},
+		// 设置鼠标位置
+		setMousePosition(x?: number, y?: number, startX?: number, startY?: number) {
+			set((state) => {
+				if (x) state.mousePosition.x = x;
+				if (y) state.mousePosition.y = y;
+				if (startX) state.mousePosition.startX = startX;
+				if (startY) state.mousePosition.startY = startY;
+			});
 		},
 		addComponentList: (component) => {
 			set((state) => {

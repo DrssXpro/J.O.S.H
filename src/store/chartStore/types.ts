@@ -10,12 +10,20 @@ interface IComponent extends ComponentType {
 export interface IChartState {
 	componentList: IComponent[];
 	selectId: string[];
+	mousePosition: {
+		startX: number;
+		startY: number;
+		x: number;
+		y: number;
+	};
 	requestGlobalConfig: RequestGlobalConfigType;
 }
 
 export interface IChartAction {
+	setMousePosition(x?: number, y?: number, startX?: number, startY?: number): void;
 	addComponentList: (component: IComponent) => void;
 	setTargetSelectChart: (select?: string | string[], push?: boolean) => void;
+	getSelectId: () => string[];
 	updateChartConfig: <C extends keyof ComponentType, K extends keyof ComponentType[C]>(
 		index: number,
 		category: C,
