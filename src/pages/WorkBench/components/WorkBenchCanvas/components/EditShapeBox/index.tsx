@@ -1,6 +1,7 @@
 import { ComponentType } from "@/materials/types";
 import useChartStore from "@/store/chartStore/chartStore";
 import { CSSProperties, useMemo } from "react";
+import useMouseHandle from "../../hooks/useMouseHandle";
 
 interface IEditShapeBoxProps {
 	chartConfig: ComponentType;
@@ -108,6 +109,7 @@ const points: Point[] = [
 const EditShapeBox = (props: IEditShapeBoxProps) => {
 	const { children, chartConfig } = props;
 	const { selectId } = useChartStore();
+	const { handleMousePointDown } = useMouseHandle();
 
 	const isSelect = useMemo(() => {
 		return selectId.find((i) => chartConfig.id === i);
@@ -123,6 +125,7 @@ const EditShapeBox = (props: IEditShapeBoxProps) => {
 						className="absolute z-11 w-3 h-3 border-3 border-[#1668DC] bg-[#fff]"
 						key={direction}
 						style={{ borderRadius: "5px", cursor: `${PointCursorStyleMap[direction]}-resize`, ...style }}
+						onMouseDown={(e) => handleMousePointDown(e, direction, chartConfig.attr)}
 					></div>
 				))}
 

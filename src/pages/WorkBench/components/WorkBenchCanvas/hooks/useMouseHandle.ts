@@ -9,7 +9,7 @@ const useMouseHandle = () => {
 	const { canvasConfig, canvasGlobal } = useCanvasStore();
 	const { componentList, setTargetSelectChart, getSelectId, setMousePosition, updateChartConfig } = useChartStore();
 	const { getTargetChartIndex } = useEditCharts();
-
+	// 画布内 mousedown 事件（选中图表或清空当前选中内容）
 	const mousedownHandleUnStop = (_e: React.MouseEvent, item?: ComponentType) => {
 		if (item) {
 			setTargetSelectChart(item.id);
@@ -18,6 +18,7 @@ const useMouseHandle = () => {
 		setTargetSelectChart(undefined);
 	};
 
+	// 图表 mousedown 事件（拖拽改变位置）
 	const handleMouseDown = (e: React.MouseEvent, item: ComponentType) => {
 		e.preventDefault();
 		e.stopPropagation();
@@ -85,8 +86,61 @@ const useMouseHandle = () => {
 		document.addEventListener("mouseup", handleMouseUp);
 	};
 
+	// 图表八个点位 mousedown 事件（拖拽改变宽高大小）
+	const handleMousePointDown = (e: React.MouseEvent, point: string, attr: ComponentType["attr"]) => {
+		e.stopPropagation();
+		e.preventDefault();
+		const scale = canvasGlobal[CanvasGlobalTypeEnum.SCALE];
+		const chartIndex = getTargetChartIndex()!;
+
+		const itemAttrX = attr.x;
+		const itemAttrY = attr.y;
+		const itemAttrW = attr.w;
+		const itemAttrH = attr.h;
+
+		// 记录点击初始位置
+		const startX = e.screenX;
+		const startY = e.screenY;
+
+		setMousePosition(startX, startY);
+
+		const handleMouseMove = throttle((mouseEvent: MouseEvent) => {
+			setMousePosition(mouseEvent.screenX, mouseEvent.screenY);
+
+			const currX = Math.round((mouseEvent.screenX - startX) / scale);
+			const currY = Math.round((mouseEvent.screenY - startY) / scale);
+
+			// 只需确定四个方向 两两组合即为四个边角方向
+			const isTop = /t/.test(point);
+			const isBottom = /b/.test(point);
+			const isLeft = /l/.test(point);
+			const isRight = /r/.test(point);
+
+			const newHeight = itemAttrH + (isTop ? -currY : isBottom ? currY : 0);
+			const newWidth = itemAttrW + (isLeft ? -currX : isRight ? currX : 0);
+
+			// 缩小/放大的同时还会更新对应的位置
+			updateChartConfig(chartIndex, "attr", null, {
+				h: newHeight > 0 ? newHeight : 0,
+				w: newWidth > 0 ? newWidth : 0,
+				x: itemAttrX + (isLeft ? currX : 0),
+				y: itemAttrY + (isTop ? currY : 0)
+			});
+		}, 10);
+
+		const handleMouseUp = () => {
+			setMousePosition(0, 0, 0, 0);
+			document.removeEventListener("mousemove", handleMouseMove);
+			document.removeEventListener("mouseup", handleMouseUp);
+		};
+
+		document.addEventListener("mousemove", handleMouseMove);
+		document.addEventListener("mouseup", handleMouseUp);
+	};
+
 	return {
 		handleMouseDown,
+		handleMousePointDown,
 		mousedownHandleUnStop
 	};
 };
