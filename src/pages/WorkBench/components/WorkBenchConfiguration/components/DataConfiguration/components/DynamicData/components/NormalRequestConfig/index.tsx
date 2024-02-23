@@ -1,12 +1,17 @@
-import { useState } from "react";
 import { Radio, Tabs, TabsProps, Typography } from "antd";
 import RequestConfigTable from "../RequestConfigTable";
-import { RequestBodyEnum, RequestBodyEnumList } from "@/types/HttpTypes";
+import { RequestBodyEnum, RequestBodyEnumList, RequestParamsTypeEnum } from "@/types/HttpTypes";
 import JCodeMirror from "@/components/JCodeMirror";
+import useEditCharts from "@/hooks/useEditCharts";
+import useChartStore from "@/store/chartStore/chartStore";
 
 const BodyConfig = () => {
-	const [selectBody, setSelectBody] = useState(RequestBodyEnumList[0]);
-	const [code, setCode] = useState("");
+	const { updateChartRequestParams, updateChartConfig } = useChartStore();
+	const { getTargetChartIndex, getTargetData } = useEditCharts();
+	const chartIndex = getTargetChartIndex()!;
+	const requestConfig = getTargetData()!.request;
+	const { requestParamsBodyType } = requestConfig;
+	const { Body } = requestConfig.requestParams;
 
 	const bodyMap = {
 		[RequestBodyEnum.NONE]: (
@@ -14,14 +19,39 @@ const BodyConfig = () => {
 				<Typography.Text type="secondary">该接口没有 body 体</Typography.Text>
 			</div>
 		),
-		[RequestBodyEnum.FORM_DATA]: <RequestConfigTable />,
-		[RequestBodyEnum.X_WWW_FORM_URLENCODED]: <RequestConfigTable />,
+		[RequestBodyEnum.FORM_DATA]: (
+			<RequestConfigTable
+				dataParams={Body[RequestBodyEnum.FORM_DATA]}
+				updateParams={(value) => {
+					updateChartRequestParams(chartIndex, RequestParamsTypeEnum.BODY, {
+						...Body,
+						[RequestBodyEnum.FORM_DATA]: value
+					});
+				}}
+			/>
+		),
+		[RequestBodyEnum.X_WWW_FORM_URLENCODED]: (
+			<RequestConfigTable
+				dataParams={Body[RequestBodyEnum.X_WWW_FORM_URLENCODED]}
+				updateParams={(value) => {
+					updateChartRequestParams(chartIndex, RequestParamsTypeEnum.BODY, {
+						...Body,
+						[RequestBodyEnum.X_WWW_FORM_URLENCODED]: value
+					});
+				}}
+			/>
+		),
 		[RequestBodyEnum.JSON]: (
 			<div className="border-1 border-[#303030] h-[200px]">
 				<JCodeMirror
-					code={code}
+					code={Body[RequestBodyEnum.JSON]}
 					lan="json"
-					changeCode={(code) => setCode(code)}
+					changeCode={(code) =>
+						updateChartRequestParams(chartIndex, RequestParamsTypeEnum.BODY, {
+							...Body,
+							[RequestBodyEnum.JSON]: code
+						})
+					}
 					placeHolder="请输入 JSON 格式数据"
 				/>
 			</div>
@@ -32,9 +62,9 @@ const BodyConfig = () => {
 		<>
 			<div className="mb-5">
 				<Radio.Group
-					value={selectBody}
+					value={requestParamsBodyType}
 					onChange={(e) => {
-						setSelectBody(e.target.value);
+						updateChartConfig(chartIndex, "request", "requestParamsBodyType", e.target.value);
 					}}
 				>
 					{RequestBodyEnumList.map((i) => (
@@ -44,38 +74,51 @@ const BodyConfig = () => {
 					))}
 				</Radio.Group>
 			</div>
-			<div className="w-[80%]">{bodyMap[selectBody]}</div>
+			<div className="w-[80%]">{bodyMap[requestParamsBodyType]}</div>
 		</>
 	);
 };
 
-const items: TabsProps["items"] = [
-	{
-		key: "1",
-		label: "Params",
-		children: (
-			<div className="w-[80%]">
-				<RequestConfigTable />
-			</div>
-		)
-	},
-	{
-		key: "2",
-		label: "Body",
-		children: <BodyConfig />
-	},
-	{
-		key: "3",
-		label: "Header",
-		children: (
-			<div className="w-[80%]">
-				<RequestConfigTable />
-			</div>
-		)
-	}
-];
-
 const NormalRequestConfig = () => {
+	const { updateChartRequestParams } = useChartStore();
+	const { getTargetChartIndex, getTargetData } = useEditCharts();
+	const chartIndex = getTargetChartIndex()!;
+	const { Params, Header } = getTargetData()!.request.requestParams;
+	const items: TabsProps["items"] = [
+		{
+			key: "1",
+			label: "Params",
+			children: (
+				<div className="w-[80%]">
+					<RequestConfigTable
+						dataParams={Params}
+						updateParams={(value) => {
+							updateChartRequestParams(chartIndex, RequestParamsTypeEnum.PARAMS, value);
+						}}
+					/>
+				</div>
+			)
+		},
+		{
+			key: "2",
+			label: "Body",
+			children: <BodyConfig />
+		},
+		{
+			key: "3",
+			label: "Header",
+			children: (
+				<div className="w-[80%]">
+					<RequestConfigTable
+						dataParams={Header}
+						updateParams={(value) => {
+							updateChartRequestParams(chartIndex, RequestParamsTypeEnum.HEADER, value);
+						}}
+					/>
+				</div>
+			)
+		}
+	];
 	return <Tabs items={items}></Tabs>;
 };
 

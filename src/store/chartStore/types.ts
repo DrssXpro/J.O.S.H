@@ -1,4 +1,5 @@
 import { ChartComponentProps, ComponentType } from "@/materials/types";
+import { RequestConfigType, RequestGlobalConfigType } from "@/types/HttpTypes";
 import { FC } from "react";
 
 interface IComponent extends ComponentType {
@@ -9,6 +10,7 @@ interface IComponent extends ComponentType {
 export interface IChartState {
 	componentList: IComponent[];
 	selectId: string[];
+	requestGlobalConfig: RequestGlobalConfigType;
 }
 
 export interface IChartAction {
@@ -20,4 +22,11 @@ export interface IChartAction {
 		key: K,
 		value: any
 	) => void;
+	updateChartRequestParams: <K extends keyof RequestConfigType["requestParams"]>(
+		index: number,
+		key: K,
+		value: any
+	) => void;
+	updateGlobalRequestConfig: <K extends keyof RequestGlobalConfigType>(key: K, value: any) => void;
+	updateGlobalRequestParams: <K extends keyof RequestGlobalConfigType["requestParams"]>(key: K, value: any) => void;
 }

@@ -166,6 +166,23 @@ type RequestPublicConfigType = {
 	requestParams: RequestParams;
 };
 
+// 数据池项类型
+export type RequestDataPondItemType = {
+	dataPondId: string;
+	dataPondName: string;
+	dataPondRequestConfig: RequestConfigType;
+};
+
+// 全局的图表请求配置
+export interface RequestGlobalConfigType extends RequestPublicConfigType {
+	// 组件定制轮询时间
+	requestInterval: number;
+	// 请求源地址
+	requestOriginUrl?: string;
+	// 公共数据池
+	requestDataPond: RequestDataPondItemType[];
+}
+
 // 单个图表请求配置
 export interface RequestConfigType extends RequestPublicConfigType {
 	// 所选全局数据池的对应 id

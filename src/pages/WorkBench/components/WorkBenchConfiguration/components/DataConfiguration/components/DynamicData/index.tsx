@@ -5,12 +5,24 @@ import { Flash, Pulse, Pencil, ChevronUpOutline } from "@ricons/ionicons5";
 import JIcon from "@/components/JIcon";
 import DataMapAndShow from "../DataMapAndShow";
 import { forwardRef, useImperativeHandle, useRef, useState } from "react";
-import { selectTimeOptions, selectTypeOptions } from "@/types/HttpTypes";
+import { SelectHttpTimeNameObj, selectTimeOptions, selectTypeOptions } from "@/types/HttpTypes";
 import NormalRequestConfig from "./components/NormalRequestConfig";
 import PublicRequestConfig from "./components/PublicRequestConfig";
+import useEditCharts from "@/hooks/useEditCharts";
+import useChartStore from "@/store/chartStore/chartStore";
 
 const DynamicData = () => {
 	const modalRef = useRef<any>(null);
+	const { requestGlobalConfig } = useChartStore();
+	const { getTargetData } = useEditCharts();
+	const component = getTargetData()!;
+	// 全局请求配置
+	const {
+		requestOriginUrl,
+		requestInterval: GlobalRequestInterval,
+		requestIntervalUnit: GlobalRequestIntervalUnit
+	} = requestGlobalConfig;
+
 	return (
 		<>
 			<Card bodyStyle={{ padding: "20px 10px", background: "#232324" }} className="relative">
@@ -22,21 +34,33 @@ const DynamicData = () => {
 							</Button>
 						</JSettingItem>
 						<JSettingItem text="方式">
-							<Input value={"get"} disabled />
+							<Input value={component.request.requestHttpType || "暂无"} disabled />
 						</JSettingItem>
 						<JSettingItem text="组件间隔">
-							<Input suffix="秒" value={"暂无"} disabled />
+							<Input
+								suffix={SelectHttpTimeNameObj[component.request.requestIntervalUnit]}
+								value={component.request.requestInterval || "暂无"}
+								disabled
+							/>
 						</JSettingItem>
 						<JSettingItem text="全局间隔（默认）">
-							<Input suffix="秒" value={"30"} disabled />
+							<Input
+								suffix={SelectHttpTimeNameObj[GlobalRequestIntervalUnit]}
+								value={GlobalRequestInterval || "暂无"}
+								disabled
+							/>
 						</JSettingItem>
 					</div>
 				</JSettingBox>
 				<JSettingBox name="源地址">
-					<Input prefix={<JIcon icon={<Pulse />} />} value={"暂无"} disabled />
+					<Input prefix={<JIcon icon={<Pulse />} />} value={requestOriginUrl || "暂无"} disabled />
 				</JSettingBox>
 				<JSettingBox name="组件地址">
-					<Input prefix={<JIcon icon={<Flash />} />} value={"暂无"} disabled />
+					<Input
+						prefix={<JIcon icon={<Flash />} />}
+						value={component.request.requestUrl || "暂无"}
+						disabled
+					/>
 				</JSettingBox>
 				<div
 					className="absolute top-0 left-0 w-full h-full flex items-center justify-center cursor-pointer opacity-0 border-[#1668DC] border-1 hover:opacity-100 transition-all duration-500"
@@ -73,6 +97,11 @@ const DynamicDataModal = forwardRef((_, ref) => {
 	const [hideTable, setHideTable] = useState(false);
 	const [isHover, setIsHover] = useState(false);
 	const [editPublic, setEditPublic] = useState(false);
+	const { requestGlobalConfig, updateChartConfig, updateGlobalRequestConfig } = useChartStore();
+	const { getTargetData, getTargetChartIndex } = useEditCharts();
+	const chartIndex = getTargetChartIndex()!;
+	const { requestInterval, requestIntervalUnit, requestHttpType, requestUrl } = getTargetData()!.request;
+
 	useImperativeHandle(ref, () => {
 		return {
 			setIsOpen
@@ -107,17 +136,30 @@ const DynamicDataModal = forwardRef((_, ref) => {
 				<JSettingBox name="服务">
 					<div className="grid gap-3" style={{ gridTemplateColumns: "5fr 2fr 1fr" }}>
 						<JSettingItem text="前置 URL">
-							<Input placeholder="例: http://127.0.0.1/" disabled={!editPublic} />
+							<Input
+								placeholder="例: http://127.0.0.1/"
+								disabled={!editPublic}
+								value={requestGlobalConfig.requestOriginUrl}
+								onChange={(e) => {
+									updateGlobalRequestConfig("requestOriginUrl", e.target.value);
+								}}
+							/>
 						</JSettingItem>
 						<JSettingItem text="更新间隔, 为 0 只会初始化">
 							<InputNumber
 								disabled={!editPublic}
-								defaultValue={30}
+								value={requestGlobalConfig.requestInterval}
+								onChange={(val) => {
+									updateGlobalRequestConfig("requestInterval", val);
+								}}
 								addonAfter={
 									<Select
 										disabled={!editPublic}
-										defaultValue={selectTimeOptions[0].value}
 										options={selectTimeOptions}
+										value={requestGlobalConfig.requestIntervalUnit}
+										onChange={(val) => {
+											updateGlobalRequestConfig("requestIntervalUnit", val);
+										}}
 									></Select>
 								}
 							/>
@@ -161,12 +203,19 @@ const DynamicDataModal = forwardRef((_, ref) => {
 					<div className="grid gap-3" style={{ gridTemplateColumns: "6fr 2fr" }}>
 						<JSettingItem text="请求方式 & URL 地址">
 							<Input
+								value={requestUrl}
 								placeholder="请输入地址（去除前置 URL）"
+								onChange={(e) => {
+									updateChartConfig(chartIndex, "request", "requestUrl", e.target.value);
+								}}
 								addonBefore={
 									<Select
-										defaultValue={selectTypeOptions[0].value}
-										options={selectTypeOptions}
 										className="w-20"
+										value={requestHttpType}
+										options={selectTypeOptions}
+										onChange={(val) => {
+											updateChartConfig(chartIndex, "request", "requestHttpType", val);
+										}}
 									/>
 								}
 							/>
@@ -174,8 +223,19 @@ const DynamicDataModal = forwardRef((_, ref) => {
 						<JSettingItem text="更新间隔, 为 0 只会初始化">
 							<InputNumber
 								placeholder="默认使用全局数据"
+								value={requestInterval}
+								onChange={(val) => {
+									updateChartConfig(chartIndex, "request", "requestInterval", val);
+								}}
 								addonAfter={
-									<Select defaultValue={selectTimeOptions[0].value} options={selectTimeOptions} />
+									<Select
+										className="w-15"
+										value={requestIntervalUnit}
+										options={selectTimeOptions}
+										onChange={(val) => {
+											updateChartConfig(chartIndex, "request", "requestIntervalUnit", val);
+										}}
+									/>
 								}
 							/>
 						</JSettingItem>
