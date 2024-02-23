@@ -19,7 +19,7 @@ export interface IChartAction {
 	updateChartConfig: <C extends keyof ComponentType, K extends keyof ComponentType[C]>(
 		index: number,
 		category: C,
-		key: K,
+		key: K | null,
 		value: any
 	) => void;
 	updateChartRequestParams: <K extends keyof RequestConfigType["requestParams"]>(

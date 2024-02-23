@@ -2,13 +2,15 @@ import JCodeMirror from "@/components/JCodeMirror";
 
 interface IJEditCodeProps {
 	code: string;
-	codeChange: (code: string) => void;
 	headCodeTooltip: JSX.Element;
 	tailCodeTooltip: JSX.Element;
+	codeChange?: (code: string) => void;
+	height?: number;
+	disabled?: boolean;
 }
 
 const JEditCode = (props: IJEditCodeProps) => {
-	const { code, codeChange, headCodeTooltip, tailCodeTooltip } = props;
+	const { code, codeChange, headCodeTooltip, tailCodeTooltip, disabled = false, height = 440 } = props;
 	return (
 		<>
 			<div
@@ -20,7 +22,7 @@ const JEditCode = (props: IJEditCodeProps) => {
 			>
 				{headCodeTooltip}
 			</div>
-			<JCodeMirror code={code} lan="javascript" height={440} changeCode={codeChange} />
+			<JCodeMirror code={code} lan="javascript" height={height} changeCode={codeChange} disabled={disabled} />
 			<div
 				className="mt-2 text-base border-1 px-1 inline-block"
 				style={{

@@ -25,6 +25,8 @@ import useEditCharts from "@/hooks/useEditCharts";
 import useChartStore from "@/store/chartStore/chartStore";
 import { RequestDataValueEnum } from "@/types/HttpTypes";
 import { ChartFrameEnum } from "@/materials/types";
+import { customizeHttp } from "@/service/http";
+import { cloneDeep } from "lodash-es";
 
 // 数据映射 table 结构
 interface IDataType {
@@ -66,14 +68,18 @@ const columns: TableProps<IDataType>["columns"] = [
 ];
 
 const DataMapAndShow = () => {
-	const { updateChartConfig } = useChartStore();
+	const { requestGlobalConfig, updateChartConfig } = useChartStore();
 	const { getTargetChartIndex, getTargetData } = useEditCharts();
 	const chartIndex = getTargetChartIndex()!;
 	const component = getTargetData()!;
 	// filter modal 控制
 	const [isOpen, setIsOpen] = useState(false);
 	// filter code
-	const [filterCode, setFilterCode] = useState("return data;");
+	const [filterCode, setFilterCode] = useState(component.filter || "return data;");
+	// filter error
+	const [filterError, setFilterError] = useState(false);
+	// 图表动态请求获取数据
+	const [sourceData, setSourceData] = useState<any>({});
 	// 图表数据源展示
 	const [code, setCode] = useState(component.option.dataset);
 
@@ -82,6 +88,19 @@ const DataMapAndShow = () => {
 	const showFilter = useMemo(() => component.request.requestDataType !== RequestDataValueEnum.STATIC, [component]);
 
 	const isCharts = useMemo(() => component.chartConfig.chartFrame === ChartFrameEnum.ECHARTS, [component]);
+
+	const filterRes = useMemo(() => {
+		try {
+			const fn = new Function("data", "res", filterCode);
+			const response = cloneDeep(sourceData);
+			const res = fn(response.data, response);
+			setFilterError(false);
+			return res;
+		} catch (error) {
+			setFilterError(true);
+			return `过滤函数错误，日志：${error}`;
+		}
+	}, [sourceData, filterCode]);
 	// 针对 dataset 图表显示映射
 	const dimensionsAndSource = useMemo<IDataType[]>(() => {
 		const dimensions = component.option.dataset.dimensions;
@@ -112,6 +131,26 @@ const DataMapAndShow = () => {
 			setCode(component.option.dataset);
 		}
 	}, [component.option.dataset]);
+
+	// 打开 filter modal 时获取一次数据
+	useEffect(() => {
+		isOpen && fetchTargetData();
+	}, [isOpen]);
+
+	// 动态获取数据
+	const fetchTargetData = async () => {
+		try {
+			const res = await customizeHttp(component.request, requestGlobalConfig);
+			if (res) {
+				setSourceData(res);
+				return;
+			}
+			messageApi.warning("没有拿到返回值，请检查接口！");
+		} catch (error) {
+			console.error(error);
+			messageApi.error("数据异常，请检查参数！");
+		}
+	};
 
 	// 处理映射列表状态结果
 	function matchingHandle(mapping: string) {
@@ -190,9 +229,47 @@ const DataMapAndShow = () => {
 								<Typography.Text type="secondary">
 									过滤器默认处理接口返回值的「data」字段
 								</Typography.Text>
-								<Button icon={<JIcon icon={<Filter />} size={18} />} onClick={() => setIsOpen(true)}>
-									新增过滤器
-								</Button>
+								{component.filter ? (
+									<>
+										<div className="border-1 border-[#303030] p-2">
+											<JEditCode
+												disabled
+												code={component.filter}
+												height={100}
+												headCodeTooltip={
+													<>
+														<span className="text-[#569cd6]">function</span>&nbsp;
+														<span className="text-[#dcdcaa]">filter</span>(
+														<span className="text-[#9cdcfe]">data</span>
+														,&nbsp;
+														<span className="text-[#9cdcfe]">res</span>)&nbsp;
+														{"{"}
+													</>
+												}
+												tailCodeTooltip={<>{"}"}</>}
+											/>
+										</div>
+										<div className="flex flex-row-reverse gap-2">
+											<Button
+												onClick={() => {
+													updateChartConfig(chartIndex, "filter", null, undefined);
+												}}
+											>
+												删除
+											</Button>
+											<Button type="primary" ghost onClick={() => setIsOpen(true)}>
+												编辑
+											</Button>
+										</div>
+									</>
+								) : (
+									<Button
+										icon={<JIcon icon={<Filter />} size={18} />}
+										onClick={() => setIsOpen(true)}
+									>
+										新增过滤器
+									</Button>
+								)}
 							</div>
 							<Modal
 								open={isOpen}
@@ -213,7 +290,17 @@ const DataMapAndShow = () => {
 										</div>
 										<div className="flex items-center justify-center">
 											<Button onClick={() => setIsOpen(false)}>取消</Button>
-											<Button type="primary" onClick={() => setIsOpen(false)}>
+											<Button
+												type="primary"
+												onClick={() => {
+													if (filterError) {
+														messageApi.error("过滤函数错误，无法进行保存！");
+														return;
+													}
+													updateChartConfig(chartIndex, "filter", null, filterCode);
+													setIsOpen(false);
+												}}
+											>
 												保存
 											</Button>
 										</div>
@@ -240,17 +327,48 @@ const DataMapAndShow = () => {
 									</div>
 									<Divider type="vertical" style={{ height: "100%" }} />
 									<div className="flex-1">
-										<div className="flex items-center gap-2 p-5 mb-4 bg-[#212122] rounded">
+										<div className="flex flex-col gap-2 p-5 mb-4 bg-[#212122] rounded">
 											<Typography.Text type="secondary">默认过滤数据(data)：</Typography.Text>
-											<div>暂无</div>
+											{sourceData ? (
+												<JCodeMirror
+													code={JSON.stringify(sourceData.data, null, 1)}
+													lan="json"
+													disabled
+													height={150}
+												/>
+											) : (
+												<div>暂无</div>
+											)}
 										</div>
-										<div className="flex items-center gap-2 p-5 mb-4 bg-[#212122] rounded">
+										<div className="flex flex-col gap-2 p-5 mb-4 bg-[#212122] rounded">
 											<Typography.Text type="secondary">接口返回数据(res)：</Typography.Text>
-											<div>暂无</div>
+											{sourceData ? (
+												<JCodeMirror
+													code={JSON.stringify(sourceData, null, 1)}
+													lan="json"
+													disabled
+													height={150}
+												/>
+											) : (
+												<div>暂无</div>
+											)}
 										</div>
-										<div className="flex items-center gap-2 p-5 mb-4 bg-[#212122] rounded">
+										<div className="flex flex-col gap-2 p-5 mb-4 bg-[#212122] rounded">
 											<Typography.Text type="secondary">过滤器结果：</Typography.Text>
-											<div>暂无</div>
+											{filterRes ? (
+												filterError ? (
+													<div>{filterRes}</div>
+												) : (
+													<JCodeMirror
+														code={JSON.stringify(filterRes, null, 1)}
+														lan="json"
+														disabled
+														height={150}
+													/>
+												)
+											) : (
+												<div>暂无</div>
+											)}
 										</div>
 									</div>
 								</div>

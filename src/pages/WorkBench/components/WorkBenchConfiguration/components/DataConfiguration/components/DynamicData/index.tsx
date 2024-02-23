@@ -11,6 +11,7 @@ import PublicRequestConfig from "./components/PublicRequestConfig";
 import useEditCharts from "@/hooks/useEditCharts";
 import useChartStore from "@/store/chartStore/chartStore";
 import { customizeHttp } from "@/service/http";
+import { newFunctionHandle } from "@/utils/utils";
 
 const DynamicData = () => {
 	const modalRef = useRef<any>(null);
@@ -36,11 +37,16 @@ const DynamicData = () => {
 			if (res) {
 				const { data } = res;
 				if (!data) {
-					messageApi.warning("您的数据不符合默认格式，请配置过滤器！");
+					messageApi.warning("您的数据不符合默认格式！");
 					return;
 				}
 				// 获取到数据，设置图表展示
-				updateChartConfig(chartIndex, "option", "dataset", data);
+				updateChartConfig(
+					chartIndex,
+					"option",
+					"dataset",
+					component.filter ? newFunctionHandle(data, res, component.filter) : data
+				);
 				messageApi.success("获取数据成功！");
 				return;
 			}

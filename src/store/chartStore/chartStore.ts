@@ -50,7 +50,8 @@ const useChartStore = create<IChartState & IChartAction>()(
 		updateChartConfig(index, category, key, value) {
 			set((state) => {
 				const component = state.componentList[index];
-				component[category][key] = value;
+				if (key) component[category][key] = value;
+				else component[category] = value;
 			});
 		},
 		updateChartRequestParams(index, key, value) {
