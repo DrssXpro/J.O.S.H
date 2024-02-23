@@ -11,36 +11,14 @@ import {
 } from "@ricons/carbon";
 import useChartStore from "@/store/chartStore/chartStore";
 import useEditCharts from "@/hooks/useEditCharts";
-import { useEffect, useState } from "react";
-import { produce } from "immer";
-import { ComponentType } from "@/materials/types";
 import useCanvasStore from "@/store/canvasStore/canvasStore";
 
 const JPosSetting = () => {
 	const { canvasConfig } = useCanvasStore();
 	const { updateChartConfig } = useChartStore();
 	const { getTargetData, getTargetChartIndex } = useEditCharts();
-	const component = getTargetData();
+	const component = getTargetData()!;
 	const chartIndex = getTargetChartIndex()!;
-	const [globalConfig, setGlobalGonfig] = useState<{
-		attr: Pick<ComponentType, "attr">["attr"];
-		updateKey: keyof ComponentType["attr"] | "";
-	}>({
-		attr: component!.attr,
-		updateKey: ""
-	});
-	useEffect(() => {
-		globalConfig.updateKey &&
-			updateChartConfig(chartIndex, "attr", globalConfig.updateKey, globalConfig["attr"][globalConfig.updateKey]);
-	}, [globalConfig]);
-
-	useEffect(() => {
-		component &&
-			setGlobalGonfig({
-				attr: component.attr,
-				updateKey: ""
-			});
-	}, [chartIndex]);
 
 	const positionList = [
 		{
@@ -48,12 +26,10 @@ const JPosSetting = () => {
 			label: "局左",
 			icon: <JIcon icon={<AlignHorizontalLeft />} size={18} />,
 			clickHandle: () => {
-				setGlobalGonfig(
-					produce((draft) => {
-						draft.attr.x = 0;
-						draft.updateKey = "x";
-					})
-				);
+				updateChartConfig(chartIndex, "attr", null, {
+					...component.attr,
+					x: 0
+				});
 			}
 		},
 		{
@@ -61,12 +37,10 @@ const JPosSetting = () => {
 			label: "X轴居中",
 			icon: <JIcon icon={<AlignVerticalCenter />} size={18} />,
 			clickHandle: () => {
-				setGlobalGonfig(
-					produce((draft) => {
-						draft.attr.y = (canvasConfig.canvasHeight - draft.attr.h) / 2;
-						draft.updateKey = "y";
-					})
-				);
+				updateChartConfig(chartIndex, "attr", null, {
+					...component.attr,
+					y: (canvasConfig.canvasHeight - component.attr.h) / 2
+				});
 			}
 		},
 		{
@@ -74,12 +48,10 @@ const JPosSetting = () => {
 			label: "局右",
 			icon: <JIcon icon={<AlignHorizontalRight />} size={18} />,
 			clickHandle: () => {
-				setGlobalGonfig(
-					produce((draft) => {
-						draft.attr.x = canvasConfig.canvasWidth - draft.attr.w;
-						draft.updateKey = "x";
-					})
-				);
+				updateChartConfig(chartIndex, "attr", null, {
+					...component.attr,
+					x: canvasConfig.canvasWidth - component.attr.w
+				});
 			}
 		},
 		{
@@ -87,12 +59,7 @@ const JPosSetting = () => {
 			label: "顶部",
 			icon: <JIcon icon={<AlignVerticalTop />} size={18} />,
 			clickHandle: () => {
-				setGlobalGonfig(
-					produce((draft) => {
-						draft.attr.y = 0;
-						draft.updateKey = "y";
-					})
-				);
+				updateChartConfig(chartIndex, "attr", null, { ...component.attr, y: 0 });
 			}
 		},
 		{
@@ -100,12 +67,10 @@ const JPosSetting = () => {
 			label: "Y轴居中",
 			icon: <JIcon icon={<AlignHorizontalCenter />} size={18} />,
 			clickHandle: () => {
-				setGlobalGonfig(
-					produce((draft) => {
-						draft.attr.x = (canvasConfig.canvasWidth - draft.attr.w) / 2;
-						draft.updateKey = "x";
-					})
-				);
+				updateChartConfig(chartIndex, "attr", null, {
+					...component.attr,
+					x: (canvasConfig.canvasWidth - component.attr.w) / 2
+				});
 			}
 		},
 		{
@@ -113,12 +78,10 @@ const JPosSetting = () => {
 			label: "底部",
 			icon: <JIcon icon={<AlignVerticalBottom />} size={18} />,
 			clickHandle: () => {
-				setGlobalGonfig(
-					produce((draft) => {
-						draft.attr.y = canvasConfig.canvasHeight - draft.attr.h;
-						draft.updateKey = "y";
-					})
-				);
+				updateChartConfig(chartIndex, "attr", null, {
+					...component.attr,
+					y: canvasConfig.canvasHeight - component.attr.h
+				});
 			}
 		}
 	];
@@ -137,29 +100,17 @@ const JPosSetting = () => {
 					<InputNumber
 						addonBefore={<Typography.Text>上</Typography.Text>}
 						className="flex-1"
-						value={globalConfig.attr.y}
+						value={component.attr.y}
 						onChange={(val) => {
-							val &&
-								setGlobalGonfig(
-									produce((draft) => {
-										draft.attr.y = val;
-										draft.updateKey = "y";
-									})
-								);
+							val && updateChartConfig(chartIndex, "attr", null, { ...component.attr, y: val });
 						}}
 					/>
 					<InputNumber
 						addonBefore={<Typography.Text>左</Typography.Text>}
 						className="flex-1"
-						value={globalConfig.attr.x}
+						value={component.attr.x}
 						onChange={(val) => {
-							val &&
-								setGlobalGonfig(
-									produce((draft) => {
-										draft.attr.x = val;
-										draft.updateKey = "x";
-									})
-								);
+							val && updateChartConfig(chartIndex, "attr", null, { ...component.attr, x: val });
 						}}
 					/>
 				</div>
