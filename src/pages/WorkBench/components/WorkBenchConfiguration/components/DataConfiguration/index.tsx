@@ -3,7 +3,6 @@ import { RequestDataLabelEnum, RequestDataValueEnum } from "@/types/HttpTypes";
 import JSettingBox from "@/components/JChartConfiguration/public/JSettingBox";
 import StaticData from "./components/StaticData";
 import DynamicData from "./components/DynamicData";
-import PublicData from "./components/PublicData";
 import useEditCharts from "@/hooks/useEditCharts";
 import useChartStore from "@/store/chartStore/chartStore";
 
@@ -21,17 +20,12 @@ const dataOptions: IDataOptions[] = [
 	{
 		label: RequestDataLabelEnum.DYNAMIC,
 		value: RequestDataValueEnum.DYNAMIC
-	},
-	{
-		label: RequestDataLabelEnum.PUBLIC,
-		value: RequestDataValueEnum.PUBLIC
 	}
 ];
 
 const ConfigurationComponentMap: Record<RequestDataValueEnum, JSX.Element> = {
 	[RequestDataValueEnum.STATIC]: <StaticData />,
-	[RequestDataValueEnum.DYNAMIC]: <DynamicData />,
-	[RequestDataValueEnum.PUBLIC]: <PublicData />
+	[RequestDataValueEnum.DYNAMIC]: <DynamicData />
 };
 
 const DataConfiguration = () => {

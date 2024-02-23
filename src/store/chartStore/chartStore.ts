@@ -8,7 +8,6 @@ const useChartStore = create<IChartState & IChartAction>()(
 		componentList: [],
 		selectId: [],
 		requestGlobalConfig: {
-			requestDataPond: [],
 			requestOriginUrl: "",
 			requestInterval: 30,
 			requestIntervalUnit: RequestHttpIntervalEnum.SECOND,
