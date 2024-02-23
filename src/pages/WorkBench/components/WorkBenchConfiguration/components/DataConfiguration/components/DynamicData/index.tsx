@@ -167,10 +167,18 @@ const DynamicDataModal: FC<{
 					<Typography.Text>「柱状图」</Typography.Text>
 
 					<div className="flex items-center justify-center">
-						<Button onClick={() => setIsOpen(false)}>取消</Button>
+						<Button
+							onClick={() => {
+								setEditPublic(false);
+								setIsOpen(false);
+							}}
+						>
+							取消
+						</Button>
 						<Button
 							type="primary"
 							onClick={() => {
+								setEditPublic(false);
 								setIsOpen(false);
 								sendRequest();
 							}}
@@ -264,10 +272,12 @@ const DynamicDataModal: FC<{
 									updateChartConfig(chartIndex, "request", "requestUrl", e.target.value);
 								}}
 								prefix={
-									<div className="flex items-center">
-										<Typography.Text>{requestGlobalConfig.requestOriginUrl}</Typography.Text>
-										<Divider type="vertical" />
-									</div>
+									requestGlobalConfig.requestOriginUrl ? (
+										<div className="flex items-center">
+											<Typography.Text>{requestGlobalConfig.requestOriginUrl}</Typography.Text>
+											<Divider type="vertical" />
+										</div>
+									) : undefined
 								}
 								addonBefore={
 									<Select
