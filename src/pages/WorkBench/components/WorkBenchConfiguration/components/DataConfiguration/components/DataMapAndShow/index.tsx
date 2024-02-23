@@ -355,7 +355,9 @@ const DataMapAndShow = () => {
 									下载
 								</Button>
 								<Tooltip title="点击【下载】查看完整数据">
-									<JIcon icon={<HelpCircleOutline />} size={22} />
+									<div className="flex items-center justify-center">
+										<JIcon icon={<HelpCircleOutline />} size={22} />
+									</div>
 								</Tooltip>
 							</div>
 							<div className="my-2 border-1 border-[#303030]">
