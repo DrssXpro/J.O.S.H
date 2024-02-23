@@ -263,6 +263,12 @@ const DynamicDataModal: FC<{
 								onChange={(e) => {
 									updateChartConfig(chartIndex, "request", "requestUrl", e.target.value);
 								}}
+								prefix={
+									<div className="flex items-center">
+										<Typography.Text>{requestGlobalConfig.requestOriginUrl}</Typography.Text>
+										<Divider type="vertical" />
+									</div>
+								}
 								addonBefore={
 									<Select
 										className="w-20"
