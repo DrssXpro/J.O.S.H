@@ -11,8 +11,7 @@ import {
 	Tooltip,
 	Typography,
 	Upload,
-	UploadProps,
-	message
+	UploadProps
 } from "antd";
 import { DocumentAdd, Filter, DocumentDownload, Document } from "@ricons/carbon";
 import { HelpCircleOutline } from "@ricons/ionicons5";
@@ -23,10 +22,8 @@ import { downloadTextFile, readFile } from "@/utils/fileUtils";
 import JEditCode from "@/components/JChartConfiguration/JEditCode";
 import useEditCharts from "@/hooks/useEditCharts";
 import useChartStore from "@/store/chartStore/chartStore";
-import { RequestDataValueEnum } from "@/types/HttpTypes";
 import { ChartFrameEnum } from "@/materials/types";
-import { customizeHttp } from "@/service/http";
-import { cloneDeep } from "lodash-es";
+import useFilter from "./hooks/useFilter.hook";
 
 // 数据映射 table 结构
 interface IDataType {
@@ -72,35 +69,24 @@ const DataMapAndShow = () => {
 	const { getTargetChartIndex, getTargetData } = useEditCharts();
 	const chartIndex = getTargetChartIndex()!;
 	const component = getTargetData()!;
-	// filter modal 控制
-	const [isOpen, setIsOpen] = useState(false);
-	// filter code
-	const [filterCode, setFilterCode] = useState(component.filter || "return data;");
-	// filter error
-	const [filterError, setFilterError] = useState(false);
-	// 图表动态请求获取数据
-	const [sourceData, setSourceData] = useState<any>({});
+	const {
+		isOpenFilter,
+		filterCode,
+		filterError,
+		showFilter,
+		filterRes,
+		sourceData,
+		messageApi,
+		contextHolder,
+		setIsOpenFilter,
+		setFilterCode
+	} = useFilter(component, requestGlobalConfig);
+
 	// 图表数据源展示
 	const [code, setCode] = useState(component.option.dataset);
 
-	const [messageApi, contextHolder] = message.useMessage();
-
-	const showFilter = useMemo(() => component.request.requestDataType !== RequestDataValueEnum.STATIC, [component]);
-
 	const isCharts = useMemo(() => component.chartConfig.chartFrame === ChartFrameEnum.ECHARTS, [component]);
 
-	const filterRes = useMemo(() => {
-		try {
-			const fn = new Function("data", "res", filterCode);
-			const response = cloneDeep(sourceData);
-			const res = fn(response.data, response);
-			setFilterError(false);
-			return res;
-		} catch (error) {
-			setFilterError(true);
-			return `过滤函数错误，日志：${error}`;
-		}
-	}, [sourceData, filterCode]);
 	// 针对 dataset 图表显示映射
 	const dimensionsAndSource = useMemo<IDataType[]>(() => {
 		const dimensions = component.option.dataset.dimensions;
@@ -131,26 +117,6 @@ const DataMapAndShow = () => {
 			setCode(component.option.dataset);
 		}
 	}, [component.option.dataset]);
-
-	// 打开 filter modal 时获取一次数据
-	useEffect(() => {
-		isOpen && fetchTargetData();
-	}, [isOpen]);
-
-	// 动态获取数据
-	const fetchTargetData = async () => {
-		try {
-			const res = await customizeHttp(component.request, requestGlobalConfig);
-			if (res) {
-				setSourceData(res);
-				return;
-			}
-			messageApi.warning("没有拿到返回值，请检查接口！");
-		} catch (error) {
-			console.error(error);
-			messageApi.error("数据异常，请检查参数！");
-		}
-	};
 
 	// 处理映射列表状态结果
 	function matchingHandle(mapping: string) {
@@ -257,7 +223,7 @@ const DataMapAndShow = () => {
 											>
 												删除
 											</Button>
-											<Button type="primary" ghost onClick={() => setIsOpen(true)}>
+											<Button type="primary" ghost onClick={() => setIsOpenFilter(true)}>
 												编辑
 											</Button>
 										</div>
@@ -265,14 +231,14 @@ const DataMapAndShow = () => {
 								) : (
 									<Button
 										icon={<JIcon icon={<Filter />} size={18} />}
-										onClick={() => setIsOpen(true)}
+										onClick={() => setIsOpenFilter(true)}
 									>
 										新增过滤器
 									</Button>
 								)}
 							</div>
 							<Modal
-								open={isOpen}
+								open={isOpenFilter}
 								width={1200}
 								closable={false}
 								styles={{ header: { background: "none" } }}
@@ -289,7 +255,7 @@ const DataMapAndShow = () => {
 											</Typography.Text>
 										</div>
 										<div className="flex items-center justify-center">
-											<Button onClick={() => setIsOpen(false)}>取消</Button>
+											<Button onClick={() => setIsOpenFilter(false)}>取消</Button>
 											<Button
 												type="primary"
 												onClick={() => {
@@ -298,7 +264,7 @@ const DataMapAndShow = () => {
 														return;
 													}
 													updateChartConfig(chartIndex, "filter", null, filterCode);
-													setIsOpen(false);
+													setIsOpenFilter(false);
 												}}
 											>
 												保存
