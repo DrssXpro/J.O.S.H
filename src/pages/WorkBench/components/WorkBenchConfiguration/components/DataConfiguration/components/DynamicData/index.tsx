@@ -1,20 +1,24 @@
-import { Button, Card, Divider, Input, InputNumber, Modal, Select, Tag, Typography } from "antd";
+import { Button, Card, Divider, Input, InputNumber, Modal, Select, Tag, Typography, message } from "antd";
 import JSettingBox from "@/components/JChartConfiguration/public/JSettingBox";
 import JSettingItem from "@/components/JChartConfiguration/public/JSettingItem";
 import { Flash, Pulse, Pencil, ChevronUpOutline } from "@ricons/ionicons5";
 import JIcon from "@/components/JIcon";
 import DataMapAndShow from "../DataMapAndShow";
-import { forwardRef, useImperativeHandle, useRef, useState } from "react";
+import { FC, forwardRef, useImperativeHandle, useRef, useState } from "react";
 import { SelectHttpTimeNameObj, selectTimeOptions, selectTypeOptions } from "@/types/HttpTypes";
 import NormalRequestConfig from "./components/NormalRequestConfig";
 import PublicRequestConfig from "./components/PublicRequestConfig";
 import useEditCharts from "@/hooks/useEditCharts";
 import useChartStore from "@/store/chartStore/chartStore";
+import { customizeHttp } from "@/service/http";
 
 const DynamicData = () => {
 	const modalRef = useRef<any>(null);
-	const { requestGlobalConfig } = useChartStore();
-	const { getTargetData } = useEditCharts();
+	const [requestLoading, setRequestLoading] = useState(false);
+	const [messageApi, contextHolder] = message.useMessage();
+	const { requestGlobalConfig, updateChartConfig } = useChartStore();
+	const { getTargetChartIndex, getTargetData } = useEditCharts();
+	const chartIndex = getTargetChartIndex()!;
 	const component = getTargetData()!;
 	// 全局请求配置
 	const {
@@ -23,8 +27,34 @@ const DynamicData = () => {
 		requestIntervalUnit: GlobalRequestIntervalUnit
 	} = requestGlobalConfig;
 
+	const handleSendRequest = async () => {
+		if (!component.request) return;
+		try {
+			setRequestLoading(true);
+			const res = await customizeHttp(component.request, requestGlobalConfig);
+			setRequestLoading(false);
+			if (res) {
+				const { data } = res;
+				if (!data) {
+					messageApi.warning("您的数据不符合默认格式，请配置过滤器！");
+					return;
+				}
+				// 获取到数据，设置图表展示
+				updateChartConfig(chartIndex, "option", "dataset", data);
+				messageApi.success("获取数据成功！");
+				return;
+			}
+			messageApi.warning("没有拿到返回值，请检查接口！");
+		} catch (error) {
+			console.error(error);
+			messageApi.error("数据异常，请检查参数！");
+			setRequestLoading(false);
+		}
+	};
+
 	return (
 		<>
+			{contextHolder}
 			<Card bodyStyle={{ padding: "20px 10px", background: "#232324" }} className="relative">
 				<JSettingBox name="请求配置">
 					<div className="grid grid-cols-2 gap-2">
@@ -78,7 +108,14 @@ const DynamicData = () => {
 			</Card>
 			<div className="mt-5">
 				<JSettingBox name="测试">
-					<Button icon={<JIcon icon={<Flash />} />} type="primary" ghost block>
+					<Button
+						icon={<JIcon icon={<Flash />} />}
+						type="primary"
+						ghost
+						block
+						onClick={handleSendRequest}
+						loading={requestLoading}
+					>
 						发送请求
 					</Button>
 				</JSettingBox>
@@ -87,12 +124,16 @@ const DynamicData = () => {
 			<DataMapAndShow />
 
 			{/* 编辑数据 Modal */}
-			<DynamicDataModal ref={modalRef} />
+			<DynamicDataModal ref={modalRef} sendRequest={handleSendRequest} />
 		</>
 	);
 };
 
-const DynamicDataModal = forwardRef((_, ref) => {
+const DynamicDataModal: FC<{
+	sendRequest: () => void;
+	ref: any;
+}> = forwardRef((props, ref) => {
+	const { sendRequest } = props;
 	const [isOpen, setIsOpen] = useState(false);
 	const [hideTable, setHideTable] = useState(false);
 	const [isHover, setIsHover] = useState(false);
@@ -100,7 +141,9 @@ const DynamicDataModal = forwardRef((_, ref) => {
 	const { requestGlobalConfig, updateChartConfig, updateGlobalRequestConfig } = useChartStore();
 	const { getTargetData, getTargetChartIndex } = useEditCharts();
 	const chartIndex = getTargetChartIndex()!;
-	const { requestInterval, requestIntervalUnit, requestHttpType, requestUrl } = getTargetData()!.request;
+	const component = getTargetData()!;
+	const requestConfig = component.request;
+	const { requestInterval, requestIntervalUnit, requestHttpType, requestUrl } = requestConfig;
 
 	useImperativeHandle(ref, () => {
 		return {
@@ -119,7 +162,13 @@ const DynamicDataModal = forwardRef((_, ref) => {
 
 					<div className="flex items-center justify-center">
 						<Button onClick={() => setIsOpen(false)}>取消</Button>
-						<Button type="primary" onClick={() => setIsOpen(false)}>
+						<Button
+							type="primary"
+							onClick={() => {
+								setIsOpen(false);
+								sendRequest();
+							}}
+						>
 							保存 & 发送请求
 						</Button>
 					</div>
