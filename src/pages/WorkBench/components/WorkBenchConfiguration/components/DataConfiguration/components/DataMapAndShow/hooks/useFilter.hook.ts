@@ -14,7 +14,7 @@ const useFilter = (component: ComponentType, requestGlobalConfig: RequestGlobalC
 	// filter error
 	const [filterError, setFilterError] = useState(false);
 	// 图表动态请求获取数据
-	const [sourceData, setSourceData] = useState<any>({});
+	const [sourceData, setSourceData] = useState<any>("");
 	// filter show or hidden
 	const showFilter = useMemo(() => component.request.requestDataType !== RequestDataValueEnum.STATIC, [component]);
 	// filter 执行结果

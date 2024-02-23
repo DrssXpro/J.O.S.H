@@ -292,7 +292,7 @@ const DataMapAndShow = () => {
 										/>
 									</div>
 									<Divider type="vertical" style={{ height: "100%" }} />
-									<div className="flex-1">
+									<div className="flex-1 h-full overflow-y-scroll">
 										<div className="flex flex-col gap-2 p-5 mb-4 bg-[#212122] rounded">
 											<Typography.Text type="secondary">默认过滤数据(data)：</Typography.Text>
 											{sourceData ? (
@@ -319,7 +319,7 @@ const DataMapAndShow = () => {
 												<div>暂无</div>
 											)}
 										</div>
-										<div className="flex flex-col gap-2 p-5 mb-4 bg-[#212122] rounded">
+										<div className="flex flex-col gap-2 p-5 bg-[#212122] rounded">
 											<Typography.Text type="secondary">过滤器结果：</Typography.Text>
 											{filterRes ? (
 												filterError ? (
