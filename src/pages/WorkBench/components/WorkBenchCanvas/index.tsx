@@ -54,6 +54,9 @@ const WorkBenchCanvas = () => {
 						const ChartComponent: any = fetchComponent(dropData.key, FetchComFlagType.VIEW);
 						// 获取图表配置组件
 						const ChartConfigComponent: any = fetchComponent(dropData.key, FetchComFlagType.CONFIG);
+						// 根据拖拽落下位置初始化图表位置（只有原生事件对象有 offsetX、offsetY 信息）
+						componentConifg.attr.x = e.nativeEvent.offsetX - componentConifg.attr.w / 2;
+						componentConifg.attr.y = e.nativeEvent.offsetY - componentConifg.attr.h / 2;
 						// 添加组件配置至全局 store
 						addComponentList({ ...componentConifg, ChartComponent, ChartConfigComponent });
 						// 选中当前添加图表
