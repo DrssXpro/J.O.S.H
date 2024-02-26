@@ -33,6 +33,10 @@ const useChartStore = create<IChartState & IChartAction>()(
 		getSelectId: () => {
 			return get().selectId;
 		},
+		// componentList 更新后立刻使用需要通过 get 获取最新值
+		getComponentList: () => {
+			return get().componentList;
+		},
 		// 设置鼠标位置
 		setMousePosition(x?: number, y?: number, startX?: number, startY?: number) {
 			set((state) => {

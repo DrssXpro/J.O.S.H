@@ -24,6 +24,7 @@ export interface IChartAction {
 	addComponentList: (component: IComponent) => void;
 	setTargetSelectChart: (select?: string | string[], push?: boolean) => void;
 	getSelectId: () => string[];
+	getComponentList: () => IComponent[];
 	updateChartConfig: <C extends keyof ComponentType, K extends keyof ComponentType[C]>(
 		index: number,
 		category: C,

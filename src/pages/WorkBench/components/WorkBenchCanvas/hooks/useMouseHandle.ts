@@ -2,12 +2,15 @@ import useEditCharts from "@/hooks/useEditCharts";
 import { ComponentType } from "@/materials/types";
 import useCanvasStore from "@/store/canvasStore/canvasStore";
 import { CanvasConfigTypeEnum, CanvasGlobalTypeEnum } from "@/store/canvasStore/types";
+import useChartHistoryStore from "@/store/chartHistoryStore/chartHistoryStore";
 import useChartStore from "@/store/chartStore/chartStore";
-import { throttle } from "lodash-es";
+import { cloneDeep, omit, throttle } from "lodash-es";
 
 const useMouseHandle = () => {
+	const { createMoveHistory } = useChartHistoryStore();
 	const { canvasConfig, canvasGlobal } = useCanvasStore();
-	const { componentList, setTargetSelectChart, getSelectId, setMousePosition, updateChartConfig } = useChartStore();
+	const { componentList, setTargetSelectChart, getSelectId, getComponentList, setMousePosition, updateChartConfig } =
+		useChartStore();
 	const { getTargetChartIndex } = useEditCharts();
 	// 画布内 mousedown 事件（选中图表或清空当前选中内容）
 	const mousedownHandleUnStop = (_e: React.MouseEvent, item?: ComponentType) => {
@@ -28,11 +31,18 @@ const useMouseHandle = () => {
 		const canvasWidth = canvasConfig[CanvasConfigTypeEnum.CANVAS_WIDTH];
 		const canvasHeight = canvasConfig[CanvasConfigTypeEnum.CANVAS_HEIGHT];
 
+		// 历史记录
+		const ComponentRecords: ComponentType[] = [];
+
 		// 记录初始化图表位置和大小，考虑多选情况用 Map 存储
 		const targetMap = new Map();
 		getSelectId().forEach((id) => {
 			const index = getTargetChartIndex(id)!;
 			if (index !== -1) {
+				// mouseDown 先记录当前图表位置存入 records
+				ComponentRecords.push(
+					cloneDeep(omit(componentList[index], ["ChartComponent", "ChartConfigComponent"]))
+				);
 				const { x, y, w, h } = componentList[index].attr;
 				targetMap.set(id, { x, y, w, h });
 			}
@@ -78,6 +88,29 @@ const useMouseHandle = () => {
 
 		const handleMouseUp = () => {
 			setMousePosition(0, 0, 0, 0);
+
+			// 保存历史记录至 historyStack
+			if (ComponentRecords.length) {
+				getSelectId().forEach((id) => {
+					const index = getTargetChartIndex(id)!;
+					if (index !== -1) {
+						const currentComponent = getComponentList()[index];
+						ComponentRecords.forEach((preRecord) => {
+							if (preRecord.id === currentComponent.id) {
+								// mouseUp 时，存储图表组件前后位置差，后续用来 undo、redo 复原位置
+								preRecord.attr = {
+									...preRecord.attr,
+									offsetX: currentComponent.attr.x - preRecord.attr.x,
+									offsetY: currentComponent.attr.y - preRecord.attr.y
+								};
+							}
+						});
+					}
+				});
+			}
+			// 压入 backStack 中
+			createMoveHistory(ComponentRecords);
+
 			document.removeEventListener("mousemove", handleMouseMove);
 			document.removeEventListener("mouseup", handleMouseUp);
 		};

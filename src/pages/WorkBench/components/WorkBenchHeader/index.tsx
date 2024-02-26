@@ -13,16 +13,34 @@ import {
 	SendOutlined
 } from "@ant-design/icons";
 import { Button, Input, Tooltip, type InputRef } from "antd";
-import { useState, useRef } from "react";
+import { useState, useRef, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import useLayoutStore from "@/store/layoutStore/layoutStore";
 import useCanvasStore from "@/store/canvasStore/canvasStore";
+import useChartHistoryStore from "@/store/chartHistoryStore/chartHistoryStore";
+import useUndoRedo from "./hooks/useUndoRedo";
 
 const LeftOperator = () => {
 	const nav = useNavigate();
 	const { showMaterials, showLayer, showConfiguration, controllMaterials, controllLayer, controllConfiguration } =
 		useLayoutStore();
 	const { autoLayoutCanvas } = useCanvasStore();
+	const { backStack, forwardStack, backAction, forwardAction } = useChartHistoryStore();
+	const { handleUndo, handleRedo } = useUndoRedo();
+
+	const canBack = useMemo(() => !!backStack.length, [backStack]);
+	const canForward = useMemo(() => !!forwardStack.length, [forwardStack]);
+
+	// 撤回/重做 操作
+	const handleAction = (type: "BACK" | "FORWARD") => {
+		const historyItem = type === "BACK" ? backAction() : forwardAction();
+		if (!historyItem) {
+			return;
+		}
+		type === "BACK" ? handleUndo(historyItem) : handleRedo(historyItem);
+	};
+
+	// 重做操作
 
 	return (
 		<div className="flex items-center">
@@ -73,10 +91,22 @@ const LeftOperator = () => {
 			</div>
 			<div className="flex items-center ml-4 pl-4 gap-4 border-l-1 border-l-[#2D2D30]">
 				<Tooltip title="后退">
-					<Button ghost type="primary" icon={<ArrowLeftOutlined />}></Button>
+					<Button
+						ghost
+						type="primary"
+						icon={<ArrowLeftOutlined />}
+						onClick={() => handleAction("BACK")}
+						disabled={!canBack}
+					></Button>
 				</Tooltip>
 				<Tooltip title="前进">
-					<Button ghost type="primary" icon={<ArrowRightOutlined />}></Button>
+					<Button
+						ghost
+						type="primary"
+						icon={<ArrowRightOutlined />}
+						onClick={() => handleAction("FORWARD")}
+						disabled={!canForward}
+					></Button>
 				</Tooltip>
 			</div>
 		</div>
