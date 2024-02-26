@@ -4,7 +4,8 @@ import useCanvasStore from "@/store/canvasStore/canvasStore";
 import { CanvasConfigTypeEnum, CanvasGlobalTypeEnum } from "@/store/canvasStore/types";
 import useChartHistoryStore from "@/store/chartHistoryStore/chartHistoryStore";
 import useChartStore from "@/store/chartStore/chartStore";
-import { cloneDeep, omit, throttle } from "lodash-es";
+import { rafThrottle } from "@/utils/utils";
+import { cloneDeep, omit } from "lodash-es";
 
 const useMouseHandle = () => {
 	const { createMoveHistory } = useChartHistoryStore();
@@ -53,7 +54,7 @@ const useMouseHandle = () => {
 		const startY = e.screenY;
 		setMousePosition(undefined, undefined, startX, startY);
 
-		const handleMouseMove = throttle((mouseEvent: MouseEvent) => {
+		const handleMouseMove = rafThrottle((mouseEvent: MouseEvent) => {
 			setMousePosition(mouseEvent.screenX, mouseEvent.screenY);
 			// 当前偏移量，处理 scale 比例问题
 			const offsetX = (mouseEvent.screenX - startX) / scale;
@@ -84,7 +85,7 @@ const useMouseHandle = () => {
 					updateChartConfig(index, "attr", null, { ...componentInstance.attr, x: currX, y: currY });
 				}
 			});
-		}, 10);
+		});
 
 		const handleMouseUp = () => {
 			setMousePosition(0, 0, 0, 0);
@@ -137,7 +138,7 @@ const useMouseHandle = () => {
 
 		setMousePosition(startX, startY);
 
-		const handleMouseMove = throttle((mouseEvent: MouseEvent) => {
+		const handleMouseMove = rafThrottle((mouseEvent: MouseEvent) => {
 			setMousePosition(mouseEvent.screenX, mouseEvent.screenY);
 
 			const currX = Math.round((mouseEvent.screenX - startX) / scale);
@@ -159,7 +160,7 @@ const useMouseHandle = () => {
 				x: itemAttrX + (isLeft ? currX : 0),
 				y: itemAttrY + (isTop ? currY : 0)
 			});
-		}, 10);
+		});
 
 		const handleMouseUp = () => {
 			setMousePosition(0, 0, 0, 0);

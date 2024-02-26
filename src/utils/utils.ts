@@ -30,3 +30,16 @@ export const newFunctionHandle = (
 		return "函数执行错误";
 	}
 };
+
+// requestAnimationFrame 节流 提高拖拽性能
+export function rafThrottle(fn: (...args: any[]) => any) {
+	let lock = false;
+	return function (this: any, ...args: any[]) {
+		if (lock) return;
+		lock = true;
+		window.requestAnimationFrame(() => {
+			fn.apply(this, args);
+			lock = false;
+		});
+	};
+}
