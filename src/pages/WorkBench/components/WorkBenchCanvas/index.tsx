@@ -10,10 +10,12 @@ import { ComponentType, FetchComFlagType } from "@/materials/types";
 import EditShapeBox from "./components/EditShapeBox";
 import useMouseHandle from "./hooks/useMouseHandle";
 import { setChartAnimateStyle, setChartPosStyle, setChartSizeStyle } from "./utils/handleChartStyle";
+import useChartHistoryStore from "@/store/chartHistoryStore/chartHistoryStore";
 
 const WorkBenchCanvas = () => {
 	const { canvasConfig } = useCanvasStore();
 	const { componentList, addComponentList, setTargetSelectChart } = useChartStore();
+	const { createAddHistory } = useChartHistoryStore();
 	const { handleMouseDown, mousedownHandleUnStop } = useMouseHandle();
 	const { canvasBackground, canvasBackgroundImage } = canvasConfig;
 	useEffect(() => {
@@ -57,6 +59,8 @@ const WorkBenchCanvas = () => {
 						// 根据拖拽落下位置初始化图表位置（只有原生事件对象有 offsetX、offsetY 信息）
 						componentConifg.attr.x = e.nativeEvent.offsetX - componentConifg.attr.w / 2;
 						componentConifg.attr.y = e.nativeEvent.offsetY - componentConifg.attr.h / 2;
+						// 添加组件动作，历史记录
+						createAddHistory([componentConifg]);
 						// 添加组件配置至全局 store
 						addComponentList({ ...componentConifg, ChartComponent, ChartConfigComponent });
 						// 选中当前添加图表

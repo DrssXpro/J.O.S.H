@@ -92,6 +92,11 @@ const useChartStore = create<IChartState & IChartAction>()(
 			set((state) => {
 				state.requestGlobalConfig.requestParams[key] = value;
 			});
+		},
+		removeComponents(ids) {
+			set((state) => {
+				state.componentList = state.componentList.filter((item) => !ids.includes(item.id));
+			});
 		}
 	}))
 );

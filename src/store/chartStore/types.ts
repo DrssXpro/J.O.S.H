@@ -38,4 +38,5 @@ export interface IChartAction {
 	) => void;
 	updateGlobalRequestConfig: <K extends keyof RequestGlobalConfigType>(key: K, value: any) => void;
 	updateGlobalRequestParams: <K extends keyof RequestGlobalConfigType["requestParams"]>(key: K, value: any) => void;
+	removeComponents: (ids: string[]) => void;
 }

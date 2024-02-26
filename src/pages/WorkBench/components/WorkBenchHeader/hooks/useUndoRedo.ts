@@ -4,26 +4,42 @@ import { HistoryItemType, HistoryActionTypeEnum } from "@/store/chartHistoryStor
 import useChartStore from "@/store/chartStore/chartStore";
 
 const useUndoRedo = () => {
-	const { componentList, updateChartConfig } = useChartStore();
+	const { componentList, setTargetSelectChart, updateChartConfig, removeComponents } = useChartStore();
 	const { getTargetChartIndex } = useEditCharts();
 
 	function handleUndo(historyItem: HistoryItemType) {
+		const isAdd = historyItem.actionType === HistoryActionTypeEnum.ADD;
 		const isMove = historyItem.actionType === HistoryActionTypeEnum.MOVE;
+		const components = historyItem.historyData;
+
+		// 撤销操作且记录类型为 add，说明需要将添加的图表组件移除
+		if (isAdd) {
+			const ids = components.map((item) => item.id);
+			// 移除前先将当前选中状态置为空
+			setTargetSelectChart();
+			removeComponents(ids);
+			return;
+		}
 		if (isMove) {
-			const components = historyItem.historyData;
 			components.forEach((item) => {
 				resetComponentPosition(item, "BACK");
 			});
+			return;
 		}
 	}
 
 	function handleRedo(historyItem: HistoryItemType) {
+		const isAdd = historyItem.actionType === HistoryActionTypeEnum.ADD;
 		const isMove = historyItem.actionType === HistoryActionTypeEnum.MOVE;
+		if (isAdd) {
+			return;
+		}
 		if (isMove) {
 			const components = historyItem.historyData;
 			components.forEach((item) => {
 				resetComponentPosition(item, "FORWARD");
 			});
+			return;
 		}
 	}
 
