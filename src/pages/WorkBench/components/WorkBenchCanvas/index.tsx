@@ -9,7 +9,7 @@ import useChartStore from "@/store/chartStore/chartStore";
 import { ComponentType, FetchComFlagType } from "@/materials/types";
 import EditShapeBox from "./components/EditShapeBox";
 import useMouseHandle from "./hooks/useMouseHandle";
-import { setChartAnimateStyle, setChartPosStyle, setChartSizeStyle } from "./utils/handleChartStyle";
+import { setChartAnimateStyle, setChartPosStyle, setChartSizeStyle } from "@/utils/chartStyle";
 import useChartHistoryStore from "@/store/chartHistoryStore/chartHistoryStore";
 
 const WorkBenchCanvas = () => {

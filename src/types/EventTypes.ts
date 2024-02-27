@@ -44,3 +44,15 @@ export const enum KeyBoardEventName {
 	// 是否按下 space 键
 	SPACEKEYPRESS = "SpaceKeyPress"
 }
+
+// 内置字符串函数对象列表
+export const excludeParseEventKeyList = [
+	EventLife.VNODE_BEFORE_MOUNT,
+	EventLife.VNODE_MOUNTED,
+	BaseEvent.ON_CLICK,
+	BaseEvent.ON_DBL_CLICK,
+	BaseEvent.ON_MOUSE_ENTER,
+	BaseEvent.ON_MOUSE_LEAVE,
+	//过滤器
+	"filter"
+];

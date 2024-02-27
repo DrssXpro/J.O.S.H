@@ -19,6 +19,9 @@ import useLayoutStore from "@/store/layoutStore/layoutStore";
 import useCanvasStore from "@/store/canvasStore/canvasStore";
 import useChartHistoryStore from "@/store/chartHistoryStore/chartHistoryStore";
 import useUndoRedo from "./hooks/useUndoRedo";
+import useChartStore from "@/store/chartStore/chartStore";
+import { getLocalStorage, setSessionStorage } from "@/utils/storages";
+import { StorageEnum } from "@/types/StorageTypes";
 
 const LeftOperator = () => {
 	const nav = useNavigate();
@@ -155,9 +158,37 @@ const CenterTitle = () => {
 };
 
 const RightOperator = () => {
+	const { canvasConfig } = useCanvasStore();
+	const { componentList, requestGlobalConfig } = useChartStore();
+	const goPreview = () => {
+		const localStorageInfo = getLocalStorage("chart") || [];
+		// 当前画布内容打包
+		const storageInfo = { canvasConfig, componentList, requestGlobalConfig };
+		// 根据当前项目 id 判断 sessionStorage 是否已存在，存在替换，不存在则添加
+		if (localStorageInfo.length) {
+			const repeateIndex = localStorageInfo.findIndex((e: { id: string }) => e.id === "1");
+			if (repeateIndex !== -1) {
+				localStorageInfo.splice(repeateIndex, 1, { id: 1, ...storageInfo });
+				setSessionStorage(StorageEnum.J_CHART_STORAGE_LIST, localStorageInfo);
+			} else {
+				localStorageInfo.push({
+					id: 1,
+					...storageInfo
+				});
+				setSessionStorage(StorageEnum.J_CHART_STORAGE_LIST, localStorageInfo);
+			}
+		} else {
+			// 初次 sessionStorage 为空，直接 push
+			setSessionStorage(StorageEnum.J_CHART_STORAGE_LIST, [{ id: 1, ...storageInfo }]);
+		}
+		window.open("/preview/1");
+	};
+
 	return (
 		<div className="flex items-center gap-3 float-right">
-			<Button icon={<LaptopOutlined />}>预览</Button>
+			<Button icon={<LaptopOutlined />} onClick={goPreview}>
+				预览
+			</Button>
 			<Button icon={<SendOutlined />}>发布</Button>
 			<div className="ml-1">
 				<JBaseHeaderRightContent isLogin={true} />

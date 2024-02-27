@@ -31,6 +31,10 @@ const useCanvasStore = create<ICanvasState & ICanvasGlobalAction & ICanvasConfig
 	setCanvasConfig: (key, value) => {
 		set(({ canvasConfig }) => ({ canvasConfig: { ...canvasConfig, [key]: value } }));
 	},
+	// 重新设置 canvasConfig (preview 从 storage 中获取赋值)
+	setGlobalCanvasConfig: (config) => {
+		set(() => ({ canvasConfig: config }));
+	},
 	autoLayoutCanvas: () => {
 		set((state) => {
 			const { lockScale, scale, canvasContainerDOM } = state.canvasGlobal;

@@ -70,6 +70,12 @@ const useChartStore = create<IChartState & IChartAction>()(
 				}
 			});
 		},
+		// 重新设置 requestGlobalConfig (preview 从 storage 中获取赋值)
+		setrequestGlobalConfig(config) {
+			set((state) => {
+				state.requestGlobalConfig = config;
+			});
+		},
 		updateChartConfig(index, category, key, value) {
 			set((state) => {
 				const component = state.componentList[index];

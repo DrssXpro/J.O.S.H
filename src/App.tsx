@@ -3,6 +3,7 @@ import { lazy } from "react";
 import { Route, Routes } from "react-router-dom";
 import zhCN from "antd/locale/zh_CN";
 import JWithLoading from "./components/JWithLoading";
+import Preview from "./pages/Preview";
 
 const Login = lazy(() => import("@/pages/Login/index"));
 
@@ -36,6 +37,7 @@ function App() {
 							<Route element={<Projects />} path="projects"></Route>
 						</Route>
 						<Route element={<WorkBench />} path="/workBench"></Route>
+						<Route element={<Preview />} path="/preview/1"></Route>
 					</Routes>
 				}
 				loadingStyle={{ width: "100vw", height: "100vh" }}
