@@ -59,10 +59,11 @@ const WorkBenchCanvas = () => {
 						// 根据拖拽落下位置初始化图表位置（只有原生事件对象有 offsetX、offsetY 信息）
 						componentConifg.attr.x = e.nativeEvent.offsetX - componentConifg.attr.w / 2;
 						componentConifg.attr.y = e.nativeEvent.offsetY - componentConifg.attr.h / 2;
+						const componentInstance = { ...componentConifg, ChartComponent, ChartConfigComponent };
 						// 添加组件动作，历史记录
-						createAddHistory([componentConifg]);
+						createAddHistory([componentInstance]);
 						// 添加组件配置至全局 store
-						addComponentList({ ...componentConifg, ChartComponent, ChartConfigComponent });
+						addComponentList(componentInstance);
 						// 选中当前添加图表
 						setTargetSelectChart(componentConifg.id);
 					}}

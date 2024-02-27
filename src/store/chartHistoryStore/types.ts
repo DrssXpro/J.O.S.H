@@ -1,4 +1,4 @@
-import { ComponentType } from "@/materials/types";
+import { IComponent } from "../chartStore/types";
 
 // 操作类型枚举
 export enum HistoryActionTypeEnum {
@@ -52,7 +52,7 @@ export interface HistoryItemType {
 	// 会有同时操作多个组件场景
 	[HistoryStackItemEnum.ID]: string;
 	[HistoryStackItemEnum.ACTION_TYPE]: HistoryActionTypeEnum;
-	[HistoryStackItemEnum.HISTORY_DATA]: ComponentType[];
+	[HistoryStackItemEnum.HISTORY_DATA]: IComponent[];
 }
 
 // 历史 Store 类型
@@ -85,16 +85,16 @@ export interface IChartHistoryAction {
 	 * 具体操作
 	 */
 	// 新增组件记录
-	createAddHistory: (items: ComponentType[]) => void;
+	createAddHistory: (items: IComponent[]) => void;
 	// // 更新属性记录
-	// createUpdateHistory: (items: ComponentType[]) => void;
+	// createUpdateHistory: (items: IComponent[]) => void;
 	// // 删除组件记录
-	// createDeleteHistory: (items: ComponentType[]) => void;
+	// createDeleteHistory: (items: IComponent[]) => void;
 	// // 移动组件记录
-	createMoveHistory: (items: ComponentType[]) => void;
+	createMoveHistory: (items: IComponent[]) => void;
 	// // 改变层级（z-index）组件记录
 	// createLayerHistory: (
-	// 	items: ComponentType[],
+	// 	items: IComponent[],
 	// 	type:
 	// 		| HistoryActionTypeEnum.TOP
 	// 		| HistoryActionTypeEnum.DOWN
@@ -102,13 +102,13 @@ export interface IChartHistoryAction {
 	// 		| HistoryActionTypeEnum.BOTTOM
 	// ) => void;
 	// // 剪切组件记录
-	// createPasteHistory: (items: ComponentType[]) => void;
+	// createPasteHistory: (items: IComponent[]) => void;
 	// // 锁定记录
-	// createLockHistory: (items: ComponentType[]) => void;
+	// createLockHistory: (items: IComponent[]) => void;
 	// // 解锁记录
-	// createUnLockHistory: (items: ComponentType[]) => void;
+	// createUnLockHistory: (items: IComponent[]) => void;
 	// // 隐藏记录
-	// createHideHistory: (items: ComponentType[]) => void;
+	// createHideHistory: (items: IComponent[]) => void;
 	// // 展示记录
-	// createShowHistory: (items: ComponentType[]) => void;
+	// createShowHistory: (items: IComponent[]) => void;
 }

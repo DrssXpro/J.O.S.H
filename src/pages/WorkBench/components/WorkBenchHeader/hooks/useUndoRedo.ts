@@ -4,7 +4,8 @@ import { HistoryItemType, HistoryActionTypeEnum } from "@/store/chartHistoryStor
 import useChartStore from "@/store/chartStore/chartStore";
 
 const useUndoRedo = () => {
-	const { componentList, setTargetSelectChart, updateChartConfig, removeComponents } = useChartStore();
+	const { componentList, setTargetSelectChart, updateChartConfig, removeComponents, addComponentList } =
+		useChartStore();
 	const { getTargetChartIndex } = useEditCharts();
 
 	function handleUndo(historyItem: HistoryItemType) {
@@ -31,11 +32,14 @@ const useUndoRedo = () => {
 	function handleRedo(historyItem: HistoryItemType) {
 		const isAdd = historyItem.actionType === HistoryActionTypeEnum.ADD;
 		const isMove = historyItem.actionType === HistoryActionTypeEnum.MOVE;
+		const components = historyItem.historyData;
 		if (isAdd) {
+			components.forEach((item) => {
+				addComponentList(item);
+			});
 			return;
 		}
 		if (isMove) {
-			const components = historyItem.historyData;
 			components.forEach((item) => {
 				resetComponentPosition(item, "FORWARD");
 			});

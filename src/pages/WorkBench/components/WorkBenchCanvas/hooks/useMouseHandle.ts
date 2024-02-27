@@ -1,11 +1,10 @@
 import useEditCharts from "@/hooks/useEditCharts";
-import { ComponentType } from "@/materials/types";
 import useCanvasStore from "@/store/canvasStore/canvasStore";
 import { CanvasConfigTypeEnum, CanvasGlobalTypeEnum } from "@/store/canvasStore/types";
 import useChartHistoryStore from "@/store/chartHistoryStore/chartHistoryStore";
 import useChartStore from "@/store/chartStore/chartStore";
-import { rafThrottle } from "@/utils/utils";
-import { cloneDeep, omit } from "lodash-es";
+import { IComponent } from "@/store/chartStore/types";
+import { cloneComponent, rafThrottle } from "@/utils/utils";
 
 const useMouseHandle = () => {
 	const { createMoveHistory } = useChartHistoryStore();
@@ -14,7 +13,7 @@ const useMouseHandle = () => {
 		useChartStore();
 	const { getTargetChartIndex } = useEditCharts();
 	// 画布内 mousedown 事件（选中图表或清空当前选中内容）
-	const mousedownHandleUnStop = (_e: React.MouseEvent, item?: ComponentType) => {
+	const mousedownHandleUnStop = (_e: React.MouseEvent, item?: IComponent) => {
 		if (item) {
 			setTargetSelectChart(item.id);
 			return;
@@ -23,7 +22,7 @@ const useMouseHandle = () => {
 	};
 
 	// 图表 mousedown 事件（拖拽改变位置）
-	const handleMouseDown = (e: React.MouseEvent, item: ComponentType) => {
+	const handleMouseDown = (e: React.MouseEvent, item: IComponent) => {
 		e.preventDefault();
 		e.stopPropagation();
 		setTargetSelectChart(item.id);
@@ -33,7 +32,7 @@ const useMouseHandle = () => {
 		const canvasHeight = canvasConfig[CanvasConfigTypeEnum.CANVAS_HEIGHT];
 
 		// 历史记录
-		const ComponentRecords: ComponentType[] = [];
+		const ComponentRecords: IComponent[] = [];
 
 		// 记录初始化图表位置和大小，考虑多选情况用 Map 存储
 		const targetMap = new Map();
@@ -41,9 +40,7 @@ const useMouseHandle = () => {
 			const index = getTargetChartIndex(id)!;
 			if (index !== -1) {
 				// mouseDown 先记录当前图表位置存入 records
-				ComponentRecords.push(
-					cloneDeep(omit(componentList[index], ["ChartComponent", "ChartConfigComponent"]))
-				);
+				ComponentRecords.push(cloneComponent(componentList[index]));
 				const { x, y, w, h } = componentList[index].attr;
 				targetMap.set(id, { x, y, w, h });
 			}
@@ -121,7 +118,7 @@ const useMouseHandle = () => {
 	};
 
 	// 图表八个点位 mousedown 事件（拖拽改变宽高大小）
-	const handleMousePointDown = (e: React.MouseEvent, point: string, attr: ComponentType["attr"]) => {
+	const handleMousePointDown = (e: React.MouseEvent, point: string, attr: IComponent["attr"]) => {
 		e.stopPropagation();
 		e.preventDefault();
 		const scale = canvasGlobal[CanvasGlobalTypeEnum.SCALE];

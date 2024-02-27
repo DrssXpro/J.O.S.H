@@ -2,7 +2,7 @@ import { ChartComponentProps, ComponentType } from "@/materials/types";
 import { RequestConfigType, RequestGlobalConfigType } from "@/types/HttpTypes";
 import { FC } from "react";
 
-interface IComponent extends ComponentType {
+export interface IComponent extends ComponentType {
 	ChartComponent: FC<ChartComponentProps>;
 	ChartConfigComponent: FC;
 }

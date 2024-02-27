@@ -1,4 +1,5 @@
-import { cloneDeep } from "lodash-es";
+import { IComponent } from "@/store/chartStore/types";
+import { cloneDeep, omit } from "lodash-es";
 
 // file -> url: 设置 canvas 背景图使用
 export const fileToUrl = (file: File): string => {
@@ -41,5 +42,15 @@ export function rafThrottle(fn: (...args: any[]) => any) {
 			fn.apply(this, args);
 			lock = false;
 		});
+	};
+}
+
+// 深拷贝组件，undo、redo history 记录使用
+export function cloneComponent(component: IComponent) {
+	// 只深拷贝配置信息，图表和配置组件保存引用
+	return {
+		...cloneDeep(omit(component, ["ChartComponent", "ChartConfigComponent"])),
+		ChartComponent: component.ChartComponent,
+		ChartConfigComponent: component.ChartConfigComponent
 	};
 }
