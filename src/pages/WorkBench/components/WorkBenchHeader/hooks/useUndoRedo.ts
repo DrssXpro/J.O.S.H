@@ -37,6 +37,7 @@ const useUndoRedo = () => {
 			components.forEach((item) => {
 				addComponentList(item);
 			});
+			setTargetSelectChart(components.map((i) => i.id));
 			return;
 		}
 		if (isMove) {

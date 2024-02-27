@@ -106,8 +106,9 @@ const useMouseHandle = () => {
 					}
 				});
 			}
-			// 压入 backStack 中
-			createMoveHistory(ComponentRecords);
+			// 压入 backStack 中，只有移动才压入
+			const pushRecords = ComponentRecords.filter((item) => item.attr.offsetX && item.attr.offsetY);
+			pushRecords.length && createMoveHistory(pushRecords);
 
 			document.removeEventListener("mousemove", handleMouseMove);
 			document.removeEventListener("mouseup", handleMouseUp);
