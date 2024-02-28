@@ -47,6 +47,10 @@ export enum FilterEnum {
 //
 export interface ChartComponentProps {
 	chartConfig: ComponentType;
+	// 动态数据请求失败回调
+	requestErrorCallback?: (error: any) => void;
+	// 动态数据请求成功回调
+	requestSuccessCallback?: () => void;
 }
 
 // 组件状态

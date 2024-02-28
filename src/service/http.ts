@@ -99,7 +99,6 @@ export const customizeHttp = (
 			headers
 		});
 	} catch (error) {
-		console.log(error);
 		errorfallback && errorfallback(error);
 	}
 };

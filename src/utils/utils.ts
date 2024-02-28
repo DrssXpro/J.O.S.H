@@ -1,5 +1,6 @@
 import { IComponent } from "@/store/chartStore/types";
 import { excludeParseEventKeyList } from "@/types/EventTypes";
+import { RequestHttpIntervalEnum } from "@/types/HttpTypes";
 import { cloneDeep, omit } from "lodash-es";
 
 // file -> url: 设置 canvas 背景图使用
@@ -102,4 +103,29 @@ export const JSONParse = (data: string) => {
 		}
 		return v;
 	});
+};
+
+// 处理请求时间单位配置，统一为毫秒
+export const intervalUnitHandle = (num: number, unit: RequestHttpIntervalEnum) => {
+	switch (unit) {
+		// 秒
+		case RequestHttpIntervalEnum.SECOND:
+			return num * 1000;
+		// 分
+		case RequestHttpIntervalEnum.MINUTE:
+			return num * 1000 * 60;
+		// 时
+		case RequestHttpIntervalEnum.HOUR:
+			return num * 1000 * 60 * 60;
+		// 天
+		case RequestHttpIntervalEnum.DAY:
+			return num * 1000 * 60 * 60 * 24;
+		default:
+			return num * 1000;
+	}
+};
+
+// 判断是否为预览页
+export const isPreview = () => {
+	return document.location.pathname.includes("preview");
 };
