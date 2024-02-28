@@ -7,6 +7,7 @@ import useEditCharts from "@/hooks/useEditCharts";
 import { useEffect, useState } from "react";
 import { produce } from "immer";
 import useChartStore from "@/store/chartStore/chartStore";
+import JChartRendererSetting from "../JChartRendererSetting";
 
 interface IJGlobalChartSettingProps {
 	chartIndex: number;
@@ -16,9 +17,10 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 	const { chartIndex } = props;
 	const { updateChartConfig } = useChartStore();
 	const { getTargetData } = useEditCharts();
-	const component = getTargetData();
+	const component = getTargetData()!;
 	const [globalConfig, setGlobalGonfig] = useState({
-		options: component!.option,
+		options: component.option,
+		rendererType: component.rendererType,
 		updateKey: ""
 	});
 
@@ -35,12 +37,33 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 	useEffect(() => {
 		component &&
 			setGlobalGonfig({
-				options: component!.option,
+				options: component.option,
+				rendererType: component.rendererType,
 				updateKey: ""
 			});
 	}, [chartIndex]);
 	return (
 		<>
+			<JCollapseBox name="渲染器">
+				<>
+					<JSettingBox name="全局">
+						<JChartRendererSetting
+							value={component.rendererType}
+							onChange={(value) => {
+								updateChartConfig(chartIndex, "rendererType", null, value);
+							}}
+						/>
+					</JSettingBox>
+					<JSettingBox name="当前">
+						<JChartRendererSetting
+							value={component.rendererType}
+							onChange={(value) => {
+								updateChartConfig(chartIndex, "rendererType", null, value);
+							}}
+						/>
+					</JSettingBox>
+				</>
+			</JCollapseBox>
 			{globalConfig.options.grid && (
 				<JCollapseBox name="容器">
 					<JSettingBox name="距离">

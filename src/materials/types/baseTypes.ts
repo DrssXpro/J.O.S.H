@@ -121,9 +121,15 @@ export interface PublicConfigType {
 	};
 }
 
+export enum RendererTypeEnum {
+	SVG = "svg",
+	CANVAS = "canvas"
+}
+
 // 组件实例类型（store 中存储 componentList）
 export interface ComponentType extends PublicConfigType {
 	key: string;
 	chartConfig: IMaterialConfigType;
+	rendererType: RendererTypeEnum;
 	option: any;
 }

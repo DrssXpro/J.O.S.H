@@ -48,7 +48,6 @@ const usePreviewFitScale = (
 					if (scaleRef.current) {
 						scale.width = parseFloat(((window.innerHeight * baseProportion) / baseWidth).toFixed(5));
 						scale.height = parseFloat((window.innerHeight / baseHeight).toFixed(5));
-						console.log("cec:", baseProportion, baseWidth, baseHeight);
 						scaleRef.current.style.transform = `scale(${scale.width}, ${scale.height})`;
 						scaleRef.current.style.transformOrigin = `center center`;
 					}
