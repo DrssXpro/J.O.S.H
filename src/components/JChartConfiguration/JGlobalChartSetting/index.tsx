@@ -4,8 +4,6 @@ import JSettingBox from "../public/JSettingBox";
 import JSettingItem from "../public/JSettingItem";
 import { axisConfig, legendConfig } from "@/materials/echartsConfig";
 import useEditCharts from "@/hooks/useEditCharts";
-import { useEffect, useState } from "react";
-import { produce } from "immer";
 import useChartStore from "@/store/chartStore/chartStore";
 import JChartRendererSetting from "../JChartRendererSetting";
 
@@ -18,30 +16,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 	const { updateChartConfig } = useChartStore();
 	const { getTargetData } = useEditCharts();
 	const component = getTargetData()!;
-	const [globalConfig, setGlobalGonfig] = useState({
-		options: component.option,
-		rendererType: component.rendererType,
-		updateKey: ""
-	});
 
-	useEffect(() => {
-		globalConfig.updateKey &&
-			updateChartConfig(
-				chartIndex,
-				"option",
-				globalConfig.updateKey,
-				globalConfig["options"][globalConfig.updateKey]
-			);
-	}, [globalConfig]);
-
-	useEffect(() => {
-		component &&
-			setGlobalGonfig({
-				options: component.option,
-				rendererType: component.rendererType,
-				updateKey: ""
-			});
-	}, [chartIndex]);
 	return (
 		<>
 			<JCollapseBox name="渲染器">
@@ -64,59 +39,51 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 					</JSettingBox>
 				</>
 			</JCollapseBox>
-			{globalConfig.options.grid && (
+			{component.option.grid && (
 				<JCollapseBox name="容器">
 					<JSettingBox name="距离">
 						<div className="grid grid-cols-2 gap-2">
 							<JSettingItem text="左侧距离">
 								<Input
-									value={globalConfig.options.grid.left}
+									value={component.option.grid.left}
 									onChange={(e) => {
-										setGlobalGonfig(
-											produce((draft: any) => {
-												draft.options.grid.left = e.target.value;
-												draft.updateKey = "grid";
-											})
-										);
+										updateChartConfig(chartIndex, "option", "grid", {
+											...component.option.grid,
+											left: e.target.value
+										});
 									}}
 								/>
 							</JSettingItem>
 							<JSettingItem text="右侧距离">
 								<Input
-									value={globalConfig.options.grid.right}
+									value={component.option.grid.right}
 									onChange={(e) => {
-										setGlobalGonfig(
-											produce((draft: any) => {
-												draft.options.grid.right = e.target.value;
-												draft.updateKey = "grid";
-											})
-										);
+										updateChartConfig(chartIndex, "option", "grid", {
+											...component.option.grid,
+											right: e.target.value
+										});
 									}}
 								/>
 							</JSettingItem>
 							<JSettingItem text="上侧距离">
 								<Input
-									value={globalConfig.options.grid.top}
+									value={component.option.grid.top}
 									onChange={(e) => {
-										setGlobalGonfig(
-											produce((draft: any) => {
-												draft.options.grid.top = e.target.value;
-												draft.updateKey = "grid";
-											})
-										);
+										updateChartConfig(chartIndex, "option", "grid", {
+											...component.option.grid,
+											top: e.target.value
+										});
 									}}
 								/>
 							</JSettingItem>
 							<JSettingItem text="下侧距离">
 								<Input
-									value={globalConfig.options.grid.bottom}
+									value={component.option.grid.bottom}
 									onChange={(e) => {
-										setGlobalGonfig(
-											produce((draft: any) => {
-												draft.options.grid.bottom = e.target.value;
-												draft.updateKey = "grid";
-											})
-										);
+										updateChartConfig(chartIndex, "option", "grid", {
+											...component.option.grid,
+											bottom: e.target.value
+										});
 									}}
 								/>
 							</JSettingItem>
@@ -124,21 +91,19 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 					</JSettingBox>
 				</JCollapseBox>
 			)}
-			{globalConfig.options.xAxis && (
+			{component.option.xAxis && (
 				<JCollapseBox
 					name="X轴"
 					operator={
 						<Switch
 							checkedChildren="启用"
 							unCheckedChildren="关闭"
-							value={globalConfig.options.xAxis.show}
+							value={component.option.xAxis.show}
 							onChange={(val) => {
-								setGlobalGonfig(
-									produce((draft: any) => {
-										draft.options.xAxis.show = val;
-										draft.updateKey = "xAxis";
-									})
-								);
+								updateChartConfig(chartIndex, "option", "xAxis", {
+									...component.option.xAxis,
+									show: val
+								});
 							}}
 						/>
 					}
@@ -149,14 +114,12 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 								<JSettingItem text="名称">
 									<Input
 										placeholder="请输入"
-										value={globalConfig.options.xAxis.name}
+										value={component.option.xAxis.name}
 										onChange={(e) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.xAxis.name = e.target.value;
-													draft.updateKey = "xAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "xAxis", {
+												...component.option.xAxis,
+												name: e.target.value
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -164,15 +127,16 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<ColorPicker
 										className="w-full"
 										showText
-										value={globalConfig.options.xAxis.nameTextStyle.color}
+										value={component.option.xAxis.nameTextStyle.color}
 										onChange={(val) => {
 											const color = val.toHexString();
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.xAxis.nameTextStyle.color = color;
-													draft.updateKey = "xAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "xAxis", {
+												...component.option.xAxis,
+												nameTextStyle: {
+													...component.option.xAxis.nameTextStyle,
+													color
+												}
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -180,14 +144,15 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<InputNumber
 										className="w-full"
 										min={12}
-										value={globalConfig.options.xAxis.nameTextStyle.fontSize}
+										value={component.option.xAxis.nameTextStyle.fontSize}
 										onChange={(val) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.xAxis.nameTextStyle.fontSize = val;
-													draft.updateKey = "xAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "xAxis", {
+												...component.option.xAxis,
+												nameTextStyle: {
+													...component.option.xAxis.nameTextStyle,
+													fontSize: val
+												}
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -195,14 +160,12 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<InputNumber
 										className="w-full"
 										min={5}
-										value={globalConfig.options.xAxis.nameGap}
+										value={component.option.xAxis.nameGap}
 										onChange={(val) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.xAxis.nameGap = val;
-													draft.updateKey = "xAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "xAxis", {
+												...component.option.xAxis,
+												nameGap: val
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -212,14 +175,15 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 							<div className="grid grid-cols-2 gap-2">
 								<JSettingItem text="展示">
 									<Switch
-										value={globalConfig.options.xAxis.axisLabel.show}
+										value={component.option.xAxis.axisLabel.show}
 										onChange={(val) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.xAxis.axisLabel.show = val;
-													draft.updateKey = "xAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "xAxis", {
+												...component.option.xAxis,
+												axisLabel: {
+													...component.option.xAxis.axisLabel,
+													show: val
+												}
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -227,15 +191,16 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<ColorPicker
 										className="w-full"
 										showText
-										value={globalConfig.options.xAxis.axisLabel.color}
+										value={component.option.xAxis.axisLabel.color}
 										onChange={(val) => {
 											const color = val.toHexString();
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.xAxis.axisLabel.color = color;
-													draft.updateKey = "xAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "xAxis", {
+												...component.option.xAxis,
+												axisLabel: {
+													...component.option.xAxis.axisLabel,
+													color
+												}
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -243,14 +208,15 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<InputNumber
 										className="w-full"
 										min={8}
-										value={globalConfig.options.xAxis.axisLabel.fontSize}
+										value={component.option.xAxis.axisLabel.fontSize}
 										onChange={(val) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.xAxis.axisLabel.fontSize = val;
-													draft.updateKey = "xAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "xAxis", {
+												...component.option.xAxis,
+												axisLabel: {
+													...component.option.xAxis.axisLabel,
+													fontSize: val
+												}
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -259,14 +225,15 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 										className="w-full"
 										min={-90}
 										max={90}
-										value={globalConfig.options.xAxis.axisLabel.rotate}
+										value={component.option.xAxis.axisLabel.rotate}
 										onChange={(val) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.xAxis.axisLabel.rotate = val;
-													draft.updateKey = "xAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "xAxis", {
+												...component.option.xAxis,
+												axisLabel: {
+													...component.option.xAxis.axisLabel,
+													rotate: val
+												}
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -276,14 +243,15 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 							<div className="grid grid-cols-2 gap-2">
 								<JSettingItem text="展示">
 									<Switch
-										value={globalConfig.options.xAxis.axisLine.show}
+										value={component.option.xAxis.axisLine.show}
 										onChange={(val) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.xAxis.axisLine.show = val;
-													draft.updateKey = "xAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "xAxis", {
+												...component.option.xAxis,
+												axisLine: {
+													...component.option.xAxis.axisLine,
+													show: val
+												}
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -291,15 +259,19 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<ColorPicker
 										className="w-full"
 										showText
-										value={globalConfig.options.xAxis.axisLine.lineStyle.color}
+										value={component.option.xAxis.axisLine.lineStyle.color}
 										onChange={(val) => {
 											const color = val.toHexString();
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.xAxis.axisLine.lineStyle.color = color;
-													draft.updateKey = "xAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "xAxis", {
+												...component.option.xAxis,
+												axisLine: {
+													...component.option.xAxis.axisLine,
+													lineStyle: {
+														...component.option.xAxis.axisLine.lineStyle,
+														color
+													}
+												}
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -307,14 +279,18 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<InputNumber
 										className="w-full"
 										min={1}
-										value={globalConfig.options.xAxis.axisLine.lineStyle.width}
+										value={component.option.xAxis.axisLine.lineStyle.width}
 										onChange={(val) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.xAxis.axisLine.lineStyle.width = val;
-													draft.updateKey = "xAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "xAxis", {
+												...component.option.xAxis,
+												axisLine: {
+													...component.option.xAxis.axisLine,
+													lineStyle: {
+														...component.option.xAxis.axisLine.lineStyle,
+														width: val
+													}
+												}
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -322,40 +298,37 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<Select
 										className="w-full"
 										options={axisConfig.xposition}
-										value={globalConfig.options.xAxis.position}
+										value={component.option.xAxis.position}
 										onChange={(val) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.xAxis.position = val;
-													draft.updateKey = "xAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "xAxis", {
+												...component.option.xAxis,
+												position: val
+											});
 										}}
 									/>
 								</JSettingItem>
 								<JSettingItem text="对齐零">
 									<Switch
-										value={globalConfig.options.xAxis.axisLine.onZero}
+										value={component.option.xAxis.axisLine.onZero}
 										onChange={(val) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.xAxis.axisLine.onZero = val;
-													draft.updateKey = "xAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "xAxis", {
+												...component.option.xAxis,
+												axisLine: {
+													...component.option.xAxis.axisLine,
+													onZero: val
+												}
+											});
 										}}
 									/>
 								</JSettingItem>
 								<JSettingItem text="反向">
 									<Switch
-										value={globalConfig.options.xAxis.inverse}
+										value={component.option.xAxis.inverse}
 										onChange={(val) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.xAxis.inverse = val;
-													draft.updateKey = "xAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "xAxis", {
+												...component.option.xAxis,
+												inverse: val
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -365,28 +338,30 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 							<div className="grid grid-cols-2 gap-2">
 								<JSettingItem text="展示">
 									<Switch
-										value={globalConfig.options.xAxis.axisTick.show}
+										value={component.option.xAxis.axisTick.show}
 										onChange={(val) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.xAxis.axisTick.show = val;
-													draft.updateKey = "xAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "xAxis", {
+												...component.option.xAxis,
+												axisTick: {
+													...component.option.xAxis.axisTick,
+													show: val
+												}
+											});
 										}}
 									/>
 								</JSettingItem>
 								<JSettingItem text="长度">
 									<InputNumber
 										className="w-full"
-										value={globalConfig.options.xAxis.axisTick.length}
+										value={component.option.xAxis.axisTick.length}
 										onChange={(val) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.xAxis.axisTick.length = val;
-													draft.updateKey = "xAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "xAxis", {
+												...component.option.xAxis,
+												axisTick: {
+													...component.option.xAxis.axisTick,
+													length: val
+												}
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -396,14 +371,15 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 							<div className="grid grid-cols-2 gap-2">
 								<JSettingItem text="展示">
 									<Switch
-										value={globalConfig.options.xAxis.splitLine.show}
+										value={component.option.xAxis.splitLine.show}
 										onChange={(val) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.xAxis.splitLine.show = val;
-													draft.updateKey = "xAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "xAxis", {
+												...component.option.xAxis,
+												splitLine: {
+													...component.option.xAxis.splitLine,
+													show: val
+												}
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -411,15 +387,19 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<ColorPicker
 										className="w-full"
 										showText
-										value={globalConfig.options.xAxis.splitLine.lineStyle.color}
+										value={component.option.xAxis.splitLine.lineStyle.color}
 										onChange={(val) => {
 											const color = val.toHexString();
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.xAxis.splitLine.lineStyle.color = color;
-													draft.updateKey = "xAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "xAxis", {
+												...component.option.xAxis,
+												splitLine: {
+													...component.option.xAxis.splitLine,
+													lineStyle: {
+														...component.option.xAxis.splitLine.lineStyle,
+														color
+													}
+												}
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -427,14 +407,18 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<InputNumber
 										className="w-full"
 										min={1}
-										value={globalConfig.options.xAxis.splitLine.lineStyle.width}
+										value={component.option.xAxis.splitLine.lineStyle.width}
 										onChange={(val) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.xAxis.splitLine.lineStyle.width = val;
-													draft.updateKey = "xAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "xAxis", {
+												...component.option.xAxis,
+												splitLine: {
+													...component.option.xAxis.splitLine,
+													lineStyle: {
+														...component.option.xAxis.splitLine.lineStyle,
+														width: val
+													}
+												}
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -442,14 +426,18 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<Select
 										className="w-full"
 										options={axisConfig.splitLint.lineStyle}
-										value={globalConfig.options.xAxis.splitLine.lineStyle.type}
+										value={component.option.xAxis.splitLine.lineStyle.type}
 										onChange={(val) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.xAxis.splitLine.lineStyle.type = val;
-													draft.updateKey = "xAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "xAxis", {
+												...component.option.xAxis,
+												splitLine: {
+													...component.option.xAxis.splitLine,
+													lineStyle: {
+														...component.option.xAxis.splitLine.lineStyle,
+														type: val
+													}
+												}
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -459,21 +447,19 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 				</JCollapseBox>
 			)}
 
-			{globalConfig.options.yAxis && (
+			{component.option.yAxis && (
 				<JCollapseBox
 					name="Y轴"
 					operator={
 						<Switch
 							checkedChildren="启用"
 							unCheckedChildren="关闭"
-							value={globalConfig.options.yAxis.show}
+							value={component.option.yAxis.show}
 							onChange={(val) => {
-								setGlobalGonfig(
-									produce((draft: any) => {
-										draft.options.yAxis.show = val;
-										draft.updateKey = "yAxis";
-									})
-								);
+								updateChartConfig(chartIndex, "option", "yAxis", {
+									...component.option.yAxis,
+									show: val
+								});
 							}}
 						/>
 					}
@@ -484,14 +470,12 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 								<JSettingItem text="名称">
 									<Input
 										placeholder="请输入"
-										value={globalConfig.options.yAxis.name}
+										value={component.option.yAxis.name}
 										onChange={(e) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.yAxis.name = e.target.value;
-													draft.updateKey = "yAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "yAxis", {
+												...component.option.yAxis,
+												name: e.target.value
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -499,15 +483,16 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<ColorPicker
 										className="w-full"
 										showText
-										value={globalConfig.options.yAxis.nameTextStyle.color}
+										value={component.option.yAxis.nameTextStyle.color}
 										onChange={(val) => {
 											const color = val.toHexString();
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.yAxis.nameTextStyle.color = color;
-													draft.updateKey = "yAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "yAxis", {
+												...component.option.yAxis,
+												nameTextStyle: {
+													...component.option.yAxis.nameTextStyle,
+													color
+												}
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -515,14 +500,15 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<InputNumber
 										className="w-full"
 										min={8}
-										value={globalConfig.options.yAxis.nameTextStyle.fontSize}
+										value={component.option.yAxis.nameTextStyle.fontSize}
 										onChange={(val) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.yAxis.nameTextStyle.fontSize = val;
-													draft.updateKey = "yAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "yAxis", {
+												...component.option.yAxis,
+												nameTextStyle: {
+													...component.option.yAxis.nameTextStyle,
+													fontSize: val
+												}
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -530,14 +516,12 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<InputNumber
 										className="w-full"
 										min={5}
-										value={globalConfig.options.yAxis.nameGap}
+										value={component.option.yAxis.nameGap}
 										onChange={(val) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.yAxis.nameGap = val;
-													draft.updateKey = "yAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "yAxis", {
+												...component.option.yAxis,
+												nameGap: val
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -547,14 +531,15 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 							<div className="grid grid-cols-2 gap-2">
 								<JSettingItem text="展示">
 									<Switch
-										value={globalConfig.options.yAxis.axisLabel.show}
+										value={component.option.yAxis.axisLabel.show}
 										onChange={(val) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.yAxis.axisLabel.show = val;
-													draft.updateKey = "yAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "yAxis", {
+												...component.option.yAxis,
+												axisLabel: {
+													...component.option.yAxis.axisLabel,
+													show: val
+												}
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -562,15 +547,16 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<ColorPicker
 										className="w-full"
 										showText
-										value={globalConfig.options.yAxis.axisLabel.color}
+										value={component.option.yAxis.axisLabel.color}
 										onChange={(val) => {
 											const color = val.toHexString();
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.yAxis.axisLabel.color = color;
-													draft.updateKey = "yAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "yAxis", {
+												...component.option.yAxis,
+												axisLabel: {
+													...component.option.yAxis.axisLabel,
+													color
+												}
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -578,14 +564,15 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<InputNumber
 										className="w-full"
 										min={8}
-										value={globalConfig.options.yAxis.axisLabel.fontSize}
+										value={component.option.yAxis.axisLabel.fontSize}
 										onChange={(val) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.yAxis.axisLabel.fontSize = val;
-													draft.updateKey = "yAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "yAxis", {
+												...component.option.yAxis,
+												axisLabel: {
+													...component.option.yAxis.axisLabel,
+													fontSize: val
+												}
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -594,14 +581,15 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 										className="w-full"
 										min={-90}
 										max={90}
-										value={globalConfig.options.yAxis.axisLabel.rotate}
+										value={component.option.yAxis.axisLabel.rotate}
 										onChange={(val) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.yAxis.axisLabel.rotate = val;
-													draft.updateKey = "yAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "yAxis", {
+												...component.option.yAxis,
+												axisLabel: {
+													...component.option.yAxis.axisLabel,
+													rotate: val
+												}
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -611,14 +599,15 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 							<div className="grid grid-cols-2 gap-2">
 								<JSettingItem text="展示">
 									<Switch
-										value={globalConfig.options.yAxis.axisLine.show}
+										value={component.option.yAxis.axisLine.show}
 										onChange={(val) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.yAxis.axisLine.show = val;
-													draft.updateKey = "yAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "yAxis", {
+												...component.option.yAxis,
+												axisLine: {
+													...component.option.yAxis.axisLine,
+													show: val
+												}
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -626,15 +615,19 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<ColorPicker
 										className="w-full"
 										showText
-										value={globalConfig.options.yAxis.axisLine.lineStyle.color}
+										value={component.option.yAxis.axisLine.lineStyle.color}
 										onChange={(val) => {
 											const color = val.toHexString();
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.yAxis.axisLine.lineStyle.color = color;
-													draft.updateKey = "yAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "yAxis", {
+												...component.option.yAxis,
+												axisLine: {
+													...component.option.yAxis.axisLine,
+													lineStyle: {
+														...component.option.yAxis.axisLine.lineStyle,
+														color
+													}
+												}
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -642,14 +635,18 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<InputNumber
 										className="w-full"
 										min={1}
-										value={globalConfig.options.yAxis.axisLine.lineStyle.width}
+										value={component.option.yAxis.axisLine.lineStyle.width}
 										onChange={(val) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.yAxis.axisLine.lineStyle.width = val;
-													draft.updateKey = "yAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "yAxis", {
+												...component.option.yAxis,
+												axisLine: {
+													...component.option.yAxis.axisLine,
+													lineStyle: {
+														...component.option.yAxis.axisLine.lineStyle,
+														width: val
+													}
+												}
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -657,40 +654,37 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<Select
 										className="w-full"
 										options={axisConfig.yposition}
-										value={globalConfig.options.yAxis.position}
+										value={component.option.yAxis.position}
 										onChange={(val) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.yAxis.position = val;
-													draft.updateKey = "yAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "yAxis", {
+												...component.option.yAxis,
+												position: val
+											});
 										}}
 									/>
 								</JSettingItem>
 								<JSettingItem text="对齐零">
 									<Switch
-										value={globalConfig.options.yAxis.axisLine.onZero}
+										value={component.option.yAxis.axisLine.onZero}
 										onChange={(val) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.yAxis.axisLine.onZero = val;
-													draft.updateKey = "yAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "yAxis", {
+												...component.option.yAxis,
+												axisLine: {
+													...component.option.yAxis.axisLine,
+													onZero: val
+												}
+											});
 										}}
 									/>
 								</JSettingItem>
 								<JSettingItem text="反向">
 									<Switch
-										value={globalConfig.options.yAxis.inverse}
+										value={component.option.yAxis.inverse}
 										onChange={(val) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.yAxis.inverse = val;
-													draft.updateKey = "yAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "yAxis", {
+												...component.option.yAxis,
+												inverse: val
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -700,14 +694,15 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 							<div className="grid grid-cols-2 gap-2">
 								<JSettingItem text="展示">
 									<Switch
-										value={globalConfig.options.yAxis.axisTick.show}
+										value={component.option.yAxis.axisTick.show}
 										onChange={(val) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.yAxis.axisTick.show = val;
-													draft.updateKey = "yAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "yAxis", {
+												...component.option.yAxis,
+												axisTick: {
+													...component.option.yAxis.axisTick,
+													show: val
+												}
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -715,14 +710,15 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<InputNumber
 										className="w-full"
 										min={1}
-										value={globalConfig.options.yAxis.axisTick.length}
+										value={component.option.yAxis.axisTick.length}
 										onChange={(val) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.yAxis.axisTick.length = val;
-													draft.updateKey = "yAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "yAxis", {
+												...component.option.yAxis,
+												axisTick: {
+													...component.option.yAxis.axisTick,
+													length: val
+												}
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -732,14 +728,15 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 							<div className="grid grid-cols-2 gap-2">
 								<JSettingItem text="展示">
 									<Switch
-										value={globalConfig.options.yAxis.splitLine.show}
+										value={component.option.yAxis.splitLine.show}
 										onChange={(val) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.yAxis.splitLine.show = val;
-													draft.updateKey = "yAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "yAxis", {
+												...component.option.yAxis,
+												splitLine: {
+													...component.option.yAxis.splitLine,
+													show: val
+												}
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -747,15 +744,19 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<ColorPicker
 										className="w-full"
 										showText
-										value={globalConfig.options.yAxis.splitLine.lineStyle.color}
+										value={component.option.yAxis.splitLine.lineStyle.color}
 										onChange={(val) => {
 											const color = val.toHexString();
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.yAxis.splitLine.lineStyle.color = color;
-													draft.updateKey = "yAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "yAxis", {
+												...component.option.yAxis,
+												splitLine: {
+													...component.option.yAxis.splitLine,
+													lineStyle: {
+														...component.option.yAxis.splitLine.lineStyle,
+														color
+													}
+												}
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -763,14 +764,18 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<InputNumber
 										className="w-full"
 										min={1}
-										value={globalConfig.options.yAxis.splitLine.lineStyle.width}
+										value={component.option.yAxis.splitLine.lineStyle.width}
 										onChange={(val) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.yAxis.splitLine.lineStyle.width = val;
-													draft.updateKey = "yAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "yAxis", {
+												...component.option.yAxis,
+												splitLine: {
+													...component.option.yAxis.splitLine,
+													lineStyle: {
+														...component.option.yAxis.splitLine.lineStyle,
+														width: val
+													}
+												}
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -778,14 +783,18 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<Select
 										className="w-full"
 										options={axisConfig.splitLint.lineStyle}
-										value={globalConfig.options.yAxis.splitLine.lineStyle.type}
+										value={component.option.yAxis.splitLine.lineStyle.type}
 										onChange={(val) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.yAxis.splitLine.lineStyle.type = val;
-													draft.updateKey = "yAxis";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "yAxis", {
+												...component.option.yAxis,
+												splitLine: {
+													...component.option.yAxis.splitLine,
+													lineStyle: {
+														...component.option.yAxis.splitLine.lineStyle,
+														type: val
+													}
+												}
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -794,21 +803,19 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 					</>
 				</JCollapseBox>
 			)}
-			{globalConfig.options.legend && (
+			{component.option.legend && (
 				<JCollapseBox
 					name="图例"
 					operator={
 						<Switch
 							checkedChildren="启用"
 							unCheckedChildren="关闭"
-							value={globalConfig.options.legend.show}
+							value={component.option.legend.show}
 							onChange={(val) => {
-								setGlobalGonfig(
-									produce((draft: any) => {
-										draft.options.legend.show = val;
-										draft.updateKey = "legend";
-									})
-								);
+								updateChartConfig(chartIndex, "option", "legend", {
+									...component.option.legend,
+									show: val
+								});
 							}}
 						/>
 					}
@@ -820,15 +827,16 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<ColorPicker
 										className="w-full"
 										showText
-										value={globalConfig.options.legend.textStyle.color}
+										value={component.option.legend.textStyle.color}
 										onChange={(val) => {
 											const color = val.toHexString();
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.legend.textStyle.color = color;
-													draft.updateKey = "legend";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "legend", {
+												...component.option.legend,
+												textStyle: {
+													...component.option.legend.textStyle,
+													color
+												}
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -836,14 +844,15 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<InputNumber
 										className="w-full"
 										min={1}
-										value={globalConfig.options.legend.textStyle.fontSize}
+										value={component.option.legend.textStyle.fontSize}
 										onChange={(val) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.legend.textStyle.fontSize = val;
-													draft.updateKey = "legend";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "legend", {
+												...component.option.legend,
+												textStyle: {
+													...component.option.legend.textStyle,
+													fontSize: val
+												}
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -855,14 +864,12 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<Select
 										className="w-full"
 										options={legendConfig.lengendX}
-										value={globalConfig.options.legend.x}
+										value={component.option.legend.x}
 										onChange={(val) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.legend.x = val;
-													draft.updateKey = "legend";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "legend", {
+												...component.option.legend,
+												x: val
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -871,14 +878,12 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 										defaultValue="top"
 										className="w-full"
 										options={legendConfig.lengendY}
-										value={globalConfig.options.legend.y}
+										value={component.option.legend.y}
 										onChange={(val) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.legend.y = val;
-													draft.updateKey = "legend";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "legend", {
+												...component.option.legend,
+												y: val
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -890,14 +895,12 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<Select
 										className="w-full"
 										options={legendConfig.orient}
-										value={globalConfig.options.legend.orient}
+										value={component.option.legend.orient}
 										onChange={(val) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.legend.orient = val;
-													draft.updateKey = "legend";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "legend", {
+												...component.option.legend,
+												orient: val
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -905,14 +908,12 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<Select
 										className="w-full"
 										options={legendConfig.shape}
-										value={globalConfig.options.legend.icon}
+										value={component.option.legend.icon}
 										onChange={(val) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.legend.icon = val;
-													draft.updateKey = "legend";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "legend", {
+												...component.option.legend,
+												icon: val
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -924,14 +925,12 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<InputNumber
 										className="w-full"
 										min={1}
-										value={globalConfig.options.legend.itemWidth}
+										value={component.option.legend.itemWidth}
 										onChange={(val) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.legend.itemWidth = val;
-													draft.updateKey = "legend";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "legend", {
+												...component.option.legend,
+												itemWidth: val
+											});
 										}}
 									/>
 								</JSettingItem>
@@ -939,14 +938,12 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<InputNumber
 										className="w-full"
 										min={1}
-										value={globalConfig.options.legend.itemHeight}
+										value={component.option.legend.itemHeight}
 										onChange={(val) => {
-											setGlobalGonfig(
-												produce((draft: any) => {
-													draft.options.legend.itemHeight = val;
-													draft.updateKey = "legend";
-												})
-											);
+											updateChartConfig(chartIndex, "option", "legend", {
+												...component.option.legend,
+												itemHeight: val
+											});
 										}}
 									/>
 								</JSettingItem>
