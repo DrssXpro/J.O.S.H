@@ -69,6 +69,6 @@ export const options = {
 export default class Config extends PublicConfigClass implements ComponentType {
 	public key = BarLine.key;
 	public chartConfig = BarLine;
-	public rendererType = RendererTypeEnum.CANVAS;
+	public rendererType = RendererTypeEnum.SVG;
 	public option = echartOptionProfixHandle(options, includes);
 }
