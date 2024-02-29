@@ -44,9 +44,12 @@ export enum FilterEnum {
 	SKEW_Y = "skewY"
 }
 
-//
+// 图表组件 props
 export interface ChartComponentProps {
+	// 图表配置项
 	chartConfig: ComponentType;
+	// 自定义图表颜色
+	themeColor: { name: string; color: string[] };
 	// 动态数据请求失败回调
 	requestErrorCallback?: (error: any) => void;
 	// 动态数据请求成功回调

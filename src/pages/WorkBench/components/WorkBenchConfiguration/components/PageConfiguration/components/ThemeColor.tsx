@@ -1,9 +1,19 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { Button } from "antd";
-import { chartColors } from "@/theme";
+import { ChartColorsNameType, chartColors } from "@/theme";
+import useCanvasStore from "@/store/canvasStore/canvasStore";
+import { CanvasConfigTypeEnum } from "@/store/canvasStore/types";
+import { useState } from "react";
 
 const ThemeColor = () => {
+	const { setCanvasConfig } = useCanvasStore();
+	const [activeSelect, setActiveSelect] = useState<ChartColorsNameType>("light");
 	const computedGradientColor = (c1: string, c2: string) => `linear-gradient(to right, ${c1} 0%, ${c2} 100%)`;
+
+	const selectTheme = (theme: ChartColorsNameType) => {
+		setCanvasConfig(CanvasConfigTypeEnum.CHART_THEME_COLOR, theme);
+		setActiveSelect(theme);
+	};
 	return (
 		<div>
 			<Button ghost type="primary" block size="large">
@@ -15,10 +25,13 @@ const ThemeColor = () => {
 				</div>
 			</Button>
 			<div className="mt-4 flex flex-col gap-4">
-				{chartColors.map((i, index1) => (
+				{Object.entries(chartColors).map(([key, i], index1) => (
 					<div
-						className="relative flex items-center cursor-pointer justify-between bg-[#2C2C2D] border-[rgba(255,255,255,0.09)] border-1 p-2 rounded-lg"
+						className={`relative flex items-center cursor-pointer justify-between bg-[#2C2C2D] border-[rgba(255,255,255,0.09)] border-1 ${
+							activeSelect === key ? "border-[#2C7BE3] border-2" : ""
+						} p-2 rounded-lg`}
 						key={index1}
+						onClick={() => selectTheme(key as ChartColorsNameType)}
 					>
 						<div>{i.name}</div>
 						<div className="flex items-center gap-2">

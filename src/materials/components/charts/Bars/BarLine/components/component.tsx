@@ -3,7 +3,7 @@ import { ChartComponentProps } from "@/materials/types";
 import ReactECharts from "echarts-for-react";
 
 const BarLineComponent = (props: ChartComponentProps) => {
-	const { chartConfig, requestErrorCallback, requestSuccessCallback } = props;
+	const { chartConfig, themeColor, requestErrorCallback, requestSuccessCallback } = props;
 	useChartDataFetch(
 		chartConfig,
 		(err) => {
@@ -15,6 +15,7 @@ const BarLineComponent = (props: ChartComponentProps) => {
 	);
 	return (
 		<ReactECharts
+			theme={themeColor}
 			option={chartConfig.option}
 			style={{ height: "100%", width: "100%" }}
 			opts={{ renderer: chartConfig.rendererType }}

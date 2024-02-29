@@ -11,13 +11,14 @@ import EditShapeBox from "./components/EditShapeBox";
 import useMouseHandle from "./hooks/useMouseHandle";
 import { setChartAnimateStyle, setChartPosStyle, setChartSizeStyle } from "@/utils/chartStyle";
 import useChartHistoryStore from "@/store/chartHistoryStore/chartHistoryStore";
+import { colorCustomMerge } from "@/utils/colorStyle";
 
 const WorkBenchCanvas = () => {
 	const { canvasConfig } = useCanvasStore();
 	const { componentList, addComponentList, setTargetSelectChart } = useChartStore();
 	const { createAddHistory } = useChartHistoryStore();
 	const { handleMouseDown, mousedownHandleUnStop } = useMouseHandle();
-	const { canvasBackground, canvasBackgroundImage } = canvasConfig;
+	const { canvasBackground, canvasBackgroundImage, chartThemeColor, chartCustomThemeColorInfo } = canvasConfig;
 	useEffect(() => {
 		initKeyBoardEvent();
 		return () => {
@@ -39,6 +40,11 @@ const WorkBenchCanvas = () => {
 			height: "inherit"
 		} as CSSProperties;
 	}, [canvasBackground, canvasBackgroundImage]);
+
+	const computedThemeColor = useMemo(() => {
+		const colorCustomMergeData = colorCustomMerge(chartCustomThemeColorInfo);
+		return colorCustomMergeData[chartThemeColor];
+	}, [chartThemeColor]);
 
 	return (
 		<div className="relative flex-1">
@@ -79,7 +85,7 @@ const WorkBenchCanvas = () => {
 							onMouseDown={(e) => handleMouseDown(e, i)}
 						>
 							<EditShapeBox chartConfig={i}>
-								<i.ChartComponent chartConfig={i} />
+								<i.ChartComponent chartConfig={i} themeColor={computedThemeColor} />
 							</EditShapeBox>
 						</div>
 					))}

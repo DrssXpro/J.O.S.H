@@ -1,3 +1,4 @@
+import { ChartColorsNameType, CustomColorsType } from "@/theme";
 import { PreviewScaleEnum } from "@/types/LayoutTypes";
 
 // 画布区域
@@ -25,7 +26,11 @@ export enum CanvasConfigTypeEnum {
 	// 画布背景图片
 	CANVAS_BACKGROUND_IMAGE = "canvasBackgroundImage",
 	// 画布预览布局
-	CANVAS_PREVIEW_TYPE = "canvasPreviewType"
+	CANVAS_PREVIEW_TYPE = "canvasPreviewType",
+	// 统一图表主题
+	CHART_THEME_COLOR = "chartThemeColor",
+	// 自定义图表主题
+	CHART_CUSTOM_THEME_COLOR_INFO = "chartCustomThemeColorInfo"
 }
 
 export interface ICanvasGlobal {
@@ -42,6 +47,8 @@ export interface ICanvasConfig {
 	[CanvasConfigTypeEnum.CANVAS_BACKGROUND]: string;
 	[CanvasConfigTypeEnum.CANVAS_BACKGROUND_IMAGE]: string;
 	[CanvasConfigTypeEnum.CANVAS_PREVIEW_TYPE]: PreviewScaleEnum;
+	[CanvasConfigTypeEnum.CHART_THEME_COLOR]: ChartColorsNameType;
+	[CanvasConfigTypeEnum.CHART_CUSTOM_THEME_COLOR_INFO]?: CustomColorsType[];
 }
 
 export interface ICanvasState {

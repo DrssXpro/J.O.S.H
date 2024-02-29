@@ -3,6 +3,7 @@ import { create } from "zustand";
 import { ICanvasConfigAction, ICanvasGlobalAction, ICanvasState } from "./types";
 import { CanvasLayoutEventName } from "@/types/EventTypes";
 import { PreviewScaleEnum } from "@/types/LayoutTypes";
+import { defaultTheme } from "@/theme";
 
 const useCanvasStore = create<ICanvasState & ICanvasGlobalAction & ICanvasConfigAction>((set) => ({
 	canvasGlobal: {
@@ -17,7 +18,11 @@ const useCanvasStore = create<ICanvasState & ICanvasGlobalAction & ICanvasConfig
 		canvasHeight: 1080,
 		canvasBackground: "",
 		canvasBackgroundImage: "",
-		canvasPreviewType: PreviewScaleEnum.FIT
+		canvasPreviewType: PreviewScaleEnum.FIT,
+		// 图表主题色
+		chartThemeColor: defaultTheme,
+		// 自定义颜色列表
+		chartCustomThemeColorInfo: undefined
 	},
 	addScale: (value) => {
 		set(({ canvasGlobal }) => ({ canvasGlobal: { ...canvasGlobal, scale: canvasGlobal.scale + value } }));
