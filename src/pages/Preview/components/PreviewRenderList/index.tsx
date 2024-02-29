@@ -1,11 +1,11 @@
 import useChartStore from "@/store/chartStore/chartStore";
 import { setChartAnimateStyle, setChartPosStyle, setChartSizeStyle } from "@/utils/chartStyle";
-import ShowComponentBox from "../ShowComponentBox";
+import ComponentErrorBox from "../ComponentErrorBox";
 import { useState } from "react";
 
 const PreviewRenderList = () => {
 	const { componentList } = useChartStore();
-	const [, setIsError] = useState(false);
+	const [isError, setIsError] = useState(false);
 
 	return (
 		<>
@@ -16,7 +16,7 @@ const PreviewRenderList = () => {
 						key={i.id}
 						style={{ ...setChartPosStyle(i.attr, index), ...setChartSizeStyle(i.attr) }}
 					>
-						<ShowComponentBox chartConfig={i}>
+						<ComponentErrorBox isError={isError}>
 							<i.ChartComponent
 								chartConfig={i}
 								requestErrorCallback={() => {
@@ -26,7 +26,7 @@ const PreviewRenderList = () => {
 									setIsError(false);
 								}}
 							/>
-						</ShowComponentBox>
+						</ComponentErrorBox>
 					</div>
 				);
 			})}
