@@ -3,7 +3,7 @@ import { materialsList } from "@/materials/components";
 import { MaterialNameEnum, MaterialCategoryEnum, IMaterialConfigType } from "@/materials/types";
 import { PictureOutlined, AimOutlined, PieChartOutlined, SketchOutlined, TableOutlined } from "@ant-design/icons";
 
-interface MenuOptionsType {
+export interface MenuOptionsType {
 	key: MaterialCategoryEnum;
 	label: string;
 	icon: JSX.Element;

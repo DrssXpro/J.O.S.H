@@ -1,45 +1,14 @@
 import { useEffect, useState } from "react";
-import { Button, Col, Input, Menu, Row, Tooltip } from "antd";
+import { Col, Menu, Row } from "antd";
 import WorkBenchBox from "../WorkBenchBox";
-import JIcon from "@/components/JIcon";
-import { Albums, Grid } from "@ricons/ionicons5";
-import { BarChartOutlined } from "@ant-design/icons";
 import MaterialCard from "./components/MaterialCard";
+import ChartSearchInput from "./components/ChartSearchInput";
+import { BarChartOutlined } from "@ant-design/icons";
 import useLayoutStore from "@/store/layoutStore/layoutStore";
 import { MaterialsModeEnum } from "@/types/LayoutTypes";
 import { useMaterials } from "./hooks/useMaterials";
-import "./menuItem.css";
 import { MaterialCategoryEnum } from "@/materials/types";
-
-const TopRightOperator = () => {
-	const [isFocus, setFocus] = useState(false);
-	const { materialsMode, controllMaterialsMode } = useLayoutStore();
-	return (
-		<div className="flex items-center gap-2 overflow-hidden w-50">
-			<Input.Search placeholder="搜索组件" onFocus={() => setFocus(true)} onBlur={() => setFocus(false)} />
-			<div className={`flex items-center transition-all ${isFocus ? "w-0" : "w-20"}`}>
-				<Tooltip title="单列">
-					<Button
-						style={{ borderRadius: 0, borderTopLeftRadius: "5px", borderBottomLeftRadius: "5px" }}
-						icon={<JIcon icon={<Albums />} size={20} />}
-						type={materialsMode === MaterialsModeEnum.SINGLE ? "primary" : undefined}
-						ghost={materialsMode === MaterialsModeEnum.SINGLE}
-						onClick={() => controllMaterialsMode(MaterialsModeEnum.SINGLE)}
-					></Button>
-				</Tooltip>
-				<Tooltip title="双列">
-					<Button
-						style={{ borderRadius: 0, borderTopRightRadius: "5px", borderBottomRightRadius: "5px" }}
-						icon={<JIcon icon={<Grid />} size={18} />}
-						type={materialsMode === MaterialsModeEnum.DOUBLE ? "primary" : undefined}
-						ghost={materialsMode === MaterialsModeEnum.DOUBLE}
-						onClick={() => controllMaterialsMode(MaterialsModeEnum.DOUBLE)}
-					></Button>
-				</Tooltip>
-			</div>
-		</div>
-	);
-};
+import "./menuItem.css";
 
 const WorkBenchMaterials = () => {
 	const { menuOptions, categoryOptions, materialList, currentCategory, handleClickMenu, handleClickCategory } =
@@ -63,7 +32,7 @@ const WorkBenchMaterials = () => {
 				bgColor="#232324"
 				topTitle="组件"
 				topIcon={<BarChartOutlined />}
-				TopOperator={showTopOperator ? <TopRightOperator /> : undefined}
+				TopOperator={showTopOperator ? <ChartSearchInput menuOptions={menuOptions} /> : undefined}
 			>
 				<div className="flex w-17 h-full p-1">
 					<Menu
