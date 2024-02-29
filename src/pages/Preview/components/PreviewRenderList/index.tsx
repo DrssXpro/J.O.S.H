@@ -1,11 +1,19 @@
 import useChartStore from "@/store/chartStore/chartStore";
 import { setChartAnimateStyle, setChartPosStyle, setChartSizeStyle } from "@/utils/chartStyle";
 import ComponentErrorBox from "../ComponentErrorBox";
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import useCanvasStore from "@/store/canvasStore/canvasStore";
+import { colorCustomMerge } from "@/utils/colorStyle";
 
 const PreviewRenderList = () => {
+	const { canvasConfig } = useCanvasStore();
 	const { componentList } = useChartStore();
 	const [isError, setIsError] = useState(false);
+
+	const computedThemeColor = useMemo(() => {
+		const colorCustomMergeData = colorCustomMerge();
+		return colorCustomMergeData[canvasConfig.chartThemeColor];
+	}, [canvasConfig.chartThemeColor]);
 
 	return (
 		<>
@@ -19,6 +27,7 @@ const PreviewRenderList = () => {
 						<ComponentErrorBox isError={isError}>
 							<i.ChartComponent
 								chartConfig={i}
+								themeColor={computedThemeColor}
 								requestErrorCallback={() => {
 									setIsError(true);
 								}}
