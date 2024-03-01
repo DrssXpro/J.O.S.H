@@ -1,4 +1,4 @@
-import { LeftOutlined } from "@ant-design/icons";
+import { AiOutlineLeft } from "react-icons/ai";
 import { Card } from "antd";
 
 interface WorkBenchBoxProps {
@@ -33,7 +33,7 @@ const WorkBenchBox = (props: WorkBenchBoxProps) => {
 							{TopOperator}
 							{showTopHidden && (
 								<div className="cursor-pointer" onClick={() => hiddenBox && hiddenBox()}>
-									<LeftOutlined />
+									<AiOutlineLeft />
 								</div>
 							)}
 						</div>

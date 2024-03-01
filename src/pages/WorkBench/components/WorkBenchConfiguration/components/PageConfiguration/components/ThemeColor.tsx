@@ -1,5 +1,5 @@
-import { PlusOutlined } from "@ant-design/icons";
 import { Button } from "antd";
+import { AiOutlinePlus } from "react-icons/ai";
 import { ChartColorsNameType, chartColors } from "@/theme";
 import useCanvasStore from "@/store/canvasStore/canvasStore";
 import { CanvasConfigTypeEnum } from "@/store/canvasStore/types";
@@ -17,11 +17,9 @@ const ThemeColor = () => {
 	return (
 		<div>
 			<Button ghost type="primary" block size="large">
-				<div className="flex items-center justify-between">
+				<div className="flex gap-1 items-center justify-between">
 					<div>自定义图表颜色</div>
-					<div>
-						<PlusOutlined />
-					</div>
+					<AiOutlinePlus />
 				</div>
 			</Button>
 			<div className="mt-4 flex flex-col gap-4">

@@ -1,6 +1,6 @@
 import ChartPng from "@/assets/bar_x.png";
 import { LayerModeEnum } from "@/types/LayoutTypes";
-import { UnlockOutlined, EyeOutlined } from "@ant-design/icons";
+import { AiOutlineUnlock, AiOutlineEye } from "react-icons/ai";
 
 interface LayerCardProps {
 	mode?: LayerModeEnum;
@@ -22,8 +22,8 @@ const LayerCard = (props: LayerCardProps) => {
 			/>
 			<div className="text-[12px] flex-1">折线图</div>
 			<div className="flex items-center gap-2 invisible group-hover:visible">
-				<UnlockOutlined />
-				<EyeOutlined />
+				<AiOutlineUnlock />
+				<AiOutlineEye />
 			</div>
 		</div>
 	);

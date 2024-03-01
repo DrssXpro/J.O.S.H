@@ -10,11 +10,11 @@ import {
 	Tooltip,
 	Divider
 } from "antd";
-import { Scale, FitToScreen, FitToHeight, FitToWidth } from "@ricons/carbon";
+import { MdFitScreen, MdZoomOutMap } from "react-icons/md";
+import { AiOutlineColumnWidth, AiOutlineColumnHeight } from "react-icons/ai";
 import UploadImage from "@/assets/upload.png";
 import { PreviewScaleEnum } from "@/types/LayoutTypes";
 import ThemeColor from "./components/ThemeColor";
-import JIcon from "@/components/JIcon";
 import useCanvasStore from "@/store/canvasStore/canvasStore";
 import { FileTypeEnum } from "@/types/FileTypes";
 import { fileToUrl } from "@/utils/utils";
@@ -24,25 +24,25 @@ const previewTypeList = [
 	{
 		key: PreviewScaleEnum.FIT,
 		title: "自适应",
-		icon: <Scale />,
+		icon: <MdFitScreen size={22} />,
 		desc: "自适应比例展示，页面会有留白"
 	},
 	{
 		key: PreviewScaleEnum.SCROLL_Y,
 		title: "Y轴滚动",
-		icon: <FitToWidth />,
+		icon: <AiOutlineColumnWidth size={22} />,
 		desc: "X轴铺满, Y轴自适应滚动"
 	},
 	{
 		key: PreviewScaleEnum.SCROLL_X,
 		title: "X轴滚动",
-		icon: <FitToHeight />,
+		icon: <AiOutlineColumnHeight size={22} />,
 		desc: "Y轴铺满, X轴自适应滚动"
 	},
 	{
 		key: PreviewScaleEnum.FULL,
 		title: "铺满",
-		icon: <FitToScreen />,
+		icon: <MdZoomOutMap size={22} />,
 		desc: "强行拉伸画面, 填充所有视图"
 	}
 ];
@@ -156,9 +156,7 @@ const PageConfiguration = () => {
 						{previewTypeList.map((i) => (
 							<Tooltip title={i.desc} key={i.key}>
 								<Radio.Button value={i.key}>
-									<div className="flex items-center justify-center w-[37px] h-full">
-										<JIcon icon={i.icon} size={20} />
-									</div>
+									<div className="flex items-center justify-center w-[37px] h-full">{i.icon}</div>
 								</Radio.Button>
 							</Tooltip>
 						))}

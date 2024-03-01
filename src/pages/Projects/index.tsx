@@ -11,8 +11,8 @@ const Projects = () => {
 		<>
 			<div style={{ minHeight: `calc(100vh - 150px)` }}>
 				<Row gutter={[16, 16]}>
-					{arr.map(() => (
-						<Col md={12} lg={8} xxl={6}>
+					{arr.map((_, index) => (
+						<Col md={12} lg={8} xxl={6} key={index}>
 							<JProjectCard />
 						</Col>
 					))}

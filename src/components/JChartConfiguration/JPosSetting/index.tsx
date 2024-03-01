@@ -1,14 +1,13 @@
 import { Button, Divider, InputNumber, Tooltip, Typography } from "antd";
 import JSettingBox from "../public/JSettingBox";
-import JIcon from "@/components/JIcon";
 import {
-	AlignHorizontalCenter,
-	AlignHorizontalLeft,
-	AlignHorizontalRight,
-	AlignVerticalBottom,
-	AlignVerticalCenter,
-	AlignVerticalTop
-} from "@ricons/carbon";
+	MdAlignHorizontalLeft,
+	MdAlignHorizontalRight,
+	MdAlignVerticalBottom,
+	MdAlignVerticalTop,
+	MdAlignHorizontalCenter,
+	MdAlignVerticalCenter
+} from "react-icons/md";
 import useChartStore from "@/store/chartStore/chartStore";
 import useEditCharts from "@/hooks/useEditCharts";
 import useCanvasStore from "@/store/canvasStore/canvasStore";
@@ -24,7 +23,7 @@ const JPosSetting = () => {
 		{
 			key: "AlignHorizontalLeft",
 			label: "局左",
-			icon: <JIcon icon={<AlignHorizontalLeft />} size={18} />,
+			icon: <MdAlignHorizontalLeft />,
 			clickHandle: () => {
 				updateChartConfig(chartIndex, "attr", null, {
 					...component.attr,
@@ -35,7 +34,7 @@ const JPosSetting = () => {
 		{
 			key: "AlignVerticalCenter",
 			label: "X轴居中",
-			icon: <JIcon icon={<AlignVerticalCenter />} size={18} />,
+			icon: <MdAlignVerticalCenter />,
 			clickHandle: () => {
 				updateChartConfig(chartIndex, "attr", null, {
 					...component.attr,
@@ -46,7 +45,7 @@ const JPosSetting = () => {
 		{
 			key: "AlignHorizontalRight",
 			label: "局右",
-			icon: <JIcon icon={<AlignHorizontalRight />} size={18} />,
+			icon: <MdAlignHorizontalRight />,
 			clickHandle: () => {
 				updateChartConfig(chartIndex, "attr", null, {
 					...component.attr,
@@ -57,7 +56,7 @@ const JPosSetting = () => {
 		{
 			key: "AlignVerticalTop",
 			label: "顶部",
-			icon: <JIcon icon={<AlignVerticalTop />} size={18} />,
+			icon: <MdAlignVerticalTop />,
 			clickHandle: () => {
 				updateChartConfig(chartIndex, "attr", null, { ...component.attr, y: 0 });
 			}
@@ -65,7 +64,7 @@ const JPosSetting = () => {
 		{
 			key: "AlignHorizontalCenter",
 			label: "Y轴居中",
-			icon: <JIcon icon={<AlignHorizontalCenter />} size={18} />,
+			icon: <MdAlignHorizontalCenter />,
 			clickHandle: () => {
 				updateChartConfig(chartIndex, "attr", null, {
 					...component.attr,
@@ -76,7 +75,7 @@ const JPosSetting = () => {
 		{
 			key: "AlignVerticalBottom",
 			label: "底部",
-			icon: <JIcon icon={<AlignVerticalBottom />} size={18} />,
+			icon: <MdAlignVerticalBottom />,
 			clickHandle: () => {
 				updateChartConfig(chartIndex, "attr", null, {
 					...component.attr,

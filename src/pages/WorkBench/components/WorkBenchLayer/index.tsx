@@ -1,5 +1,5 @@
 import { Button, Card, Col, Row, Tooltip } from "antd";
-import { PartitionOutlined, LaptopOutlined, UnorderedListOutlined } from "@ant-design/icons";
+import { AiOutlinePartition, AiOutlineLaptop, AiOutlineUnorderedList } from "react-icons/ai";
 import WorkBenchBox from "../WorkBenchBox";
 import LayerCard from "./components/LayerCard";
 import { LayerModeEnum } from "@/types/LayoutTypes";
@@ -20,14 +20,14 @@ const WorkBenchLayer = () => {
 				showTop
 				showTopHidden
 				topTitle="图层"
-				topIcon={<PartitionOutlined />}
+				topIcon={<AiOutlinePartition />}
 				bgColor="#2A2A2B"
 				TopOperator={
 					<div className="flex items-center">
 						<Tooltip title="缩略图">
 							<Button
 								style={{ borderRadius: 0, borderTopLeftRadius: "5px", borderBottomLeftRadius: "5px" }}
-								icon={<LaptopOutlined />}
+								icon={<AiOutlineLaptop />}
 								type={layerMode === LayerModeEnum.THUMBNAIL ? "primary" : undefined}
 								ghost={layerMode === LayerModeEnum.THUMBNAIL}
 								onClick={() => controllLayerMode(LayerModeEnum.THUMBNAIL)}
@@ -36,7 +36,7 @@ const WorkBenchLayer = () => {
 						<Tooltip title="文本列表">
 							<Button
 								style={{ borderRadius: 0, borderTopRightRadius: "5px", borderBottomRightRadius: "5px" }}
-								icon={<UnorderedListOutlined />}
+								icon={<AiOutlineUnorderedList />}
 								type={layerMode === LayerModeEnum.TEXT ? "primary" : undefined}
 								ghost={layerMode === LayerModeEnum.TEXT}
 								onClick={() => controllLayerMode(LayerModeEnum.TEXT)}

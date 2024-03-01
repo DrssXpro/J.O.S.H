@@ -5,9 +5,6 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
-  '@ant-design/icons':
-    specifier: ^5.2.6
-    version: 5.2.6(react-dom@18.2.0)(react@18.2.0)
   '@codemirror/lang-javascript':
     specifier: ^6.2.1
     version: 6.2.1
@@ -56,6 +53,9 @@ dependencies:
   react-dom:
     specifier: ^18.2.0
     version: 18.2.0(react@18.2.0)
+  react-icons:
+    specifier: ^5.0.1
+    version: 5.0.1(react@18.2.0)
   react-router-dom:
     specifier: ^6.21.1
     version: 6.21.1(react-dom@18.2.0)(react@18.2.0)
@@ -70,15 +70,6 @@ devDependencies:
   '@commitlint/config-conventional':
     specifier: ^18.4.3
     version: 18.4.3
-  '@ricons/carbon':
-    specifier: ^0.12.0
-    version: 0.12.0
-  '@ricons/ionicons5':
-    specifier: ^0.12.0
-    version: 0.12.0
-  '@ricons/utils':
-    specifier: ^0.1.6
-    version: 0.1.6(react-dom@18.2.0)(react@18.2.0)
   '@types/keymaster':
     specifier: ^1.6.33
     version: 1.6.33
@@ -703,6 +694,7 @@ packages:
 
   /@emotion/hash@0.8.0:
     resolution: {integrity: sha512-kBJtf7PH6aWwZ6fka3zQ0p6SBYzx4fl1LoZXE2RrnYST9Xljm7WfKJrU4g/Xr3Beg72MLrp1AWNUmuYJTL7Cow==}
+    dev: false
 
   /@emotion/unitless@0.7.5:
     resolution: {integrity: sha512-OWORNpfjMsSSUBVrRBVGECkhWcULOAJz9ZW8uK9qgxD+87M7jHRcvh/A96XXNhXTLmKcoYSQtBEX7lHMO7YRwg==}
@@ -1159,25 +1151,6 @@ packages:
     engines: {node: '>=14.0.0'}
     dev: false
 
-  /@ricons/carbon@0.12.0:
-    resolution: {integrity: sha512-UtZtl67bPY12O6xU73veouPDPNyokzS81R7ktbcW8WVxWt9lgPS2hmxghRgCuwZNv2JFx6ruf9YD2FUjyVTHFQ==}
-    dev: true
-
-  /@ricons/ionicons5@0.12.0:
-    resolution: {integrity: sha512-CzS43wP5XDZTBXmSvuW9XvTgiAeRWLHeeYoUtvHS/3h6yfjlr/T0vqdB8Zhqb7xPnto3li7yXZ4gU9VEgv4w7w==}
-    dev: true
-
-  /@ricons/utils@0.1.6(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-56lSprt9k6dPWFIMwfSQkBE/my0yxPfRS2agjmFsvtnHCjNVOMEvukpNQwK7woBVnkGDN61m8L0K4HNwagyjmA==}
-    peerDependencies:
-      react: '>=16.9.0'
-      react-dom: '>=16.9.0'
-    dependencies:
-      '@xicons/utils': 0.1.4
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-    dev: true
-
   /@rollup/rollup-android-arm-eabi@4.9.1:
     resolution: {integrity: sha512-6vMdBZqtq1dVQ4CWdhFwhKZL6E4L1dV6jUjuBvsavvNJSppzi6dLBbuV+3+IyUREaj9ZFvQefnQm28v4OCXlig==}
     cpu: [arm]
@@ -1343,10 +1316,6 @@ packages:
 
   /@types/minimist@1.2.5:
     resolution: {integrity: sha512-hov8bUuiLiyFPGyFPE1lwWhmzYbirOXQNNo40+y3zow8aFVTeyn3VWL0VFFfdNddA8S4Vf0Tc062rzyNr7Paag==}
-    dev: true
-
-  /@types/node@14.14.45:
-    resolution: {integrity: sha512-DssMqTV9UnnoxDWu959sDLZzfvqCF0qDNRjaWeYSui9xkFe61kKo4l1TWNTQONpuXEm+gLMRvdlzvNHBamzmEw==}
     dev: true
 
   /@types/node@18.19.3:
@@ -1631,12 +1600,6 @@ packages:
       windicss: 3.5.6
     transitivePeerDependencies:
       - supports-color
-    dev: true
-
-  /@xicons/utils@0.1.4:
-    resolution: {integrity: sha512-uXxKDLz9abr80yJC05XSTq6wlyFcdW+N/1IYJkeHjzzXVc4VQ0sEYMoMMTjAH7HQBOyOkzOB4pf5NGF72lwa8Q==}
-    dependencies:
-      css-render: 0.13.9
     dev: true
 
   /JSONStream@1.3.5:
@@ -2071,18 +2034,6 @@ packages:
       path-key: 3.1.1
       shebang-command: 2.0.0
       which: 2.0.2
-    dev: true
-
-  /css-render@0.13.9:
-    resolution: {integrity: sha512-n3C4ZH59rveBrUlAD7n0Ze9/gUMKa4dlH1C9CWKpGcIHR/xRcIVXzBGy1iw8WWq2ySmn2/ZqOpySQNAK5Pb6sw==}
-    dependencies:
-      '@emotion/hash': 0.8.0
-      '@types/node': 14.14.45
-      csstype: 3.0.11
-    dev: true
-
-  /csstype@3.0.11:
-    resolution: {integrity: sha512-sa6P2wJ+CAbgyy4KFssIb/JNMLxFvKF1pCYCSXS8ZMuqZnMsrxqI2E5sPyoTpxoPU/gVZMzr2zjOfg8GIZOMsw==}
     dev: true
 
   /csstype@3.1.3:
@@ -3015,6 +2966,7 @@ packages:
     hasBin: true
     dependencies:
       js-tokens: 4.0.0
+    dev: false
 
   /lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
@@ -3892,6 +3844,15 @@ packages:
       loose-envify: 1.4.0
       react: 18.2.0
       scheduler: 0.23.0
+    dev: false
+
+  /react-icons@5.0.1(react@18.2.0):
+    resolution: {integrity: sha512-WqLZJ4bLzlhmsvme6iFdgO8gfZP17rfjYEJ2m9RsZjZ+cc4k1hTzknEz63YS1MeT50kVzoa1Nz36f4BEx+Wigw==}
+    peerDependencies:
+      react: '*'
+    dependencies:
+      react: 18.2.0
+    dev: false
 
   /react-is@18.2.0:
     resolution: {integrity: sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==}
@@ -3930,6 +3891,7 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       loose-envify: 1.4.0
+    dev: false
 
   /read-pkg-up@7.0.1:
     resolution: {integrity: sha512-zK0TB7Xd6JpCLmlLmufqykGE+/TlOePD6qKClNW7hHDKFh/J7/7gCWGR7joEQEW1bKq3a3yUZSObOoWLFQ4ohg==}
@@ -4070,6 +4032,7 @@ packages:
     resolution: {integrity: sha512-CtuThmgHNg7zIZWAXi3AsyIzA3n4xx7aNyjwC2VJldO2LMVDhFK+63xGqq6CsJH4rTAt6/M+N4GhZiDYPx9eUw==}
     dependencies:
       loose-envify: 1.4.0
+    dev: false
 
   /scroll-into-view-if-needed@3.1.0:
     resolution: {integrity: sha512-49oNpRjWRvnU8NyGVmUaYG4jtTkNonFZI86MmGRDqBphEK2EXT9gdEUoQPZhuBM8yWHxCWbobltqYO5M4XrUvQ==}

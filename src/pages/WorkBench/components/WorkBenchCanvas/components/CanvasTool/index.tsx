@@ -1,8 +1,8 @@
-import useCanvasStore from "@/store/canvasStore/canvasStore";
-import { bus } from "@/utils";
-import { QuestionCircleOutlined, CodeOutlined, UnlockOutlined, LockOutlined } from "@ant-design/icons";
-import { Button, Popover, Select, Slider, Tooltip } from "antd";
 import { useEffect, useRef, useState } from "react";
+import useCanvasStore from "@/store/canvasStore/canvasStore";
+import { AiOutlineQuestionCircle, AiOutlineCode, AiOutlineUnlock, AiOutlineLock } from "react-icons/ai";
+import { Button, Popover, Select, Slider, Tooltip } from "antd";
+import { bus } from "@/utils";
 import { KeyBoardEventName, CanvasLayoutEventName } from "@/types/EventTypes";
 import { CanvasGlobalTypeEnum } from "@/store/canvasStore/types";
 
@@ -33,14 +33,14 @@ const CanvasTool = () => {
 					<Button>历史记录</Button>
 				</Popover>
 				<Tooltip title="最多保留 50 条记录">
-					<QuestionCircleOutlined style={{ fontSize: "18px", color: "#8F8F8F", marginTop: "3px" }} />
+					<AiOutlineQuestionCircle style={{ fontSize: "18px", color: "#8F8F8F", marginTop: "3px" }} />
 				</Tooltip>
 				<div className="text-[#aaa]">{keyBoardText}</div>
 			</div>
 
 			<div className="flex items-center gap-2">
 				<Tooltip title="快捷键">
-					<Button icon={<CodeOutlined />}></Button>
+					<Button icon={<AiOutlineCode />}></Button>
 				</Tooltip>
 				<Select
 					ref={selectRef}
@@ -65,13 +65,13 @@ const CanvasTool = () => {
 				/>
 				<Tooltip title={lockScale ? "解锁当前比例" : "锁定当前比例"}>
 					{lockScale ? (
-						<LockOutlined
+						<AiOutlineLock
 							style={{ fontSize: "18px", color: "#1677FF" }}
 							className="cursor-pointer"
 							onClick={() => setCanvasGlobal(CanvasGlobalTypeEnum.LOCK_SCALE, false)}
 						/>
 					) : (
-						<UnlockOutlined
+						<AiOutlineUnlock
 							style={{ fontSize: "18px", color: "#aaa" }}
 							className="cursor-pointer"
 							onClick={() => setCanvasGlobal(CanvasGlobalTypeEnum.LOCK_SCALE, true)}

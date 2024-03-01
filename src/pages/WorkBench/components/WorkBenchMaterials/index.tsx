@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Col, Menu, Row } from "antd";
+import { AiOutlineBarChart } from "react-icons/ai";
 import WorkBenchBox from "../WorkBenchBox";
 import MaterialCard from "./components/MaterialCard";
 import ChartSearchInput from "./components/ChartSearchInput";
-import { BarChartOutlined } from "@ant-design/icons";
 import useLayoutStore from "@/store/layoutStore/layoutStore";
 import { MaterialsModeEnum } from "@/types/LayoutTypes";
 import { useMaterials } from "./hooks/useMaterials";
@@ -31,7 +31,7 @@ const WorkBenchMaterials = () => {
 				showTop
 				bgColor="#232324"
 				topTitle="组件"
-				topIcon={<BarChartOutlined />}
+				topIcon={<AiOutlineBarChart />}
 				TopOperator={showTopOperator ? <ChartSearchInput menuOptions={menuOptions} /> : undefined}
 			>
 				<div className="flex w-17 h-full p-1">

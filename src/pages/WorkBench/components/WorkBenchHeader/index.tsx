@@ -3,15 +3,15 @@ import JBaseHeaderRightContent from "@/components/JHeaderRightContent";
 import Logo from "@/assets/logo/logo.png";
 import LogoTitleDark from "@/assets/logo/title-dark.png";
 import {
-	BarChartOutlined,
-	PartitionOutlined,
-	SettingOutlined,
-	ArrowLeftOutlined,
-	ArrowRightOutlined,
-	BankOutlined,
-	LaptopOutlined,
-	SendOutlined
-} from "@ant-design/icons";
+	AiOutlineArrowLeft,
+	AiOutlineArrowRight,
+	AiOutlineSetting,
+	AiOutlineBarChart,
+	AiOutlinePartition,
+	AiOutlineBank,
+	AiOutlineLaptop,
+	AiOutlineSend
+} from "react-icons/ai";
 import { Button, Input, Tooltip, type InputRef } from "antd";
 import { useState, useRef, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
@@ -56,7 +56,7 @@ const LeftOperator = () => {
 					<Button
 						type={showMaterials ? "primary" : undefined}
 						ghost={showMaterials}
-						icon={<BarChartOutlined />}
+						icon={<AiOutlineBarChart />}
 						onClick={() => {
 							controllMaterials(!showMaterials);
 							setTimeout(() => {
@@ -69,7 +69,7 @@ const LeftOperator = () => {
 					<Button
 						type={showLayer ? "primary" : undefined}
 						ghost={showLayer}
-						icon={<PartitionOutlined />}
+						icon={<AiOutlinePartition />}
 						onClick={() => {
 							controllLayer(!showLayer);
 							setTimeout(() => {
@@ -82,7 +82,7 @@ const LeftOperator = () => {
 					<Button
 						type={showConfiguration ? "primary" : undefined}
 						ghost={showConfiguration}
-						icon={<SettingOutlined />}
+						icon={<AiOutlineSetting />}
 						onClick={() => {
 							controllConfiguration(!showConfiguration);
 							setTimeout(() => {
@@ -97,7 +97,7 @@ const LeftOperator = () => {
 					<Button
 						ghost
 						type="primary"
-						icon={<ArrowLeftOutlined />}
+						icon={<AiOutlineArrowLeft />}
 						onClick={() => handleAction("BACK")}
 						disabled={!canBack}
 					></Button>
@@ -106,7 +106,7 @@ const LeftOperator = () => {
 					<Button
 						ghost
 						type="primary"
-						icon={<ArrowRightOutlined />}
+						icon={<AiOutlineArrowRight />}
 						onClick={() => handleAction("FORWARD")}
 						disabled={!canForward}
 					></Button>
@@ -125,7 +125,7 @@ const CenterTitle = () => {
 
 	return (
 		<div className="flex items-center justify-center">
-			<BankOutlined size={80} />
+			<AiOutlineBank />
 			<div className="ml-1">工作空间 </div>
 			<div className="mx-2">-</div>
 			{isEdit ? (
@@ -186,10 +186,10 @@ const RightOperator = () => {
 
 	return (
 		<div className="flex items-center gap-3 float-right">
-			<Button icon={<LaptopOutlined />} onClick={goPreview}>
+			<Button icon={<AiOutlineLaptop />} onClick={goPreview}>
 				预览
 			</Button>
-			<Button icon={<SendOutlined />}>发布</Button>
+			<Button icon={<AiOutlineSend />}>发布</Button>
 			<div className="ml-1">
 				<JBaseHeaderRightContent isLogin={true} />
 			</div>

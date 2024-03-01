@@ -1,5 +1,5 @@
 import { Card, Checkbox, Form, Input, Button } from "antd";
-import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { AiOutlineUser, AiOutlineLock } from "react-icons/ai";
 import Logo from "@/assets/logo/logo.png";
 import LogoTitleDark from "@/assets/logo/title-dark.png";
 
@@ -12,10 +12,10 @@ const LoginBox = () => {
 			</div>
 			<Form>
 				<Form.Item>
-					<Input prefix={<UserOutlined />} placeholder="请输入账号"></Input>
+					<Input prefix={<AiOutlineUser />} placeholder="请输入账号"></Input>
 				</Form.Item>
 				<Form.Item>
-					<Input.Password prefix={<LockOutlined />} placeholder="请输入密码"></Input.Password>
+					<Input.Password prefix={<AiOutlineLock />} placeholder="请输入密码"></Input.Password>
 				</Form.Item>
 				<Form.Item>
 					<Checkbox>自动登录</Checkbox>

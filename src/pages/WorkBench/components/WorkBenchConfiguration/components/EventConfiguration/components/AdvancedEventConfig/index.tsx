@@ -2,8 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Button, Divider, Modal, Tabs, Tag, Typography, message } from "antd";
 import JCollapseBox from "@/components/JChartConfiguration/public/JCollapseBox";
 import JCodeMirror from "@/components/JCodeMirror";
-import JIcon from "@/components/JIcon";
-import { Document, Pencil } from "@ricons/ionicons5";
+import { IoDocument, IoPencil } from "react-icons/io5";
 import { computedAdvancedEventCode } from "../codeConfig";
 import { ErrorTypeName, EventLife, VaildError } from "@/types/EventTypes";
 import JEditCode from "@/components/JChartConfiguration/JEditCode";
@@ -80,13 +79,7 @@ const AdvancedEventConfig = () => {
 				unfold
 				name="高级事件配置"
 				operator={
-					<Button
-						type="primary"
-						ghost
-						size="small"
-						icon={<JIcon icon={<Pencil />} />}
-						onClick={() => setIsOpen(true)}
-					>
+					<Button type="primary" ghost size="small" icon={<IoPencil />} onClick={() => setIsOpen(true)}>
 						编辑
 					</Button>
 				}
@@ -106,7 +99,7 @@ const AdvancedEventConfig = () => {
 						<div className="flex items-center">
 							<Tag color="processing">
 								<div className="p-1 flex items-center">
-									<JIcon icon={<Document />}></JIcon>
+									<IoDocument />
 									说明
 								</div>
 							</Tag>

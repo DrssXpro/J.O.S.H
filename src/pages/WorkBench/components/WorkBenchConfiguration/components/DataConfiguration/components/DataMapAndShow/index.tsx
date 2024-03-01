@@ -13,9 +13,13 @@ import {
 	Upload,
 	UploadProps
 } from "antd";
-import { DocumentAdd, Filter, DocumentDownload, Document } from "@ricons/carbon";
-import { HelpCircleOutline } from "@ricons/ionicons5";
-import JIcon from "@/components/JIcon";
+import {
+	HiOutlineDocumentAdd,
+	HiOutlineDocumentDownload,
+	HiOutlineFilter,
+	HiOutlineDocumentReport
+} from "react-icons/hi";
+import { IoHelpCircleOutline } from "react-icons/io5";
 import JCodeMirror from "@/components/JCodeMirror";
 import { FileTypeEnum } from "@/types/FileTypes";
 import { downloadTextFile, readFile } from "@/utils/fileUtils";
@@ -229,10 +233,7 @@ const DataMapAndShow = () => {
 										</div>
 									</>
 								) : (
-									<Button
-										icon={<JIcon icon={<Filter />} size={18} />}
-										onClick={() => setIsOpenFilter(true)}
-									>
+									<Button icon={<HiOutlineFilter />} onClick={() => setIsOpenFilter(true)}>
 										新增过滤器
 									</Button>
 								)}
@@ -247,7 +248,7 @@ const DataMapAndShow = () => {
 								footer={
 									<div className="w-full h-10 flex items-center justify-between">
 										<div className="flex items-center justify-center">
-											<Tag icon={<JIcon icon={<Document />} />} color="processing">
+											<Tag icon={<HiOutlineDocumentReport size={14} />} color="processing">
 												规则
 											</Tag>
 											<Typography.Text type="secondary">
@@ -348,15 +349,15 @@ const DataMapAndShow = () => {
 						<>
 							<div className="flex items-center gap-2">
 								<Upload {...uploadProps}>
-									<Button icon={<JIcon icon={<DocumentAdd />} />}>{"导入(json / txt)"}</Button>
+									<Button icon={<HiOutlineDocumentAdd />}>{"导入(json / txt)"}</Button>
 								</Upload>
 
-								<Button icon={<JIcon icon={<DocumentDownload />} />} onClick={downloadData}>
+								<Button icon={<HiOutlineDocumentDownload />} onClick={downloadData}>
 									下载
 								</Button>
 								<Tooltip title="点击【下载】查看完整数据">
 									<div className="flex items-center justify-center">
-										<JIcon icon={<HelpCircleOutline />} size={22} />
+										<IoHelpCircleOutline size={20} />
 									</div>
 								</Tooltip>
 							</div>

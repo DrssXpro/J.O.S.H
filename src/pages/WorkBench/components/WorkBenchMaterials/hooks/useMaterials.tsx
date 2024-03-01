@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { materialsList } from "@/materials/components";
 import { MaterialNameEnum, MaterialCategoryEnum, IMaterialConfigType } from "@/materials/types";
-import { PictureOutlined, AimOutlined, PieChartOutlined, SketchOutlined, TableOutlined } from "@ant-design/icons";
+import { AiOutlinePicture, AiOutlineAim, AiOutlinePieChart, AiOutlineSketch, AiOutlineTable } from "react-icons/ai";
 
 export interface MenuOptionsType {
 	key: MaterialCategoryEnum;
@@ -20,31 +20,31 @@ const menuOptions: MenuOptionsType[] = [
 	{
 		key: MaterialCategoryEnum.CHARTS,
 		label: MaterialNameEnum.CHARTS,
-		icon: <PieChartOutlined style={{ fontSize: "20px" }} />,
+		icon: <AiOutlinePieChart style={{ fontSize: "20px" }} />,
 		list: materialsList[MaterialCategoryEnum.CHARTS]
 	},
 	{
 		key: MaterialCategoryEnum.INFORMATIONS,
 		label: MaterialNameEnum.INFORMATIONS,
-		icon: <AimOutlined style={{ fontSize: "20px" }} />,
+		icon: <AiOutlineAim style={{ fontSize: "20px" }} />,
 		list: materialsList[MaterialCategoryEnum.INFORMATIONS]
 	},
 	{
 		key: MaterialCategoryEnum.TABLES,
 		label: MaterialNameEnum.TABLES,
-		icon: <TableOutlined style={{ fontSize: "20px" }} />,
+		icon: <AiOutlineTable style={{ fontSize: "20px" }} />,
 		list: materialsList[MaterialCategoryEnum.TABLES]
 	},
 	{
 		key: MaterialCategoryEnum.DECORATES,
 		label: MaterialNameEnum.DECORATES,
-		icon: <SketchOutlined style={{ fontSize: "20px" }} />,
+		icon: <AiOutlineSketch style={{ fontSize: "20px" }} />,
 		list: materialsList[MaterialCategoryEnum.DECORATES]
 	},
 	{
 		key: MaterialCategoryEnum.PHOTOS,
 		label: MaterialNameEnum.PHOTOS,
-		icon: <PictureOutlined style={{ fontSize: "20px" }} />,
+		icon: <AiOutlinePicture style={{ fontSize: "20px" }} />,
 		list: materialsList[MaterialCategoryEnum.PHOTOS]
 	}
 ];

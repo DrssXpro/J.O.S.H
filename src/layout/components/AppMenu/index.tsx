@@ -1,6 +1,6 @@
 import Logo from "@/assets/logo/logo.png";
 import LogoTitleDark from "@/assets/logo/title-dark.png";
-import { HomeFilled, DesktopOutlined, PieChartOutlined } from "@ant-design/icons";
+import { AiFillHome, AiOutlineDesktop, AiOutlinePieChart } from "react-icons/ai";
 import { Menu, type MenuProps } from "antd";
 
 type MenuItem = Required<MenuProps>["items"][number];
@@ -22,9 +22,9 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-	getItem("首页", "1", <HomeFilled />),
-	getItem("模板市场", "2", <PieChartOutlined />),
-	getItem("应用中心", "3", <DesktopOutlined />)
+	getItem("首页", "1", <AiFillHome />),
+	getItem("模板市场", "2", <AiOutlinePieChart />),
+	getItem("应用中心", "3", <AiOutlineDesktop />)
 ];
 
 const SideMenu = () => {

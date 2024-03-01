@@ -1,4 +1,5 @@
 import ReactDOM from "react-dom/client";
+import { IconContext } from "react-icons";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App.tsx";
 import "./styles/reset.css";
@@ -8,7 +9,9 @@ import "animate.css/animate.min.css";
 import "virtual:windi.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-	<BrowserRouter>
-		<App />
-	</BrowserRouter>
+	<IconContext.Provider value={{ size: "18px" }}>
+		<BrowserRouter>
+			<App />
+		</BrowserRouter>
+	</IconContext.Provider>
 );

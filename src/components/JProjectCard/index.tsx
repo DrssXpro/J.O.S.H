@@ -1,7 +1,7 @@
 import { Button, Card, Dropdown, Tooltip } from "antd";
+import { AiOutlineDelete, AiOutlineEdit, AiOutlineSmallDash, AiOutlineLaptop, AiOutlineSend } from "react-icons/ai";
 import { cardColorMap } from "@/config/color";
 import CardBg from "@/assets/card-bg.png";
-import { DeleteOutlined, EditOutlined, SmallDashOutlined, LaptopOutlined, SendOutlined } from "@ant-design/icons";
 import { NavLink } from "react-router-dom";
 const JProjectCard = () => {
 	const items = [
@@ -10,7 +10,7 @@ const JProjectCard = () => {
 			label: (
 				<NavLink to="/preview">
 					<div className="flex items-center gap-1">
-						<LaptopOutlined />
+						<AiOutlineLaptop />
 						<span>预览</span>
 					</div>
 				</NavLink>
@@ -21,7 +21,7 @@ const JProjectCard = () => {
 			label: (
 				<NavLink to="/preview">
 					<div className="flex items-center gap-1">
-						<SendOutlined />
+						<AiOutlineSend />
 						<span>发布</span>
 					</div>
 				</NavLink>
@@ -32,7 +32,7 @@ const JProjectCard = () => {
 			label: (
 				<NavLink to="/preview">
 					<div className="flex items-center gap-1">
-						<DeleteOutlined />
+						<AiOutlineDelete />
 						<span>删除</span>
 					</div>
 				</NavLink>
@@ -57,10 +57,10 @@ const JProjectCard = () => {
 					<div className="w-2 h-2 rounded-full" style={{ backgroundColor: cardColorMap[1] }}></div>
 					<div>未发布</div>
 					<Tooltip title="编辑" placement="bottom">
-						<Button icon={<EditOutlined />}></Button>
+						<Button icon={<AiOutlineEdit />}></Button>
 					</Tooltip>
 					<Dropdown menu={{ items }} placement="bottom">
-						<Button icon={<SmallDashOutlined />}></Button>
+						<Button icon={<AiOutlineSmallDash />}></Button>
 					</Dropdown>
 				</div>
 			</div>

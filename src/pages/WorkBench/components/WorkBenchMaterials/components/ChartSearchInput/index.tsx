@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
-import JIcon from "@/components/JIcon";
 import useLayoutStore from "@/store/layoutStore/layoutStore";
 import { MaterialsModeEnum } from "@/types/LayoutTypes";
-import { Albums, Grid } from "@ricons/ionicons5";
+import { IoAlbums, IoGrid } from "react-icons/io5";
 import { Button, Empty, Input, Popover, Tooltip, Typography } from "antd";
 import { MenuOptionsType } from "../../hooks/useMaterials";
 import ChartGlobImage from "../ChartGlobImage";
@@ -113,7 +112,7 @@ const ChartSearchInput = (props: IChartSearchInputProps) => {
 				<Tooltip title="单列">
 					<Button
 						style={{ borderRadius: 0, borderTopLeftRadius: "5px", borderBottomLeftRadius: "5px" }}
-						icon={<JIcon icon={<Albums />} size={20} />}
+						icon={<IoAlbums />}
 						type={materialsMode === MaterialsModeEnum.SINGLE ? "primary" : undefined}
 						ghost={materialsMode === MaterialsModeEnum.SINGLE}
 						onClick={() => controllMaterialsMode(MaterialsModeEnum.SINGLE)}
@@ -122,7 +121,7 @@ const ChartSearchInput = (props: IChartSearchInputProps) => {
 				<Tooltip title="双列">
 					<Button
 						style={{ borderRadius: 0, borderTopRightRadius: "5px", borderBottomRightRadius: "5px" }}
-						icon={<JIcon icon={<Grid />} size={18} />}
+						icon={<IoGrid />}
 						type={materialsMode === MaterialsModeEnum.DOUBLE ? "primary" : undefined}
 						ghost={materialsMode === MaterialsModeEnum.DOUBLE}
 						onClick={() => controllMaterialsMode(MaterialsModeEnum.DOUBLE)}

@@ -1,8 +1,7 @@
 import { Button, Card, Divider, Input, InputNumber, Modal, Select, Tag, Typography, message } from "antd";
 import JSettingBox from "@/components/JChartConfiguration/public/JSettingBox";
 import JSettingItem from "@/components/JChartConfiguration/public/JSettingItem";
-import { Flash, Pulse, Pencil, ChevronUpOutline } from "@ricons/ionicons5";
-import JIcon from "@/components/JIcon";
+import { IoFlash, IoPulse, IoPencil, IoChevronUpOutline } from "react-icons/io5";
 import DataMapAndShow from "../DataMapAndShow";
 import { FC, forwardRef, useImperativeHandle, useRef, useState } from "react";
 import { SelectHttpTimeNameObj, selectTimeOptions, selectTypeOptions } from "@/types/HttpTypes";
@@ -89,14 +88,10 @@ const DynamicData = () => {
 					</div>
 				</JSettingBox>
 				<JSettingBox name="源地址">
-					<Input prefix={<JIcon icon={<Pulse />} />} value={requestOriginUrl || "暂无"} disabled />
+					<Input prefix={<IoPulse />} value={requestOriginUrl || "暂无"} disabled />
 				</JSettingBox>
 				<JSettingBox name="组件地址">
-					<Input
-						prefix={<JIcon icon={<Flash />} />}
-						value={component.request.requestUrl || "暂无"}
-						disabled
-					/>
+					<Input prefix={<IoFlash />} value={component.request.requestUrl || "暂无"} disabled />
 				</JSettingBox>
 				<div
 					className="absolute top-0 left-0 w-full h-full flex items-center justify-center cursor-pointer opacity-0 border-[#1668DC] border-1 hover:opacity-100 transition-all duration-500"
@@ -115,7 +110,7 @@ const DynamicData = () => {
 			<div className="mt-5">
 				<JSettingBox name="测试">
 					<Button
-						icon={<JIcon icon={<Flash />} />}
+						icon={<IoFlash />}
 						type="primary"
 						ghost
 						block
@@ -228,12 +223,7 @@ const DynamicDataModal: FC<{
 							/>
 						</JSettingItem>
 						{!editPublic && (
-							<Button
-								type="primary"
-								icon={<JIcon icon={<Pencil />} />}
-								onClick={() => setEditPublic(true)}
-								ghost
-							>
+							<Button type="primary" icon={<IoPencil />} onClick={() => setEditPublic(true)} ghost>
 								编辑配置
 							</Button>
 						)}
@@ -250,7 +240,7 @@ const DynamicDataModal: FC<{
 					onMouseEnter={() => setIsHover(true)}
 					onMouseLeave={() => setIsHover(false)}
 				>
-					<JIcon icon={<ChevronUpOutline />} size={35} color={isHover ? "#1668DC" : ""} />
+					<IoChevronUpOutline size={25} color={isHover ? "#1668DC" : ""} />
 				</div>
 			</Card>
 
