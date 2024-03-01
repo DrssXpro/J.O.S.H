@@ -38,6 +38,7 @@ const useUndoRedo = () => {
 
 	function handleRedo(historyItem: HistoryItemType) {
 		const isAdd = historyItem.actionType === HistoryActionTypeEnum.ADD;
+		const isDel = historyItem.actionType === HistoryActionTypeEnum.DELETE;
 		const isMove = historyItem.actionType === HistoryActionTypeEnum.MOVE;
 		const components = historyItem.historyData;
 
@@ -45,6 +46,13 @@ const useUndoRedo = () => {
 			handleAddComponents(components, false);
 			return;
 		}
+
+		if (isDel) {
+			const ids = components.map((item) => item.id);
+			handleRemoveComponents(ids, false);
+			return;
+		}
+
 		if (isMove) {
 			components.forEach((item) => {
 				resetComponentPosition(item, "FORWARD");
