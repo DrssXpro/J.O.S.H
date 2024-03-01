@@ -1,6 +1,7 @@
 import { immer } from "zustand/middleware/immer";
 import { create } from "zustand";
 import { IChartHistoryState, IChartHistoryAction, HistoryItemType, HistoryActionTypeEnum } from "./types";
+import { HistoryMax } from "@/settings/designSetting";
 
 const useChartHistoryStore = create<IChartHistoryState & IChartHistoryAction>()(
 	immer((set, get) => ({
@@ -11,6 +12,9 @@ const useChartHistoryStore = create<IChartHistoryState & IChartHistoryAction>()(
 			set((state) => {
 				if (Array.isArray(items)) state.backStack.push(...items);
 				else state.backStack.push(items);
+				if (state.backStack.length > HistoryMax) {
+					state.backStack.splice(0, state.backStack.length - HistoryMax);
+				}
 				// 每进行一次操作就清空前进栈
 				state.forwardStack = [];
 			});

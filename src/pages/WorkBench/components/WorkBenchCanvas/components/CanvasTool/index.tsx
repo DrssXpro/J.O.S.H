@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import useCanvasStore from "@/store/canvasStore/canvasStore";
 import { AiOutlineQuestionCircle, AiOutlineCode, AiOutlineUnlock, AiOutlineLock } from "react-icons/ai";
-import { Button, Popover, Select, Slider, Tooltip } from "antd";
+import { Button, Select, Slider, Tooltip } from "antd";
 import { bus } from "@/utils";
 import { KeyBoardEventName, CanvasLayoutEventName } from "@/types/EventTypes";
 import { CanvasGlobalTypeEnum } from "@/store/canvasStore/types";
+import { HistoryMax } from "@/settings/designSetting";
+import ChartHistory from "./components/ChartHistory";
 
 const CanvasTool = () => {
 	const { canvasGlobal, setCanvasGlobal } = useCanvasStore();
@@ -29,10 +31,8 @@ const CanvasTool = () => {
 			style={{ width: `calc(100% - 20px)` }}
 		>
 			<div className="flex items-center gap-2">
-				<Popover content={"hello"} title="Title" trigger="click">
-					<Button>历史记录</Button>
-				</Popover>
-				<Tooltip title="最多保留 50 条记录">
+				<ChartHistory />
+				<Tooltip title={`最多保留 ${HistoryMax} 条记录`}>
 					<AiOutlineQuestionCircle style={{ fontSize: "18px", color: "#8F8F8F", marginTop: "3px" }} />
 				</Tooltip>
 				<div className="text-[#aaa]">{keyBoardText}</div>
