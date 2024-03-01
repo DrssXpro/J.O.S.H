@@ -5,10 +5,15 @@ import LayerCard from "./components/LayerCard";
 import { LayerModeEnum } from "@/types/LayoutTypes";
 import useLayoutStore from "@/store/layoutStore/layoutStore";
 import useCanvasStore from "@/store/canvasStore/canvasStore";
+import useChartStore from "@/store/chartStore/chartStore";
+import { useMemo } from "react";
 
 const WorkBenchLayer = () => {
 	const { showLayer, layerMode, controllLayer, controllLayerMode } = useLayoutStore();
 	const { autoLayoutCanvas } = useCanvasStore();
+	const { componentList, selectId } = useChartStore();
+
+	const layerList = useMemo(() => [...componentList].reverse(), [componentList]);
 
 	return (
 		<div
@@ -56,9 +61,9 @@ const WorkBenchLayer = () => {
 					className="w-full h-full"
 				>
 					<Row gutter={[1, 1]}>
-						{[1, 2, 3].map((i) => (
-							<Col span={24} key={i}>
-								<LayerCard mode={layerMode} />
+						{layerList.map((i) => (
+							<Col span={24} key={i.id}>
+								<LayerCard mode={layerMode} detail={i} isSelect={selectId.includes(i.id)} />
 							</Col>
 						))}
 					</Row>

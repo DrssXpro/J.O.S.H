@@ -23,7 +23,7 @@ const ChartHistory = () => {
 				<div className="flex flex-col items-center gap-2">
 					{historyList.length ? (
 						historyList.map((i) => (
-							<div className="flex items-center gap-1">
+							<div className="flex items-center gap-1" key={i.id}>
 								{<i.icon />}
 								<Typography.Text>
 									{i.type} - {i.name}
