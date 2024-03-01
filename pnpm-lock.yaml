@@ -41,6 +41,9 @@ dependencies:
   immer:
     specifier: ^10.0.3
     version: 10.0.3
+  keymaster:
+    specifier: ^1.6.2
+    version: 1.6.2
   lodash-es:
     specifier: ^4.17.21
     version: 4.17.21
@@ -76,6 +79,9 @@ devDependencies:
   '@ricons/utils':
     specifier: ^0.1.6
     version: 0.1.6(react-dom@18.2.0)(react@18.2.0)
+  '@types/keymaster':
+    specifier: ^1.6.33
+    version: 1.6.33
   '@types/lodash-es':
     specifier: ^4.17.12
     version: 4.17.12
@@ -1319,6 +1325,10 @@ packages:
 
   /@types/json-schema@7.0.15:
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
+    dev: true
+
+  /@types/keymaster@1.6.33:
+    resolution: {integrity: sha512-J+dF4hsKaq+L5Ny6alxNC2XwJbONGmVbXmycH/GrlBAzTdYJJcG9kQ0PVVb/C6iFyujFY7J2oW+0Y8h5vtuACA==}
     dev: true
 
   /@types/lodash-es@4.17.12:
@@ -2859,6 +2869,10 @@ packages:
     resolution: {integrity: sha512-POQXvpdL69+CluYsillJ7SUhKvytYjW9vG/GKpnf+xP8UWgYEM/RaMzHHofbALDiKbbP1W8UEYmgGl39WkPZsg==}
     engines: {'0': node >= 0.2.0}
     dev: true
+
+  /keymaster@1.6.2:
+    resolution: {integrity: sha512-OvA/AALN8IDKKkTk2Z+bDrzs/SQao4lo/QPbwSdDvm+frxfiYiYCSn1aHFUypJY3SruAO1y/c771agBmTXqUtg==}
+    dev: false
 
   /keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}

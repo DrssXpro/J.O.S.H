@@ -1,7 +1,11 @@
 import { CSSProperties, useEffect, useMemo } from "react";
 import CanvasRuler from "./components/CanvasRuler/index";
 import CanvasTool from "./components/CanvasTool";
-import { initKeyBoardEvent, removeKeyBoardEventListener } from "./utils/handleKeyBoardEvent";
+import {
+	addSpaceAndControlKeyBoard,
+	useAddOperatorKeyboard,
+	removeKeyBoardEventListener
+} from "./utils/handleKeyBoardEvent";
 import useCanvasStore from "@/store/canvasStore/canvasStore";
 import { DragKeyEnum } from "@/types/EditCanvasTypes";
 import { createComponentConfig, fetchComponent } from "@/materials/components";
@@ -18,9 +22,10 @@ const WorkBenchCanvas = () => {
 	const { componentList, addComponentList, setTargetSelectChart } = useChartStore();
 	const { createAddHistory } = useChartHistoryStore();
 	const { handleMouseDown, mousedownHandleUnStop } = useMouseHandle();
+	useAddOperatorKeyboard();
 	const { canvasBackground, canvasBackgroundImage, chartThemeColor, chartCustomThemeColorInfo } = canvasConfig;
 	useEffect(() => {
-		initKeyBoardEvent();
+		addSpaceAndControlKeyBoard();
 		return () => {
 			removeKeyBoardEventListener();
 		};
