@@ -36,13 +36,23 @@ const useChartHistoryStore = create<IChartHistoryState & IChartHistoryAction>()(
 			return currentHistoryItem;
 		},
 		createAddHistory(item) {
+			if (!item.length) return;
 			get().pushRecord({
 				id: Date.now().toString(),
 				actionType: HistoryActionTypeEnum.ADD,
 				historyData: item
 			});
 		},
+		createDeleteHistory(item) {
+			if (!item.length) return;
+			get().pushRecord({
+				id: Date.now().toString(),
+				actionType: HistoryActionTypeEnum.DELETE,
+				historyData: item
+			});
+		},
 		createMoveHistory(item) {
+			if (!item.length) return;
 			get().pushRecord({
 				id: Date.now().toString(),
 				actionType: HistoryActionTypeEnum.MOVE,

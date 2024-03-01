@@ -1,35 +1,40 @@
 import { CSSProperties, useEffect, useMemo } from "react";
 import CanvasRuler from "./components/CanvasRuler/index";
 import CanvasTool from "./components/CanvasTool";
-import {
-	addSpaceAndControlKeyBoard,
-	useAddOperatorKeyboard,
-	removeKeyBoardEventListener
-} from "./utils/handleKeyBoardEvent";
+import { initKeyBoardListener, removeKeyBoardEventListener } from "./utils/handleKeyBoardEvent";
 import useCanvasStore from "@/store/canvasStore/canvasStore";
 import { DragKeyEnum } from "@/types/EditCanvasTypes";
 import { createComponentConfig, fetchComponent } from "@/materials/components";
-import useChartStore from "@/store/chartStore/chartStore";
 import { ComponentType, FetchComFlagType } from "@/materials/types";
 import EditShapeBox from "./components/EditShapeBox";
 import useMouseHandle from "./hooks/useMouseHandle";
 import { setChartAnimateStyle, setChartPosStyle, setChartSizeStyle } from "@/utils/chartStyle";
-import useChartHistoryStore from "@/store/chartHistoryStore/chartHistoryStore";
 import { colorCustomMerge } from "@/utils/colorStyle";
+import useChartsWithHistory from "@/hooks/useChartsWithHistory";
+import { bus } from "@/utils";
+import { KeyBoardEventName } from "@/types/EventTypes";
 
 const WorkBenchCanvas = () => {
 	const { canvasConfig } = useCanvasStore();
-	const { componentList, addComponentList, setTargetSelectChart } = useChartStore();
-	const { createAddHistory } = useChartHistoryStore();
+	const { componentList, handleAddComponents, handleRemoveComponents } = useChartsWithHistory();
 	const { handleMouseDown, mousedownHandleUnStop } = useMouseHandle();
-	useAddOperatorKeyboard();
 	const { canvasBackground, canvasBackgroundImage, chartThemeColor, chartCustomThemeColorInfo } = canvasConfig;
 	useEffect(() => {
-		addSpaceAndControlKeyBoard();
+		initKeyBoardListener();
+		listenKeyBoradEvent();
 		return () => {
 			removeKeyBoardEventListener();
+			removeListenKeyBoradEvent();
 		};
 	}, []);
+
+	const listenKeyBoradEvent = () => {
+		bus.on(KeyBoardEventName.DELETEPRESS, handleRemoveComponents);
+	};
+
+	const removeListenKeyBoradEvent = () => {
+		bus.off(KeyBoardEventName.DELETEPRESS, handleRemoveComponents);
+	};
 
 	const computedCanvasStyle = useMemo(() => {
 		const backgroundStyle = canvasBackground
@@ -71,12 +76,7 @@ const WorkBenchCanvas = () => {
 						componentConifg.attr.x = e.nativeEvent.offsetX - componentConifg.attr.w / 2;
 						componentConifg.attr.y = e.nativeEvent.offsetY - componentConifg.attr.h / 2;
 						const componentInstance = { ...componentConifg, ChartComponent, ChartConfigComponent };
-						// 添加组件动作，历史记录
-						createAddHistory([componentInstance]);
-						// 添加组件配置至全局 store
-						addComponentList(componentInstance);
-						// 选中当前添加图表
-						setTargetSelectChart(componentConifg.id);
+						handleAddComponents([componentInstance]);
 					}}
 					onDragOver={(e) => {
 						e.preventDefault();

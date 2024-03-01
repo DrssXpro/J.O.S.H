@@ -88,8 +88,8 @@ export interface IChartHistoryAction {
 	createAddHistory: (items: IComponent[]) => void;
 	// // 更新属性记录
 	// createUpdateHistory: (items: IComponent[]) => void;
-	// // 删除组件记录
-	// createDeleteHistory: (items: IComponent[]) => void;
+	// 删除组件记录
+	createDeleteHistory: (items: IComponent[]) => void;
 	// // 移动组件记录
 	createMoveHistory: (items: IComponent[]) => void;
 	// // 改变层级（z-index）组件记录

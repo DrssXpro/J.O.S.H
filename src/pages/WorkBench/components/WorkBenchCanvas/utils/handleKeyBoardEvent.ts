@@ -3,7 +3,6 @@ import { bus } from "@/utils";
 import { KeyBoardEventName } from "@/types/EventTypes";
 import { MenuEnum, WinKeyboard } from "@/types/EditCanvasTypes";
 import { debounce } from "lodash-es";
-import useChartStore from "@/store/chartStore/chartStore";
 
 const winCtrlMerge = (e: string) => `${WinKeyboard.CTRL}+${e}`;
 const winShiftMerge = (e: string) => `${WinKeyboard.SHIFT}+${e}`;
@@ -53,6 +52,11 @@ const winKeyList: Array<string> = [
 	winKeyboardValue.show
 ];
 
+export function initKeyBoardListener() {
+	addOperatorKeyboard();
+	addSpaceAndControlKeyBoard();
+}
+
 export function removeKeyBoardEventListener() {
 	document.onkeydown = null;
 	document.onkeyup = null;
@@ -90,8 +94,7 @@ function showPressKeyText(code: string) {
 	bus.emit(KeyBoardEventName.ChANGEKEYBOARDTEXT, text);
 }
 
-export const useAddOperatorKeyboard = () => {
-	const { removeComponents, selectId, setTargetSelectChart } = useChartStore();
+export const addOperatorKeyboard = () => {
 	const switchKeyBoardHandle = (keyboardValue: typeof winKeyboardValue, event: string) => {
 		const throttleTime = 50;
 		switch (event) {
@@ -99,8 +102,7 @@ export const useAddOperatorKeyboard = () => {
 				keymaster(
 					event,
 					debounce(() => {
-						setTargetSelectChart();
-						removeComponents(selectId);
+						bus.emit(KeyBoardEventName.DELETEPRESS);
 						return false;
 					}, throttleTime)
 				);

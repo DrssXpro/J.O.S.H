@@ -42,7 +42,9 @@ export const enum KeyBoardEventName {
 	// 控制键盘按键展示文本
 	ChANGEKEYBOARDTEXT = "changeKeyBoardText",
 	// 是否按下 space 键
-	SPACEKEYPRESS = "SpaceKeyPress"
+	SPACEKEYPRESS = "SpaceKeyPress",
+	// 删除操作
+	DELETEPRESS = "DeletePress"
 }
 
 // 内置字符串函数对象列表

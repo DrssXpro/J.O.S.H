@@ -8,8 +8,7 @@ import { MenuOptionsType } from "../../hooks/useMaterials";
 import ChartGlobImage from "../ChartGlobImage";
 import { ComponentType, FetchComFlagType, IMaterialConfigType } from "@/materials/types";
 import { createComponentConfig, fetchComponent } from "@/materials/components";
-import useChartStore from "@/store/chartStore/chartStore";
-import useChartHistoryStore from "@/store/chartHistoryStore/chartHistoryStore";
+import useChartsWithHistory from "@/hooks/useChartsWithHistory";
 
 interface IChartSearchInputProps {
 	menuOptions: MenuOptionsType[];
@@ -18,8 +17,7 @@ interface IChartSearchInputProps {
 const ChartSearchInput = (props: IChartSearchInputProps) => {
 	const { menuOptions } = props;
 	const { materialsMode, controllMaterialsMode } = useLayoutStore();
-	const { addComponentList, setTargetSelectChart } = useChartStore();
-	const { createAddHistory } = useChartHistoryStore();
+	const { handleAddComponents } = useChartsWithHistory();
 	const [isFocus, setFocus] = useState(false);
 	const [showPopover, setShowPopover] = useState(false);
 	const [searchValue, setSearchValue] = useState("");
@@ -57,12 +55,8 @@ const ChartSearchInput = (props: IChartSearchInputProps) => {
 		const ChartConfigComponent: any = fetchComponent(item.key, FetchComFlagType.CONFIG);
 
 		const componentInstance = { ...componentConifg, ChartComponent, ChartConfigComponent };
-		// 添加组件动作，历史记录
-		createAddHistory([componentInstance]);
-		// 添加组件配置至全局 store
-		addComponentList(componentInstance);
-		// 选中当前添加图表
-		setTargetSelectChart(componentConifg.id);
+
+		handleAddComponents([componentInstance]);
 
 		setFocus(false);
 		setShowPopover(false);
