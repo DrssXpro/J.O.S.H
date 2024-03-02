@@ -4,6 +4,7 @@ import ComponentErrorBox from "../ComponentErrorBox";
 import { useState, useMemo } from "react";
 import useCanvasStore from "@/store/canvasStore/canvasStore";
 import { colorCustomMerge } from "@/utils/colorStyle";
+import { handleChartEvent } from "../../utils";
 
 const PreviewRenderList = () => {
 	const { canvasConfig } = useCanvasStore();
@@ -18,6 +19,7 @@ const PreviewRenderList = () => {
 	return (
 		<>
 			{componentList.map((i, index) => {
+				const { baseEvent, advancedEvent } = handleChartEvent(i);
 				return (
 					<div
 						className={`absolute ${setChartAnimateStyle(i.styles.animations)}`}
@@ -34,6 +36,8 @@ const PreviewRenderList = () => {
 								requestSuccessCallback={() => {
 									setIsError(false);
 								}}
+								baseEvent={baseEvent}
+								advancedEvent={advancedEvent}
 							/>
 						</ComponentErrorBox>
 					</div>

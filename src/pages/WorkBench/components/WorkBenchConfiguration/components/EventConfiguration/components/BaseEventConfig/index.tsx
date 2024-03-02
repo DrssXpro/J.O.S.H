@@ -12,8 +12,8 @@ import useChartStore from "@/store/chartStore/chartStore";
 const EventTypeName = {
 	[BaseEvent.ON_CLICK]: "单击",
 	[BaseEvent.ON_DBL_CLICK]: "双击",
-	[BaseEvent.ON_MOUSE_ENTER]: "鼠标进入",
-	[BaseEvent.ON_MOUSE_LEAVE]: "鼠标移出"
+	[BaseEvent.ON_MOUSE_MOVE]: "鼠标移动",
+	[BaseEvent.ON_MOUSE_OUT]: "鼠标移出"
 };
 
 const BaseEventConfig = () => {

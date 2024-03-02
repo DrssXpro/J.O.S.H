@@ -3,10 +3,10 @@ export enum BaseEvent {
 	ON_CLICK = "click",
 	// 双击
 	ON_DBL_CLICK = "dblclick",
-	// 移入
-	ON_MOUSE_ENTER = "mouseenter",
+	// 移动
+	ON_MOUSE_MOVE = "mousemove",
 	// 移出
-	ON_MOUSE_LEAVE = "mouseleave"
+	ON_MOUSE_OUT = "mouseout"
 }
 
 export enum VaildError {
@@ -20,9 +20,7 @@ export enum VaildError {
 
 export enum EventLife {
 	// 渲染之后
-	VNODE_MOUNTED = "vnodeMounted",
-	// 渲染之前
-	VNODE_BEFORE_MOUNT = "vnodeBeforeMount"
+	CHART_READY = "onChartReady"
 }
 
 export const ErrorTypeName = {
@@ -49,12 +47,11 @@ export const enum KeyBoardEventName {
 
 // 内置字符串函数对象列表
 export const excludeParseEventKeyList = [
-	EventLife.VNODE_BEFORE_MOUNT,
-	EventLife.VNODE_MOUNTED,
+	EventLife.CHART_READY,
 	BaseEvent.ON_CLICK,
 	BaseEvent.ON_DBL_CLICK,
-	BaseEvent.ON_MOUSE_ENTER,
-	BaseEvent.ON_MOUSE_LEAVE,
+	BaseEvent.ON_MOUSE_MOVE,
+	BaseEvent.ON_MOUSE_OUT,
 	//过滤器
 	"filter"
 ];

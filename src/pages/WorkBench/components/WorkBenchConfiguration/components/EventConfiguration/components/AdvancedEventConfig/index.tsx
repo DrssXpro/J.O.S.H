@@ -10,13 +10,7 @@ import useChartStore from "@/store/chartStore/chartStore";
 import useEditCharts from "@/hooks/useEditCharts";
 
 const EventLifeName = {
-	[EventLife.VNODE_BEFORE_MOUNT]: "渲染之前",
-	[EventLife.VNODE_MOUNTED]: "渲染之后"
-};
-
-const EventLifeTip = {
-	[EventLife.VNODE_BEFORE_MOUNT]: "此时组件 DOM 还未存在",
-	[EventLife.VNODE_MOUNTED]: "此时组件 DOM 已经存在"
+	[EventLife.CHART_READY]: "渲染之后"
 };
 
 const AdvancedEventConfig = () => {
@@ -33,7 +27,6 @@ const AdvancedEventConfig = () => {
 	const [advancedEvent, setAdvancedEvent] = useState({
 		...component.events.advancedEvents
 	});
-	const [currentEvent, setCurrentEvent] = useState(EventLife.VNODE_MOUNTED);
 	const [isOpen, setIsOpen] = useState(false);
 
 	// 组件图表绑定事件代码展示
@@ -117,10 +110,6 @@ const AdvancedEventConfig = () => {
 				<div className="flex gap-4">
 					<div className="flex-grow relative">
 						<Tabs
-							defaultActiveKey={currentEvent}
-							onChange={(e) => {
-								e && setCurrentEvent(e as EventLife);
-							}}
 							items={Object.entries(advancedEvent).map(([key, value]) => ({
 								key,
 								label: `${EventLifeName[key as EventLife]}-${key}`,
@@ -148,9 +137,6 @@ const AdvancedEventConfig = () => {
 								)
 							}))}
 						/>
-						<div className="absolute top-4 right-0 text-[#f2c97d] text-xs">
-							提示：{EventLifeTip[currentEvent]}
-						</div>
 					</div>
 					<div>
 						<Divider type="vertical" style={{ height: "100%" }} />

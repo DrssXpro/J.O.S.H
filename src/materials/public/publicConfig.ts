@@ -2,7 +2,7 @@ import { nanoid } from "nanoid";
 import { cloneDeep } from "lodash-es";
 import { chartInitConfig } from "@/settings/designSetting";
 import { PublicConfigType } from "../types";
-import { BaseEvent, EventLife } from "../types/eventTypes";
+
 import {
 	RequestBodyEnum,
 	RequestConfigType,
@@ -10,6 +10,7 @@ import {
 	RequestHttpEnum,
 	RequestHttpIntervalEnum
 } from "@/types/HttpTypes";
+import { BaseEvent, EventLife } from "@/types/EventTypes";
 
 // 请求基础属性
 export const requestConfig: RequestConfigType = {
@@ -84,12 +85,11 @@ export class PublicConfigClass implements PublicConfigType {
 		baseEvent: {
 			[BaseEvent.ON_CLICK]: undefined,
 			[BaseEvent.ON_DBL_CLICK]: undefined,
-			[BaseEvent.ON_MOUSE_ENTER]: undefined,
-			[BaseEvent.ON_MOUSE_LEAVE]: undefined
+			[BaseEvent.ON_MOUSE_MOVE]: undefined,
+			[BaseEvent.ON_MOUSE_OUT]: undefined
 		},
 		advancedEvents: {
-			[EventLife.VNODE_MOUNTED]: undefined,
-			[EventLife.VNODE_BEFORE_MOUNT]: undefined
+			[EventLife.CHART_READY]: undefined
 		},
 		interactEvents: []
 	};

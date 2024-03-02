@@ -1,5 +1,5 @@
+import { BaseEvent, EventLife } from "@/types/EventTypes";
 import { RequestConfigType } from "@/types/HttpTypes";
-import { BaseEvent, EventLife } from "./eventTypes";
 
 export enum ChartFrameEnum {
 	// 支持 dataset 的 echarts 框架
@@ -44,6 +44,17 @@ export enum FilterEnum {
 	SKEW_Y = "skewY"
 }
 
+export interface ChartBaseEventType {
+	click?: (...args: any) => void;
+	dblclick?: (...args: any) => void;
+	mouseenter?: (...args: any) => void;
+	mouseleave?: (...args: any) => void;
+}
+
+export interface ChartAdvancedEventType {
+	onChartReady?: (...args: any) => void;
+}
+
 // 图表组件 props
 export interface ChartComponentProps {
 	// 图表配置项
@@ -54,6 +65,9 @@ export interface ChartComponentProps {
 	requestErrorCallback?: (error: any) => void;
 	// 动态数据请求成功回调
 	requestSuccessCallback?: () => void;
+	// 自定义事件
+	baseEvent?: ChartBaseEventType;
+	advancedEvent?: ChartAdvancedEventType;
 }
 
 // 组件状态
