@@ -1,8 +1,9 @@
 import ChartPng from "@/assets/bar_x.png";
+import useChartsWithHistory from "@/hooks/useChartsWithHistory";
 import { ComponentType } from "@/materials/types";
 import { LayerModeEnum } from "@/types/LayoutTypes";
-import { Typography, theme } from "antd";
-import { AiOutlineUnlock, AiOutlineEye } from "react-icons/ai";
+import { Button, Typography, theme } from "antd";
+import { AiOutlineUnlock, AiOutlineLock, AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 interface LayerCardProps {
 	detail: ComponentType;
@@ -13,6 +14,7 @@ interface LayerCardProps {
 
 const LayerCard = (props: LayerCardProps) => {
 	const { token } = theme.useToken();
+	const { handleSetChartIsHidden } = useChartsWithHistory();
 	const { mode = LayerModeEnum.THUMBNAIL, detail, isSelect, selectChart } = props;
 	return (
 		<div
@@ -33,9 +35,27 @@ const LayerCard = (props: LayerCardProps) => {
 			<Typography.Text ellipsis className="text-[12px]" title={detail.chartConfig.title}>
 				{detail.chartConfig.title}
 			</Typography.Text>
-			<div className="flex items-center gap-2 invisible group-hover:visible">
-				<AiOutlineUnlock />
-				<AiOutlineEye />
+			<div className="flex items-center invisible group-hover:visible">
+				{detail.status.lock ? (
+					<Button size="small" type="text" icon={<AiOutlineLock />} />
+				) : (
+					<Button size="small" type="text" icon={<AiOutlineUnlock />} />
+				)}
+				{detail.status.hide ? (
+					<Button
+						size="small"
+						type="text"
+						onClick={() => handleSetChartIsHidden(false)}
+						icon={<AiOutlineEyeInvisible />}
+					/>
+				) : (
+					<Button
+						size="small"
+						type="text"
+						onClick={() => handleSetChartIsHidden(true)}
+						icon={<AiOutlineEye />}
+					/>
+				)}
 			</div>
 		</div>
 	);

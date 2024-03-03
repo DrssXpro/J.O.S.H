@@ -64,16 +64,6 @@ export interface IChartHistoryState {
 }
 
 export interface IChartHistoryAction {
-	// // 压入后退栈（正常操作都会压入后退栈）
-	// pushBackStack: (item: HistoryItemType | HistoryItemType[], notClear: boolean) => void;
-	// // 压入前进栈（只有撤回操作才需要压入前进栈）
-	// pushForwardStack: (item: HistoryItemType | HistoryItemType[]) => void;
-	// // 弹出后退栈
-	// popBackStack: () => HistoryItemType | undefined;
-	// // 弹出前进栈
-	// popForwardStack: () => HistoryItemType | undefined;
-	// // 清空历史栈
-	// clearStack: (type: HistoryStackEnum) => void;
 	// 添加历史记录
 	pushRecord: (items: HistoryItemType | HistoryItemType[]) => void;
 	// 撤回操作，弹出后退栈，压入前进栈
@@ -107,8 +97,8 @@ export interface IChartHistoryAction {
 	// createLockHistory: (items: IComponent[]) => void;
 	// // 解锁记录
 	// createUnLockHistory: (items: IComponent[]) => void;
-	// // 隐藏记录
-	// createHideHistory: (items: IComponent[]) => void;
-	// // 展示记录
-	// createShowHistory: (items: IComponent[]) => void;
+	// 隐藏记录
+	createHideHistory: (items: IComponent[]) => void;
+	// 展示记录
+	createShowHistory: (items: IComponent[]) => void;
 }

@@ -115,7 +115,10 @@ const EditShapeBox = (props: IEditShapeBoxProps) => {
 		return selectId.find((i) => chartConfig.id === i);
 	}, [selectId]);
 	return (
-		<div className="relative w-full h-full flex items-center justify-center">
+		<div
+			className="relative w-full h-full flex items-center justify-center"
+			style={{ display: chartConfig.status.hide ? "none" : undefined }}
+		>
 			{children}
 
 			{/*  points style */}

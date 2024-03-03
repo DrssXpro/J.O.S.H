@@ -6,18 +6,21 @@ import useChartStore from "@/store/chartStore/chartStore";
 
 const useUndoRedo = () => {
 	const { updateChartConfig } = useChartStore();
-	const { handleRemoveComponents, handleAddComponents, componentList } = useChartsWithHistory();
+	const { handleRemoveComponents, handleAddComponents, handleSetChartIsHidden, componentList } =
+		useChartsWithHistory();
 	const { getTargetChartIndex } = useEditCharts();
 
 	function handleUndo(historyItem: HistoryItemType) {
 		const isAdd = historyItem.actionType === HistoryActionTypeEnum.ADD;
 		const isDel = historyItem.actionType === HistoryActionTypeEnum.DELETE;
 		const isMove = historyItem.actionType === HistoryActionTypeEnum.MOVE;
+		const isHidden = historyItem.actionType === HistoryActionTypeEnum.HIDE;
+		const isShow = historyItem.actionType === HistoryActionTypeEnum.SHOW;
 		const components = historyItem.historyData;
+		const ids = components.map((item) => item.id);
 
 		// 撤销操作且记录类型为 add，说明需要将添加的图表组件移除
 		if (isAdd) {
-			const ids = components.map((item) => item.id);
 			handleRemoveComponents(ids, false);
 			return;
 		}
@@ -34,13 +37,26 @@ const useUndoRedo = () => {
 			});
 			return;
 		}
+
+		if (isHidden) {
+			handleSetChartIsHidden(false, false, ids[0]);
+			return;
+		}
+
+		if (isShow) {
+			handleSetChartIsHidden(true, false, ids[0]);
+			return;
+		}
 	}
 
 	function handleRedo(historyItem: HistoryItemType) {
 		const isAdd = historyItem.actionType === HistoryActionTypeEnum.ADD;
 		const isDel = historyItem.actionType === HistoryActionTypeEnum.DELETE;
 		const isMove = historyItem.actionType === HistoryActionTypeEnum.MOVE;
+		const isHidden = historyItem.actionType === HistoryActionTypeEnum.HIDE;
+		const isShow = historyItem.actionType === HistoryActionTypeEnum.SHOW;
 		const components = historyItem.historyData;
+		const ids = components.map((item) => item.id);
 
 		if (isAdd) {
 			handleAddComponents(components, false);
@@ -48,7 +64,6 @@ const useUndoRedo = () => {
 		}
 
 		if (isDel) {
-			const ids = components.map((item) => item.id);
 			handleRemoveComponents(ids, false);
 			return;
 		}
@@ -57,6 +72,16 @@ const useUndoRedo = () => {
 			components.forEach((item) => {
 				resetComponentPosition(item, "FORWARD");
 			});
+			return;
+		}
+
+		if (isHidden) {
+			handleSetChartIsHidden(true, false, ids[0]);
+			return;
+		}
+
+		if (isShow) {
+			handleSetChartIsHidden(false, false, ids[0]);
 			return;
 		}
 	}
