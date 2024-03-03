@@ -1,28 +1,28 @@
 const computedBaseEventCode = (codes: string[]) => {
 	return `// 单击
-async function click (mouseEvent,components) {
+async function click (components) {
 ${codes[0]}
 },
 
 // 双击
-async function dblclick (mouseEvent,components) {
+async function dblclick (components) {
 ${codes[1]}
 },
 
 // 鼠标移动
-async function mousemove (mouseEvent,components) {
+async function mousemove (components) {
 ${codes[2]}
 },
 
 // 鼠标移出
-async function mouseout (mouseEvent,components) {
+async function mouseout (components) {
 ${codes[3]}
 }`;
 };
 
 const computedAdvancedEventCode = (codes: string[]) => {
 	return `// 渲染之后
-async function onChartReady (e,components,echarts,node_modules) {
+async function onChartReady (component,components,echarts) {
 ${codes[0]}
 },
 `;

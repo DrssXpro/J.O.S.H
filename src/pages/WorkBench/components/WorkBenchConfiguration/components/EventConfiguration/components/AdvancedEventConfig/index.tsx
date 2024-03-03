@@ -123,7 +123,7 @@ const AdvancedEventConfig = () => {
 													<span className="text-[#9cdcfe]">async</span>&nbsp;
 													<span className="text-[#569cd6]">function</span>&nbsp;
 													<span className="text-[#dcdcaa]">{key}</span>(
-													<span className="text-[#9cdcfe]">e</span>
+													<span className="text-[#9cdcfe]">component</span>
 													,&nbsp;
 													<span className="text-[#9cdcfe]">components</span>
 													,&nbsp;

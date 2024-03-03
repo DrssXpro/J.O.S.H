@@ -4,9 +4,6 @@ import * as echarts from "echarts";
 // 所有图表组件集合对象
 const components: { [K in string]?: any } = {};
 
-// 项目提供的npm 包变量
-export const npmPkgs = { echarts };
-
 export const handleChartEvent = (chartConfig: ComponentType) => {
 	if (!chartConfig.events) return {};
 
@@ -23,11 +20,11 @@ export const handleChartEvent = (chartConfig: ComponentType) => {
 	// 处理 advancedEvent
 	const events = chartConfig.events.advancedEvents || {};
 	const advancedEvent = {
-		[EventLife.CHART_READY](e: any) {
+		[EventLife.CHART_READY](component: any) {
 			// 存储组件
-			components[chartConfig.id] = e.component;
+			components[chartConfig.id] = component;
 			const fnStr = (events[EventLife.CHART_READY] || "").trim();
-			generateFunc(fnStr, e);
+			generateFunc(fnStr, component);
 		}
 	};
 	return {
@@ -40,7 +37,7 @@ function generateBaseFunc(fnStr: string) {
 	try {
 		return new Function(`
       return (
-        async function(components,mouseEvent){
+        async function(components){
           ${fnStr}
         }
       )`)().bind(undefined, components);
@@ -49,17 +46,16 @@ function generateBaseFunc(fnStr: string) {
 	}
 }
 
-function generateFunc(fnStr: string, e: any) {
+function generateFunc(fnStr: string, component: any) {
 	try {
 		// npmPkgs 便于拷贝 echarts 示例时设置option 的formatter等相关内容
 		Function(`
       "use strict";
       return (
-        async function(e, components, node_modules){
-          const {${Object.keys(npmPkgs).join()}} = node_modules;
+        async function(component, components, echarts){
           ${fnStr}
         }
-      )`)().bind(e)(e, components, npmPkgs);
+      )`)().bind(component)(component, components, echarts);
 	} catch (error) {
 		console.error(error);
 	}

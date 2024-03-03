@@ -131,8 +131,6 @@ const BaseEventConfig = () => {
 													<span className="text-[#9cdcfe]">async</span>&nbsp;
 													<span className="text-[#569cd6]">function</span>&nbsp;
 													<span className="text-[#dcdcaa]">{key}</span>(
-													<span className="text-[#9cdcfe]">mouseEvent</span>
-													,&nbsp;
 													<span className="text-[#9cdcfe]">components</span>)&nbsp;
 													{"{"}
 												</>
