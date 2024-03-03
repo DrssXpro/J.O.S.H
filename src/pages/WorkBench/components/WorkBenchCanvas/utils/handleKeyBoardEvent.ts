@@ -69,7 +69,7 @@ export function removeKeyBoardEventListener() {
 export function addSpaceAndControlKeyBoard() {
 	document.onkeydown = (e) => {
 		const { code } = e;
-		if (code === "Space") e.preventDefault();
+		if (code === "Space" && e.target === document.body) e.preventDefault();
 		// space ctrl 键给予提示
 		if (code === "Space" || code === "ControlRight" || code === "ControlLeft") showPressKeyText(code);
 	};
