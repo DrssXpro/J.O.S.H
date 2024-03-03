@@ -93,10 +93,10 @@ export interface IChartHistoryAction {
 	// ) => void;
 	// // 剪切组件记录
 	// createPasteHistory: (items: IComponent[]) => void;
-	// // 锁定记录
-	// createLockHistory: (items: IComponent[]) => void;
-	// // 解锁记录
-	// createUnLockHistory: (items: IComponent[]) => void;
+	// 锁定记录
+	createLockHistory: (items: IComponent[]) => void;
+	// 解锁记录
+	createUnLockHistory: (items: IComponent[]) => void;
 	// 隐藏记录
 	createHideHistory: (items: IComponent[]) => void;
 	// 展示记录

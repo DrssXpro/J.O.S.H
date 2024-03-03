@@ -6,7 +6,7 @@ import useChartStore from "@/store/chartStore/chartStore";
 
 const useUndoRedo = () => {
 	const { updateChartConfig } = useChartStore();
-	const { handleRemoveComponents, handleAddComponents, handleSetChartIsHidden, componentList } =
+	const { handleRemoveComponents, handleAddComponents, handleSetChartIsHidden, handleSetChartIsLock, componentList } =
 		useChartsWithHistory();
 	const { getTargetChartIndex } = useEditCharts();
 
@@ -16,6 +16,8 @@ const useUndoRedo = () => {
 		const isMove = historyItem.actionType === HistoryActionTypeEnum.MOVE;
 		const isHidden = historyItem.actionType === HistoryActionTypeEnum.HIDE;
 		const isShow = historyItem.actionType === HistoryActionTypeEnum.SHOW;
+		const isLock = historyItem.actionType === HistoryActionTypeEnum.LOCK;
+		const isUnLock = historyItem.actionType === HistoryActionTypeEnum.UNLOCK;
 		const components = historyItem.historyData;
 		const ids = components.map((item) => item.id);
 
@@ -47,6 +49,15 @@ const useUndoRedo = () => {
 			handleSetChartIsHidden(true, false, ids[0]);
 			return;
 		}
+
+		if (isLock) {
+			handleSetChartIsLock(false, false, ids[0]);
+			return;
+		}
+
+		if (isUnLock) {
+			handleSetChartIsLock(true, false, ids[0]);
+		}
 	}
 
 	function handleRedo(historyItem: HistoryItemType) {
@@ -55,6 +66,8 @@ const useUndoRedo = () => {
 		const isMove = historyItem.actionType === HistoryActionTypeEnum.MOVE;
 		const isHidden = historyItem.actionType === HistoryActionTypeEnum.HIDE;
 		const isShow = historyItem.actionType === HistoryActionTypeEnum.SHOW;
+		const isLock = historyItem.actionType === HistoryActionTypeEnum.LOCK;
+		const isUnLock = historyItem.actionType === HistoryActionTypeEnum.UNLOCK;
 		const components = historyItem.historyData;
 		const ids = components.map((item) => item.id);
 
@@ -83,6 +96,15 @@ const useUndoRedo = () => {
 		if (isShow) {
 			handleSetChartIsHidden(false, false, ids[0]);
 			return;
+		}
+
+		if (isLock) {
+			handleSetChartIsLock(true, false, ids[0]);
+			return;
+		}
+
+		if (isUnLock) {
+			handleSetChartIsLock(false, false, ids[0]);
 		}
 	}
 

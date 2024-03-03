@@ -14,17 +14,17 @@ interface LayerCardProps {
 
 const LayerCard = (props: LayerCardProps) => {
 	const { token } = theme.useToken();
-	const { handleSetChartIsHidden } = useChartsWithHistory();
+	const { handleSetChartIsHidden, handleSetChartIsLock } = useChartsWithHistory();
 	const { mode = LayerModeEnum.THUMBNAIL, detail, isSelect, selectChart } = props;
 	return (
 		<div
-			className={`w-full ${
-				mode === LayerModeEnum.THUMBNAIL ? "h-13" : "h-9"
-			} flex items-center justify-between gap-2 p-2 mb-2 cursor-pointer group hover:bg-[#313132] rounded-md transition-all transform`}
+			className={`w-full ${mode === LayerModeEnum.THUMBNAIL ? "h-13" : "h-9"} ${
+				detail.status.lock || "cursor-pointer"
+			} flex items-center justify-between gap-2 p-2 mb-2 group hover:bg-[#313132] rounded-md transition-all transform`}
 			style={{
 				background: isSelect ? token.colorPrimaryActive : undefined
 			}}
-			onClick={() => selectChart(detail.id)}
+			onClick={() => !detail.status.lock && selectChart(detail.id)}
 		>
 			<img
 				src={ChartPng}
@@ -37,22 +37,42 @@ const LayerCard = (props: LayerCardProps) => {
 			</Typography.Text>
 			<div className="flex items-center invisible group-hover:visible">
 				{detail.status.lock ? (
-					<Button size="small" type="text" icon={<AiOutlineLock />} />
+					<Button
+						size="small"
+						type="text"
+						onClick={(e) => {
+							e.stopPropagation();
+							handleSetChartIsLock(false, true, detail.id);
+						}}
+						icon={<AiOutlineLock />}
+					/>
 				) : (
-					<Button size="small" type="text" icon={<AiOutlineUnlock />} />
+					<Button
+						size="small"
+						type="text"
+						onClick={(e) => {
+							e.stopPropagation();
+							handleSetChartIsLock(true);
+						}}
+						icon={<AiOutlineUnlock />}
+					/>
 				)}
 				{detail.status.hide ? (
 					<Button
 						size="small"
 						type="text"
-						onClick={() => handleSetChartIsHidden(false)}
+						onClick={() => {
+							!detail.status.lock && handleSetChartIsHidden(false);
+						}}
 						icon={<AiOutlineEyeInvisible />}
 					/>
 				) : (
 					<Button
 						size="small"
 						type="text"
-						onClick={() => handleSetChartIsHidden(true)}
+						onClick={() => {
+							!detail.status.lock && handleSetChartIsHidden(true);
+						}}
 						icon={<AiOutlineEye />}
 					/>
 				)}

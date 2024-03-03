@@ -122,7 +122,8 @@ const EditShapeBox = (props: IEditShapeBoxProps) => {
 			{children}
 
 			{/*  points style */}
-			{isSelect &&
+			{!chartConfig.status.lock &&
+				isSelect &&
 				points.map(({ direction, style }) => (
 					<div
 						className="absolute z-11 w-3 h-3 border-3 border-[#1668DC] bg-[#fff]"
@@ -134,18 +135,20 @@ const EditShapeBox = (props: IEditShapeBoxProps) => {
 
 			{/* select/hover border style */}
 			<div
-				className="absolute z-10 top-0 w-full h-full border-[#1668DC] rounded hover:border-2 hover:border-dotted cursor-move"
+				className={`absolute z-10 top-0 w-full h-full border-[#1668DC] rounded ${
+					chartConfig.status.lock || "hover:border-2 hover:border-dotted cursor-move"
+				}`}
 				style={{
-					borderStyle: isSelect ? "solid" : undefined,
-					borderWidth: isSelect ? "2px" : undefined
+					borderStyle: isSelect && !chartConfig.status.lock ? "solid" : undefined,
+					borderWidth: isSelect && !chartConfig.status.lock ? "2px" : undefined
 				}}
 			></div>
 			{/* select background style */}
 			<div
 				className="absolute z-9 top-0 w-full h-full"
 				style={{
-					opacity: isSelect ? 0.1 : 1,
-					background: isSelect ? "#1668DC" : undefined
+					opacity: isSelect && !chartConfig.status.lock ? 0.1 : 1,
+					background: isSelect && !chartConfig.status.lock ? "#1668DC" : undefined
 				}}
 			></div>
 		</div>

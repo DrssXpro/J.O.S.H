@@ -63,6 +63,22 @@ const useChartHistoryStore = create<IChartHistoryState & IChartHistoryAction>()(
 				historyData: item
 			});
 		},
+		createLockHistory(item) {
+			if (!item.length) return;
+			get().pushRecord({
+				id: Date.now().toString(),
+				actionType: HistoryActionTypeEnum.LOCK,
+				historyData: item
+			});
+		},
+		createUnLockHistory(item) {
+			if (!item.length) return;
+			get().pushRecord({
+				id: Date.now().toString(),
+				actionType: HistoryActionTypeEnum.UNLOCK,
+				historyData: item
+			});
+		},
 		createHideHistory(item) {
 			if (!item.length) return;
 			get().pushRecord({

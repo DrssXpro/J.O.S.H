@@ -25,6 +25,7 @@ const useMouseHandle = () => {
 	const handleMouseDown = (e: React.MouseEvent, item: IComponent) => {
 		e.preventDefault();
 		e.stopPropagation();
+		if (item.status.lock) return;
 		setTargetSelectChart(item.id);
 
 		const scale = canvasGlobal[CanvasGlobalTypeEnum.SCALE];

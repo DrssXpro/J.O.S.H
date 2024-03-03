@@ -13,8 +13,8 @@ const useEditCharts = () => {
 	};
 
 	// 获取当前选择的图表对象
-	const getTargetData = () => {
-		const targetIndex = getTargetChartIndex();
+	const getTargetData = (index?: number) => {
+		const targetIndex = typeof index === "number" ? index : getTargetChartIndex();
 		if (targetIndex !== undefined && targetIndex !== -1) return componentList[targetIndex];
 	};
 

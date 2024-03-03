@@ -12,7 +12,14 @@ const useChartsWithHistory = () => {
 		addComponentList,
 		updateChartConfig
 	} = useChartStore();
-	const { createDeleteHistory, createAddHistory, createHideHistory, createShowHistory } = useChartHistoryStore();
+	const {
+		createDeleteHistory,
+		createAddHistory,
+		createHideHistory,
+		createShowHistory,
+		createLockHistory,
+		createUnLockHistory
+	} = useChartHistoryStore();
 	const { getTargetData, getTargetChartIndex } = useEditCharts();
 
 	const handleAddComponents = (components: IComponent[], isHistory = true) => {
@@ -53,10 +60,28 @@ const useChartsWithHistory = () => {
 		if (!isHidden && id) setTargetSelectChart(id);
 	};
 
+	const handleSetChartIsLock = (isLock: boolean, isHistory = true, id?: string) => {
+		const selectId = getSelectId();
+		if (!selectId) return;
+		if (selectId && selectId.length > 1) return;
+		const chartIndex = id ? getTargetChartIndex(id)! : getTargetChartIndex()!;
+		const component = getTargetData(chartIndex)!;
+		if (isHistory) {
+			isLock ? createLockHistory([component]) : createUnLockHistory([component]);
+		}
+		updateChartConfig(chartIndex, "status", "lock", isLock);
+		if (isLock) {
+			setTargetSelectChart();
+			return;
+		}
+		id && setTargetSelectChart(id);
+	};
+
 	return {
 		handleAddComponents,
 		handleRemoveComponents,
 		handleSetChartIsHidden,
+		handleSetChartIsLock,
 		componentList: getComponentList()
 	};
 };
