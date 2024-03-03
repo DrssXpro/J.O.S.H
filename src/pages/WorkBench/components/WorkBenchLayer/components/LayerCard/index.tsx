@@ -35,11 +35,11 @@ const LayerCard = (props: LayerCardProps) => {
 			<Typography.Text ellipsis className="text-[12px]" title={detail.chartConfig.title}>
 				{detail.chartConfig.title}
 			</Typography.Text>
-			<div className="flex items-center invisible group-hover:visible">
+			<div className="flex items-center">
 				{detail.status.lock ? (
 					<Button
 						size="small"
-						type="text"
+						type="link"
 						onClick={(e) => {
 							e.stopPropagation();
 							handleSetChartIsLock(false, true, detail.id);
@@ -50,6 +50,7 @@ const LayerCard = (props: LayerCardProps) => {
 					<Button
 						size="small"
 						type="text"
+						className="invisible group-hover:visible"
 						onClick={(e) => {
 							e.stopPropagation();
 							handleSetChartIsLock(true);
@@ -60,8 +61,9 @@ const LayerCard = (props: LayerCardProps) => {
 				{detail.status.hide ? (
 					<Button
 						size="small"
-						type="text"
-						onClick={() => {
+						type="link"
+						onClick={(e) => {
+							e.stopPropagation();
 							!detail.status.lock && handleSetChartIsHidden(false);
 						}}
 						icon={<AiOutlineEyeInvisible />}
@@ -70,7 +72,9 @@ const LayerCard = (props: LayerCardProps) => {
 					<Button
 						size="small"
 						type="text"
-						onClick={() => {
+						className="invisible group-hover:visible"
+						onClick={(e) => {
+							e.stopPropagation();
 							!detail.status.lock && handleSetChartIsHidden(true);
 						}}
 						icon={<AiOutlineEye />}

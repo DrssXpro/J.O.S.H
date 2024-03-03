@@ -57,6 +57,7 @@ const useChartsWithHistory = () => {
 			isHidden ? createHideHistory([component]) : createShowHistory([component]);
 		}
 		updateChartConfig(chartIndex, "status", "hide", isHidden);
+		if (isHidden) setTargetSelectChart();
 		if (!isHidden && id) setTargetSelectChart(id);
 	};
 
