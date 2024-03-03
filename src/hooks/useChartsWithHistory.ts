@@ -47,46 +47,28 @@ const useChartsWithHistory = () => {
 		removeComponents(selectId);
 	};
 
-	const handleSetChartIsHidden = (isHidden: boolean, isHistory = true, id?: string) => {
-		const selectId = getSelectId();
-		if (!id) {
-			if (!selectId) return;
-			if (selectId && selectId.length !== 1) return;
-		}
-		const chartIndex = id ? getTargetChartIndex(id)! : getTargetChartIndex()!;
-		const component = getTargetData()!;
-		if (isHistory) {
-			isHidden ? createHideHistory([component]) : createShowHistory([component]);
-		}
-		updateChartConfig(chartIndex, "status", "hide", isHidden);
-		if (isHidden) setTargetSelectChart();
-		if (!isHidden && id) setTargetSelectChart(id);
-	};
-
-	const handleSetChartIsLock = (isLock: boolean, isHistory = true, id?: string) => {
-		const selectId = getSelectId();
-		if (!id) {
-			if (!selectId) return;
-			if (selectId && selectId.length !== 1) return;
-		}
-		const chartIndex = id ? getTargetChartIndex(id)! : getTargetChartIndex()!;
+	const handleSetChartIsHiddenOrLock = (status: boolean, id: string, type: "hide" | "lock", isHistory = true) => {
+		const chartIndex = getTargetChartIndex(id)!;
 		const component = getTargetData(chartIndex)!;
 		if (isHistory) {
-			isLock ? createLockHistory([component]) : createUnLockHistory([component]);
+			type === "hide"
+				? status
+					? createHideHistory([component])
+					: createShowHistory([component])
+				: status
+					? createLockHistory([component])
+					: createUnLockHistory([component]);
 		}
-		updateChartConfig(chartIndex, "status", "lock", isLock);
-		if (isLock) {
-			setTargetSelectChart();
-			return;
-		}
-		id && setTargetSelectChart(id);
+		type === "hide"
+			? updateChartConfig(chartIndex, "status", "hide", status)
+			: updateChartConfig(chartIndex, "status", "lock", status);
+		status ? setTargetSelectChart() : setTargetSelectChart(id);
 	};
 
 	return {
 		handleAddComponents,
 		handleRemoveComponents,
-		handleSetChartIsHidden,
-		handleSetChartIsLock,
+		handleSetChartIsHiddenOrLock,
 		componentList: getComponentList()
 	};
 };

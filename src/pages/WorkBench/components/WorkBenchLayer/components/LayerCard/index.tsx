@@ -14,7 +14,7 @@ interface LayerCardProps {
 
 const LayerCard = (props: LayerCardProps) => {
 	const { token } = theme.useToken();
-	const { handleSetChartIsHidden, handleSetChartIsLock } = useChartsWithHistory();
+	const { handleSetChartIsHiddenOrLock } = useChartsWithHistory();
 	const { mode = LayerModeEnum.THUMBNAIL, detail, isSelect, selectChart } = props;
 	return (
 		<div
@@ -42,7 +42,7 @@ const LayerCard = (props: LayerCardProps) => {
 						type="link"
 						onClick={(e) => {
 							e.stopPropagation();
-							handleSetChartIsLock(false, true, detail.id);
+							handleSetChartIsHiddenOrLock(false, detail.id, "lock");
 						}}
 						icon={<AiOutlineLock />}
 					/>
@@ -53,7 +53,7 @@ const LayerCard = (props: LayerCardProps) => {
 						className="invisible group-hover:visible"
 						onClick={(e) => {
 							e.stopPropagation();
-							handleSetChartIsLock(true, true, detail.id);
+							handleSetChartIsHiddenOrLock(true, detail.id, "lock");
 						}}
 						icon={<AiOutlineUnlock />}
 					/>
@@ -64,7 +64,7 @@ const LayerCard = (props: LayerCardProps) => {
 						type="link"
 						onClick={(e) => {
 							e.stopPropagation();
-							!detail.status.lock && handleSetChartIsHidden(false);
+							!detail.status.lock && handleSetChartIsHiddenOrLock(false, detail.id, "hide");
 						}}
 						icon={<AiOutlineEyeInvisible />}
 					/>
@@ -75,7 +75,7 @@ const LayerCard = (props: LayerCardProps) => {
 						className="invisible group-hover:visible"
 						onClick={(e) => {
 							e.stopPropagation();
-							!detail.status.lock && handleSetChartIsHidden(true);
+							!detail.status.lock && handleSetChartIsHiddenOrLock(true, detail.id, "hide");
 						}}
 						icon={<AiOutlineEye />}
 					/>
