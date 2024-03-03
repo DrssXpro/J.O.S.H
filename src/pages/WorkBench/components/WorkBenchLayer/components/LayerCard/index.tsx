@@ -7,12 +7,13 @@ import { AiOutlineUnlock, AiOutlineEye } from "react-icons/ai";
 interface LayerCardProps {
 	detail: ComponentType;
 	isSelect: boolean;
+	selectChart: (id: string) => void;
 	mode?: LayerModeEnum;
 }
 
 const LayerCard = (props: LayerCardProps) => {
 	const { token } = theme.useToken();
-	const { mode = LayerModeEnum.THUMBNAIL, detail, isSelect } = props;
+	const { mode = LayerModeEnum.THUMBNAIL, detail, isSelect, selectChart } = props;
 	return (
 		<div
 			className={`w-full ${
@@ -21,6 +22,7 @@ const LayerCard = (props: LayerCardProps) => {
 			style={{
 				background: isSelect ? token.colorPrimaryActive : undefined
 			}}
+			onClick={() => selectChart(detail.id)}
 		>
 			<img
 				src={ChartPng}

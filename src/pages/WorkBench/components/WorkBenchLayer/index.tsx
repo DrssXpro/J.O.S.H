@@ -11,7 +11,7 @@ import { useMemo } from "react";
 const WorkBenchLayer = () => {
 	const { showLayer, layerMode, controllLayer, controllLayerMode } = useLayoutStore();
 	const { autoLayoutCanvas } = useCanvasStore();
-	const { componentList, selectId } = useChartStore();
+	const { componentList, selectId, setTargetSelectChart } = useChartStore();
 
 	const layerList = useMemo(() => [...componentList].reverse(), [componentList]);
 
@@ -63,7 +63,12 @@ const WorkBenchLayer = () => {
 					<Row gutter={[1, 1]}>
 						{layerList.map((i) => (
 							<Col span={24} key={i.id}>
-								<LayerCard mode={layerMode} detail={i} isSelect={selectId.includes(i.id)} />
+								<LayerCard
+									mode={layerMode}
+									detail={i}
+									isSelect={selectId.includes(i.id)}
+									selectChart={(id) => setTargetSelectChart(id)}
+								/>
 							</Col>
 						))}
 					</Row>
