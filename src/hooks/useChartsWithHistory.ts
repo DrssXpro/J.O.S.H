@@ -49,8 +49,10 @@ const useChartsWithHistory = () => {
 
 	const handleSetChartIsHidden = (isHidden: boolean, isHistory = true, id?: string) => {
 		const selectId = getSelectId();
-		if (!selectId) return;
-		if (selectId && selectId.length > 1) return;
+		if (!id) {
+			if (!selectId) return;
+			if (selectId && selectId.length !== 1) return;
+		}
 		const chartIndex = id ? getTargetChartIndex(id)! : getTargetChartIndex()!;
 		const component = getTargetData()!;
 		if (isHistory) {
@@ -63,8 +65,10 @@ const useChartsWithHistory = () => {
 
 	const handleSetChartIsLock = (isLock: boolean, isHistory = true, id?: string) => {
 		const selectId = getSelectId();
-		if (!selectId) return;
-		if (selectId && selectId.length > 1) return;
+		if (!id) {
+			if (!selectId) return;
+			if (selectId && selectId.length !== 1) return;
+		}
 		const chartIndex = id ? getTargetChartIndex(id)! : getTargetChartIndex()!;
 		const component = getTargetData(chartIndex)!;
 		if (isHistory) {

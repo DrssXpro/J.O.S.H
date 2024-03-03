@@ -53,7 +53,7 @@ const LayerCard = (props: LayerCardProps) => {
 						className="invisible group-hover:visible"
 						onClick={(e) => {
 							e.stopPropagation();
-							handleSetChartIsLock(true);
+							handleSetChartIsLock(true, true, detail.id);
 						}}
 						icon={<AiOutlineUnlock />}
 					/>
