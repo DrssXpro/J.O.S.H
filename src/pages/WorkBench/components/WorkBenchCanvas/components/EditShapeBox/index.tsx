@@ -6,6 +6,7 @@ import useMouseHandle from "../../hooks/useMouseHandle";
 interface IEditShapeBoxProps {
 	chartConfig: ComponentType;
 	children: any;
+	changeContextMenu: (detail: ComponentType) => void;
 }
 
 enum PointEnum {
@@ -107,7 +108,7 @@ const points: Point[] = [
 ];
 
 const EditShapeBox = (props: IEditShapeBoxProps) => {
-	const { children, chartConfig } = props;
+	const { children, chartConfig, changeContextMenu } = props;
 	const { selectId } = useChartStore();
 	const { handleMousePointDown } = useMouseHandle();
 
@@ -118,6 +119,7 @@ const EditShapeBox = (props: IEditShapeBoxProps) => {
 		<div
 			className="relative w-full h-full flex items-center justify-center"
 			style={{ display: chartConfig.status.hide ? "none" : undefined }}
+			onContextMenu={() => changeContextMenu(chartConfig)}
 		>
 			{children}
 
@@ -135,6 +137,7 @@ const EditShapeBox = (props: IEditShapeBoxProps) => {
 
 			{/* select/hover border style */}
 			<div
+				id="chartComponentBox"
 				className={`absolute z-10 top-0 w-full h-full border-[#1668DC] rounded ${
 					chartConfig.status.lock || "hover:border-2 hover:border-dotted cursor-move"
 				}`}
