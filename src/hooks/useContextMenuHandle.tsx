@@ -16,9 +16,10 @@ import { BiArrowToTop, BiArrowToBottom, BiPaint } from "react-icons/bi";
 import useChartsWithHistory from "@/hooks/useChartsWithHistory";
 import useEditCharts from "@/hooks/useEditCharts";
 import { ComponentType } from "@/materials/types";
+import { HistoryActionTypeEnum } from "@/store/chartHistoryStore/types";
 
 const useContextMenuHandle = () => {
-	const { handleRemoveComponents, handleSetChartIsHiddenOrLock } = useChartsWithHistory();
+	const { handleRemoveComponents, handleSetChartIsHiddenOrLock, handleSetChartTopOrEnd } = useChartsWithHistory();
 	const [clickDetail, setClickDetail] = useState<ComponentType | null>(null);
 	const { getTargetData } = useEditCharts();
 	const component = getTargetData();
@@ -106,7 +107,12 @@ const useContextMenuHandle = () => {
 		},
 		{
 			label: (
-				<div className="flex items-center gap-2">
+				<div
+					className="flex items-center gap-2"
+					onClick={() => {
+						component && handleSetChartTopOrEnd(HistoryActionTypeEnum.TOP);
+					}}
+				>
 					<BiArrowToTop />
 					置顶
 				</div>
@@ -115,7 +121,12 @@ const useContextMenuHandle = () => {
 		},
 		{
 			label: (
-				<div className="flex items-center gap-2">
+				<div
+					className="flex items-center gap-2"
+					onClick={() => {
+						component && handleSetChartTopOrEnd(HistoryActionTypeEnum.BOTTOM);
+					}}
+				>
 					<BiArrowToBottom />
 					置底
 				</div>

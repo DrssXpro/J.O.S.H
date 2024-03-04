@@ -63,6 +63,14 @@ const useChartHistoryStore = create<IChartHistoryState & IChartHistoryAction>()(
 				historyData: item
 			});
 		},
+		createLayerHistory(item, type) {
+			if (!item.length) return;
+			get().pushRecord({
+				id: Date.now().toString(),
+				actionType: type,
+				historyData: item
+			});
+		},
 		createLockHistory(item) {
 			if (!item.length) return;
 			get().pushRecord({

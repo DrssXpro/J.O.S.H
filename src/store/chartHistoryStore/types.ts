@@ -82,15 +82,15 @@ export interface IChartHistoryAction {
 	createDeleteHistory: (items: IComponent[]) => void;
 	// // 移动组件记录
 	createMoveHistory: (items: IComponent[]) => void;
-	// // 改变层级（z-index）组件记录
-	// createLayerHistory: (
-	// 	items: IComponent[],
-	// 	type:
-	// 		| HistoryActionTypeEnum.TOP
-	// 		| HistoryActionTypeEnum.DOWN
-	// 		| HistoryActionTypeEnum.UP
-	// 		| HistoryActionTypeEnum.BOTTOM
-	// ) => void;
+	// 改变层级（z-index）组件记录
+	createLayerHistory: (
+		items: IComponent[],
+		type:
+			| HistoryActionTypeEnum.TOP
+			| HistoryActionTypeEnum.DOWN
+			| HistoryActionTypeEnum.UP
+			| HistoryActionTypeEnum.BOTTOM
+	) => void;
 	// // 剪切组件记录
 	// createPasteHistory: (items: IComponent[]) => void;
 	// 锁定记录

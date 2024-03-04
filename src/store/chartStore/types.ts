@@ -21,7 +21,7 @@ export interface IChartState {
 
 export interface IChartAction {
 	setMousePosition(x?: number, y?: number, startX?: number, startY?: number): void;
-	addComponentList: (component: IComponent) => void;
+	addComponentList: (component: IComponent, isHead?: boolean) => void;
 	setTargetSelectChart: (select?: string | string[], push?: boolean) => void;
 	setrequestGlobalConfig: (config: RequestGlobalConfigType) => void;
 	getSelectId: () => string[];
@@ -40,4 +40,5 @@ export interface IChartAction {
 	updateGlobalRequestConfig: <K extends keyof RequestGlobalConfigType>(key: K, value: any) => void;
 	updateGlobalRequestParams: <K extends keyof RequestGlobalConfigType["requestParams"]>(key: K, value: any) => void;
 	removeComponents: (ids: string[]) => void;
+	removeComponentByIndex: (index: number) => void;
 }

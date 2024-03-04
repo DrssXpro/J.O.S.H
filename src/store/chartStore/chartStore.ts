@@ -46,9 +46,9 @@ const useChartStore = create<IChartState & IChartAction>()(
 				if (startY) state.mousePosition.startY = startY;
 			});
 		},
-		addComponentList: (component) => {
+		addComponentList: (component, isHead = false) => {
 			set((state) => {
-				state.componentList.push(component);
+				isHead ? state.componentList.unshift(component) : state.componentList.push(component);
 			});
 		},
 		setTargetSelectChart(select, push = false) {
@@ -102,6 +102,11 @@ const useChartStore = create<IChartState & IChartAction>()(
 		removeComponents(ids) {
 			set((state) => {
 				state.componentList = state.componentList.filter((item) => !ids.includes(item.id));
+			});
+		},
+		removeComponentByIndex(index) {
+			set((state) => {
+				state.componentList.splice(index, 1);
 			});
 		}
 	}))
