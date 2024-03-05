@@ -2,7 +2,7 @@ import useChartHistoryStore from "@/store/chartHistoryStore/chartHistoryStore";
 import useChartStore from "@/store/chartStore/chartStore";
 import { IComponent } from "@/store/chartStore/types";
 import useEditCharts from "./useEditCharts";
-import { HistoryActionTypeEnum } from "@/store/chartHistoryStore/types";
+import { HistoryActionTypeEnum, HistoryItemType } from "@/store/chartHistoryStore/types";
 import { cloneDeep } from "lodash-es";
 
 const useChartsWithHistory = () => {
@@ -13,7 +13,9 @@ const useChartsWithHistory = () => {
 		removeComponents,
 		addComponentList,
 		updateChartConfig,
-		removeComponentByIndex
+		removeComponentByIndex,
+		removeComponentHeadOrTail,
+		insertComponentByIndex
 	} = useChartStore();
 	const {
 		createDeleteHistory,
@@ -100,11 +102,31 @@ const useChartsWithHistory = () => {
 		}
 	};
 
+	const handleUndoRedoChartTopOrBottom = (type: "back" | "forward", historyItem: HistoryItemType) => {
+		historyItem.actionType === HistoryActionTypeEnum.BOTTOM
+			? removeComponentHeadOrTail("head")
+			: removeComponentHeadOrTail("tail");
+		// 撤销需要把移动的组件还原到原来位置
+		if (type === "back") {
+			const component = historyItem.historyData[0];
+			// zIndex 保存原来的位置索引，进行插入操作
+			const index = component.attr.zIndex;
+			insertComponentByIndex(index, component);
+		} else {
+			// 前进按照其 type 类型重新执行操作即可
+			handleSetChartTopOrEnd(
+				historyItem.actionType as HistoryActionTypeEnum.TOP | HistoryActionTypeEnum.BOTTOM,
+				false
+			);
+		}
+	};
+
 	return {
 		handleAddComponents,
 		handleRemoveComponents,
 		handleSetChartIsHiddenOrLock,
 		handleSetChartTopOrEnd,
+		handleUndoRedoChartTopOrBottom,
 		componentList: getComponentList()
 	};
 };

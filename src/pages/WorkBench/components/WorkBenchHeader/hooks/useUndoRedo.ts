@@ -6,8 +6,13 @@ import useChartStore from "@/store/chartStore/chartStore";
 
 const useUndoRedo = () => {
 	const { updateChartConfig } = useChartStore();
-	const { handleRemoveComponents, handleAddComponents, handleSetChartIsHiddenOrLock, componentList } =
-		useChartsWithHistory();
+	const {
+		handleRemoveComponents,
+		handleAddComponents,
+		handleSetChartIsHiddenOrLock,
+		handleUndoRedoChartTopOrBottom,
+		componentList
+	} = useChartsWithHistory();
 	const { getTargetChartIndex } = useEditCharts();
 
 	// 撤销操作与 HistoryActionType 的操作相反
@@ -38,6 +43,11 @@ const useUndoRedo = () => {
 			case HistoryActionTypeEnum.UNLOCK:
 				handleSetChartIsHiddenOrLock(true, ids[0], "lock", false);
 				return;
+			case HistoryActionTypeEnum.BOTTOM:
+				handleUndoRedoChartTopOrBottom("back", historyItem);
+				return;
+			case HistoryActionTypeEnum.TOP:
+				handleUndoRedoChartTopOrBottom("back", historyItem);
 		}
 	}
 	// 重做操作与 HistoryActionType 的操作对应
@@ -68,6 +78,12 @@ const useUndoRedo = () => {
 				return;
 			case HistoryActionTypeEnum.UNLOCK:
 				handleSetChartIsHiddenOrLock(false, ids[0], "lock", false);
+				return;
+			case HistoryActionTypeEnum.BOTTOM:
+				handleUndoRedoChartTopOrBottom("forward", historyItem);
+				return;
+			case HistoryActionTypeEnum.TOP:
+				handleUndoRedoChartTopOrBottom("forward", historyItem);
 				return;
 		}
 	}

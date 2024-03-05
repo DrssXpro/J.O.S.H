@@ -99,6 +99,11 @@ const useChartStore = create<IChartState & IChartAction>()(
 				state.requestGlobalConfig.requestParams[key] = value;
 			});
 		},
+		insertComponentByIndex(index, component) {
+			set((state) => {
+				state.componentList.splice(index, 0, component);
+			});
+		},
 		removeComponents(ids) {
 			set((state) => {
 				state.componentList = state.componentList.filter((item) => !ids.includes(item.id));
@@ -107,6 +112,11 @@ const useChartStore = create<IChartState & IChartAction>()(
 		removeComponentByIndex(index) {
 			set((state) => {
 				state.componentList.splice(index, 1);
+			});
+		},
+		removeComponentHeadOrTail(type) {
+			set((state) => {
+				type === "head" ? state.componentList.shift() : state.componentList.pop();
 			});
 		}
 	}))
