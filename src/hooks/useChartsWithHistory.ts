@@ -13,6 +13,7 @@ const useChartsWithHistory = () => {
 		removeComponents,
 		addComponentList,
 		updateChartConfig,
+		swapComponentByIndex,
 		removeComponentByIndex,
 		removeComponentHeadOrTail,
 		insertComponentByIndex
@@ -102,6 +103,26 @@ const useChartsWithHistory = () => {
 		}
 	};
 
+	const handleSetChartDownOrUp = (type: HistoryActionTypeEnum.UP | HistoryActionTypeEnum.DOWN, isHistory = true) => {
+		const componentList = getComponentList();
+		const chartIndex = getTargetChartIndex()!;
+		if (chartIndex !== -1) {
+			// 根据操作如果该图表已经在底部或者顶端，则不再进行操作
+			if (
+				(type === HistoryActionTypeEnum.DOWN && chartIndex === 0) ||
+				(type === HistoryActionTypeEnum.UP && chartIndex === componentList.length - 1)
+			)
+				return;
+			// 根据进行的操作获取将要交换的两个图表进行交换即可
+			const currentComponent = componentList[chartIndex];
+			const swapIndex = type === HistoryActionTypeEnum.DOWN ? chartIndex - 1 : chartIndex + 1;
+			if (isHistory) {
+				createLayerHistory([currentComponent], type);
+			}
+			swapComponentByIndex(chartIndex, swapIndex);
+		}
+	};
+
 	const handleUndoRedoChartTopOrBottom = (type: "back" | "forward", historyItem: HistoryItemType) => {
 		historyItem.actionType === HistoryActionTypeEnum.BOTTOM
 			? removeComponentHeadOrTail("head")
@@ -126,6 +147,7 @@ const useChartsWithHistory = () => {
 		handleRemoveComponents,
 		handleSetChartIsHiddenOrLock,
 		handleSetChartTopOrEnd,
+		handleSetChartDownOrUp,
 		handleUndoRedoChartTopOrBottom,
 		componentList: getComponentList()
 	};

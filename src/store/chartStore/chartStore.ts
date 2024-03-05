@@ -104,6 +104,13 @@ const useChartStore = create<IChartState & IChartAction>()(
 				state.componentList.splice(index, 0, component);
 			});
 		},
+		swapComponentByIndex(currentIndex, swapIndex) {
+			set((state) => {
+				const swapComponent = state.componentList[swapIndex];
+				state.componentList[swapIndex] = state.componentList[currentIndex];
+				state.componentList[currentIndex] = swapComponent;
+			});
+		},
 		removeComponents(ids) {
 			set((state) => {
 				state.componentList = state.componentList.filter((item) => !ids.includes(item.id));

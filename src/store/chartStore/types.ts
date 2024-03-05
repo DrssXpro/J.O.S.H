@@ -40,6 +40,7 @@ export interface IChartAction {
 	updateGlobalRequestConfig: <K extends keyof RequestGlobalConfigType>(key: K, value: any) => void;
 	updateGlobalRequestParams: <K extends keyof RequestGlobalConfigType["requestParams"]>(key: K, value: any) => void;
 	insertComponentByIndex: (index: number, component: IComponent) => void;
+	swapComponentByIndex: (currentIndex: number, swapIndex: number) => void;
 	removeComponents: (ids: string[]) => void;
 	removeComponentByIndex: (index: number) => void;
 	removeComponentHeadOrTail: (type: "head" | "tail") => void;

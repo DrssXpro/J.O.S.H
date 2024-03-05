@@ -10,7 +10,9 @@ const useUndoRedo = () => {
 		handleRemoveComponents,
 		handleAddComponents,
 		handleSetChartIsHiddenOrLock,
+		handleSetChartDownOrUp,
 		handleUndoRedoChartTopOrBottom,
+
 		componentList
 	} = useChartsWithHistory();
 	const { getTargetChartIndex } = useEditCharts();
@@ -48,6 +50,12 @@ const useUndoRedo = () => {
 				return;
 			case HistoryActionTypeEnum.TOP:
 				handleUndoRedoChartTopOrBottom("back", historyItem);
+				return;
+			case HistoryActionTypeEnum.UP:
+				handleSetChartDownOrUp(HistoryActionTypeEnum.DOWN, false);
+				return;
+			case HistoryActionTypeEnum.DOWN:
+				handleSetChartDownOrUp(HistoryActionTypeEnum.UP, false);
 		}
 	}
 	// 重做操作与 HistoryActionType 的操作对应
@@ -85,6 +93,11 @@ const useUndoRedo = () => {
 			case HistoryActionTypeEnum.TOP:
 				handleUndoRedoChartTopOrBottom("forward", historyItem);
 				return;
+			case HistoryActionTypeEnum.UP:
+				handleSetChartDownOrUp(HistoryActionTypeEnum.UP, false);
+				return;
+			case HistoryActionTypeEnum.DOWN:
+				handleSetChartDownOrUp(HistoryActionTypeEnum.DOWN, false);
 		}
 	}
 

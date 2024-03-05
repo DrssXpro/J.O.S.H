@@ -19,7 +19,8 @@ import { ComponentType } from "@/materials/types";
 import { HistoryActionTypeEnum } from "@/store/chartHistoryStore/types";
 
 const useContextMenuHandle = () => {
-	const { handleRemoveComponents, handleSetChartIsHiddenOrLock, handleSetChartTopOrEnd } = useChartsWithHistory();
+	const { handleRemoveComponents, handleSetChartIsHiddenOrLock, handleSetChartTopOrEnd, handleSetChartDownOrUp } =
+		useChartsWithHistory();
 	const [clickDetail, setClickDetail] = useState<ComponentType | null>(null);
 	const { getTargetData } = useEditCharts();
 	const component = getTargetData();
@@ -135,7 +136,12 @@ const useContextMenuHandle = () => {
 		},
 		{
 			label: (
-				<div className="flex items-center gap-2">
+				<div
+					className="flex items-center gap-2"
+					onClick={() => {
+						component && handleSetChartDownOrUp(HistoryActionTypeEnum.UP);
+					}}
+				>
 					<IoChevronUp />
 					上移
 				</div>
@@ -144,7 +150,12 @@ const useContextMenuHandle = () => {
 		},
 		{
 			label: (
-				<div className="flex items-center gap-2">
+				<div
+					className="flex items-center gap-2"
+					onClick={() => {
+						component && handleSetChartDownOrUp(HistoryActionTypeEnum.DOWN);
+					}}
+				>
 					<IoChevronDown />
 					下移
 				</div>
