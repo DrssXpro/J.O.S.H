@@ -7,13 +7,19 @@ const useChartStore = create<IChartState & IChartAction>()(
 	immer((set, get) => ({
 		componentList: [],
 		selectId: [],
-		// 鼠标定位
+		// 鼠标定位（拖拽划出区域选择）
 		mousePosition: {
 			startX: 0,
 			startY: 0,
 			x: 0,
 			y: 0
 		},
+		// 鼠标点击定位（用于处理粘贴位置）
+		mouseClickPosition: {
+			x: 0,
+			y: 0
+		},
+		recordChart: undefined,
 		requestGlobalConfig: {
 			requestOriginUrl: "",
 			requestInterval: 30,
@@ -38,7 +44,7 @@ const useChartStore = create<IChartState & IChartAction>()(
 			return get().componentList;
 		},
 		// 设置鼠标位置
-		setMousePosition(x?: number, y?: number, startX?: number, startY?: number) {
+		setMousePosition(x, y, startX, startY) {
 			set((state) => {
 				if (x) state.mousePosition.x = x;
 				if (y) state.mousePosition.y = y;
@@ -46,9 +52,22 @@ const useChartStore = create<IChartState & IChartAction>()(
 				if (startY) state.mousePosition.startY = startY;
 			});
 		},
+		// 设置鼠标点击位置
+		setClickMousePosition(x, y) {
+			set((state) => {
+				state.mouseClickPosition.x = x;
+				state.mouseClickPosition.y = y;
+			});
+		},
 		addComponentList: (component, isHead = false) => {
 			set((state) => {
 				isHead ? state.componentList.unshift(component) : state.componentList.push(component);
+			});
+		},
+		// 临时保存记录（图表复制、粘贴）
+		setRecordChart(record) {
+			set((state) => {
+				state.recordChart = record;
 			});
 		},
 		setTargetSelectChart(select, push = false) {
@@ -70,6 +89,7 @@ const useChartStore = create<IChartState & IChartAction>()(
 				}
 			});
 		},
+
 		// 重新设置 requestGlobalConfig (preview 从 storage 中获取赋值)
 		setrequestGlobalConfig(config) {
 			set((state) => {

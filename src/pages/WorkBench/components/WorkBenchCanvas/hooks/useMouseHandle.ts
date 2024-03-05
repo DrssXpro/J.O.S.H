@@ -9,11 +9,19 @@ import { cloneComponent, rafThrottle } from "@/utils/utils";
 const useMouseHandle = () => {
 	const { createMoveHistory } = useChartHistoryStore();
 	const { canvasConfig, canvasGlobal } = useCanvasStore();
-	const { componentList, setTargetSelectChart, getSelectId, getComponentList, setMousePosition, updateChartConfig } =
-		useChartStore();
+	const {
+		componentList,
+		setTargetSelectChart,
+		getSelectId,
+		getComponentList,
+		setMousePosition,
+		setClickMousePosition,
+		updateChartConfig
+	} = useChartStore();
 	const { getTargetChartIndex } = useEditCharts();
 	// 画布内 mousedown 事件（选中图表或清空当前选中内容）
 	const mousedownHandleUnStop = (_e: React.MouseEvent, item?: IComponent) => {
+		setClickMousePosition(_e.nativeEvent.offsetX, _e.nativeEvent.offsetY);
 		if (item) {
 			setTargetSelectChart(item.id);
 			return;
@@ -27,7 +35,7 @@ const useMouseHandle = () => {
 		e.stopPropagation();
 		if (item.status.lock) return;
 		setTargetSelectChart(item.id);
-
+		setClickMousePosition(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
 		const scale = canvasGlobal[CanvasGlobalTypeEnum.SCALE];
 		const canvasWidth = canvasConfig[CanvasConfigTypeEnum.CANVAS_WIDTH];
 		const canvasHeight = canvasConfig[CanvasConfigTypeEnum.CANVAS_HEIGHT];

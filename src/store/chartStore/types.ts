@@ -1,6 +1,6 @@
+import { FC } from "react";
 import { ChartComponentProps, ComponentType } from "@/materials/types";
 import { RequestConfigType, RequestGlobalConfigType } from "@/types/HttpTypes";
-import { FC } from "react";
 
 export interface IComponent extends ComponentType {
 	ChartComponent: FC<ChartComponentProps>;
@@ -10,9 +10,14 @@ export interface IComponent extends ComponentType {
 export interface IChartState {
 	componentList: IComponent[];
 	selectId: string[];
+	recordChart: undefined | IComponent;
 	mousePosition: {
 		startX: number;
 		startY: number;
+		x: number;
+		y: number;
+	};
+	mouseClickPosition: {
 		x: number;
 		y: number;
 	};
@@ -20,8 +25,10 @@ export interface IChartState {
 }
 
 export interface IChartAction {
-	setMousePosition(x?: number, y?: number, startX?: number, startY?: number): void;
+	setMousePosition: (x?: number, y?: number, startX?: number, startY?: number) => void;
+	setClickMousePosition: (x: number, y: number) => void;
 	addComponentList: (component: IComponent, isHead?: boolean) => void;
+	setRecordChart: (record?: IComponent) => void;
 	setTargetSelectChart: (select?: string | string[], push?: boolean) => void;
 	setrequestGlobalConfig: (config: RequestGlobalConfigType) => void;
 	getSelectId: () => string[];

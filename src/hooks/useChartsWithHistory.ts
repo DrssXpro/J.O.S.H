@@ -4,9 +4,12 @@ import { IComponent } from "@/store/chartStore/types";
 import useEditCharts from "./useEditCharts";
 import { HistoryActionTypeEnum, HistoryItemType } from "@/store/chartHistoryStore/types";
 import { cloneDeep } from "lodash-es";
+import { nanoid } from "nanoid";
 
 const useChartsWithHistory = () => {
 	const {
+		recordChart,
+		mouseClickPosition,
 		getComponentList,
 		setTargetSelectChart,
 		getSelectId,
@@ -16,7 +19,8 @@ const useChartsWithHistory = () => {
 		swapComponentByIndex,
 		removeComponentByIndex,
 		removeComponentHeadOrTail,
-		insertComponentByIndex
+		insertComponentByIndex,
+		setRecordChart
 	} = useChartStore();
 	const {
 		createDeleteHistory,
@@ -142,6 +146,31 @@ const useChartsWithHistory = () => {
 		}
 	};
 
+	const handleChartCopy = () => {
+		const componentList = getComponentList();
+		const chartIndex = getTargetChartIndex()!;
+		if (chartIndex !== -1) {
+			setRecordChart(componentList[chartIndex]);
+		}
+	};
+
+	const handleChartPaste = () => {
+		if (recordChart) {
+			const newComponent = cloneDeep(recordChart);
+			newComponent.ChartComponent = recordChart.ChartComponent;
+			newComponent.ChartConfigComponent = recordChart.ChartConfigComponent;
+			newComponent.id = nanoid(5);
+			newComponent.attr.x = mouseClickPosition.x;
+			newComponent.attr.y = mouseClickPosition.y;
+			handleAddComponents([newComponent]);
+			setTargetSelectChart(newComponent.id);
+		}
+	};
+
+	const handleClearPasteContent = () => {
+		setRecordChart();
+	};
+
 	return {
 		handleAddComponents,
 		handleRemoveComponents,
@@ -149,6 +178,9 @@ const useChartsWithHistory = () => {
 		handleSetChartTopOrEnd,
 		handleSetChartDownOrUp,
 		handleUndoRedoChartTopOrBottom,
+		handleChartCopy,
+		handleChartPaste,
+		handleClearPasteContent,
 		componentList: getComponentList()
 	};
 };

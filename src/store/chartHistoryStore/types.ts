@@ -12,8 +12,6 @@ export enum HistoryActionTypeEnum {
 	MOVE = "move",
 	// 复制
 	COPY = "copy",
-	// 剪切
-	CUT = "cut",
 	// 粘贴
 	PASTE = "paste",
 	// 置顶
@@ -91,8 +89,6 @@ export interface IChartHistoryAction {
 			| HistoryActionTypeEnum.UP
 			| HistoryActionTypeEnum.BOTTOM
 	) => void;
-	// // 剪切组件记录
-	// createPasteHistory: (items: IComponent[]) => void;
 	// 锁定记录
 	createLockHistory: (items: IComponent[]) => void;
 	// 解锁记录

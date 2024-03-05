@@ -19,8 +19,15 @@ import { ComponentType } from "@/materials/types";
 import { HistoryActionTypeEnum } from "@/store/chartHistoryStore/types";
 
 const useContextMenuHandle = () => {
-	const { handleRemoveComponents, handleSetChartIsHiddenOrLock, handleSetChartTopOrEnd, handleSetChartDownOrUp } =
-		useChartsWithHistory();
+	const {
+		handleRemoveComponents,
+		handleSetChartIsHiddenOrLock,
+		handleSetChartTopOrEnd,
+		handleSetChartDownOrUp,
+		handleChartCopy,
+		handleChartPaste,
+		handleClearPasteContent
+	} = useChartsWithHistory();
 	const [clickDetail, setClickDetail] = useState<ComponentType | null>(null);
 	const { getTargetData } = useEditCharts();
 	const component = getTargetData();
@@ -87,7 +94,12 @@ const useContextMenuHandle = () => {
 		},
 		{
 			label: (
-				<div className="flex items-center gap-2">
+				<div
+					className="flex items-center gap-2"
+					onClick={() => {
+						component && handleChartCopy();
+					}}
+				>
 					<IoCopyOutline />
 					复制
 				</div>
@@ -96,7 +108,7 @@ const useContextMenuHandle = () => {
 		},
 		{
 			label: (
-				<div className="flex items-center gap-2">
+				<div className="flex items-center gap-2" onClick={() => handleChartPaste()}>
 					<IoClipboardOutline />
 					粘贴
 				</div>
@@ -167,7 +179,7 @@ const useContextMenuHandle = () => {
 		},
 		{
 			label: (
-				<div className="flex items-center gap-2">
+				<div className="flex items-center gap-2" onClick={() => handleClearPasteContent()}>
 					<BiPaint />
 					清空剪贴板
 				</div>
@@ -191,7 +203,7 @@ const useContextMenuHandle = () => {
 	const CanvasMenuItems: MenuProps["items"] = [
 		{
 			label: (
-				<div className="flex items-center gap-2">
+				<div className="flex items-center gap-2" onClick={() => handleChartPaste()}>
 					<IoClipboardOutline />
 					粘贴
 				</div>
@@ -200,7 +212,7 @@ const useContextMenuHandle = () => {
 		},
 		{
 			label: (
-				<div className="flex items-center gap-2">
+				<div className="flex items-center gap-2" onClick={() => handleClearPasteContent()}>
 					<BiPaint />
 					清空剪贴板
 				</div>
