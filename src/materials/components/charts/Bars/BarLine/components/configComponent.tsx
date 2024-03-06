@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-import { produce } from "immer";
 import JGlobalChartSetting from "@/components/JChartConfiguration/JGlobalChartSetting";
 import JCollapseBox from "@/components/JChartConfiguration/public/JCollapseBox";
 import JSettingBox from "@/components/JChartConfiguration/public/JSettingBox";
@@ -14,27 +12,11 @@ const BarLineConfigComponent = () => {
 	const { getTargetChartIndex, getTargetData } = useEditCharts();
 	const chartIndex = getTargetChartIndex()!;
 	const component = getTargetData()!;
-	const [globalConfig, setGlobalConfig] = useState({
-		series: [component!.option.series[0], component!.option.series[1]],
-		updateKey: ""
-	});
-
-	useEffect(() => {
-		globalConfig.updateKey && updateChartConfig(chartIndex, "option", "series", globalConfig.series);
-	}, [globalConfig]);
-
-	useEffect(() => {
-		component &&
-			setGlobalConfig({
-				series: component.option.series,
-				updateKey: ""
-			});
-	}, [chartIndex]);
 
 	return (
 		<>
 			<JGlobalChartSetting chartIndex={chartIndex} />
-			{globalConfig.series.map((i: any, index: number) => (
+			{component.option.series.map((i: any, index: number) => (
 				<JCollapseBox name={i.type === "bar" ? "柱状图" : "折线图"} key={index} unfold>
 					<>
 						{i.type === "bar" && (
@@ -45,12 +27,12 @@ const BarLineConfigComponent = () => {
 											className="w-full"
 											value={i.barWidth}
 											onChange={(val) => {
-												setGlobalConfig(
-													produce((draft) => {
-														draft.series[0].barWidth = val;
-														draft.updateKey = "bar";
-													})
-												);
+												const series1 = component.option.series[0];
+												const series2 = component.option.series[1];
+												updateChartConfig(chartIndex, "option", "series", [
+													{ ...series1, barWidth: val },
+													{ ...series2 }
+												]);
 											}}
 										/>
 									</JSettingItem>
@@ -59,12 +41,15 @@ const BarLineConfigComponent = () => {
 											className="w-full"
 											value={i.itemStyle.borderRadius}
 											onChange={(val) => {
-												setGlobalConfig(
-													produce((draft) => {
-														draft.series[0].itemStyle.borderRadius = val;
-														draft.updateKey = "bar";
-													})
-												);
+												const series1 = component.option.series[0];
+												const series2 = component.option.series[1];
+												updateChartConfig(chartIndex, "option", "series", [
+													{
+														...series1,
+														itemStyle: { ...series1.itemStyle, borderRadius: val }
+													},
+													{ ...series2 }
+												]);
 											}}
 										/>
 									</JSettingItem>
@@ -80,12 +65,12 @@ const BarLineConfigComponent = () => {
 												className="w-full"
 												value={i.lineStyle.width}
 												onChange={(val) => {
-													setGlobalConfig(
-														produce((draft) => {
-															draft.series[1].lineStyle.width = val;
-															draft.updateKey = "line";
-														})
-													);
+													const series1 = component.option.series[0];
+													const series2 = component.option.series[1];
+													updateChartConfig(chartIndex, "option", "series", [
+														{ ...series1 },
+														{ ...series2, lineStyle: { ...series2.lineStyle, width: val } }
+													]);
 												}}
 											/>
 										</JSettingItem>
@@ -95,12 +80,12 @@ const BarLineConfigComponent = () => {
 												className="w-full"
 												options={axisConfig.splitLint.lineStyle}
 												onChange={(val) => {
-													setGlobalConfig(
-														produce((draft) => {
-															draft.series[1].lineStyle.type = val;
-															draft.updateKey = "line";
-														})
-													);
+													const series1 = component.option.series[0];
+													const series2 = component.option.series[1];
+													updateChartConfig(chartIndex, "option", "series", [
+														{ ...series1 },
+														{ ...series2, lineStyle: { ...series2.lineStyle, type: val } }
+													]);
 												}}
 											/>
 										</JSettingItem>
@@ -113,12 +98,12 @@ const BarLineConfigComponent = () => {
 												className="w-full"
 												value={i.symbolSize}
 												onChange={(val) => {
-													setGlobalConfig(
-														produce((draft) => {
-															draft.series[1].symbolSize = val;
-															draft.updateKey = "line";
-														})
-													);
+													const series1 = component.option.series[0];
+													const series2 = component.option.series[1];
+													updateChartConfig(chartIndex, "option", "series", [
+														{ ...series1 },
+														{ ...series2, symbolSize: val }
+													]);
 												}}
 											/>
 										</JSettingItem>
@@ -132,19 +117,17 @@ const BarLineConfigComponent = () => {
 									<Switch
 										value={i.label.show}
 										onChange={(val) => {
+											const series1 = component.option.series[0];
+											const series2 = component.option.series[1];
 											i.type === "bar"
-												? setGlobalConfig(
-														produce((draft) => {
-															draft.series[0].label.show = val;
-															draft.updateKey = "bar";
-														})
-													)
-												: setGlobalConfig(
-														produce((draft) => {
-															draft.series[1].label.show = val;
-															draft.updateKey = "line";
-														})
-													);
+												? updateChartConfig(chartIndex, "option", "series", [
+														{ ...series1, label: { ...series1.label, show: val } },
+														{ ...series2 }
+													])
+												: updateChartConfig(chartIndex, "option", "series", [
+														{ ...series1 },
+														{ ...series2, label: { ...series2.label, show: val } }
+													]);
 										}}
 									/>
 								</JSettingItem>
@@ -153,20 +136,18 @@ const BarLineConfigComponent = () => {
 										className="w-full"
 										value={i.label.fontSize}
 										onChange={(val) => {
+											const series1 = component.option.series[0];
+											const series2 = component.option.series[1];
 											val &&
 												(i.type === "bar"
-													? setGlobalConfig(
-															produce((draft) => {
-																draft.series[0].label.fontSize = val;
-																draft.updateKey = "bar";
-															})
-														)
-													: setGlobalConfig(
-															produce((draft) => {
-																draft.series[1].label.fontSize = val;
-																draft.updateKey = "line";
-															})
-														));
+													? updateChartConfig(chartIndex, "option", "series", [
+															{ ...series1, label: { ...series1.label, fontSize: val } },
+															{ ...series2 }
+														])
+													: updateChartConfig(chartIndex, "option", "series", [
+															{ ...series1 },
+															{ ...series2, label: { ...series2.label, fontSize: val } }
+														]));
 										}}
 									/>
 								</JSettingItem>
@@ -177,19 +158,18 @@ const BarLineConfigComponent = () => {
 										value={i.label.color}
 										onChange={(val) => {
 											const color = val.toHexString();
-											i.type === "bar"
-												? setGlobalConfig(
-														produce((draft) => {
-															draft.series[0].label.color = color;
-															draft.updateKey = "bar";
-														})
-													)
-												: setGlobalConfig(
-														produce((draft) => {
-															draft.series[1].label.color = color;
-															draft.updateKey = "line";
-														})
-													);
+											const series1 = component.option.series[0];
+											const series2 = component.option.series[1];
+											val &&
+												(i.type === "bar"
+													? updateChartConfig(chartIndex, "option", "series", [
+															{ ...series1, label: { ...series1.label, color } },
+															{ ...series2 }
+														])
+													: updateChartConfig(chartIndex, "option", "series", [
+															{ ...series1 },
+															{ ...series2, label: { ...series2.label, color } }
+														]));
 										}}
 									/>
 								</JSettingItem>
@@ -204,19 +184,18 @@ const BarLineConfigComponent = () => {
 											{ label: "bottom", value: "bottom" }
 										]}
 										onChange={(val) => {
-											i.type === "bar"
-												? setGlobalConfig(
-														produce((draft) => {
-															draft.series[0].label.position = val;
-															draft.updateKey = "bar";
-														})
-													)
-												: setGlobalConfig(
-														produce((draft) => {
-															draft.series[1].label.position = val;
-															draft.updateKey = "line";
-														})
-													);
+											const series1 = component.option.series[0];
+											const series2 = component.option.series[1];
+											val &&
+												(i.type === "bar"
+													? updateChartConfig(chartIndex, "option", "series", [
+															{ ...series1, label: { ...series1.label, position: val } },
+															{ ...series2 }
+														])
+													: updateChartConfig(chartIndex, "option", "series", [
+															{ ...series1 },
+															{ ...series2, label: { ...series2.label, position: val } }
+														]));
 										}}
 									/>
 								</JSettingItem>
