@@ -151,6 +151,6 @@ export enum RendererTypeEnum {
 export interface ComponentType extends PublicConfigType {
 	key: string;
 	chartConfig: IMaterialConfigType;
-	rendererType: RendererTypeEnum;
+	rendererType?: RendererTypeEnum;
 	option: any;
 }

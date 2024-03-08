@@ -1,8 +1,8 @@
 export enum InformationCategoryEnum {
-	TEXT = "texts",
-	TITLE = "titles",
-	INPUTS = "inputs",
-	MORE = "mores"
+	TEXT = "Texts",
+	TITLE = "Titles",
+	INPUTS = "Inputs",
+	MORE = "Mores"
 }
 
 export enum InformationNameEnum {
