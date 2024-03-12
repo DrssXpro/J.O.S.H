@@ -16,13 +16,15 @@ const TextCommonComponent = (props: ChartComponentProps & { dataset: string }) =
 		borderRadius,
 		writingMode,
 		backgroundColor,
-		fontWeight
+		fontWeight,
+		dataset
 	} = props.chartConfig.option as typeof option;
 
 	const computedContainerStyle: () => CSSProperties = () => ({
 		display: "flex",
 		alignItems: "center",
-		justifyContent: `${textAlign}`
+		justifyContent: `${textAlign}`,
+		width: "100%"
 	});
 
 	const computedContentStyle: () => CSSProperties = () => ({
@@ -46,12 +48,13 @@ const TextCommonComponent = (props: ChartComponentProps & { dataset: string }) =
 	return (
 		<div style={{ ...computedContainerStyle() }}>
 			<div style={{ ...computedContentStyle() }}>
-				{link && (
+				{link ? (
 					<span onClick={skipToLink} className="whitespace-pre-wrap">
-						{option.dataset}
+						{dataset}
 					</span>
+				) : (
+					<span className="whitespace-pre-wrap">{dataset}</span>
 				)}
-				<span className="whitespace-pre-wrap">{option.dataset}</span>
 			</div>
 		</div>
 	);

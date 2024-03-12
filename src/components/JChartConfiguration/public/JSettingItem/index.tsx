@@ -1,7 +1,7 @@
 import { Typography } from "antd";
 
 interface IJSettingItemProps {
-	text: string;
+	text?: string;
 	gap?: number;
 	children: JSX.Element;
 }
@@ -11,9 +11,11 @@ const JSettingItem = (props: IJSettingItemProps) => {
 		<div className="w-full">
 			{children}
 			<div style={{ marginTop: `${gap}px` }}>
-				<Typography.Text className="text-[13px]" type="secondary">
-					{text}
-				</Typography.Text>
+				{text && (
+					<Typography.Text className="text-[13px]" type="secondary">
+						{text}
+					</Typography.Text>
+				)}
 			</div>
 		</div>
 	);
