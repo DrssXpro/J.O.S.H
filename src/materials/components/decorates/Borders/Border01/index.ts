@@ -1,4 +1,10 @@
-import { DecorateCategoryEnum, DecorateNameEnum, MaterialCategoryEnum, IMaterialConfigType } from "@/materials/types";
+import {
+	DecorateCategoryEnum,
+	DecorateNameEnum,
+	MaterialCategoryEnum,
+	IMaterialConfigType,
+	ChartFrameEnum
+} from "@/materials/types";
 
 export const Border01: IMaterialConfigType = {
 	key: "Border01",
@@ -8,5 +14,6 @@ export const Border01: IMaterialConfigType = {
 	category: DecorateCategoryEnum.BORDER,
 	categoryName: DecorateNameEnum.BORDER,
 	menu: MaterialCategoryEnum.DECORATES,
+	chartFrame: ChartFrameEnum.STATIC,
 	image: "border01.png"
 };

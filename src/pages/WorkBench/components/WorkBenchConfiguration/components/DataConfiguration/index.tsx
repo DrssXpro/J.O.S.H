@@ -5,6 +5,8 @@ import StaticData from "./components/StaticData";
 import DynamicData from "./components/DynamicData";
 import useEditCharts from "@/hooks/useEditCharts";
 import useChartStore from "@/store/chartStore/chartStore";
+import { useMemo } from "react";
+import { ChartFrameEnum } from "@/materials/types";
 
 interface IDataOptions {
 	label: RequestDataLabelEnum;
@@ -33,7 +35,13 @@ const DataConfiguration = () => {
 	const { getTargetChartIndex, getTargetData } = useEditCharts();
 	const chartIndex = getTargetChartIndex()!;
 	const component = getTargetData()!;
-
+	// 无数据源
+	const isNotData = useMemo(() => {
+		return (
+			component.chartConfig?.chartFrame === ChartFrameEnum.STATIC ||
+			typeof component?.option?.dataset === "undefined"
+		);
+	}, [component]);
 	return (
 		<>
 			<JSettingBox name="请求方式">
@@ -41,6 +49,7 @@ const DataConfiguration = () => {
 					className="w-full"
 					options={dataOptions}
 					value={component.request.requestDataType}
+					disabled={isNotData}
 					onChange={(value) => {
 						updateChartConfig(chartIndex, "request", "requestDataType", value);
 					}}

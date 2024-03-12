@@ -6,14 +6,14 @@ import {
 	ChartFrameEnum
 } from "@/materials/types";
 
-export const Border02: IMaterialConfigType = {
-	key: "Border02",
-	chartCanvasKey: "Border02Canvas",
-	configKey: "Border02Config",
-	title: "边框-02",
+export const Border05: IMaterialConfigType = {
+	key: "Border05",
+	chartCanvasKey: "Border05Canvas",
+	configKey: "Border05Config",
+	title: "边框-05",
 	category: DecorateCategoryEnum.BORDER,
 	categoryName: DecorateNameEnum.BORDER,
 	menu: MaterialCategoryEnum.DECORATES,
 	chartFrame: ChartFrameEnum.STATIC,
-	image: "border02.png"
+	image: "border05.png"
 };

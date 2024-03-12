@@ -1,5 +1,5 @@
 import { CustomColorsType, chartColors } from "@/theme";
-
+import Color from "color";
 // 合并自定义主题和预设主题
 export const colorCustomMerge = (customColor?: CustomColorsType[]) => {
 	type FormateCustomColorType = {
@@ -17,3 +17,8 @@ export const colorCustomMerge = (customColor?: CustomColorsType[]) => {
 	});
 	return { ...formateCustomColor, ...chartColors };
 };
+
+// hsla 转换
+export function alpha(color: string, alpha = 1) {
+	return Color(color).alpha(alpha).toString();
+}

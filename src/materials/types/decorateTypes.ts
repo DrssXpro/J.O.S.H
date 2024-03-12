@@ -1,7 +1,7 @@
 export enum DecorateCategoryEnum {
-	BORDER = "borders",
-	DECORATE = "decorates",
-	MORE = "mores"
+	BORDER = "Borders",
+	DECORATE = "Decorates",
+	MORE = "Mores"
 }
 
 export enum DecorateNameEnum {

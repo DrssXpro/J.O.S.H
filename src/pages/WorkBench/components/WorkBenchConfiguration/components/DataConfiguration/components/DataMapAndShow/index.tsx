@@ -87,12 +87,20 @@ const DataMapAndShow = () => {
 	} = useFilter(component, requestGlobalConfig);
 
 	// 图表数据源展示
-	const [code, setCode] = useState(component.option.dataset);
+	const [code, setCode] = useState(component.option.dataset || "此组件无数据源");
 
 	const isCharts = useMemo(() => component.chartConfig.chartFrame === ChartFrameEnum.ECHARTS, [component]);
 
+	const isNotData = useMemo(() => {
+		return (
+			component.chartConfig?.chartFrame === ChartFrameEnum.STATIC ||
+			typeof component?.option?.dataset === "undefined"
+		);
+	}, [component]);
+
 	// 针对 dataset 图表显示映射
 	const dimensionsAndSource = useMemo<IDataType[]>(() => {
+		if (!component.option.dataset) return [];
 		const dimensions = component.option.dataset.dimensions;
 		if (!dimensions) return [];
 		return dimensions.map((i: string, index: number) => {
@@ -350,10 +358,16 @@ const DataMapAndShow = () => {
 						<>
 							<div className="flex items-center gap-2">
 								<Upload {...uploadProps}>
-									<Button icon={<HiOutlineDocumentAdd />}>{"导入(json / txt)"}</Button>
+									<Button icon={<HiOutlineDocumentAdd />} disabled={isNotData}>
+										{"导入(json / txt)"}
+									</Button>
 								</Upload>
 
-								<Button icon={<HiOutlineDocumentDownload />} onClick={downloadData}>
+								<Button
+									icon={<HiOutlineDocumentDownload />}
+									disabled={isNotData}
+									onClick={downloadData}
+								>
 									下载
 								</Button>
 								<Tooltip title="点击【下载】查看完整数据">
