@@ -141,11 +141,12 @@ const DataMapAndShow = () => {
 			const { file } = options;
 			readFile(file as File)
 				.then((res) => {
-					updateChartConfig(chartIndex, "option", "dataset", JSON.parse(res));
+					updateChartConfig(chartIndex, "option", "dataset", isCharts ? JSON.parse(res) : res);
 					setCode(res);
 					messageApi.success("导入数据成功!");
 				})
-				.catch(() => {
+				.catch((err: any) => {
+					console.log(err);
 					messageApi.error("导入数据失败!");
 				});
 		},
@@ -373,7 +374,11 @@ const DataMapAndShow = () => {
 						</>
 					)
 				}
-			].filter((item) => item.title !== "数据过滤" || showFilter)}
+			].filter((item) => {
+				if (item.title === "数据过滤" && !showFilter) return false;
+				if (item.title === "数据映射" && !isCharts) return false;
+				return true;
+			})}
 		/>
 	);
 };
