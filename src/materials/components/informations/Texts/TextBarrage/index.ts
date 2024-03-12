@@ -2,16 +2,18 @@ import {
 	InformationCategoryEnum,
 	InformationNameEnum,
 	MaterialCategoryEnum,
-	IMaterialConfigType
+	IMaterialConfigType,
+	ChartFrameEnum
 } from "@/materials/types";
 
 export const TextBarrage: IMaterialConfigType = {
 	key: "TextBarrage",
 	chartCanvasKey: "TextBarrageCanvas",
 	configKey: "TextBarrageConfig",
-	title: "渐变文字",
+	title: "弹幕文字",
 	category: InformationCategoryEnum.TEXT,
 	categoryName: InformationNameEnum.TEXT,
 	menu: MaterialCategoryEnum.INFORMATIONS,
+	chartFrame: ChartFrameEnum.COMMON,
 	image: "text_barrage.png"
 };

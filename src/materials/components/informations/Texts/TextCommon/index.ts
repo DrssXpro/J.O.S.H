@@ -2,7 +2,8 @@ import {
 	InformationCategoryEnum,
 	InformationNameEnum,
 	MaterialCategoryEnum,
-	IMaterialConfigType
+	IMaterialConfigType,
+	ChartFrameEnum
 } from "@/materials/types";
 
 export const TextCommon: IMaterialConfigType = {
@@ -13,5 +14,6 @@ export const TextCommon: IMaterialConfigType = {
 	category: InformationCategoryEnum.TEXT,
 	categoryName: InformationNameEnum.TEXT,
 	menu: MaterialCategoryEnum.INFORMATIONS,
+	chartFrame: ChartFrameEnum.COMMON,
 	image: "text_static.png"
 };
