@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import useLayoutStore from "@/store/layoutStore/layoutStore";
 import { MaterialsModeEnum } from "@/types/LayoutTypes";
 import { IoAlbums, IoGrid } from "react-icons/io5";
-import { Button, Empty, Input, Popover, Tooltip, Typography } from "antd";
+import { Button, Empty, Input, Popover, Tooltip, Typography, message } from "antd";
 import { MenuOptionsType } from "../../hooks/useMaterials";
 import ChartGlobImage from "../ChartGlobImage";
 import { ComponentType, FetchComFlagType, IMaterialConfigType } from "@/materials/types";
@@ -15,6 +15,7 @@ interface IChartSearchInputProps {
 
 const ChartSearchInput = (props: IChartSearchInputProps) => {
 	const { menuOptions } = props;
+	const [messageApi, contextHolder] = message.useMessage();
 	const { materialsMode, controllMaterialsMode } = useLayoutStore();
 	const { handleAddComponents } = useChartsWithHistory();
 	const [isFocus, setFocus] = useState(false);
@@ -45,25 +46,29 @@ const ChartSearchInput = (props: IChartSearchInputProps) => {
 
 	const selectChart = async (item: IMaterialConfigType) => {
 		if (item.disabled) return;
+		try {
+			// 创建图表组件所有配置对象
+			const componentConifg: ComponentType = await createComponentConfig(item);
+			// 获取图表组件
+			const ChartComponent: any = fetchComponent(item.key, FetchComFlagType.VIEW);
+			// 获取图表配置组件
+			const ChartConfigComponent: any = fetchComponent(item.key, FetchComFlagType.CONFIG);
 
-		// 创建图表组件所有配置对象
-		const componentConifg: ComponentType = await createComponentConfig(item);
-		// 获取图表组件
-		const ChartComponent: any = fetchComponent(item.key, FetchComFlagType.VIEW);
-		// 获取图表配置组件
-		const ChartConfigComponent: any = fetchComponent(item.key, FetchComFlagType.CONFIG);
+			const componentInstance = { ...componentConifg, ChartComponent, ChartConfigComponent };
 
-		const componentInstance = { ...componentConifg, ChartComponent, ChartConfigComponent };
+			handleAddComponents([componentInstance]);
 
-		handleAddComponents([componentInstance]);
-
-		setFocus(false);
-		setShowPopover(false);
-		setSearchValue("");
+			setFocus(false);
+			setShowPopover(false);
+			setSearchValue("");
+		} catch (e) {
+			messageApi.warning("该组件暂未开发！");
+		}
 	};
 
 	return (
 		<div className="flex items-center gap-2 overflow-hidden w-50">
+			{contextHolder}
 			<Popover
 				open={showPopover}
 				placement="bottom"
