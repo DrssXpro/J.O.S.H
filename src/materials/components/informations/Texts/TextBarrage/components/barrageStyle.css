@@ -1,0 +1,10 @@
+@keyframes barrage {
+	from {
+		left: 100%;
+		transform: translateX(0);
+	}
+	to {
+		left: 0;
+		transform: translateX(-100%);
+	}
+}
