@@ -1,4 +1,4 @@
-import { More } from "./More";
+import { Mores } from "./Mores";
 import { Texts } from "./Texts";
 
-export const InformationsConfig = [...More, ...Texts];
+export const InformationsConfig = [...Mores, ...Texts];

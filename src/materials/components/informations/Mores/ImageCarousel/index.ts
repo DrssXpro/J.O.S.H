@@ -2,7 +2,8 @@ import {
 	InformationCategoryEnum,
 	InformationNameEnum,
 	MaterialCategoryEnum,
-	IMaterialConfigType
+	IMaterialConfigType,
+	ChartFrameEnum
 } from "@/materials/types";
 
 export const ImageCarousel: IMaterialConfigType = {
@@ -13,5 +14,6 @@ export const ImageCarousel: IMaterialConfigType = {
 	category: InformationCategoryEnum.MORE,
 	categoryName: InformationNameEnum.MORE,
 	menu: MaterialCategoryEnum.INFORMATIONS,
+	chartFrame: ChartFrameEnum.ANT_DESIGN,
 	image: "photo_carousel.png"
 };

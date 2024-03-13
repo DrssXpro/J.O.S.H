@@ -1,3 +1,3 @@
 import { ImageCarousel } from "./ImageCarousel";
 
-export const More = [ImageCarousel];
+export const Mores = [ImageCarousel];

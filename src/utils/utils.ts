@@ -1,6 +1,7 @@
 import { IComponent } from "@/store/chartStore/types";
 import { excludeParseEventKeyList } from "@/types/EventTypes";
 import { RequestHttpIntervalEnum } from "@/types/HttpTypes";
+import Image_404 from "@/assets/images/exception/image-404.png";
 import { cloneDeep, omit } from "lodash-es";
 
 // file -> url: 设置 canvas 背景图使用
@@ -128,4 +129,9 @@ export const intervalUnitHandle = (num: number, unit: RequestHttpIntervalEnum) =
 // 判断是否为预览页
 export const isPreview = () => {
 	return document.location.pathname.includes("preview");
+};
+
+// 获取错误处理图片，默认 404 图
+export const requireErrorImg = () => {
+	return Image_404;
 };
