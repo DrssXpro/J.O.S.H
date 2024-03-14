@@ -12,7 +12,7 @@ import {
 	AiOutlineLaptop,
 	AiOutlineSend
 } from "react-icons/ai";
-import { Button, Input, Tooltip, type InputRef } from "antd";
+import { Button, Input, Tooltip, type InputRef, message } from "antd";
 import { useState, useRef, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import useLayoutStore from "@/store/layoutStore/layoutStore";
@@ -158,6 +158,7 @@ const CenterTitle = () => {
 };
 
 const RightOperator = () => {
+	const [messageApi, contextHolder] = message.useMessage();
 	const { canvasConfig } = useCanvasStore();
 	const { componentList, requestGlobalConfig } = useChartStore();
 	const goPreview = () => {
@@ -186,10 +187,18 @@ const RightOperator = () => {
 
 	return (
 		<div className="flex items-center gap-3 float-right">
+			{contextHolder}
 			<Button icon={<AiOutlineLaptop />} onClick={goPreview}>
 				预览
 			</Button>
-			<Button icon={<AiOutlineSend />}>发布</Button>
+			<Button
+				icon={<AiOutlineSend />}
+				onClick={() => {
+					messageApi.warning("线上展示项目不允许发布！");
+				}}
+			>
+				发布
+			</Button>
 			<div className="ml-1">
 				<JBaseHeaderRightContent isLogin={true} />
 			</div>
