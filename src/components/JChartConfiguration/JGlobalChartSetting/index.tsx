@@ -23,7 +23,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 				<>
 					<JSettingBox name="全局">
 						<JChartRendererSetting
-							value={component.rendererType}
+							value={component.rendererType!}
 							onChange={(value) => {
 								updateChartConfig(chartIndex, "rendererType", null, value);
 							}}
@@ -31,7 +31,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 					</JSettingBox>
 					<JSettingBox name="当前">
 						<JChartRendererSetting
-							value={component.rendererType}
+							value={component.rendererType!}
 							onChange={(value) => {
 								updateChartConfig(chartIndex, "rendererType", null, value);
 							}}

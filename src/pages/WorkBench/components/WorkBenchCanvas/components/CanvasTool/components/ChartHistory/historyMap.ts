@@ -36,10 +36,6 @@ export const historyActionTypeName = {
 		name: "复制",
 		icon: IoCopy
 	},
-	[HistoryActionTypeEnum.CUT]: {
-		name: "剪切",
-		icon: IoPencil
-	},
 	[HistoryActionTypeEnum.TOP]: {
 		name: "置顶",
 		icon: IoLayers

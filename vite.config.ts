@@ -1,5 +1,6 @@
 import { fileURLToPath, URL } from "node:url";
 import { defineConfig } from "vite";
+import viteCompression from "vite-plugin-compression";
 import WindiCSS from "vite-plugin-windicss";
 import react from "@vitejs/plugin-react";
 
@@ -10,5 +11,16 @@ export default defineConfig({
 			"@": fileURLToPath(new URL("./src", import.meta.url))
 		}
 	},
-	plugins: [react(), WindiCSS()]
+	plugins: [
+		react(),
+		WindiCSS(),
+		// 压缩
+		viteCompression({
+			verbose: true,
+			disable: false,
+			threshold: 10240,
+			algorithm: "gzip",
+			ext: ".gz"
+		})
+	]
 });
