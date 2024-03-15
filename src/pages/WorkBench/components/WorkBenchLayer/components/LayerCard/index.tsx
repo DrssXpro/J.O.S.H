@@ -1,6 +1,7 @@
-import ChartPng from "@/assets/bar_x.png";
+import { useEffect, useState } from "react";
 import useChartsWithHistory from "@/hooks/useChartsWithHistory";
 import useContextMenuHandle from "@/hooks/useContextMenuHandle";
+import { fetchImages } from "@/materials/components";
 import { ComponentType } from "@/materials/types";
 import { LayerModeEnum } from "@/types/LayoutTypes";
 import { Button, Dropdown, Typography, theme } from "antd";
@@ -14,10 +15,21 @@ interface LayerCardProps {
 }
 
 const LayerCard = (props: LayerCardProps) => {
+	const { mode = LayerModeEnum.THUMBNAIL, detail, isSelect, selectChart } = props;
 	const { token } = theme.useToken();
 	const { handleSetChartIsHiddenOrLock } = useChartsWithHistory();
 	const { menuItems, setChartMenuItems } = useContextMenuHandle();
-	const { mode = LayerModeEnum.THUMBNAIL, detail, isSelect, selectChart } = props;
+	const [imageUrl, setImageUrl] = useState("");
+
+	useEffect(() => {
+		getImageUrl();
+	}, []);
+
+	const getImageUrl = async () => {
+		const image = await fetchImages(props.detail.chartConfig);
+		setImageUrl(image);
+	};
+
 	return (
 		<Dropdown trigger={["contextMenu"]} menu={{ items: menuItems }}>
 			<div
@@ -33,7 +45,7 @@ const LayerCard = (props: LayerCardProps) => {
 				}}
 			>
 				<img
-					src={ChartPng}
+					src={imageUrl}
 					className={`${mode === LayerModeEnum.THUMBNAIL ? "w-[36%]" : "w-[20%]"}${
 						mode === LayerModeEnum.THUMBNAIL ? "rounded-md" : "rounded"
 					} h-full transition-all`}
