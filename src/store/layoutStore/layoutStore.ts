@@ -2,6 +2,7 @@ import { LayerModeEnum, MaterialsModeEnum } from "@/types/LayoutTypes";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { ILayoutAction, ILayoutState } from "./types";
+import { StorageEnum } from "@/types/StorageTypes";
 
 const useLayoutStore = create(
 	persist<ILayoutState & ILayoutAction>(
@@ -28,7 +29,7 @@ const useLayoutStore = create(
 			}
 		}),
 		{
-			name: "layout",
+			name: StorageEnum.J_CHART_LAYOUT_STORE,
 			storage: createJSONStorage(() => localStorage)
 		}
 	)

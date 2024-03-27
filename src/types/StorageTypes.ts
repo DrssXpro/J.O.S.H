@@ -5,8 +5,6 @@ export enum StorageEnum {
 	J_ACCESS_TOKEN_STORE = "J_ACCESS_TOKEN",
 	// 登录信息
 	J_LOGIN_INFO_STORE = "J_LOGIN_INFO",
-	// 语言
-	J_LANG_STORE = "J_LANG",
 	// 当前选择的主题
 	J_DESIGN_STORE = "J_DESIGN",
 	// 工作台布局配置
