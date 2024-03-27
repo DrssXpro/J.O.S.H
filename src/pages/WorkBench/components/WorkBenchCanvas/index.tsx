@@ -78,6 +78,11 @@ const WorkBenchCanvas = () => {
 								const dropData = JSON.parse(dropString);
 								// 创建图表组件所有配置对象
 								const componentConifg: ComponentType = await createComponentConfig(dropData);
+								if (dropData.redirectComponent) {
+									dropData.dataset && (componentConifg.option.dataset = dropData.dataset);
+									componentConifg.chartConfig.title = dropData.title;
+									componentConifg.chartConfig.chartFrame = dropData.chartFrame;
+								}
 								// 获取图表组件
 								const ChartComponent: any = fetchComponent(dropData.key, FetchComFlagType.VIEW);
 								// 获取图表配置组件

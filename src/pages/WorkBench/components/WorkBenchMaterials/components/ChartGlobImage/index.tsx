@@ -4,9 +4,10 @@ import { IMaterialConfigType } from "@/materials/types";
 
 interface IChartGlobImageProps {
 	detail: IMaterialConfigType;
+	imageStyle?: React.CSSProperties;
 }
 const ChartGlobImage = (props: IChartGlobImageProps) => {
-	const { detail } = props;
+	const { detail, imageStyle } = props;
 	const [imageUrl, setImageUrl] = useState("");
 	const [show, setShow] = useState(false);
 
@@ -45,6 +46,7 @@ const ChartGlobImage = (props: IChartGlobImageProps) => {
 						setShow(true);
 					}}
 					className="object-cover w-full h-full transform group-hover:scale-110 transition-all"
+					style={{ ...imageStyle }}
 				/>
 			) : (
 				<div className="w-full h-full"></div>

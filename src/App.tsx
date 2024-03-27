@@ -1,4 +1,4 @@
-import { ConfigProvider, theme } from "antd";
+import { ConfigProvider, message, theme } from "antd";
 import { lazy } from "react";
 import { Route, Routes } from "react-router-dom";
 import zhCN from "antd/locale/zh_CN";
@@ -12,6 +12,8 @@ const Projects = lazy(() => import("@/pages/Projects/index"));
 const WorkBench = lazy(() => import("@/pages/WorkBench/index"));
 
 function App() {
+	const [messageApi, contextHolder] = message.useMessage();
+	window.$message = messageApi;
 	return (
 		<ConfigProvider
 			locale={zhCN}
@@ -42,6 +44,7 @@ function App() {
 				}
 				loadingStyle={{ width: "100vw", height: "100vh" }}
 			/>
+			{contextHolder}
 		</ConfigProvider>
 	);
 }

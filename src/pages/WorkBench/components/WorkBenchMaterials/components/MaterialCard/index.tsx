@@ -1,4 +1,4 @@
-import { DragEvent } from "react";
+import { DragEvent, useMemo } from "react";
 import { Card, Typography } from "antd";
 import { cardColorMap } from "@/config/color";
 import { MaterialsModeEnum } from "@/types/LayoutTypes";
@@ -18,11 +18,21 @@ const MaterialCard = (props: IMaterialCardProps) => {
 		e.dataTransfer.setData(DragKeyEnum.DRAG_KEY, JSON.stringify(detail));
 	};
 
+	const updateImageIconStyle = useMemo<React.CSSProperties>(() => {
+		return mode === MaterialsModeEnum.DOUBLE ? { width: "50px", height: "50px" } : { width: "70%" };
+	}, [mode]);
+
+	// 单击事件（上传图片使用）
+	const clickHandle = (item: IMaterialConfigType) => {
+		item?.configEvents?.uploadImage();
+	};
+
 	return (
 		<Card
 			bodyStyle={{ padding: 0, backgroundColor: "#232324", overflow: "hidden", borderRadius: "8px" }}
 			bordered={false}
 			className="cursor-pointer group"
+			onClick={() => clickHandle(detail)}
 		>
 			<div
 				className={`w-full flex justify-between ${
@@ -48,13 +58,13 @@ const MaterialCard = (props: IMaterialCardProps) => {
 				</div>
 			</div>
 			<div
-				className={`w-full ${
+				className={`w-full flex items-center justify-center ${
 					mode === MaterialsModeEnum.SINGLE ? "h-24 py-2 px-4" : "h-12 p-2"
 				}  transition-all`}
-				draggable
+				draggable={!detail.disabled}
 				onDragStart={handleDragStart}
 			>
-				<ChartGlobImage detail={detail} />
+				<ChartGlobImage detail={detail} imageStyle={detail.title === "上传图片" ? updateImageIconStyle : {}} />
 			</div>
 
 			<Typography.Text

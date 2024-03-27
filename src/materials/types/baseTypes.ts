@@ -94,6 +94,8 @@ export interface IMaterialConfigType {
 	menu: string;
 	// 组件预览图
 	image: string;
+	// 从指定路径创建创建该组件
+	redirectComponent?: string;
 	// 区分组件类型（是否支持 dataset 设置）
 	chartFrame?: ChartFrameEnum;
 	// 组件预设的 dataset 值（图片/图标）

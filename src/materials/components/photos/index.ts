@@ -1,1 +1,2 @@
-export const PhotosConfig = [];
+import Private from "./Private";
+export const PhotosConfig = [...Private];
