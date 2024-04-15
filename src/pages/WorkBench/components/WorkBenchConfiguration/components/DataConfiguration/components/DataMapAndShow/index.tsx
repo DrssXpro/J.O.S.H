@@ -73,18 +73,8 @@ const DataMapAndShow = () => {
 	const { getTargetChartIndex, getTargetData } = useEditCharts();
 	const chartIndex = getTargetChartIndex()!;
 	const component = getTargetData()!;
-	const {
-		isOpenFilter,
-		filterCode,
-		filterError,
-		showFilter,
-		filterRes,
-		sourceData,
-		messageApi,
-		contextHolder,
-		setIsOpenFilter,
-		setFilterCode
-	} = useFilter(component, requestGlobalConfig);
+	const { isOpenFilter, filterCode, filterError, showFilter, filterRes, sourceData, setIsOpenFilter, setFilterCode } =
+		useFilter(component, requestGlobalConfig);
 
 	// 图表数据源展示
 	const [code, setCode] = useState(component.option.dataset || "此组件无数据源");
@@ -151,22 +141,22 @@ const DataMapAndShow = () => {
 				.then((res) => {
 					updateChartConfig(chartIndex, "option", "dataset", isCharts ? JSON.parse(res) : res);
 					setCode(res);
-					messageApi.success("导入数据成功!");
+					window.$message.success("导入数据成功!");
 				})
 				.catch((err: any) => {
 					console.log(err);
-					messageApi.error("导入数据失败!");
+					window.$message.error("导入数据失败!");
 				});
 		},
 		beforeUpload(file) {
 			const type = file.type;
 			const size = file.size;
 			if (size > 1024 * 1024) {
-				messageApi.warning(`文件超出 1M 限制，请重新上传!`);
+				window.$message.warning(`文件超出 1M 限制，请重新上传!`);
 				return false;
 			}
 			if (type !== FileTypeEnum.JSON && type !== FileTypeEnum.TXT) {
-				messageApi.warning("文件格式不符合，请重新上传!");
+				window.$message.warning("文件格式不符合，请重新上传!");
 				return false;
 			}
 			return true;
@@ -177,9 +167,9 @@ const DataMapAndShow = () => {
 	const downloadData = () => {
 		try {
 			downloadTextFile(JSON.stringify(code, null, 2), undefined, "json");
-			messageApi.success("下载成功!");
+			window.$message.success("下载成功!");
 		} catch (error) {
-			messageApi.error("下载失败，数据错误!");
+			window.$message.error("下载失败，数据错误!");
 		}
 	};
 
@@ -270,7 +260,7 @@ const DataMapAndShow = () => {
 												type="primary"
 												onClick={() => {
 													if (filterError) {
-														messageApi.error("过滤函数错误，无法进行保存！");
+														window.$message.error("过滤函数错误，无法进行保存！");
 														return;
 													}
 													updateChartConfig(chartIndex, "filter", null, filterCode);
@@ -384,7 +374,6 @@ const DataMapAndShow = () => {
 									height={400}
 								/>
 							</div>
-							{contextHolder}
 						</>
 					)
 				}

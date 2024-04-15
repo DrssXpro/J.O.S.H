@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import useLayoutStore from "@/store/layoutStore/layoutStore";
 import { MaterialsModeEnum } from "@/types/LayoutTypes";
 import { IoAlbums, IoGrid } from "react-icons/io5";
-import { Button, Empty, Input, Popover, Tooltip, Typography, message } from "antd";
+import { Button, Empty, Input, Popover, Tooltip, Typography } from "antd";
 import { MenuOptionsType } from "../../hooks/useMaterials";
 import ChartGlobImage from "../ChartGlobImage";
 import { ComponentType, FetchComFlagType, IMaterialConfigType } from "@/materials/types";
@@ -15,7 +15,6 @@ interface IChartSearchInputProps {
 
 const ChartSearchInput = (props: IChartSearchInputProps) => {
 	const { menuOptions } = props;
-	const [messageApi, contextHolder] = message.useMessage();
 	const { materialsMode, controllMaterialsMode } = useLayoutStore();
 	const { handleAddComponents } = useChartsWithHistory();
 	const [isFocus, setFocus] = useState(false);
@@ -62,13 +61,12 @@ const ChartSearchInput = (props: IChartSearchInputProps) => {
 			setShowPopover(false);
 			setSearchValue("");
 		} catch (e) {
-			messageApi.warning("该组件暂未开发！");
+			window.$message.warning("该组件暂未开发！");
 		}
 	};
 
 	return (
 		<div className="flex items-center gap-2 overflow-hidden w-50">
-			{contextHolder}
 			<Popover
 				open={showPopover}
 				placement="bottom"

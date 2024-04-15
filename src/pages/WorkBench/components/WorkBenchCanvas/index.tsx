@@ -1,5 +1,5 @@
 import { CSSProperties, useEffect, useMemo } from "react";
-import { Dropdown, message } from "antd";
+import { Dropdown } from "antd";
 import CanvasRuler from "./components/CanvasRuler/index";
 import CanvasTool from "./components/CanvasTool";
 import EditShapeBox from "./components/EditShapeBox";
@@ -17,7 +17,6 @@ import { DragKeyEnum } from "@/types/EditCanvasTypes";
 import { KeyBoardEventName } from "@/types/EventTypes";
 
 const WorkBenchCanvas = () => {
-	const [messageApi, contextHolder] = message.useMessage();
 	const { canvasConfig } = useCanvasStore();
 	const { componentList, handleAddComponents, handleRemoveComponents } = useChartsWithHistory();
 	const { handleMouseDown, mousedownHandleUnStop } = useMouseHandle();
@@ -62,7 +61,6 @@ const WorkBenchCanvas = () => {
 
 	return (
 		<div className="relative flex-1">
-			{contextHolder}
 			<CanvasRuler>
 				<Dropdown trigger={["contextMenu"]} menu={{ items: menuItems }}>
 					<div
@@ -93,7 +91,7 @@ const WorkBenchCanvas = () => {
 								const componentInstance = { ...componentConifg, ChartComponent, ChartConfigComponent };
 								handleAddComponents([componentInstance]);
 							} catch (e) {
-								messageApi.warning("该组件暂未开发！");
+								window.$message.warning("该组件暂未开发！");
 							}
 						}}
 						onDragOver={(e) => {

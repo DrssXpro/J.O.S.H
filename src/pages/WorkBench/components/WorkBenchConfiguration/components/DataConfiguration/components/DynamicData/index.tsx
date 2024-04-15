@@ -1,4 +1,4 @@
-import { Button, Card, Divider, Input, InputNumber, Modal, Select, Tag, Typography, message } from "antd";
+import { Button, Card, Divider, Input, InputNumber, Modal, Select, Tag, Typography } from "antd";
 import JSettingBox from "@/components/JChartConfiguration/public/JSettingBox";
 import JSettingItem from "@/components/JChartConfiguration/public/JSettingItem";
 import { IoFlash, IoPulse, IoPencil, IoChevronUpOutline } from "react-icons/io5";
@@ -15,7 +15,6 @@ import { newFunctionHandle } from "@/utils/utils";
 const DynamicData = () => {
 	const modalRef = useRef<any>(null);
 	const [requestLoading, setRequestLoading] = useState(false);
-	const [messageApi, contextHolder] = message.useMessage();
 	const { requestGlobalConfig, updateChartConfig } = useChartStore();
 	const { getTargetChartIndex, getTargetData } = useEditCharts();
 	const chartIndex = getTargetChartIndex()!;
@@ -36,7 +35,7 @@ const DynamicData = () => {
 			if (res) {
 				const { data } = res;
 				if (!data) {
-					messageApi.warning("您的数据不符合默认格式！");
+					window.$message.warning("您的数据不符合默认格式！");
 					return;
 				}
 				// 获取到数据，设置图表展示
@@ -46,20 +45,19 @@ const DynamicData = () => {
 					"dataset",
 					component.filter ? newFunctionHandle(data, res, component.filter) : data
 				);
-				messageApi.success("获取数据成功！");
+				window.$message.success("获取数据成功！");
 				return;
 			}
-			messageApi.warning("没有拿到返回值，请检查接口！");
+			window.$message.warning("没有拿到返回值，请检查接口！");
 		} catch (error) {
 			console.error(error);
-			messageApi.error("数据异常，请检查参数！");
+			window.$message.error("数据异常，请检查参数！");
 			setRequestLoading(false);
 		}
 	};
 
 	return (
 		<>
-			{contextHolder}
 			<Card bodyStyle={{ padding: "20px 10px", background: "#232324" }} className="relative">
 				<JSettingBox name="请求配置">
 					<div className="grid grid-cols-2 gap-2">

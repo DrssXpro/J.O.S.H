@@ -1,12 +1,10 @@
 import { ComponentType } from "@/materials/types";
 import { customizeHttp } from "@/service/http";
 import { RequestDataValueEnum, RequestGlobalConfigType } from "@/types/HttpTypes";
-import { message } from "antd";
 import { cloneDeep } from "lodash-es";
 import { useEffect, useMemo, useState } from "react";
 
 const useFilter = (component: ComponentType, requestGlobalConfig: RequestGlobalConfigType) => {
-	const [messageApi, contextHolder] = message.useMessage();
 	// filter code
 	const [filterCode, setFilterCode] = useState(component.filter || "return data;");
 	// filter modal
@@ -44,10 +42,10 @@ const useFilter = (component: ComponentType, requestGlobalConfig: RequestGlobalC
 				setSourceData(res);
 				return;
 			}
-			messageApi.warning("没有拿到返回值，请检查接口！");
+			window.$message.warning("没有拿到返回值，请检查接口！");
 		} catch (error) {
 			console.error(error);
-			messageApi.error("数据异常，请检查参数！");
+			window.$message.error("数据异常，请检查参数！");
 		}
 	};
 
@@ -58,8 +56,6 @@ const useFilter = (component: ComponentType, requestGlobalConfig: RequestGlobalC
 		filterRes,
 		filterCode,
 		sourceData,
-		messageApi,
-		contextHolder,
 		setIsOpenFilter,
 		setFilterCode
 	};

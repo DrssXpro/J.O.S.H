@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Button, Divider, Modal, Tabs, Tag, Typography, message } from "antd";
+import { Button, Divider, Modal, Tabs, Tag, Typography } from "antd";
 import JCollapseBox from "@/components/JChartConfiguration/public/JCollapseBox";
 import JCodeMirror from "@/components/JCodeMirror";
 import { IoDocument, IoPencil } from "react-icons/io5";
@@ -17,7 +17,6 @@ const EventTypeName = {
 };
 
 const BaseEventConfig = () => {
-	const [messageApi, contextHolder] = message.useMessage();
 	const [errorInfo, setErrorInfo] = useState({
 		[VaildError.ERROR_FN]: "",
 		[VaildError.ERROR_INFO]: "",
@@ -62,7 +61,7 @@ const BaseEventConfig = () => {
 
 	const closeModal = () => {
 		if (errorInfo[VaildError.ERROR_FN]) {
-			messageApi.error("事件函数错误，无法进行保存");
+			window.$message.error("事件函数错误，无法进行保存");
 			return;
 		}
 		updateChartConfig(chartIndex, "events", "baseEvent", baseEvent);
@@ -71,7 +70,6 @@ const BaseEventConfig = () => {
 
 	return (
 		<>
-			{contextHolder}
 			<JCollapseBox
 				unfold
 				name="基础事件配置"

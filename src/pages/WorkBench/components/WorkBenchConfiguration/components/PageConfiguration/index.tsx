@@ -1,15 +1,4 @@
-import {
-	Form,
-	InputNumber,
-	Upload,
-	message,
-	type UploadProps,
-	ColorPicker,
-	Button,
-	Radio,
-	Tooltip,
-	Divider
-} from "antd";
+import { Form, InputNumber, Upload, type UploadProps, ColorPicker, Button, Radio, Tooltip, Divider } from "antd";
 import { MdFitScreen, MdZoomOutMap } from "react-icons/md";
 import { AiOutlineColumnWidth, AiOutlineColumnHeight } from "react-icons/ai";
 import UploadImage from "@/assets/upload.png";
@@ -51,8 +40,6 @@ const PageConfiguration = () => {
 	const { canvasConfig, setCanvasConfig } = useCanvasStore();
 	const { canvasWidth, canvasHeight, canvasBackground, canvasBackgroundImage } = canvasConfig;
 
-	const [messageApi, contextHolder] = message.useMessage();
-
 	const uploadProps: UploadProps = {
 		showUploadList: false,
 		customRequest(options) {
@@ -68,11 +55,11 @@ const PageConfiguration = () => {
 			const type = file.type;
 			const size = file.size;
 			if (size > 1024 * 1024 * 3) {
-				messageApi.warning(`图片超出 3M 限制，请重新上传`);
+				window.$message.warning(`图片超出 3M 限制，请重新上传`);
 				return false;
 			}
 			if (type !== FileTypeEnum.PNG && type !== FileTypeEnum.JPEG && type !== FileTypeEnum.GIF) {
-				messageApi.warning("文件格式不符合，请重新上传!");
+				window.$message.warning("文件格式不符合，请重新上传!");
 				return false;
 			}
 			return true;
@@ -81,7 +68,6 @@ const PageConfiguration = () => {
 
 	return (
 		<div className="w-full">
-			{contextHolder}
 			<Form>
 				<div className="flex items-center gap-4">
 					<Form.Item label="宽度" className="flex-1">
