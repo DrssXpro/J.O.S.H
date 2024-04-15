@@ -4,9 +4,9 @@ export const TableScrollBoard: IMaterialConfigType = {
 	key: "TableScrollBoard",
 	chartCanvasKey: "TableScrollBoardCanvas",
 	configKey: "TableScrollBoardConfig",
-	title: "滚动排名列表",
+	title: "轮播列表",
 	category: TableCategoryEnum.TABLE,
 	categoryName: TableNameEnum.TABLE,
 	menu: MaterialCategoryEnum.TABLES,
-	image: "tables_list.png"
+	image: "table_scrollboard.png"
 };
