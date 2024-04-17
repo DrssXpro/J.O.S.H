@@ -1,4 +1,10 @@
-import { MaterialCategoryEnum, IMaterialConfigType, ChartCategoryEnum, ChartNameEnum } from "@/materials/types";
+import {
+	MaterialCategoryEnum,
+	IMaterialConfigType,
+	ChartCategoryEnum,
+	ChartNameEnum,
+	ChartFrameEnum
+} from "@/materials/types";
 
 export const LineGradientSingle: IMaterialConfigType = {
 	key: "LineGradientSingle",
@@ -8,5 +14,6 @@ export const LineGradientSingle: IMaterialConfigType = {
 	category: ChartCategoryEnum.LINE,
 	categoryName: ChartNameEnum.LINE,
 	menu: MaterialCategoryEnum.CHARTS,
+	chartFrame: ChartFrameEnum.ECHARTS,
 	image: "line_gradient_single.png"
 };

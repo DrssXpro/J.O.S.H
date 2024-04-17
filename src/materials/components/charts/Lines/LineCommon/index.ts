@@ -1,4 +1,10 @@
-import { MaterialCategoryEnum, IMaterialConfigType, ChartCategoryEnum, ChartNameEnum } from "@/materials/types";
+import {
+	MaterialCategoryEnum,
+	IMaterialConfigType,
+	ChartCategoryEnum,
+	ChartNameEnum,
+	ChartFrameEnum
+} from "@/materials/types";
 
 export const LineCommon: IMaterialConfigType = {
 	key: "LineCommon",
@@ -8,5 +14,6 @@ export const LineCommon: IMaterialConfigType = {
 	category: ChartCategoryEnum.LINE,
 	categoryName: ChartNameEnum.LINE,
 	menu: MaterialCategoryEnum.CHARTS,
+	chartFrame: ChartFrameEnum.ECHARTS,
 	image: "line.png"
 };

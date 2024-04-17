@@ -1,4 +1,10 @@
-import { MaterialCategoryEnum, IMaterialConfigType, ChartCategoryEnum, ChartNameEnum } from "@/materials/types";
+import {
+	MaterialCategoryEnum,
+	IMaterialConfigType,
+	ChartCategoryEnum,
+	ChartNameEnum,
+	ChartFrameEnum
+} from "@/materials/types";
 
 export const BarCrossrange: IMaterialConfigType = {
 	key: "BarCrossrange",
@@ -8,5 +14,6 @@ export const BarCrossrange: IMaterialConfigType = {
 	category: ChartCategoryEnum.BAR,
 	categoryName: ChartNameEnum.BAR,
 	menu: MaterialCategoryEnum.CHARTS,
+	chartFrame: ChartFrameEnum.ECHARTS,
 	image: "bar_y.png"
 };
