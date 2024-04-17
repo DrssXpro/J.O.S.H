@@ -45,7 +45,7 @@ const ChartGlobImage = (props: IChartGlobImageProps) => {
 					onLoad={() => {
 						setShow(true);
 					}}
-					className="object-cover w-full h-full transform group-hover:scale-110 transition-all"
+					className="object-fill w-full h-full transform group-hover:scale-110 transition-all"
 					style={{ ...imageStyle }}
 				/>
 			) : (

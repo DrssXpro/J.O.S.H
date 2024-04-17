@@ -59,7 +59,7 @@ const MaterialCard = (props: IMaterialCardProps) => {
 			</div>
 			<div
 				className={`w-full flex items-center justify-center ${
-					mode === MaterialsModeEnum.SINGLE ? "h-24 py-2 px-4" : "h-12 p-2"
+					mode === MaterialsModeEnum.SINGLE ? "h-24 py-2 px-4" : "h-14 p-2"
 				}  transition-all`}
 				draggable={!detail.disabled}
 				onDragStart={handleDragStart}
@@ -68,7 +68,7 @@ const MaterialCard = (props: IMaterialCardProps) => {
 			</div>
 
 			<Typography.Text
-				ellipsis
+				ellipsis={{ tooltip: true }}
 				className="text-[12px] text-[rgb(150,150,150)] px-2 pb-2"
 				style={{ display: mode === MaterialsModeEnum.SINGLE ? "none" : "block" }}
 			>
