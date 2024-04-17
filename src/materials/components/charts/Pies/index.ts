@@ -1,1 +1,3 @@
-export const Pies = [];
+import { PieCommon } from "./PieCommon";
+
+export const Pies = [PieCommon];
