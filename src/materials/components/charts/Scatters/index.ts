@@ -1,1 +1,3 @@
-export const Scatters = [];
+import { ScatterCommon } from "./ScatterCommon";
+
+export const Scatters = [ScatterCommon];
