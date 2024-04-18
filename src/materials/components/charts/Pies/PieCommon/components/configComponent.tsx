@@ -1,10 +1,10 @@
+import { memo } from "react";
 import JGlobalChartSetting from "@/components/JChartConfiguration/JGlobalChartSetting";
 import JCollapseBox from "@/components/JChartConfiguration/public/JCollapseBox";
 import JSettingBox from "@/components/JChartConfiguration/public/JSettingBox";
 import JSettingItem from "@/components/JChartConfiguration/public/JSettingItem";
-import useEditCharts from "@/hooks/useEditCharts";
 import { labelConfig } from "@/materials/echartsConfig";
-import useChartStore from "@/store/chartStore/chartStore";
+import { ChartConfigComponentProps } from "@/materials/types";
 import { ColorPicker, InputNumber, Select, Switch } from "antd";
 
 const labelFormatterOptions = [
@@ -18,14 +18,11 @@ const TypeOptions = [
 	{ label: "玫瑰图", value: "radius" }
 ];
 
-const PieCommonConfigComponent = () => {
-	const { updateChartConfig } = useChartStore();
-	const { getTargetChartIndex, getTargetData } = useEditCharts();
-	const chartIndex = getTargetChartIndex()!;
-	const component = getTargetData()!;
+const PieCommonConfigComponent = memo((props: ChartConfigComponentProps) => {
+	const { chartIndex, chartOptions, update } = props;
 	return (
 		<>
-			<JGlobalChartSetting chartIndex={chartIndex} />
+			<JGlobalChartSetting {...props} />
 			<JCollapseBox name="饼图配置" unfold>
 				<>
 					<JSettingBox name="类型">
@@ -33,12 +30,10 @@ const PieCommonConfigComponent = () => {
 							<Select
 								className="w-32"
 								options={TypeOptions}
-								value={component.option.series[0].roseType}
+								value={chartOptions.series[0].roseType}
 								onChange={(value) => {
-									const seriesOption = component.option.series[0];
-									updateChartConfig(chartIndex, "option", "series", [
-										{ ...seriesOption, roseType: value }
-									]);
+									const seriesOption = chartOptions.series[0];
+									update(chartIndex, "option", "series", [{ ...seriesOption, roseType: value }]);
 								}}
 							/>
 						</JSettingItem>
@@ -47,10 +42,10 @@ const PieCommonConfigComponent = () => {
 						<div className="grid grid-cols-2 gap-2">
 							<JSettingItem text="展示标签">
 								<Switch
-									value={component.option.series[0].label.show}
+									value={chartOptions.series[0].label.show}
 									onChange={(value) => {
-										const seriesOption = component.option.series[0];
-										updateChartConfig(chartIndex, "option", "series", [
+										const seriesOption = chartOptions.series[0];
+										update(chartIndex, "option", "series", [
 											{ ...seriesOption, label: { ...seriesOption.label, show: value } }
 										]);
 									}}
@@ -58,10 +53,10 @@ const PieCommonConfigComponent = () => {
 							</JSettingItem>
 							<JSettingItem text="引导线">
 								<Switch
-									value={component.option.series[0].labelLine.show}
+									value={chartOptions.series[0].labelLine.show}
 									onChange={(value) => {
-										const seriesOption = component.option.series[0];
-										updateChartConfig(chartIndex, "option", "series", [
+										const seriesOption = chartOptions.series[0];
+										update(chartIndex, "option", "series", [
 											{ ...seriesOption, labelLine: { ...seriesOption.labelLine, show: value } }
 										]);
 									}}
@@ -71,10 +66,10 @@ const PieCommonConfigComponent = () => {
 								<Select
 									className="w-full"
 									options={labelConfig.position}
-									value={component.option.series[0].label.position}
+									value={chartOptions.series[0].label.position}
 									onChange={(value) => {
-										const seriesOption = component.option.series[0];
-										updateChartConfig(chartIndex, "option", "series", [
+										const seriesOption = chartOptions.series[0];
+										update(chartIndex, "option", "series", [
 											{ ...seriesOption, label: { ...seriesOption.label, position: value } }
 										]);
 									}}
@@ -84,10 +79,10 @@ const PieCommonConfigComponent = () => {
 								<Select
 									className="w-full"
 									options={labelFormatterOptions}
-									value={component.option.series[0].label.formatter}
+									value={chartOptions.series[0].label.formatter}
 									onChange={(value) => {
-										const seriesOption = component.option.series[0];
-										updateChartConfig(chartIndex, "option", "series", [
+										const seriesOption = chartOptions.series[0];
+										update(chartIndex, "option", "series", [
 											{ ...seriesOption, label: { ...seriesOption.label, formatter: value } }
 										]);
 									}}
@@ -101,12 +96,12 @@ const PieCommonConfigComponent = () => {
 								<InputNumber
 									className="w-full"
 									min={0}
-									value={parseInt(component.option.series[0].radius[0])}
+									value={parseInt(chartOptions.series[0].radius[0])}
 									onChange={(value) => {
-										const seriesOption = component.option.series[0];
+										const seriesOption = chartOptions.series[0];
 										const radius = [...seriesOption.radius];
 										radius[0] = `${value}%`;
-										updateChartConfig(chartIndex, "option", "series", [
+										update(chartIndex, "option", "series", [
 											{
 												...seriesOption,
 												radius: radius
@@ -119,12 +114,12 @@ const PieCommonConfigComponent = () => {
 								<InputNumber
 									className="w-full"
 									min={0}
-									value={parseInt(component.option.series[0].radius[1])}
+									value={parseInt(chartOptions.series[0].radius[1])}
 									onChange={(value) => {
-										const seriesOption = component.option.series[0];
+										const seriesOption = chartOptions.series[0];
 										const radius = [...seriesOption.radius];
 										radius[1] = `${value}%`;
-										updateChartConfig(chartIndex, "option", "series", [
+										update(chartIndex, "option", "series", [
 											{
 												...seriesOption,
 												radius: radius
@@ -141,12 +136,12 @@ const PieCommonConfigComponent = () => {
 								<InputNumber
 									className="w-full"
 									min={0}
-									value={parseInt(component.option.series[0].center[0])}
+									value={parseInt(chartOptions.series[0].center[0])}
 									onChange={(value) => {
-										const seriesOption = component.option.series[0];
+										const seriesOption = chartOptions.series[0];
 										const center = [...seriesOption.center];
 										center[0] = `${value}%`;
-										updateChartConfig(chartIndex, "option", "series", [
+										update(chartIndex, "option", "series", [
 											{
 												...seriesOption,
 												center: center
@@ -159,12 +154,12 @@ const PieCommonConfigComponent = () => {
 								<InputNumber
 									className="w-full"
 									min={0}
-									value={parseInt(component.option.series[0].center[1])}
+									value={parseInt(chartOptions.series[0].center[1])}
 									onChange={(value) => {
-										const seriesOption = component.option.series[0];
+										const seriesOption = chartOptions.series[0];
 										const center = [...seriesOption.center];
 										center[1] = `${value}%`;
-										updateChartConfig(chartIndex, "option", "series", [
+										update(chartIndex, "option", "series", [
 											{
 												...seriesOption,
 												center: center
@@ -181,10 +176,10 @@ const PieCommonConfigComponent = () => {
 								<InputNumber
 									className="w-full"
 									min={0}
-									value={component.option.series[0].itemStyle.borderRadius}
+									value={chartOptions.series[0].itemStyle.borderRadius}
 									onChange={(value) => {
-										const seriesOption = component.option.series[0];
-										updateChartConfig(chartIndex, "option", "series", [
+										const seriesOption = chartOptions.series[0];
+										update(chartIndex, "option", "series", [
 											{
 												...seriesOption,
 												itemStyle: { ...seriesOption.itemStyle, borderRadius: value }
@@ -197,10 +192,10 @@ const PieCommonConfigComponent = () => {
 								<InputNumber
 									className="w-full"
 									min={0}
-									value={component.option.series[0].itemStyle.borderWidth}
+									value={chartOptions.series[0].itemStyle.borderWidth}
 									onChange={(value) => {
-										const seriesOption = component.option.series[0];
-										updateChartConfig(chartIndex, "option", "series", [
+										const seriesOption = chartOptions.series[0];
+										update(chartIndex, "option", "series", [
 											{
 												...seriesOption,
 												itemStyle: { ...seriesOption.itemStyle, borderWidth: value }
@@ -213,11 +208,11 @@ const PieCommonConfigComponent = () => {
 								<ColorPicker
 									className="w-full"
 									showText
-									value={component.option.series[0].itemStyle.borderColor}
+									value={chartOptions.series[0].itemStyle.borderColor}
 									onChange={(val) => {
 										const color = val.toHexString();
-										const seriesOption = component.option.series[0];
-										updateChartConfig(chartIndex, "option", "series", [
+										const seriesOption = chartOptions.series[0];
+										update(chartIndex, "option", "series", [
 											{
 												...seriesOption,
 												itemStyle: { ...seriesOption.itemStyle, borderColor: color }
@@ -232,6 +227,6 @@ const PieCommonConfigComponent = () => {
 			</JCollapseBox>
 		</>
 	);
-};
+});
 
 export default PieCommonConfigComponent;

@@ -1,14 +1,16 @@
+import { memo } from "react";
 import { Input } from "antd";
 import JSettingBox from "../public/JSettingBox";
-import useChartStore from "@/store/chartStore/chartStore";
-import useEditCharts from "@/hooks/useEditCharts";
+import { UpdateChartConfigType } from "@/store/chartStore/types";
 
-const JNameSetting = () => {
-	const { updateChartConfig } = useChartStore();
-	const { getTargetChartIndex, getTargetData } = useEditCharts();
-	const chartIndex = getTargetChartIndex()!;
-	const component = getTargetData()!;
+interface INameSettingProps {
+	chartIndex: number;
+	title: string;
+	update: UpdateChartConfigType;
+}
 
+const JNameSetting = memo((props: INameSettingProps) => {
+	const { chartIndex, title, update } = props;
 	return (
 		<JSettingBox name="名称">
 			<Input
@@ -16,13 +18,13 @@ const JNameSetting = () => {
 				maxLength={12}
 				placeholder="请输入图表名称"
 				allowClear
-				value={component.chartConfig.title}
+				value={title}
 				onChange={(e) => {
-					updateChartConfig(chartIndex, "chartConfig", "title", e.target.value);
+					update(chartIndex, "chartConfig", "title", e.target.value);
 				}}
 			/>
 		</JSettingBox>
 	);
-};
+});
 
 export default JNameSetting;

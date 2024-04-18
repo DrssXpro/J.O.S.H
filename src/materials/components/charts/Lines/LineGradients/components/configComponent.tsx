@@ -1,22 +1,19 @@
+import { memo } from "react";
 import JGlobalChartSetting from "@/components/JChartConfiguration/JGlobalChartSetting";
 import JCollapseBox from "@/components/JChartConfiguration/public/JCollapseBox";
 import JSettingBox from "@/components/JChartConfiguration/public/JSettingBox";
 import JSettingItem from "@/components/JChartConfiguration/public/JSettingItem";
 import { ColorPicker, InputNumber, Select, Switch } from "antd";
-import useChartStore from "@/store/chartStore/chartStore";
-import useEditCharts from "@/hooks/useEditCharts";
 import { axisConfig } from "@/materials/echartsConfig";
+import { ChartConfigComponentProps } from "@/materials/types";
 
-const LineCommonConfigComponent = () => {
-	const { updateChartConfig } = useChartStore();
-	const { getTargetChartIndex, getTargetData } = useEditCharts();
-	const chartIndex = getTargetChartIndex()!;
-	const component = getTargetData()!;
+const LineCommonConfigComponent = memo((props: ChartConfigComponentProps) => {
+	const { chartIndex, chartOptions, update } = props;
 
 	return (
 		<>
-			<JGlobalChartSetting chartIndex={chartIndex} />
-			{component.option.series.map((i: any, index: number) => (
+			<JGlobalChartSetting {...props} />
+			{chartOptions.series.map((i: any, index: number) => (
 				<JCollapseBox name={index === 0 ? "单折线面积图-1" : "单折线面积图-2"} key={index} unfold>
 					<>
 						<JSettingBox name="线条">
@@ -26,14 +23,14 @@ const LineCommonConfigComponent = () => {
 										className="w-full"
 										value={i.lineStyle.width}
 										onChange={(val) => {
-											const series1 = component.option.series[0];
-											const series2 = component.option.series[1];
+											const series1 = chartOptions.series[0];
+											const series2 = chartOptions.series[1];
 											index === 0
-												? updateChartConfig(chartIndex, "option", "series", [
+												? update(chartIndex, "option", "series", [
 														{ ...series1, lineStyle: { ...series1.lineStyle, width: val } },
 														{ ...series2 }
 													])
-												: updateChartConfig(chartIndex, "option", "series", [
+												: update(chartIndex, "option", "series", [
 														{ ...series1 },
 														{ ...series2, lineStyle: { ...series2.lineStyle, width: val } }
 													]);
@@ -46,14 +43,14 @@ const LineCommonConfigComponent = () => {
 										className="w-full"
 										options={axisConfig.splitLint.lineStyle}
 										onChange={(val) => {
-											const series1 = component.option.series[0];
-											const series2 = component.option.series[1];
+											const series1 = chartOptions.series[0];
+											const series2 = chartOptions.series[1];
 											index === 0
-												? updateChartConfig(chartIndex, "option", "series", [
+												? update(chartIndex, "option", "series", [
 														{ ...series1, lineStyle: { ...series1.lineStyle, type: val } },
 														{ ...series2 }
 													])
-												: updateChartConfig(chartIndex, "option", "series", [
+												: update(chartIndex, "option", "series", [
 														{ ...series1 },
 														{ ...series2, lineStyle: { ...series2.lineStyle, type: val } }
 													]);
@@ -69,14 +66,14 @@ const LineCommonConfigComponent = () => {
 										className="w-full"
 										value={i.symbolSize}
 										onChange={(val) => {
-											const series1 = component.option.series[0];
-											const series2 = component.option.series[1];
+											const series1 = chartOptions.series[0];
+											const series2 = chartOptions.series[1];
 											index === 0
-												? updateChartConfig(chartIndex, "option", "series", [
+												? update(chartIndex, "option", "series", [
 														{ ...series1, symbolSize: val },
 														{ ...series2 }
 													])
-												: updateChartConfig(chartIndex, "option", "series", [
+												: update(chartIndex, "option", "series", [
 														{ ...series1 },
 														{ ...series2, symbolSize: val }
 													]);
@@ -91,14 +88,14 @@ const LineCommonConfigComponent = () => {
 									<Switch
 										value={i.label.show}
 										onChange={(val) => {
-											const series1 = component.option.series[0];
-											const series2 = component.option.series[1];
+											const series1 = chartOptions.series[0];
+											const series2 = chartOptions.series[1];
 											index === 0
-												? updateChartConfig(chartIndex, "option", "series", [
+												? update(chartIndex, "option", "series", [
 														{ ...series1, label: { ...series1.label, show: val } },
 														{ ...series2 }
 													])
-												: updateChartConfig(chartIndex, "option", "series", [
+												: update(chartIndex, "option", "series", [
 														{ ...series1 },
 														{ ...series2, label: { ...series2.label, show: val } }
 													]);
@@ -110,15 +107,15 @@ const LineCommonConfigComponent = () => {
 										className="w-full"
 										value={i.label.fontSize}
 										onChange={(val) => {
-											const series1 = component.option.series[0];
-											const series2 = component.option.series[1];
+											const series1 = chartOptions.series[0];
+											const series2 = chartOptions.series[1];
 											val &&
 												(index === 0
-													? updateChartConfig(chartIndex, "option", "series", [
+													? update(chartIndex, "option", "series", [
 															{ ...series1, label: { ...series1.label, fontSize: val } },
 															{ ...series2 }
 														])
-													: updateChartConfig(chartIndex, "option", "series", [
+													: update(chartIndex, "option", "series", [
 															{ ...series1 },
 															{ ...series2, label: { ...series2.label, fontSize: val } }
 														]));
@@ -132,15 +129,15 @@ const LineCommonConfigComponent = () => {
 										value={i.label.color}
 										onChange={(val) => {
 											const color = val.toHexString();
-											const series1 = component.option.series[0];
-											const series2 = component.option.series[1];
+											const series1 = chartOptions.series[0];
+											const series2 = chartOptions.series[1];
 											val &&
 												(index === 0
-													? updateChartConfig(chartIndex, "option", "series", [
+													? update(chartIndex, "option", "series", [
 															{ ...series1, label: { ...series1.label, color } },
 															{ ...series2 }
 														])
-													: updateChartConfig(chartIndex, "option", "series", [
+													: update(chartIndex, "option", "series", [
 															{ ...series1 },
 															{ ...series2, label: { ...series2.label, color } }
 														]));
@@ -158,15 +155,15 @@ const LineCommonConfigComponent = () => {
 											{ label: "bottom", value: "bottom" }
 										]}
 										onChange={(val) => {
-											const series1 = component.option.series[0];
-											const series2 = component.option.series[1];
+											const series1 = chartOptions.series[0];
+											const series2 = chartOptions.series[1];
 											val &&
 												(index === 0
-													? updateChartConfig(chartIndex, "option", "series", [
+													? update(chartIndex, "option", "series", [
 															{ ...series1, label: { ...series1.label, position: val } },
 															{ ...series2 }
 														])
-													: updateChartConfig(chartIndex, "option", "series", [
+													: update(chartIndex, "option", "series", [
 															{ ...series1 },
 															{ ...series2, label: { ...series2.label, position: val } }
 														]));
@@ -180,6 +177,6 @@ const LineCommonConfigComponent = () => {
 			))}
 		</>
 	);
-};
+});
 
 export default LineCommonConfigComponent;

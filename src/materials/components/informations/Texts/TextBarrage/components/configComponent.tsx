@@ -1,10 +1,10 @@
+import { memo } from "react";
 import JCollapseBox from "@/components/JChartConfiguration/public/JCollapseBox";
 import JSettingBox from "@/components/JChartConfiguration/public/JSettingBox";
 import JSettingItem from "@/components/JChartConfiguration/public/JSettingItem";
-import useEditCharts from "@/hooks/useEditCharts";
-import useChartStore from "@/store/chartStore/chartStore";
 import { ColorPicker, Input, InputNumber, Select, Switch } from "antd";
 import { FontWeightEnum, FontWeightObject } from "../config";
+import { ChartConfigComponentProps } from "@/materials/types";
 
 const fontWeightOptions = [
 	{
@@ -17,20 +17,17 @@ const fontWeightOptions = [
 	}
 ];
 
-const TextBarrageConfigComponent = () => {
-	const { updateChartConfig } = useChartStore();
-	const { getTargetChartIndex, getTargetData } = useEditCharts();
-	const chartIndex = getTargetChartIndex()!;
-	const component = getTargetData()!;
+const TextBarrageConfigComponent = memo((props: ChartConfigComponentProps) => {
+	const { chartIndex, chartOptions, update } = props;
 	return (
 		<>
 			<JCollapseBox name="信息" unfold>
 				<JSettingBox name="文字">
 					<JSettingItem>
 						<Input.TextArea
-							value={component.option.dataset}
+							value={chartOptions.dataset}
 							onChange={(e) => {
-								updateChartConfig(chartIndex, "option", "dataset", e.target.value);
+								update(chartIndex, "option", "dataset", e.target.value);
 							}}
 						/>
 					</JSettingItem>
@@ -44,10 +41,10 @@ const TextBarrageConfigComponent = () => {
 								<ColorPicker
 									className="w-full"
 									showText
-									value={component.option.fontColor}
+									value={chartOptions.fontColor}
 									onChange={(val) => {
 										const color = val.toHexString();
-										val && updateChartConfig(chartIndex, "option", "fontColor", color);
+										val && update(chartIndex, "option", "fontColor", color);
 									}}
 								/>
 							</JSettingItem>
@@ -56,19 +53,19 @@ const TextBarrageConfigComponent = () => {
 									className="w-full"
 									placeholder="字体大小"
 									min={12}
-									value={component.option.fontSize}
+									value={chartOptions.fontSize}
 									onChange={(val) => {
-										updateChartConfig(chartIndex, "option", "fontSize", val);
+										update(chartIndex, "option", "fontSize", val);
 									}}
 								/>
 							</JSettingItem>
 							<JSettingItem text="字体粗细">
 								<Select
 									className="w-full"
-									value={component.option.fontWeight}
+									value={chartOptions.fontWeight}
 									options={fontWeightOptions}
 									onChange={(val) => {
-										updateChartConfig(chartIndex, "option", "fontWeight", val);
+										update(chartIndex, "option", "fontWeight", val);
 									}}
 								/>
 							</JSettingItem>
@@ -77,9 +74,9 @@ const TextBarrageConfigComponent = () => {
 									className="w-full"
 									placeholder="输入字间距"
 									min={0}
-									value={component.option.letterSpacing}
+									value={chartOptions.letterSpacing}
 									onChange={(val) => {
-										updateChartConfig(chartIndex, "option", "letterSpacing", val);
+										update(chartIndex, "option", "letterSpacing", val);
 									}}
 								/>
 							</JSettingItem>
@@ -89,9 +86,9 @@ const TextBarrageConfigComponent = () => {
 						<div className="grid grid-cols-2 gap-2">
 							<JSettingItem text="展示阴影">
 								<Switch
-									value={component.option.showShadow}
+									value={chartOptions.showShadow}
 									onChange={(val) => {
-										updateChartConfig(chartIndex, "option", "showShadow", val);
+										update(chartIndex, "option", "showShadow", val);
 									}}
 								/>
 							</JSettingItem>
@@ -99,28 +96,28 @@ const TextBarrageConfigComponent = () => {
 								<ColorPicker
 									className="w-full"
 									showText
-									value={component.option.colorShadow}
+									value={chartOptions.colorShadow}
 									onChange={(val) => {
 										const color = val.toHexString();
-										val && updateChartConfig(chartIndex, "option", "colorShadow", color);
+										val && update(chartIndex, "option", "colorShadow", color);
 									}}
 								/>
 							</JSettingItem>
 							<JSettingItem text="x">
 								<InputNumber
 									className="w-full"
-									value={component.option.hShadow}
+									value={chartOptions.hShadow}
 									onChange={(val) => {
-										updateChartConfig(chartIndex, "option", "hShadow", val);
+										update(chartIndex, "option", "hShadow", val);
 									}}
 								/>
 							</JSettingItem>
 							<JSettingItem text="y">
 								<InputNumber
 									className="w-full"
-									value={component.option.vShadow}
+									value={chartOptions.vShadow}
 									onChange={(val) => {
-										updateChartConfig(chartIndex, "option", "vShadow", val);
+										update(chartIndex, "option", "vShadow", val);
 									}}
 								/>
 							</JSettingItem>
@@ -128,9 +125,9 @@ const TextBarrageConfigComponent = () => {
 								<InputNumber
 									className="w-full"
 									min={0}
-									value={component.option.blurShadow}
+									value={chartOptions.blurShadow}
 									onChange={(val) => {
-										updateChartConfig(chartIndex, "option", "blurShadow", val);
+										update(chartIndex, "option", "blurShadow", val);
 									}}
 								/>
 							</JSettingItem>
@@ -143,9 +140,9 @@ const TextBarrageConfigComponent = () => {
 									className="w-full"
 									placeholder="输入动画速度"
 									min={0}
-									value={component.option.animationSpeed}
+									value={chartOptions.animationSpeed}
 									onChange={(val) => {
-										updateChartConfig(chartIndex, "option", "animationSpeed", val);
+										update(chartIndex, "option", "animationSpeed", val);
 									}}
 								/>
 							</JSettingItem>
@@ -154,9 +151,9 @@ const TextBarrageConfigComponent = () => {
 									className="w-full"
 									placeholder="输入动画间隔"
 									min={0}
-									value={component.option.animationTime}
+									value={chartOptions.animationTime}
 									onChange={(val) => {
-										updateChartConfig(chartIndex, "option", "animationTime", val);
+										update(chartIndex, "option", "animationTime", val);
 									}}
 								/>
 							</JSettingItem>
@@ -166,6 +163,6 @@ const TextBarrageConfigComponent = () => {
 			</JCollapseBox>
 		</>
 	);
-};
+});
 
 export default TextBarrageConfigComponent;

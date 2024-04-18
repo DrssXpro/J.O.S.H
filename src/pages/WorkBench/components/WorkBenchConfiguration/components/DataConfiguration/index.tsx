@@ -31,7 +31,7 @@ const ConfigurationComponentMap: Record<RequestDataValueEnum, JSX.Element> = {
 };
 
 const DataConfiguration = () => {
-	const { updateChartConfig } = useChartStore();
+	const updateChartConfig = useChartStore((selector) => selector.updateChartConfig);
 	const { getTargetChartIndex, getTargetData } = useEditCharts();
 	const chartIndex = getTargetChartIndex()!;
 	const component = getTargetData()!;

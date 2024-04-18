@@ -1,20 +1,17 @@
+import { memo } from "react";
 import JGlobalChartSetting from "@/components/JChartConfiguration/JGlobalChartSetting";
 import JCollapseBox from "@/components/JChartConfiguration/public/JCollapseBox";
 import JSettingBox from "@/components/JChartConfiguration/public/JSettingBox";
 import JSettingItem from "@/components/JChartConfiguration/public/JSettingItem";
-import useEditCharts from "@/hooks/useEditCharts";
 import { axisConfig } from "@/materials/echartsConfig";
-import useChartStore from "@/store/chartStore/chartStore";
+import { ChartConfigComponentProps } from "@/materials/types";
 import { ColorPicker, InputNumber, Select } from "antd";
 
-const LineLinearSingleConfigComponent = () => {
-	const { updateChartConfig } = useChartStore();
-	const { getTargetChartIndex, getTargetData } = useEditCharts();
-	const chartIndex = getTargetChartIndex()!;
-	const component = getTargetData()!;
+const LineLinearSingleConfigComponent = memo((props: ChartConfigComponentProps) => {
+	const { chartIndex, chartOptions, update } = props;
 	return (
 		<>
-			<JGlobalChartSetting chartIndex={chartIndex} />
+			<JGlobalChartSetting {...props} />
 			<JCollapseBox name="样式" unfold>
 				<>
 					<JSettingBox name="线条">
@@ -23,14 +20,14 @@ const LineLinearSingleConfigComponent = () => {
 								<ColorPicker
 									className="w-full"
 									showText
-									value={component.option.series[0].lineStyle.color.colorStops[0].color}
+									value={chartOptions.series[0].lineStyle.color.colorStops[0].color}
 									onChange={(val) => {
 										const color = val.toHexString();
-										const seriesOption = component.option.series[0];
+										const seriesOption = chartOptions.series[0];
 										const colorStops = [...seriesOption.lineStyle.color.colorStops];
 										colorStops[0] = { ...colorStops[0], color: color };
 										val &&
-											updateChartConfig(chartIndex, "option", "series", [
+											update(chartIndex, "option", "series", [
 												{
 													...seriesOption,
 													lineStyle: {
@@ -49,14 +46,14 @@ const LineLinearSingleConfigComponent = () => {
 								<ColorPicker
 									className="w-full"
 									showText
-									value={component.option.series[0].lineStyle.color.colorStops[1].color}
+									value={chartOptions.series[0].lineStyle.color.colorStops[1].color}
 									onChange={(val) => {
 										const color = val.toHexString();
-										const seriesOption = component.option.series[0];
+										const seriesOption = chartOptions.series[0];
 										const colorStops = [...seriesOption.lineStyle.color.colorStops];
 										colorStops[1] = { ...colorStops[1], color: color };
 										val &&
-											updateChartConfig(chartIndex, "option", "series", [
+											update(chartIndex, "option", "series", [
 												{
 													...seriesOption,
 													lineStyle: {
@@ -74,11 +71,11 @@ const LineLinearSingleConfigComponent = () => {
 							<JSettingItem text="宽度">
 								<InputNumber
 									className="w-full"
-									value={component.option.series[0].lineStyle.width}
+									value={chartOptions.series[0].lineStyle.width}
 									min={1}
 									onChange={(val) => {
-										const seriesOption = component.option.series[0];
-										updateChartConfig(chartIndex, "option", "series", [
+										const seriesOption = chartOptions.series[0];
+										update(chartIndex, "option", "series", [
 											{ ...seriesOption, lineStyle: { ...seriesOption.lineStyle, width: val } }
 										]);
 									}}
@@ -86,12 +83,12 @@ const LineLinearSingleConfigComponent = () => {
 							</JSettingItem>
 							<JSettingItem text="类型">
 								<Select
-									value={component.option.series[0].lineStyle.type}
+									value={chartOptions.series[0].lineStyle.type}
 									className="w-full"
 									options={axisConfig.splitLint.lineStyle}
 									onChange={(val) => {
-										const seriesOption = component.option.series[0];
-										updateChartConfig(chartIndex, "option", "series", [
+										const seriesOption = chartOptions.series[0];
+										update(chartIndex, "option", "series", [
 											{ ...seriesOption, lineStyle: { ...seriesOption.lineStyle, type: val } }
 										]);
 									}}
@@ -103,13 +100,11 @@ const LineLinearSingleConfigComponent = () => {
 						<JSettingItem text="大小">
 							<InputNumber
 								className="w-32"
-								value={component.option.series[0].symbolSize}
+								value={chartOptions.series[0].symbolSize}
 								min={1}
 								onChange={(val) => {
-									const seriesOption = component.option.series[0];
-									updateChartConfig(chartIndex, "option", "series", [
-										{ ...seriesOption, symbolSize: val }
-									]);
+									const seriesOption = chartOptions.series[0];
+									update(chartIndex, "option", "series", [{ ...seriesOption, symbolSize: val }]);
 								}}
 							/>
 						</JSettingItem>
@@ -119,12 +114,12 @@ const LineLinearSingleConfigComponent = () => {
 							<ColorPicker
 								className="w-32"
 								showText
-								value={component.option.series[0].lineStyle.shadowColor}
+								value={chartOptions.series[0].lineStyle.shadowColor}
 								onChange={(val) => {
 									const color = val.toHexString();
-									const seriesOption = component.option.series[0];
+									const seriesOption = chartOptions.series[0];
 									val &&
-										updateChartConfig(chartIndex, "option", "series", [
+										update(chartIndex, "option", "series", [
 											{
 												...seriesOption,
 												lineStyle: {
@@ -141,6 +136,6 @@ const LineLinearSingleConfigComponent = () => {
 			</JCollapseBox>
 		</>
 	);
-};
+});
 
 export default LineLinearSingleConfigComponent;

@@ -1,22 +1,19 @@
+import { memo } from "react";
 import JGlobalChartSetting from "@/components/JChartConfiguration/JGlobalChartSetting";
 import JCollapseBox from "@/components/JChartConfiguration/public/JCollapseBox";
 import JSettingBox from "@/components/JChartConfiguration/public/JSettingBox";
 import JSettingItem from "@/components/JChartConfiguration/public/JSettingItem";
-import useEditCharts from "@/hooks/useEditCharts";
-import useChartStore from "@/store/chartStore/chartStore";
 import { InputNumber, Select } from "antd";
 import { ScatterEffectTypeEnumList, SymbolEnumList } from "../../shared";
 import { axisConfig } from "@/materials/echartsConfig";
+import { ChartConfigComponentProps } from "@/materials/types";
 
-const ScatterCommonConfigComponent = () => {
-	const { updateChartConfig } = useChartStore();
-	const { getTargetChartIndex, getTargetData } = useEditCharts();
-	const chartIndex = getTargetChartIndex()!;
-	const component = getTargetData()!;
+const ScatterCommonConfigComponent = memo((props: ChartConfigComponentProps) => {
+	const { chartIndex, chartOptions, update } = props;
 	return (
 		<>
-			<JGlobalChartSetting chartIndex={chartIndex} />
-			{component.option.series.map((item: any, index: number) => (
+			<JGlobalChartSetting {...props} />
+			{chartOptions.series.map((item: any, index: number) => (
 				<JCollapseBox key={index} name={`散点-${index + 1}`} unfold>
 					<>
 						<JSettingBox name="样式">
@@ -27,13 +24,13 @@ const ScatterCommonConfigComponent = () => {
 										options={ScatterEffectTypeEnumList}
 										value={item.type}
 										onChange={(val) => {
-											const series = component.option.series;
+											const series = chartOptions.series;
 											index === 0
-												? updateChartConfig(chartIndex, "option", "series", [
+												? update(chartIndex, "option", "series", [
 														{ ...series[0], type: val },
 														series[1]
 													])
-												: updateChartConfig(chartIndex, "option", "series", [
+												: update(chartIndex, "option", "series", [
 														series[0],
 														{ ...series[1], type: val }
 													]);
@@ -46,13 +43,13 @@ const ScatterCommonConfigComponent = () => {
 										min={1}
 										value={item.symbolSize}
 										onChange={(val) => {
-											const series = component.option.series;
+											const series = chartOptions.series;
 											index === 0
-												? updateChartConfig(chartIndex, "option", "series", [
+												? update(chartIndex, "option", "series", [
 														{ ...series[0], symbolSize: val },
 														series[1]
 													])
-												: updateChartConfig(chartIndex, "option", "series", [
+												: update(chartIndex, "option", "series", [
 														series[0],
 														{ ...series[1], symbolSize: val }
 													]);
@@ -69,9 +66,9 @@ const ScatterCommonConfigComponent = () => {
 										min={0}
 										value={item.markArea.itemStyle.borderWidth}
 										onChange={(val) => {
-											const series = component.option.series;
+											const series = chartOptions.series;
 											index === 0
-												? updateChartConfig(chartIndex, "option", "series", [
+												? update(chartIndex, "option", "series", [
 														{
 															...series[0],
 															markArea: {
@@ -84,7 +81,7 @@ const ScatterCommonConfigComponent = () => {
 														},
 														series[1]
 													])
-												: updateChartConfig(chartIndex, "option", "series", [
+												: update(chartIndex, "option", "series", [
 														series[0],
 														{
 															...series[1],
@@ -106,9 +103,9 @@ const ScatterCommonConfigComponent = () => {
 										options={axisConfig.splitLint.lineStyle}
 										value={item.markArea.itemStyle.borderType}
 										onChange={(val) => {
-											const series = component.option.series;
+											const series = chartOptions.series;
 											index === 0
-												? updateChartConfig(chartIndex, "option", "series", [
+												? update(chartIndex, "option", "series", [
 														{
 															...series[0],
 															markArea: {
@@ -121,7 +118,7 @@ const ScatterCommonConfigComponent = () => {
 														},
 														series[1]
 													])
-												: updateChartConfig(chartIndex, "option", "series", [
+												: update(chartIndex, "option", "series", [
 														series[0],
 														{
 															...series[1],
@@ -147,9 +144,9 @@ const ScatterCommonConfigComponent = () => {
 										options={SymbolEnumList}
 										value={item.markPoint.symbol}
 										onChange={(val) => {
-											const series = component.option.series;
+											const series = chartOptions.series;
 											index === 0
-												? updateChartConfig(chartIndex, "option", "series", [
+												? update(chartIndex, "option", "series", [
 														{
 															...series[0],
 															markPoint: {
@@ -159,7 +156,7 @@ const ScatterCommonConfigComponent = () => {
 														},
 														series[1]
 													])
-												: updateChartConfig(chartIndex, "option", "series", [
+												: update(chartIndex, "option", "series", [
 														series[0],
 														{
 															...series[1],
@@ -178,9 +175,9 @@ const ScatterCommonConfigComponent = () => {
 										min={0}
 										value={item.markPoint.symbolSize}
 										onChange={(val) => {
-											const series = component.option.series;
+											const series = chartOptions.series;
 											index === 0
-												? updateChartConfig(chartIndex, "option", "series", [
+												? update(chartIndex, "option", "series", [
 														{
 															...series[0],
 															markPoint: {
@@ -190,7 +187,7 @@ const ScatterCommonConfigComponent = () => {
 														},
 														series[1]
 													])
-												: updateChartConfig(chartIndex, "option", "series", [
+												: update(chartIndex, "option", "series", [
 														series[0],
 														{
 															...series[1],
@@ -210,6 +207,6 @@ const ScatterCommonConfigComponent = () => {
 			))}
 		</>
 	);
-};
+});
 
 export default ScatterCommonConfigComponent;

@@ -1,15 +1,12 @@
 import JCollapseBox from "@/components/JChartConfiguration/public/JCollapseBox";
 import JSettingBox from "@/components/JChartConfiguration/public/JSettingBox";
 import JSettingItem from "@/components/JChartConfiguration/public/JSettingItem";
-import useEditCharts from "@/hooks/useEditCharts";
-import useChartStore from "@/store/chartStore/chartStore";
+import { ChartConfigComponentProps } from "@/materials/types";
 import { ColorPicker, Input, InputNumber } from "antd";
+import { memo } from "react";
 
-const TextGradientConfigComponent = () => {
-	const { updateChartConfig } = useChartStore();
-	const { getTargetChartIndex, getTargetData } = useEditCharts();
-	const chartIndex = getTargetChartIndex()!;
-	const component = getTargetData()!;
+const TextGradientConfigComponent = memo((props: ChartConfigComponentProps) => {
+	const { chartIndex, chartOptions, update } = props;
 	return (
 		<>
 			<JCollapseBox name="信息" unfold>
@@ -17,9 +14,9 @@ const TextGradientConfigComponent = () => {
 					<JSettingItem>
 						<Input.TextArea
 							className="w-full"
-							value={component.option.dataset}
+							value={chartOptions.dataset}
 							onChange={(e) => {
-								updateChartConfig(chartIndex, "option", "dataset", e.target.value);
+								update(chartIndex, "option", "dataset", e.target.value);
 							}}
 						/>
 					</JSettingItem>
@@ -31,9 +28,9 @@ const TextGradientConfigComponent = () => {
 						<JSettingItem text="字体大小">
 							<InputNumber
 								min={12}
-								value={component.option.size}
+								value={chartOptions.size}
 								onChange={(val) => {
-									updateChartConfig(chartIndex, "option", "size", val);
+									update(chartIndex, "option", "size", val);
 								}}
 							/>
 						</JSettingItem>
@@ -44,12 +41,12 @@ const TextGradientConfigComponent = () => {
 								<ColorPicker
 									className="w-full"
 									showText
-									value={component.option.gradient.from}
+									value={chartOptions.gradient.from}
 									onChange={(val) => {
 										const color = val.toHexString();
 										val &&
-											updateChartConfig(chartIndex, "option", "gradient", {
-												...component.option.gradient,
+											update(chartIndex, "option", "gradient", {
+												...chartOptions.gradient,
 												from: color
 											});
 									}}
@@ -59,12 +56,12 @@ const TextGradientConfigComponent = () => {
 								<ColorPicker
 									className="w-full"
 									showText
-									value={component.option.gradient.to}
+									value={chartOptions.gradient.to}
 									onChange={(val) => {
 										const color = val.toHexString();
 										val &&
-											updateChartConfig(chartIndex, "option", "gradient", {
-												...component.option.gradient,
+											update(chartIndex, "option", "gradient", {
+												...chartOptions.gradient,
 												to: color
 											});
 									}}
@@ -72,10 +69,10 @@ const TextGradientConfigComponent = () => {
 							</JSettingItem>
 							<JSettingItem text="偏移角度">
 								<InputNumber
-									value={component.option.gradient.deg}
+									value={chartOptions.gradient.deg}
 									onChange={(val) => {
-										updateChartConfig(chartIndex, "option", "gradient", {
-											...component.option.gradient,
+										update(chartIndex, "option", "gradient", {
+											...chartOptions.gradient,
 											deg: val
 										});
 									}}
@@ -87,6 +84,6 @@ const TextGradientConfigComponent = () => {
 			</JCollapseBox>
 		</>
 	);
-};
+});
 
 export default TextGradientConfigComponent;

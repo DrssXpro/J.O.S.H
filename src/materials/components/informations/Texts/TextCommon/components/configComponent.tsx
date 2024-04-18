@@ -1,10 +1,10 @@
 import JCollapseBox from "@/components/JChartConfiguration/public/JCollapseBox";
 import JSettingBox from "@/components/JChartConfiguration/public/JSettingBox";
 import JSettingItem from "@/components/JChartConfiguration/public/JSettingItem";
-import useEditCharts from "@/hooks/useEditCharts";
-import useChartStore from "@/store/chartStore/chartStore";
 import { ColorPicker, Input, InputNumber, Select } from "antd";
 import { FontWeightEnum, FontWeightObject, WritingModeEnum, WritingModeObject } from "../config";
+import { ChartConfigComponentProps } from "@/materials/types";
+import { memo } from "react";
 
 const linkHeadOptions = [
 	{ label: "http://", value: "http://" },
@@ -39,11 +39,8 @@ const textAlignOptions = [
 	{ label: "右对齐", value: "end" }
 ];
 
-const TextCommonConfigComponent = () => {
-	const { updateChartConfig } = useChartStore();
-	const { getTargetChartIndex, getTargetData } = useEditCharts();
-	const chartIndex = getTargetChartIndex()!;
-	const component = getTargetData()!;
+const TextCommonConfigComponent = memo((props: ChartConfigComponentProps) => {
+	const { chartIndex, chartOptions, update } = props;
 
 	return (
 		<>
@@ -52,9 +49,9 @@ const TextCommonConfigComponent = () => {
 					<JSettingBox name="文字">
 						<JSettingItem>
 							<Input.TextArea
-								value={component.option.dataset}
+								value={chartOptions.dataset}
 								onChange={(e) => {
-									updateChartConfig(chartIndex, "option", "dataset", e.target.value);
+									update(chartIndex, "option", "dataset", e.target.value);
 								}}
 							/>
 						</JSettingItem>
@@ -64,24 +61,24 @@ const TextCommonConfigComponent = () => {
 							<div className="flex items-center">
 								<>
 									<Input.Search
-										value={component.option.link}
+										value={chartOptions.link}
 										placeholder="请输入"
 										enterButton="跳转"
 										onChange={(e) => {
-											updateChartConfig(chartIndex, "option", "link", e.target.value);
+											update(chartIndex, "option", "link", e.target.value);
 										}}
 										addonBefore={
 											<Select
 												className="w-21"
-												value={component.option.linkHead}
+												value={chartOptions.linkHead}
 												options={linkHeadOptions}
 												onChange={(val) => {
-													updateChartConfig(chartIndex, "option", "linkHead", val);
+													update(chartIndex, "option", "linkHead", val);
 												}}
 											/>
 										}
 										onSearch={() => {
-											window.open(component.option.linkHead + component.option.link);
+											window.open(chartOptions.linkHead + chartOptions.link);
 										}}
 									/>
 								</>
@@ -98,10 +95,10 @@ const TextCommonConfigComponent = () => {
 								<ColorPicker
 									className="w-full"
 									showText
-									value={component.option.fontColor}
+									value={chartOptions.fontColor}
 									onChange={(val) => {
 										const color = val.toHexString();
-										val && updateChartConfig(chartIndex, "option", "fontColor", color);
+										val && update(chartIndex, "option", "fontColor", color);
 									}}
 								/>
 							</JSettingItem>
@@ -109,19 +106,19 @@ const TextCommonConfigComponent = () => {
 								<InputNumber
 									className="w-full"
 									min={12}
-									value={component.option.fontSize}
+									value={chartOptions.fontSize}
 									onChange={(val) => {
-										updateChartConfig(chartIndex, "option", "fontSize", val);
+										update(chartIndex, "option", "fontSize", val);
 									}}
 								/>
 							</JSettingItem>
 							<JSettingItem text="字体粗细">
 								<Select
 									className="w-full"
-									value={component.option.fontWeight}
+									value={chartOptions.fontWeight}
 									options={fontWeightOptions}
 									onChange={(val) => {
-										updateChartConfig(chartIndex, "option", "fontWeight", val);
+										update(chartIndex, "option", "fontWeight", val);
 									}}
 								/>
 							</JSettingItem>
@@ -129,9 +126,9 @@ const TextCommonConfigComponent = () => {
 								<InputNumber
 									className="w-full"
 									min={0}
-									value={component.option.paddingX}
+									value={chartOptions.paddingX}
 									onChange={(val) => {
-										updateChartConfig(chartIndex, "option", "paddingX", val);
+										update(chartIndex, "option", "paddingX", val);
 									}}
 								/>
 							</JSettingItem>
@@ -139,29 +136,29 @@ const TextCommonConfigComponent = () => {
 								<InputNumber
 									className="w-full"
 									min={0}
-									value={component.option.paddingY}
+									value={chartOptions.paddingY}
 									onChange={(val) => {
-										updateChartConfig(chartIndex, "option", "paddingY", val);
+										update(chartIndex, "option", "paddingY", val);
 									}}
 								/>
 							</JSettingItem>
 							<JSettingItem text="水平对齐">
 								<Select
 									className="w-full"
-									value={component.option.textAlign}
+									value={chartOptions.textAlign}
 									options={textAlignOptions}
 									onChange={(val) => {
-										updateChartConfig(chartIndex, "option", "textAlign", val);
+										update(chartIndex, "option", "textAlign", val);
 									}}
 								/>
 							</JSettingItem>
 							<JSettingItem text="文本方向">
 								<Select
 									className="w-full"
-									value={component.option.writingMode}
+									value={chartOptions.writingMode}
 									options={verticalOptions}
 									onChange={(val) => {
-										updateChartConfig(chartIndex, "option", "writingMode", val);
+										update(chartIndex, "option", "writingMode", val);
 									}}
 								/>
 							</JSettingItem>
@@ -170,9 +167,9 @@ const TextCommonConfigComponent = () => {
 									className="w-full"
 									placeholder="输入字间距"
 									min={0}
-									value={component.option.letterSpacing}
+									value={chartOptions.letterSpacing}
 									onChange={(val) => {
-										updateChartConfig(chartIndex, "option", "letterSpacing", val);
+										update(chartIndex, "option", "letterSpacing", val);
 									}}
 								/>
 							</JSettingItem>
@@ -185,9 +182,9 @@ const TextCommonConfigComponent = () => {
 									className="w-full"
 									placeholder="输入圆角"
 									min={0}
-									value={component.option.borderWidth}
+									value={chartOptions.borderWidth}
 									onChange={(val) => {
-										updateChartConfig(chartIndex, "option", "borderWidth", val);
+										update(chartIndex, "option", "borderWidth", val);
 									}}
 								/>
 							</JSettingItem>
@@ -195,10 +192,10 @@ const TextCommonConfigComponent = () => {
 								<ColorPicker
 									className="w-full"
 									showText
-									value={component.option.borderColor}
+									value={chartOptions.borderColor}
 									onChange={(val) => {
 										const color = val.toHexString();
-										val && updateChartConfig(chartIndex, "option", "borderColor", color);
+										val && update(chartIndex, "option", "borderColor", color);
 									}}
 								/>
 							</JSettingItem>
@@ -207,9 +204,9 @@ const TextCommonConfigComponent = () => {
 									className="w-full"
 									placeholder="输入圆角"
 									min={0}
-									value={component.option.borderRadius}
+									value={chartOptions.borderRadius}
 									onChange={(val) => {
-										updateChartConfig(chartIndex, "option", "borderRadius", val);
+										update(chartIndex, "option", "borderRadius", val);
 									}}
 								/>
 							</JSettingItem>
@@ -220,10 +217,10 @@ const TextCommonConfigComponent = () => {
 							<ColorPicker
 								className="w-full"
 								showText
-								value={component.option.backgroundColor}
+								value={chartOptions.backgroundColor}
 								onChange={(val) => {
 									const color = val.toHexString();
-									val && updateChartConfig(chartIndex, "option", "backgroundColor", color);
+									val && update(chartIndex, "option", "backgroundColor", color);
 								}}
 							/>
 						</JSettingItem>
@@ -232,6 +229,6 @@ const TextCommonConfigComponent = () => {
 			</JCollapseBox>
 		</>
 	);
-};
+});
 
 export default TextCommonConfigComponent;

@@ -22,7 +22,7 @@ const BaseEventConfig = () => {
 		[VaildError.ERROR_INFO]: "",
 		[VaildError.ERROR_STACK]: ""
 	});
-	const { updateChartConfig } = useChartStore();
+	const updateChartConfig = useChartStore((selector) => selector.updateChartConfig);
 	const { getTargetChartIndex, getTargetData } = useEditCharts();
 	const chartIndex = getTargetChartIndex()!;
 	const component = getTargetData()!;

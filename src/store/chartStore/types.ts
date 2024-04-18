@@ -1,10 +1,10 @@
 import { FC } from "react";
-import { ChartComponentProps, ComponentType } from "@/materials/types";
+import { ChartComponentProps, ChartConfigComponentProps, ComponentType } from "@/materials/types";
 import { RequestConfigType, RequestGlobalConfigType } from "@/types/HttpTypes";
 
 export interface IComponent extends ComponentType {
 	ChartComponent: FC<ChartComponentProps>;
-	ChartConfigComponent: FC;
+	ChartConfigComponent: FC<ChartConfigComponentProps>;
 }
 
 export interface IChartState {
@@ -24,6 +24,13 @@ export interface IChartState {
 	requestGlobalConfig: RequestGlobalConfigType;
 }
 
+export type UpdateChartConfigType = <C extends keyof ComponentType, K extends keyof ComponentType[C]>(
+	index: number,
+	category: C,
+	key: K | null,
+	value: any
+) => void;
+
 export interface IChartAction {
 	setMousePosition: (x?: number, y?: number, startX?: number, startY?: number) => void;
 	setClickMousePosition: (x: number, y: number) => void;
@@ -33,12 +40,7 @@ export interface IChartAction {
 	setrequestGlobalConfig: (config: RequestGlobalConfigType) => void;
 	getSelectId: () => string[];
 	getComponentList: () => IComponent[];
-	updateChartConfig: <C extends keyof ComponentType, K extends keyof ComponentType[C]>(
-		index: number,
-		category: C,
-		key: K | null,
-		value: any
-	) => void;
+	updateChartConfig: UpdateChartConfigType;
 	updateChartRequestParams: <K extends keyof RequestConfigType["requestParams"]>(
 		index: number,
 		key: K,

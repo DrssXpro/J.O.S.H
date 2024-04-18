@@ -1,37 +1,34 @@
+import { memo } from "react";
 import JCollapseBox from "@/components/JChartConfiguration/public/JCollapseBox";
 import JSettingBox from "@/components/JChartConfiguration/public/JSettingBox";
 import JSettingItem from "@/components/JChartConfiguration/public/JSettingItem";
-import useEditCharts from "@/hooks/useEditCharts";
-import useChartStore from "@/store/chartStore/chartStore";
 import { Button, ColorPicker, InputNumber } from "antd";
 import { option } from "../config";
+import { ChartConfigComponentProps } from "@/materials/types";
 
-const Border01ConfigComponent = () => {
-	const { updateChartConfig } = useChartStore();
-	const { getTargetChartIndex, getTargetData } = useEditCharts();
-	const chartIndex = getTargetChartIndex()!;
-	const component = getTargetData()!;
+const Border01ConfigComponent = memo((props: ChartConfigComponentProps) => {
+	const { chartIndex, chartOptions, update } = props;
 	return (
 		<>
 			<JCollapseBox name="边框" unfold>
 				<>
-					{component.option.colors.map((_: any, index: any) => (
+					{chartOptions.colors.map((_: any, index: any) => (
 						<JSettingBox name={`颜色-${index + 1}`} key={index}>
 							<div className="grid grid-cols-2 gap-2">
 								<JSettingItem text="颜色">
 									<ColorPicker
 										className="w-full"
 										showText
-										value={component.option.colors[index]}
+										value={chartOptions.colors[index]}
 										onChange={(val) => {
 											const color = val.toHexString();
 											index === 0
-												? updateChartConfig(chartIndex, "option", "colors", [
+												? update(chartIndex, "option", "colors", [
 														color,
-														component.option.colors[1]
+														chartOptions.colors[1]
 													])
-												: updateChartConfig(chartIndex, "option", "colors", [
-														component.option.colors[0],
+												: update(chartIndex, "option", "colors", [
+														chartOptions.colors[0],
 														color
 													]);
 										}}
@@ -41,12 +38,12 @@ const Border01ConfigComponent = () => {
 									<Button
 										onClick={() => {
 											index === 0
-												? updateChartConfig(chartIndex, "option", "colors", [
+												? update(chartIndex, "option", "colors", [
 														option.colors[0],
-														component.option.colors[1]
+														chartOptions.colors[1]
 													])
-												: updateChartConfig(chartIndex, "option", "colors", [
-														component.option.colors[0],
+												: update(chartIndex, "option", "colors", [
+														chartOptions.colors[0],
 														option.colors[1]
 													]);
 										}}
@@ -63,11 +60,11 @@ const Border01ConfigComponent = () => {
 				<JSettingBox name="速度(s)">
 					<InputNumber
 						className="w-30"
-						value={component.option.dur}
+						value={chartOptions.dur}
 						step={0.5}
 						min={0.5}
 						onChange={(val) => {
-							updateChartConfig(chartIndex, "option", "dur", val);
+							update(chartIndex, "option", "dur", val);
 						}}
 					/>
 				</JSettingBox>
@@ -78,10 +75,10 @@ const Border01ConfigComponent = () => {
 						<ColorPicker
 							className="w-full"
 							showText
-							value={component.option.backgroundColor}
+							value={chartOptions.backgroundColor}
 							onChange={(val) => {
 								const color = val.toHexString();
-								updateChartConfig(chartIndex, "option", "backgroundColor", color);
+								update(chartIndex, "option", "backgroundColor", color);
 							}}
 						/>
 					</JSettingItem>
@@ -89,5 +86,5 @@ const Border01ConfigComponent = () => {
 			</JCollapseBox>
 		</>
 	);
-};
+});
 export default Border01ConfigComponent;

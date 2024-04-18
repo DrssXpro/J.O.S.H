@@ -1,8 +1,8 @@
+import { memo } from "react";
 import JCollapseBox from "@/components/JChartConfiguration/public/JCollapseBox";
 import JSettingBox from "@/components/JChartConfiguration/public/JSettingBox";
 import JSettingItem from "@/components/JChartConfiguration/public/JSettingItem";
-import useEditCharts from "@/hooks/useEditCharts";
-import useChartStore from "@/store/chartStore/chartStore";
+import { ChartConfigComponentProps } from "@/materials/types";
 import { Input, InputNumber, Select } from "antd";
 
 // 适应类型
@@ -25,19 +25,17 @@ const fitList = [
 	}
 ];
 
-const ImageConfigComponent = () => {
-	const { updateChartConfig } = useChartStore();
-	const { getTargetChartIndex, getTargetData } = useEditCharts();
-	const chartIndex = getTargetChartIndex()!;
-	const component = getTargetData()!;
+const ImageConfigComponent = memo((props: ChartConfigComponentProps) => {
+	const { chartIndex, chartOptions, update } = props;
+
 	return (
 		<JCollapseBox name="属性" unfold>
 			<>
 				<JSettingBox name="路径">
 					<Input
-						value={component.option.dataset}
+						value={chartOptions.dataset}
 						onChange={(e) => {
-							updateChartConfig(chartIndex, "option", "dataset", e.target.value);
+							update(chartIndex, "option", "dataset", e.target.value);
 						}}
 					/>
 				</JSettingBox>
@@ -47,9 +45,9 @@ const ImageConfigComponent = () => {
 							<Select
 								className="w-full"
 								options={fitList}
-								value={component.option.fit}
+								value={chartOptions.fit}
 								onChange={(val) => {
-									updateChartConfig(chartIndex, "option", "fit", val);
+									update(chartIndex, "option", "fit", val);
 								}}
 							/>
 						</JSettingItem>
@@ -57,9 +55,9 @@ const ImageConfigComponent = () => {
 							<InputNumber
 								className="w-full"
 								min={0}
-								value={component.option.borderRadius}
+								value={chartOptions.borderRadius}
 								onChange={(val) => {
-									updateChartConfig(chartIndex, "option", "borderRadius", val);
+									update(chartIndex, "option", "borderRadius", val);
 								}}
 							/>
 						</JSettingItem>
@@ -68,6 +66,6 @@ const ImageConfigComponent = () => {
 			</>
 		</JCollapseBox>
 	);
-};
+});
 
 export default ImageConfigComponent;

@@ -1,22 +1,19 @@
+import { memo } from "react";
 import JGlobalChartSetting from "@/components/JChartConfiguration/JGlobalChartSetting";
 import JCollapseBox from "@/components/JChartConfiguration/public/JCollapseBox";
 import JSettingBox from "@/components/JChartConfiguration/public/JSettingBox";
 import JSettingItem from "@/components/JChartConfiguration/public/JSettingItem";
 import { ColorPicker, InputNumber, Select, Switch } from "antd";
-import useChartStore from "@/store/chartStore/chartStore";
-import useEditCharts from "@/hooks/useEditCharts";
 import { axisConfig } from "@/materials/echartsConfig";
+import { ChartConfigComponentProps } from "@/materials/types";
 
-const LineGradientSingleConfigComponent = () => {
-	const { updateChartConfig } = useChartStore();
-	const { getTargetChartIndex, getTargetData } = useEditCharts();
-	const chartIndex = getTargetChartIndex()!;
-	const component = getTargetData()!;
+const LineGradientSingleConfigComponent = memo((props: ChartConfigComponentProps) => {
+	const { chartIndex, chartOptions, update } = props;
 
 	return (
 		<>
-			<JGlobalChartSetting chartIndex={chartIndex} />
-			{component.option.series.map((i: any, index: number) => (
+			<JGlobalChartSetting {...props} />
+			{chartOptions.series.map((i: any, index: number) => (
 				<JCollapseBox name="单折线面积图" key={index} unfold>
 					<>
 						<JSettingBox name="线条">
@@ -26,8 +23,8 @@ const LineGradientSingleConfigComponent = () => {
 										className="w-full"
 										value={i.lineStyle.width}
 										onChange={(val) => {
-											const series = component.option.series[0];
-											updateChartConfig(chartIndex, "option", "series", [
+											const series = chartOptions.series[0];
+											update(chartIndex, "option", "series", [
 												{ ...series, lineStyle: { ...series.lineStyle, width: val } }
 											]);
 										}}
@@ -39,8 +36,8 @@ const LineGradientSingleConfigComponent = () => {
 										className="w-full"
 										options={axisConfig.splitLint.lineStyle}
 										onChange={(val) => {
-											const series = component.option.series[0];
-											updateChartConfig(chartIndex, "option", "series", [
+											const series = chartOptions.series[0];
+											update(chartIndex, "option", "series", [
 												{ ...series, lineStyle: { ...series.lineStyle, type: val } }
 											]);
 										}}
@@ -55,10 +52,8 @@ const LineGradientSingleConfigComponent = () => {
 										className="w-full"
 										value={i.symbolSize}
 										onChange={(val) => {
-											const series = component.option.series[0];
-											updateChartConfig(chartIndex, "option", "series", [
-												{ ...series, symbolSize: val }
-											]);
+											const series = chartOptions.series[0];
+											update(chartIndex, "option", "series", [{ ...series, symbolSize: val }]);
 										}}
 									/>
 								</JSettingItem>
@@ -70,8 +65,8 @@ const LineGradientSingleConfigComponent = () => {
 									<Switch
 										value={i.label.show}
 										onChange={(val) => {
-											const series = component.option.series[0];
-											updateChartConfig(chartIndex, "option", "series", [
+											const series = chartOptions.series[0];
+											update(chartIndex, "option", "series", [
 												{ ...series, label: { ...series.label, show: val } }
 											]);
 										}}
@@ -82,9 +77,9 @@ const LineGradientSingleConfigComponent = () => {
 										className="w-full"
 										value={i.label.fontSize}
 										onChange={(val) => {
-											const series = component.option.series[0];
+											const series = chartOptions.series[0];
 											val &&
-												updateChartConfig(chartIndex, "option", "series", [
+												update(chartIndex, "option", "series", [
 													{ ...series, label: { ...series.label, fontSize: val } }
 												]);
 										}}
@@ -97,9 +92,9 @@ const LineGradientSingleConfigComponent = () => {
 										value={i.label.color}
 										onChange={(val) => {
 											const color = val.toHexString();
-											const series = component.option.series[0];
+											const series = chartOptions.series[0];
 											val &&
-												updateChartConfig(chartIndex, "option", "series", [
+												update(chartIndex, "option", "series", [
 													{ ...series, label: { ...series.label, color } }
 												]);
 										}}
@@ -116,9 +111,9 @@ const LineGradientSingleConfigComponent = () => {
 											{ label: "bottom", value: "bottom" }
 										]}
 										onChange={(val) => {
-											const series = component.option.series[0];
+											const series = chartOptions.series[0];
 											val &&
-												updateChartConfig(chartIndex, "option", "series", [
+												update(chartIndex, "option", "series", [
 													{ ...series, label: { ...series.label, position: val } }
 												]);
 										}}
@@ -131,6 +126,6 @@ const LineGradientSingleConfigComponent = () => {
 			))}
 		</>
 	);
-};
+});
 
 export default LineGradientSingleConfigComponent;

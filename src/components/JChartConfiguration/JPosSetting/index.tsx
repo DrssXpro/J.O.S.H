@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Button, Divider, InputNumber, Tooltip, Typography } from "antd";
 import JSettingBox from "../public/JSettingBox";
 import {
@@ -8,16 +9,19 @@ import {
 	MdAlignHorizontalCenter,
 	MdAlignVerticalCenter
 } from "react-icons/md";
-import useChartStore from "@/store/chartStore/chartStore";
-import useEditCharts from "@/hooks/useEditCharts";
 import useCanvasStore from "@/store/canvasStore/canvasStore";
+import { chartInitConfig } from "@/settings/designSetting";
+import { UpdateChartConfigType } from "@/store/chartStore/types";
 
-const JPosSetting = () => {
+interface IPosSettingProps {
+	chartIndex: number;
+	attr: typeof chartInitConfig;
+	update: UpdateChartConfigType;
+}
+
+const JPosSetting = memo((props: IPosSettingProps) => {
 	const { canvasConfig } = useCanvasStore();
-	const { updateChartConfig } = useChartStore();
-	const { getTargetData, getTargetChartIndex } = useEditCharts();
-	const component = getTargetData()!;
-	const chartIndex = getTargetChartIndex()!;
+	const { chartIndex, attr, update } = props;
 
 	const positionList = [
 		{
@@ -25,8 +29,8 @@ const JPosSetting = () => {
 			label: "局左",
 			icon: <MdAlignHorizontalLeft />,
 			clickHandle: () => {
-				updateChartConfig(chartIndex, "attr", null, {
-					...component.attr,
+				update(chartIndex, "attr", null, {
+					...attr,
 					x: 0
 				});
 			}
@@ -36,9 +40,9 @@ const JPosSetting = () => {
 			label: "X轴居中",
 			icon: <MdAlignVerticalCenter />,
 			clickHandle: () => {
-				updateChartConfig(chartIndex, "attr", null, {
-					...component.attr,
-					y: (canvasConfig.canvasHeight - component.attr.h) / 2
+				update(chartIndex, "attr", null, {
+					...attr,
+					y: (canvasConfig.canvasHeight - attr.h) / 2
 				});
 			}
 		},
@@ -47,9 +51,9 @@ const JPosSetting = () => {
 			label: "局右",
 			icon: <MdAlignHorizontalRight />,
 			clickHandle: () => {
-				updateChartConfig(chartIndex, "attr", null, {
-					...component.attr,
-					x: canvasConfig.canvasWidth - component.attr.w
+				update(chartIndex, "attr", null, {
+					...attr,
+					x: canvasConfig.canvasWidth - attr.w
 				});
 			}
 		},
@@ -58,7 +62,7 @@ const JPosSetting = () => {
 			label: "顶部",
 			icon: <MdAlignVerticalTop />,
 			clickHandle: () => {
-				updateChartConfig(chartIndex, "attr", null, { ...component.attr, y: 0 });
+				update(chartIndex, "attr", null, { ...attr, y: 0 });
 			}
 		},
 		{
@@ -66,9 +70,9 @@ const JPosSetting = () => {
 			label: "Y轴居中",
 			icon: <MdAlignHorizontalCenter />,
 			clickHandle: () => {
-				updateChartConfig(chartIndex, "attr", null, {
-					...component.attr,
-					x: (canvasConfig.canvasWidth - component.attr.w) / 2
+				update(chartIndex, "attr", null, {
+					...attr,
+					x: (canvasConfig.canvasWidth - attr.w) / 2
 				});
 			}
 		},
@@ -77,9 +81,9 @@ const JPosSetting = () => {
 			label: "底部",
 			icon: <MdAlignVerticalBottom />,
 			clickHandle: () => {
-				updateChartConfig(chartIndex, "attr", null, {
-					...component.attr,
-					y: canvasConfig.canvasHeight - component.attr.h
+				update(chartIndex, "attr", null, {
+					...attr,
+					y: canvasConfig.canvasHeight - attr.h
 				});
 			}
 		}
@@ -99,23 +103,23 @@ const JPosSetting = () => {
 					<InputNumber
 						addonBefore={<Typography.Text>上</Typography.Text>}
 						className="flex-1"
-						value={component.attr.y}
+						value={attr.y}
 						onChange={(val) => {
-							val && updateChartConfig(chartIndex, "attr", null, { ...component.attr, y: val });
+							val && update(chartIndex, "attr", null, { ...attr, y: val });
 						}}
 					/>
 					<InputNumber
 						addonBefore={<Typography.Text>左</Typography.Text>}
 						className="flex-1"
-						value={component.attr.x}
+						value={attr.x}
 						onChange={(val) => {
-							val && updateChartConfig(chartIndex, "attr", null, { ...component.attr, x: val });
+							val && update(chartIndex, "attr", null, { ...attr, x: val });
 						}}
 					/>
 				</div>
 			</JSettingBox>
 		</>
 	);
-};
+});
 
 export default JPosSetting;

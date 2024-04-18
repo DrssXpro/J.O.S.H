@@ -5,7 +5,7 @@ import { HistoryItemType, HistoryActionTypeEnum } from "@/store/chartHistoryStor
 import useChartStore from "@/store/chartStore/chartStore";
 
 const useUndoRedo = () => {
-	const { updateChartConfig } = useChartStore();
+	const updateChartConfig = useChartStore((selector) => selector.updateChartConfig);
 	const {
 		handleRemoveComponents,
 		handleAddComponents,

@@ -1,13 +1,17 @@
+import { memo } from "react";
 import { InputNumber, Typography } from "antd";
 import JSettingBox from "../public/JSettingBox";
-import useEditCharts from "@/hooks/useEditCharts";
-import useChartStore from "@/store/chartStore/chartStore";
+import { chartInitConfig } from "@/settings/designSetting";
+import { UpdateChartConfigType } from "@/store/chartStore/types";
 
-const JSizeSetting = () => {
-	const { updateChartConfig } = useChartStore();
-	const { getTargetChartIndex, getTargetData } = useEditCharts();
-	const chartIndex = getTargetChartIndex()!;
-	const component = getTargetData()!;
+interface ISizeSettingProps {
+	chartIndex: number;
+	attr: typeof chartInitConfig;
+	update: UpdateChartConfigType;
+}
+
+const JSizeSetting = memo((props: ISizeSettingProps) => {
+	const { chartIndex, attr, update } = props;
 
 	return (
 		<JSettingBox name="尺寸">
@@ -15,22 +19,22 @@ const JSizeSetting = () => {
 				<InputNumber
 					addonBefore={<Typography.Text>宽度</Typography.Text>}
 					className="flex-1"
-					value={component.attr.w}
+					value={attr.w}
 					onChange={(val) => {
-						val && updateChartConfig(chartIndex, "attr", null, { ...component.attr, w: val });
+						val && update(chartIndex, "attr", null, { ...attr, w: val });
 					}}
 				/>
 				<InputNumber
 					addonBefore={<Typography.Text>高度</Typography.Text>}
 					className="flex-1"
-					value={component.attr.h}
+					value={attr.h}
 					onChange={(val) => {
-						val && updateChartConfig(chartIndex, "attr", null, { ...component.attr, h: val });
+						val && update(chartIndex, "attr", null, { ...attr, h: val });
 					}}
 				/>
 			</div>
 		</JSettingBox>
 	);
-};
+});
 
 export default JSizeSetting;

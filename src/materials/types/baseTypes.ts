@@ -1,3 +1,4 @@
+import { UpdateChartConfigType } from "@/store/chartStore/types";
 import { BaseEvent, EventLife } from "@/types/EventTypes";
 import { RequestConfigType } from "@/types/HttpTypes";
 
@@ -68,6 +69,14 @@ export interface ChartComponentProps {
 	// 自定义事件
 	baseEvent?: ChartBaseEventType;
 	advancedEvent?: ChartAdvancedEventType;
+}
+
+// 图表配置组件 props
+export interface ChartConfigComponentProps {
+	chartOptions: any;
+	chartRendererType?: RendererTypeEnum;
+	chartIndex: number;
+	update: UpdateChartConfigType;
 }
 
 // 组件状态

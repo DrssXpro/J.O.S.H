@@ -1,10 +1,10 @@
+import { memo } from "react";
 import JCollapseBox from "@/components/JChartConfiguration/public/JCollapseBox";
 import JSettingBox from "@/components/JChartConfiguration/public/JSettingBox";
 import JSettingItem from "@/components/JChartConfiguration/public/JSettingItem";
-import useEditCharts from "@/hooks/useEditCharts";
-import useChartStore from "@/store/chartStore/chartStore";
 import { Button, Input, InputNumber, Select, Switch } from "antd";
 import { DotPositionEnum } from "../config";
+import { ChartConfigComponentProps } from "@/materials/types";
 
 const dotOptions = [
 	{
@@ -25,32 +25,29 @@ const dotOptions = [
 	}
 ];
 
-const ImageCarouselConfigComponent = () => {
-	const { updateChartConfig } = useChartStore();
-	const { getTargetChartIndex, getTargetData } = useEditCharts();
-	const chartIndex = getTargetChartIndex()!;
-	const component = getTargetData()!;
+const ImageCarouselConfigComponent = memo((props: ChartConfigComponentProps) => {
+	const { chartIndex, chartOptions, update } = props;
 	return (
 		<>
 			<JCollapseBox name="图片" unfold>
 				<>
 					<div className="flex flex-col gap-2">
-						{component.option.dataset.map((item: string, index: number) => (
+						{chartOptions.dataset.map((item: string, index: number) => (
 							<div className="flex gap-2">
 								<Input
 									value={item}
 									key={index}
 									onChange={(e) => {
-										const currentList = [...component.option.dataset];
+										const currentList = [...chartOptions.dataset];
 										currentList[index] = e.target.value;
-										updateChartConfig(chartIndex, "option", "dataset", currentList);
+										update(chartIndex, "option", "dataset", currentList);
 									}}
 								/>
 								<Button
 									onClick={() => {
-										const currentList = [...component.option.dataset];
+										const currentList = [...chartOptions.dataset];
 										currentList.splice(index, 1);
-										updateChartConfig(chartIndex, "option", "dataset", currentList);
+										update(chartIndex, "option", "dataset", currentList);
 									}}
 								>
 									-
@@ -62,8 +59,8 @@ const ImageCarouselConfigComponent = () => {
 						className="mt-2"
 						block
 						onClick={() => {
-							const newList = [...component.option.dataset, ""];
-							updateChartConfig(chartIndex, "option", "dataset", newList);
+							const newList = [...chartOptions.dataset, ""];
+							update(chartIndex, "option", "dataset", newList);
 						}}
 					>
 						+ 新增
@@ -76,35 +73,35 @@ const ImageCarouselConfigComponent = () => {
 						<div className="grid grid-cols-2 gap-2">
 							<JSettingItem text="自动播放">
 								<Switch
-									value={component.option.autoPlay}
+									value={chartOptions.autoPlay}
 									onChange={(val) => {
-										updateChartConfig(chartIndex, "option", "autoPlay", val);
+										update(chartIndex, "option", "autoPlay", val);
 									}}
 								/>
 							</JSettingItem>
 							<JSettingItem text="间隔时间(毫秒)">
 								<InputNumber
 									step={1000}
-									value={component.option.interval}
+									value={chartOptions.interval}
 									onChange={(val) => {
-										updateChartConfig(chartIndex, "option", "interval", val);
+										update(chartIndex, "option", "interval", val);
 									}}
 								/>
 							</JSettingItem>
 							<JSettingItem text="渐变效果">
 								<Switch
-									value={component.option.fade}
+									value={chartOptions.fade}
 									onChange={(val) => {
-										updateChartConfig(chartIndex, "option", "fade", val);
+										update(chartIndex, "option", "fade", val);
 									}}
 								/>
 							</JSettingItem>
 							<JSettingItem text="动画时间">
 								<InputNumber
 									step={100}
-									value={component.option.animateSpeed}
+									value={chartOptions.animateSpeed}
 									onChange={(val) => {
-										updateChartConfig(chartIndex, "option", "animateSpeed", val);
+										update(chartIndex, "option", "animateSpeed", val);
 									}}
 								/>
 							</JSettingItem>
@@ -114,10 +111,10 @@ const ImageCarouselConfigComponent = () => {
 						<div className="grid grid-cols-2 gap-2">
 							<JSettingItem text="位置">
 								<Select
-									value={component.option.dotPlacement}
+									value={chartOptions.dotPlacement}
 									options={dotOptions}
 									onChange={(val) => {
-										updateChartConfig(chartIndex, "option", "dotPlacement", val);
+										update(chartIndex, "option", "dotPlacement", val);
 									}}
 								/>
 							</JSettingItem>
@@ -127,6 +124,6 @@ const ImageCarouselConfigComponent = () => {
 			</JCollapseBox>
 		</>
 	);
-};
+});
 
 export default ImageCarouselConfigComponent;

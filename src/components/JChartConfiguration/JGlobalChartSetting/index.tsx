@@ -3,19 +3,18 @@ import JCollapseBox from "../public/JCollapseBox";
 import JSettingBox from "../public/JSettingBox";
 import JSettingItem from "../public/JSettingItem";
 import { axisConfig, legendConfig } from "@/materials/echartsConfig";
-import useEditCharts from "@/hooks/useEditCharts";
-import useChartStore from "@/store/chartStore/chartStore";
 import JChartRendererSetting from "../JChartRendererSetting";
+import { UpdateChartConfigType } from "@/store/chartStore/types";
 
 interface IJGlobalChartSettingProps {
 	chartIndex: number;
+	chartRendererType?: any;
+	chartOptions: any;
+	update: UpdateChartConfigType;
 }
 
 const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
-	const { chartIndex } = props;
-	const { updateChartConfig } = useChartStore();
-	const { getTargetData } = useEditCharts();
-	const component = getTargetData()!;
+	const { chartIndex, chartRendererType, chartOptions, update } = props;
 
 	return (
 		<>
@@ -23,32 +22,32 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 				<>
 					<JSettingBox name="全局">
 						<JChartRendererSetting
-							value={component.rendererType!}
+							value={chartRendererType!}
 							onChange={(value) => {
-								updateChartConfig(chartIndex, "rendererType", null, value);
+								update(chartIndex, "rendererType", null, value);
 							}}
 						/>
 					</JSettingBox>
 					<JSettingBox name="当前">
 						<JChartRendererSetting
-							value={component.rendererType!}
+							value={chartRendererType!}
 							onChange={(value) => {
-								updateChartConfig(chartIndex, "rendererType", null, value);
+								update(chartIndex, "rendererType", null, value);
 							}}
 						/>
 					</JSettingBox>
 				</>
 			</JCollapseBox>
-			{component.option.grid && (
+			{chartOptions.grid && (
 				<JCollapseBox name="容器">
 					<JSettingBox name="距离">
 						<div className="grid grid-cols-2 gap-2">
 							<JSettingItem text="左侧距离">
 								<Input
-									value={component.option.grid.left}
+									value={chartOptions.grid.left}
 									onChange={(e) => {
-										updateChartConfig(chartIndex, "option", "grid", {
-											...component.option.grid,
+										update(chartIndex, "option", "grid", {
+											...chartOptions.grid,
 											left: e.target.value
 										});
 									}}
@@ -56,10 +55,10 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 							</JSettingItem>
 							<JSettingItem text="右侧距离">
 								<Input
-									value={component.option.grid.right}
+									value={chartOptions.grid.right}
 									onChange={(e) => {
-										updateChartConfig(chartIndex, "option", "grid", {
-											...component.option.grid,
+										update(chartIndex, "option", "grid", {
+											...chartOptions.grid,
 											right: e.target.value
 										});
 									}}
@@ -67,10 +66,10 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 							</JSettingItem>
 							<JSettingItem text="上侧距离">
 								<Input
-									value={component.option.grid.top}
+									value={chartOptions.grid.top}
 									onChange={(e) => {
-										updateChartConfig(chartIndex, "option", "grid", {
-											...component.option.grid,
+										update(chartIndex, "option", "grid", {
+											...chartOptions.grid,
 											top: e.target.value
 										});
 									}}
@@ -78,10 +77,10 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 							</JSettingItem>
 							<JSettingItem text="下侧距离">
 								<Input
-									value={component.option.grid.bottom}
+									value={chartOptions.grid.bottom}
 									onChange={(e) => {
-										updateChartConfig(chartIndex, "option", "grid", {
-											...component.option.grid,
+										update(chartIndex, "option", "grid", {
+											...chartOptions.grid,
 											bottom: e.target.value
 										});
 									}}
@@ -91,17 +90,17 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 					</JSettingBox>
 				</JCollapseBox>
 			)}
-			{component.option.xAxis && (
+			{chartOptions.xAxis && (
 				<JCollapseBox
 					name="X轴"
 					operator={
 						<Switch
 							checkedChildren="启用"
 							unCheckedChildren="关闭"
-							value={component.option.xAxis.show}
+							value={chartOptions.xAxis.show}
 							onChange={(val) => {
-								updateChartConfig(chartIndex, "option", "xAxis", {
-									...component.option.xAxis,
+								update(chartIndex, "option", "xAxis", {
+									...chartOptions.xAxis,
 									show: val
 								});
 							}}
@@ -114,10 +113,10 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 								<JSettingItem text="名称">
 									<Input
 										placeholder="请输入"
-										value={component.option.xAxis.name}
+										value={chartOptions.xAxis.name}
 										onChange={(e) => {
-											updateChartConfig(chartIndex, "option", "xAxis", {
-												...component.option.xAxis,
+											update(chartIndex, "option", "xAxis", {
+												...chartOptions.xAxis,
 												name: e.target.value
 											});
 										}}
@@ -127,13 +126,13 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<ColorPicker
 										className="w-full"
 										showText
-										value={component.option.xAxis.nameTextStyle.color}
+										value={chartOptions.xAxis.nameTextStyle.color}
 										onChange={(val) => {
 											const color = val.toHexString();
-											updateChartConfig(chartIndex, "option", "xAxis", {
-												...component.option.xAxis,
+											update(chartIndex, "option", "xAxis", {
+												...chartOptions.xAxis,
 												nameTextStyle: {
-													...component.option.xAxis.nameTextStyle,
+													...chartOptions.xAxis.nameTextStyle,
 													color
 												}
 											});
@@ -144,12 +143,12 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<InputNumber
 										className="w-full"
 										min={12}
-										value={component.option.xAxis.nameTextStyle.fontSize}
+										value={chartOptions.xAxis.nameTextStyle.fontSize}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "option", "xAxis", {
-												...component.option.xAxis,
+											update(chartIndex, "option", "xAxis", {
+												...chartOptions.xAxis,
 												nameTextStyle: {
-													...component.option.xAxis.nameTextStyle,
+													...chartOptions.xAxis.nameTextStyle,
 													fontSize: val
 												}
 											});
@@ -160,10 +159,10 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<InputNumber
 										className="w-full"
 										min={5}
-										value={component.option.xAxis.nameGap}
+										value={chartOptions.xAxis.nameGap}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "option", "xAxis", {
-												...component.option.xAxis,
+											update(chartIndex, "option", "xAxis", {
+												...chartOptions.xAxis,
 												nameGap: val
 											});
 										}}
@@ -175,12 +174,12 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 							<div className="grid grid-cols-2 gap-2">
 								<JSettingItem text="展示">
 									<Switch
-										value={component.option.xAxis.axisLabel.show}
+										value={chartOptions.xAxis.axisLabel.show}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "option", "xAxis", {
-												...component.option.xAxis,
+											update(chartIndex, "option", "xAxis", {
+												...chartOptions.xAxis,
 												axisLabel: {
-													...component.option.xAxis.axisLabel,
+													...chartOptions.xAxis.axisLabel,
 													show: val
 												}
 											});
@@ -191,13 +190,13 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<ColorPicker
 										className="w-full"
 										showText
-										value={component.option.xAxis.axisLabel.color}
+										value={chartOptions.xAxis.axisLabel.color}
 										onChange={(val) => {
 											const color = val.toHexString();
-											updateChartConfig(chartIndex, "option", "xAxis", {
-												...component.option.xAxis,
+											update(chartIndex, "option", "xAxis", {
+												...chartOptions.xAxis,
 												axisLabel: {
-													...component.option.xAxis.axisLabel,
+													...chartOptions.xAxis.axisLabel,
 													color
 												}
 											});
@@ -208,12 +207,12 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<InputNumber
 										className="w-full"
 										min={8}
-										value={component.option.xAxis.axisLabel.fontSize}
+										value={chartOptions.xAxis.axisLabel.fontSize}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "option", "xAxis", {
-												...component.option.xAxis,
+											update(chartIndex, "option", "xAxis", {
+												...chartOptions.xAxis,
 												axisLabel: {
-													...component.option.xAxis.axisLabel,
+													...chartOptions.xAxis.axisLabel,
 													fontSize: val
 												}
 											});
@@ -225,12 +224,12 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 										className="w-full"
 										min={-90}
 										max={90}
-										value={component.option.xAxis.axisLabel.rotate}
+										value={chartOptions.xAxis.axisLabel.rotate}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "option", "xAxis", {
-												...component.option.xAxis,
+											update(chartIndex, "option", "xAxis", {
+												...chartOptions.xAxis,
 												axisLabel: {
-													...component.option.xAxis.axisLabel,
+													...chartOptions.xAxis.axisLabel,
 													rotate: val
 												}
 											});
@@ -243,12 +242,12 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 							<div className="grid grid-cols-2 gap-2">
 								<JSettingItem text="展示">
 									<Switch
-										value={component.option.xAxis.axisLine.show}
+										value={chartOptions.xAxis.axisLine.show}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "option", "xAxis", {
-												...component.option.xAxis,
+											update(chartIndex, "option", "xAxis", {
+												...chartOptions.xAxis,
 												axisLine: {
-													...component.option.xAxis.axisLine,
+													...chartOptions.xAxis.axisLine,
 													show: val
 												}
 											});
@@ -259,15 +258,15 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<ColorPicker
 										className="w-full"
 										showText
-										value={component.option.xAxis.axisLine.lineStyle.color}
+										value={chartOptions.xAxis.axisLine.lineStyle.color}
 										onChange={(val) => {
 											const color = val.toHexString();
-											updateChartConfig(chartIndex, "option", "xAxis", {
-												...component.option.xAxis,
+											update(chartIndex, "option", "xAxis", {
+												...chartOptions.xAxis,
 												axisLine: {
-													...component.option.xAxis.axisLine,
+													...chartOptions.xAxis.axisLine,
 													lineStyle: {
-														...component.option.xAxis.axisLine.lineStyle,
+														...chartOptions.xAxis.axisLine.lineStyle,
 														color
 													}
 												}
@@ -279,14 +278,14 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<InputNumber
 										className="w-full"
 										min={1}
-										value={component.option.xAxis.axisLine.lineStyle.width}
+										value={chartOptions.xAxis.axisLine.lineStyle.width}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "option", "xAxis", {
-												...component.option.xAxis,
+											update(chartIndex, "option", "xAxis", {
+												...chartOptions.xAxis,
 												axisLine: {
-													...component.option.xAxis.axisLine,
+													...chartOptions.xAxis.axisLine,
 													lineStyle: {
-														...component.option.xAxis.axisLine.lineStyle,
+														...chartOptions.xAxis.axisLine.lineStyle,
 														width: val
 													}
 												}
@@ -298,10 +297,10 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<Select
 										className="w-full"
 										options={axisConfig.xposition}
-										value={component.option.xAxis.position}
+										value={chartOptions.xAxis.position}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "option", "xAxis", {
-												...component.option.xAxis,
+											update(chartIndex, "option", "xAxis", {
+												...chartOptions.xAxis,
 												position: val
 											});
 										}}
@@ -309,12 +308,12 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 								</JSettingItem>
 								<JSettingItem text="对齐零">
 									<Switch
-										value={component.option.xAxis.axisLine.onZero}
+										value={chartOptions.xAxis.axisLine.onZero}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "option", "xAxis", {
-												...component.option.xAxis,
+											update(chartIndex, "option", "xAxis", {
+												...chartOptions.xAxis,
 												axisLine: {
-													...component.option.xAxis.axisLine,
+													...chartOptions.xAxis.axisLine,
 													onZero: val
 												}
 											});
@@ -323,10 +322,10 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 								</JSettingItem>
 								<JSettingItem text="反向">
 									<Switch
-										value={component.option.xAxis.inverse}
+										value={chartOptions.xAxis.inverse}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "option", "xAxis", {
-												...component.option.xAxis,
+											update(chartIndex, "option", "xAxis", {
+												...chartOptions.xAxis,
 												inverse: val
 											});
 										}}
@@ -338,12 +337,12 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 							<div className="grid grid-cols-2 gap-2">
 								<JSettingItem text="展示">
 									<Switch
-										value={component.option.xAxis.axisTick.show}
+										value={chartOptions.xAxis.axisTick.show}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "option", "xAxis", {
-												...component.option.xAxis,
+											update(chartIndex, "option", "xAxis", {
+												...chartOptions.xAxis,
 												axisTick: {
-													...component.option.xAxis.axisTick,
+													...chartOptions.xAxis.axisTick,
 													show: val
 												}
 											});
@@ -353,12 +352,12 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 								<JSettingItem text="长度">
 									<InputNumber
 										className="w-full"
-										value={component.option.xAxis.axisTick.length}
+										value={chartOptions.xAxis.axisTick.length}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "option", "xAxis", {
-												...component.option.xAxis,
+											update(chartIndex, "option", "xAxis", {
+												...chartOptions.xAxis,
 												axisTick: {
-													...component.option.xAxis.axisTick,
+													...chartOptions.xAxis.axisTick,
 													length: val
 												}
 											});
@@ -371,12 +370,12 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 							<div className="grid grid-cols-2 gap-2">
 								<JSettingItem text="展示">
 									<Switch
-										value={component.option.xAxis.splitLine.show}
+										value={chartOptions.xAxis.splitLine.show}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "option", "xAxis", {
-												...component.option.xAxis,
+											update(chartIndex, "option", "xAxis", {
+												...chartOptions.xAxis,
 												splitLine: {
-													...component.option.xAxis.splitLine,
+													...chartOptions.xAxis.splitLine,
 													show: val
 												}
 											});
@@ -387,15 +386,15 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<ColorPicker
 										className="w-full"
 										showText
-										value={component.option.xAxis.splitLine.lineStyle.color}
+										value={chartOptions.xAxis.splitLine.lineStyle.color}
 										onChange={(val) => {
 											const color = val.toHexString();
-											updateChartConfig(chartIndex, "option", "xAxis", {
-												...component.option.xAxis,
+											update(chartIndex, "option", "xAxis", {
+												...chartOptions.xAxis,
 												splitLine: {
-													...component.option.xAxis.splitLine,
+													...chartOptions.xAxis.splitLine,
 													lineStyle: {
-														...component.option.xAxis.splitLine.lineStyle,
+														...chartOptions.xAxis.splitLine.lineStyle,
 														color
 													}
 												}
@@ -407,14 +406,14 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<InputNumber
 										className="w-full"
 										min={1}
-										value={component.option.xAxis.splitLine.lineStyle.width}
+										value={chartOptions.xAxis.splitLine.lineStyle.width}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "option", "xAxis", {
-												...component.option.xAxis,
+											update(chartIndex, "option", "xAxis", {
+												...chartOptions.xAxis,
 												splitLine: {
-													...component.option.xAxis.splitLine,
+													...chartOptions.xAxis.splitLine,
 													lineStyle: {
-														...component.option.xAxis.splitLine.lineStyle,
+														...chartOptions.xAxis.splitLine.lineStyle,
 														width: val
 													}
 												}
@@ -426,14 +425,14 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<Select
 										className="w-full"
 										options={axisConfig.splitLint.lineStyle}
-										value={component.option.xAxis.splitLine.lineStyle.type}
+										value={chartOptions.xAxis.splitLine.lineStyle.type}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "option", "xAxis", {
-												...component.option.xAxis,
+											update(chartIndex, "option", "xAxis", {
+												...chartOptions.xAxis,
 												splitLine: {
-													...component.option.xAxis.splitLine,
+													...chartOptions.xAxis.splitLine,
 													lineStyle: {
-														...component.option.xAxis.splitLine.lineStyle,
+														...chartOptions.xAxis.splitLine.lineStyle,
 														type: val
 													}
 												}
@@ -447,17 +446,17 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 				</JCollapseBox>
 			)}
 
-			{component.option.yAxis && (
+			{chartOptions.yAxis && (
 				<JCollapseBox
 					name="Y轴"
 					operator={
 						<Switch
 							checkedChildren="启用"
 							unCheckedChildren="关闭"
-							value={component.option.yAxis.show}
+							value={chartOptions.yAxis.show}
 							onChange={(val) => {
-								updateChartConfig(chartIndex, "option", "yAxis", {
-									...component.option.yAxis,
+								update(chartIndex, "option", "yAxis", {
+									...chartOptions.yAxis,
 									show: val
 								});
 							}}
@@ -470,10 +469,10 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 								<JSettingItem text="名称">
 									<Input
 										placeholder="请输入"
-										value={component.option.yAxis.name}
+										value={chartOptions.yAxis.name}
 										onChange={(e) => {
-											updateChartConfig(chartIndex, "option", "yAxis", {
-												...component.option.yAxis,
+											update(chartIndex, "option", "yAxis", {
+												...chartOptions.yAxis,
 												name: e.target.value
 											});
 										}}
@@ -483,13 +482,13 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<ColorPicker
 										className="w-full"
 										showText
-										value={component.option.yAxis.nameTextStyle.color}
+										value={chartOptions.yAxis.nameTextStyle.color}
 										onChange={(val) => {
 											const color = val.toHexString();
-											updateChartConfig(chartIndex, "option", "yAxis", {
-												...component.option.yAxis,
+											update(chartIndex, "option", "yAxis", {
+												...chartOptions.yAxis,
 												nameTextStyle: {
-													...component.option.yAxis.nameTextStyle,
+													...chartOptions.yAxis.nameTextStyle,
 													color
 												}
 											});
@@ -500,12 +499,12 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<InputNumber
 										className="w-full"
 										min={8}
-										value={component.option.yAxis.nameTextStyle.fontSize}
+										value={chartOptions.yAxis.nameTextStyle.fontSize}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "option", "yAxis", {
-												...component.option.yAxis,
+											update(chartIndex, "option", "yAxis", {
+												...chartOptions.yAxis,
 												nameTextStyle: {
-													...component.option.yAxis.nameTextStyle,
+													...chartOptions.yAxis.nameTextStyle,
 													fontSize: val
 												}
 											});
@@ -516,10 +515,10 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<InputNumber
 										className="w-full"
 										min={5}
-										value={component.option.yAxis.nameGap}
+										value={chartOptions.yAxis.nameGap}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "option", "yAxis", {
-												...component.option.yAxis,
+											update(chartIndex, "option", "yAxis", {
+												...chartOptions.yAxis,
 												nameGap: val
 											});
 										}}
@@ -531,12 +530,12 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 							<div className="grid grid-cols-2 gap-2">
 								<JSettingItem text="展示">
 									<Switch
-										value={component.option.yAxis.axisLabel.show}
+										value={chartOptions.yAxis.axisLabel.show}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "option", "yAxis", {
-												...component.option.yAxis,
+											update(chartIndex, "option", "yAxis", {
+												...chartOptions.yAxis,
 												axisLabel: {
-													...component.option.yAxis.axisLabel,
+													...chartOptions.yAxis.axisLabel,
 													show: val
 												}
 											});
@@ -547,13 +546,13 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<ColorPicker
 										className="w-full"
 										showText
-										value={component.option.yAxis.axisLabel.color}
+										value={chartOptions.yAxis.axisLabel.color}
 										onChange={(val) => {
 											const color = val.toHexString();
-											updateChartConfig(chartIndex, "option", "yAxis", {
-												...component.option.yAxis,
+											update(chartIndex, "option", "yAxis", {
+												...chartOptions.yAxis,
 												axisLabel: {
-													...component.option.yAxis.axisLabel,
+													...chartOptions.yAxis.axisLabel,
 													color
 												}
 											});
@@ -564,12 +563,12 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<InputNumber
 										className="w-full"
 										min={8}
-										value={component.option.yAxis.axisLabel.fontSize}
+										value={chartOptions.yAxis.axisLabel.fontSize}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "option", "yAxis", {
-												...component.option.yAxis,
+											update(chartIndex, "option", "yAxis", {
+												...chartOptions.yAxis,
 												axisLabel: {
-													...component.option.yAxis.axisLabel,
+													...chartOptions.yAxis.axisLabel,
 													fontSize: val
 												}
 											});
@@ -581,12 +580,12 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 										className="w-full"
 										min={-90}
 										max={90}
-										value={component.option.yAxis.axisLabel.rotate}
+										value={chartOptions.yAxis.axisLabel.rotate}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "option", "yAxis", {
-												...component.option.yAxis,
+											update(chartIndex, "option", "yAxis", {
+												...chartOptions.yAxis,
 												axisLabel: {
-													...component.option.yAxis.axisLabel,
+													...chartOptions.yAxis.axisLabel,
 													rotate: val
 												}
 											});
@@ -599,12 +598,12 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 							<div className="grid grid-cols-2 gap-2">
 								<JSettingItem text="展示">
 									<Switch
-										value={component.option.yAxis.axisLine.show}
+										value={chartOptions.yAxis.axisLine.show}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "option", "yAxis", {
-												...component.option.yAxis,
+											update(chartIndex, "option", "yAxis", {
+												...chartOptions.yAxis,
 												axisLine: {
-													...component.option.yAxis.axisLine,
+													...chartOptions.yAxis.axisLine,
 													show: val
 												}
 											});
@@ -615,15 +614,15 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<ColorPicker
 										className="w-full"
 										showText
-										value={component.option.yAxis.axisLine.lineStyle.color}
+										value={chartOptions.yAxis.axisLine.lineStyle.color}
 										onChange={(val) => {
 											const color = val.toHexString();
-											updateChartConfig(chartIndex, "option", "yAxis", {
-												...component.option.yAxis,
+											update(chartIndex, "option", "yAxis", {
+												...chartOptions.yAxis,
 												axisLine: {
-													...component.option.yAxis.axisLine,
+													...chartOptions.yAxis.axisLine,
 													lineStyle: {
-														...component.option.yAxis.axisLine.lineStyle,
+														...chartOptions.yAxis.axisLine.lineStyle,
 														color
 													}
 												}
@@ -635,14 +634,14 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<InputNumber
 										className="w-full"
 										min={1}
-										value={component.option.yAxis.axisLine.lineStyle.width}
+										value={chartOptions.yAxis.axisLine.lineStyle.width}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "option", "yAxis", {
-												...component.option.yAxis,
+											update(chartIndex, "option", "yAxis", {
+												...chartOptions.yAxis,
 												axisLine: {
-													...component.option.yAxis.axisLine,
+													...chartOptions.yAxis.axisLine,
 													lineStyle: {
-														...component.option.yAxis.axisLine.lineStyle,
+														...chartOptions.yAxis.axisLine.lineStyle,
 														width: val
 													}
 												}
@@ -654,10 +653,10 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<Select
 										className="w-full"
 										options={axisConfig.yposition}
-										value={component.option.yAxis.position}
+										value={chartOptions.yAxis.position}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "option", "yAxis", {
-												...component.option.yAxis,
+											update(chartIndex, "option", "yAxis", {
+												...chartOptions.yAxis,
 												position: val
 											});
 										}}
@@ -665,12 +664,12 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 								</JSettingItem>
 								<JSettingItem text="对齐零">
 									<Switch
-										value={component.option.yAxis.axisLine.onZero}
+										value={chartOptions.yAxis.axisLine.onZero}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "option", "yAxis", {
-												...component.option.yAxis,
+											update(chartIndex, "option", "yAxis", {
+												...chartOptions.yAxis,
 												axisLine: {
-													...component.option.yAxis.axisLine,
+													...chartOptions.yAxis.axisLine,
 													onZero: val
 												}
 											});
@@ -679,10 +678,10 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 								</JSettingItem>
 								<JSettingItem text="反向">
 									<Switch
-										value={component.option.yAxis.inverse}
+										value={chartOptions.yAxis.inverse}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "option", "yAxis", {
-												...component.option.yAxis,
+											update(chartIndex, "option", "yAxis", {
+												...chartOptions.yAxis,
 												inverse: val
 											});
 										}}
@@ -694,12 +693,12 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 							<div className="grid grid-cols-2 gap-2">
 								<JSettingItem text="展示">
 									<Switch
-										value={component.option.yAxis.axisTick.show}
+										value={chartOptions.yAxis.axisTick.show}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "option", "yAxis", {
-												...component.option.yAxis,
+											update(chartIndex, "option", "yAxis", {
+												...chartOptions.yAxis,
 												axisTick: {
-													...component.option.yAxis.axisTick,
+													...chartOptions.yAxis.axisTick,
 													show: val
 												}
 											});
@@ -710,12 +709,12 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<InputNumber
 										className="w-full"
 										min={1}
-										value={component.option.yAxis.axisTick.length}
+										value={chartOptions.yAxis.axisTick.length}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "option", "yAxis", {
-												...component.option.yAxis,
+											update(chartIndex, "option", "yAxis", {
+												...chartOptions.yAxis,
 												axisTick: {
-													...component.option.yAxis.axisTick,
+													...chartOptions.yAxis.axisTick,
 													length: val
 												}
 											});
@@ -728,12 +727,12 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 							<div className="grid grid-cols-2 gap-2">
 								<JSettingItem text="展示">
 									<Switch
-										value={component.option.yAxis.splitLine.show}
+										value={chartOptions.yAxis.splitLine.show}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "option", "yAxis", {
-												...component.option.yAxis,
+											update(chartIndex, "option", "yAxis", {
+												...chartOptions.yAxis,
 												splitLine: {
-													...component.option.yAxis.splitLine,
+													...chartOptions.yAxis.splitLine,
 													show: val
 												}
 											});
@@ -744,15 +743,15 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<ColorPicker
 										className="w-full"
 										showText
-										value={component.option.yAxis.splitLine.lineStyle.color}
+										value={chartOptions.yAxis.splitLine.lineStyle.color}
 										onChange={(val) => {
 											const color = val.toHexString();
-											updateChartConfig(chartIndex, "option", "yAxis", {
-												...component.option.yAxis,
+											update(chartIndex, "option", "yAxis", {
+												...chartOptions.yAxis,
 												splitLine: {
-													...component.option.yAxis.splitLine,
+													...chartOptions.yAxis.splitLine,
 													lineStyle: {
-														...component.option.yAxis.splitLine.lineStyle,
+														...chartOptions.yAxis.splitLine.lineStyle,
 														color
 													}
 												}
@@ -764,14 +763,14 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<InputNumber
 										className="w-full"
 										min={1}
-										value={component.option.yAxis.splitLine.lineStyle.width}
+										value={chartOptions.yAxis.splitLine.lineStyle.width}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "option", "yAxis", {
-												...component.option.yAxis,
+											update(chartIndex, "option", "yAxis", {
+												...chartOptions.yAxis,
 												splitLine: {
-													...component.option.yAxis.splitLine,
+													...chartOptions.yAxis.splitLine,
 													lineStyle: {
-														...component.option.yAxis.splitLine.lineStyle,
+														...chartOptions.yAxis.splitLine.lineStyle,
 														width: val
 													}
 												}
@@ -783,14 +782,14 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<Select
 										className="w-full"
 										options={axisConfig.splitLint.lineStyle}
-										value={component.option.yAxis.splitLine.lineStyle.type}
+										value={chartOptions.yAxis.splitLine.lineStyle.type}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "option", "yAxis", {
-												...component.option.yAxis,
+											update(chartIndex, "option", "yAxis", {
+												...chartOptions.yAxis,
 												splitLine: {
-													...component.option.yAxis.splitLine,
+													...chartOptions.yAxis.splitLine,
 													lineStyle: {
-														...component.option.yAxis.splitLine.lineStyle,
+														...chartOptions.yAxis.splitLine.lineStyle,
 														type: val
 													}
 												}
@@ -803,17 +802,17 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 					</>
 				</JCollapseBox>
 			)}
-			{component.option.legend && (
+			{chartOptions.legend && (
 				<JCollapseBox
 					name="图例"
 					operator={
 						<Switch
 							checkedChildren="启用"
 							unCheckedChildren="关闭"
-							value={component.option.legend.show}
+							value={chartOptions.legend.show}
 							onChange={(val) => {
-								updateChartConfig(chartIndex, "option", "legend", {
-									...component.option.legend,
+								update(chartIndex, "option", "legend", {
+									...chartOptions.legend,
 									show: val
 								});
 							}}
@@ -827,13 +826,13 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<ColorPicker
 										className="w-full"
 										showText
-										value={component.option.legend.textStyle.color}
+										value={chartOptions.legend.textStyle.color}
 										onChange={(val) => {
 											const color = val.toHexString();
-											updateChartConfig(chartIndex, "option", "legend", {
-												...component.option.legend,
+											update(chartIndex, "option", "legend", {
+												...chartOptions.legend,
 												textStyle: {
-													...component.option.legend.textStyle,
+													...chartOptions.legend.textStyle,
 													color
 												}
 											});
@@ -844,12 +843,12 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<InputNumber
 										className="w-full"
 										min={1}
-										value={component.option.legend.textStyle.fontSize}
+										value={chartOptions.legend.textStyle.fontSize}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "option", "legend", {
-												...component.option.legend,
+											update(chartIndex, "option", "legend", {
+												...chartOptions.legend,
 												textStyle: {
-													...component.option.legend.textStyle,
+													...chartOptions.legend.textStyle,
 													fontSize: val
 												}
 											});
@@ -864,10 +863,10 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<Select
 										className="w-full"
 										options={legendConfig.lengendX}
-										value={component.option.legend.x}
+										value={chartOptions.legend.x}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "option", "legend", {
-												...component.option.legend,
+											update(chartIndex, "option", "legend", {
+												...chartOptions.legend,
 												x: val
 											});
 										}}
@@ -878,10 +877,10 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 										defaultValue="top"
 										className="w-full"
 										options={legendConfig.lengendY}
-										value={component.option.legend.y}
+										value={chartOptions.legend.y}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "option", "legend", {
-												...component.option.legend,
+											update(chartIndex, "option", "legend", {
+												...chartOptions.legend,
 												y: val
 											});
 										}}
@@ -895,10 +894,10 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<Select
 										className="w-full"
 										options={legendConfig.orient}
-										value={component.option.legend.orient}
+										value={chartOptions.legend.orient}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "option", "legend", {
-												...component.option.legend,
+											update(chartIndex, "option", "legend", {
+												...chartOptions.legend,
 												orient: val
 											});
 										}}
@@ -908,10 +907,10 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<Select
 										className="w-full"
 										options={legendConfig.shape}
-										value={component.option.legend.icon}
+										value={chartOptions.legend.icon}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "option", "legend", {
-												...component.option.legend,
+											update(chartIndex, "option", "legend", {
+												...chartOptions.legend,
 												icon: val
 											});
 										}}
@@ -925,10 +924,10 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<InputNumber
 										className="w-full"
 										min={1}
-										value={component.option.legend.itemWidth}
+										value={chartOptions.legend.itemWidth}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "option", "legend", {
-												...component.option.legend,
+											update(chartIndex, "option", "legend", {
+												...chartOptions.legend,
 												itemWidth: val
 											});
 										}}
@@ -938,10 +937,10 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 									<InputNumber
 										className="w-full"
 										min={1}
-										value={component.option.legend.itemHeight}
+										value={chartOptions.legend.itemHeight}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "option", "legend", {
-												...component.option.legend,
+											update(chartIndex, "option", "legend", {
+												...chartOptions.legend,
 												itemHeight: val
 											});
 										}}

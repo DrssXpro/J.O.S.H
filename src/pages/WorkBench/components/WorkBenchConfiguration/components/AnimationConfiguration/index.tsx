@@ -6,7 +6,7 @@ import { Button, Col, Row } from "antd";
 import { useMemo, useState } from "react";
 
 const AnimationConfiguration = () => {
-	const { updateChartConfig } = useChartStore();
+	const updateChartConfig = useChartStore((selector) => selector.updateChartConfig);
 	const { getTargetChartIndex, getTargetData } = useEditCharts();
 	const chartIndex = getTargetChartIndex()!;
 	const component = getTargetData()!;
