@@ -27,7 +27,7 @@ const CanvasTool = () => {
 	};
 	return (
 		<div
-			className="absolute bottom-0 z-50 flex items-center justify-between left-[20px]  h-12 px-2 bg-[#232324] border-t-1 border-[#373739]"
+			className="absolute bottom-0 z-50 flex items-center justify-between left-[20px]  h-12 px-2 bg-[#232324] border-t-1 border-t-solid border-[#373739]"
 			style={{ width: `calc(100% - 20px)` }}
 		>
 			<div className="flex items-center gap-2">

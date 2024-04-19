@@ -92,7 +92,7 @@ const LeftOperator = () => {
 					></Button>
 				</Tooltip>
 			</div>
-			<div className="flex items-center ml-4 pl-4 gap-4 border-l-1 border-l-[#2D2D30]">
+			<div className="flex items-center ml-4 pl-4 gap-4 border-l-1 border-l-solid border-l-[#2D2D30]">
 				<Tooltip title="后退">
 					<Button
 						ghost

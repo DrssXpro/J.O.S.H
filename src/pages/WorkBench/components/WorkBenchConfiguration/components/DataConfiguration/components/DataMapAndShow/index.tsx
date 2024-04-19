@@ -200,7 +200,7 @@ const DataMapAndShow = () => {
 								</Typography.Text>
 								{component.filter ? (
 									<>
-										<div className="border-1 border-[#303030] p-2">
+										<div className="border-1 border-solid border-[#303030] p-2">
 											<JEditCode
 												disabled
 												code={component.filter}
@@ -366,7 +366,7 @@ const DataMapAndShow = () => {
 									</div>
 								</Tooltip>
 							</div>
-							<div className="my-2 border-1 border-[#303030]">
+							<div className="my-2 border-1 border-solid border-[#303030]">
 								<JCodeMirror
 									code={JSON.stringify(code, null, 2)}
 									lan="json"

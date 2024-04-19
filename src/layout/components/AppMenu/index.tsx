@@ -30,7 +30,7 @@ const items: MenuItem[] = [
 const SideMenu = () => {
 	return (
 		<div className="w-full">
-			<div className="h-16 p-5 mb-5 border-b-1 border-[#303030] flex items-center ">
+			<div className="h-16 p-5 mb-5 border-b-1 border-b-solid border-[#303030] flex items-center ">
 				<img src={Logo} className="w-15 h-10" />
 				<img src={LogoTitleDark} className="w-25" />
 			</div>

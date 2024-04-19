@@ -38,7 +38,7 @@ const AnimationConfiguration = () => {
 											hoverAnimate === i.value && `animate__animated  animate__${i.value}`
 										} ${
 											selectAnimate === i.value && "text-[#1677FF] border-[#1677FF]"
-										} py-3 px-2 text-[14px] text-center border-[#3E3E3F] border-1 rounded cursor-pointer hover:border-[#1677FF] hover:text-[#1677FF] transition-all`}
+										} py-3 px-2 text-[14px] text-center border-[#3E3E3F] border-1 border-solid rounded cursor-pointer hover:border-[#1677FF] hover:text-[#1677FF] transition-all`}
 										onMouseOver={() => {
 											setHoverAnimate(i.value);
 										}}

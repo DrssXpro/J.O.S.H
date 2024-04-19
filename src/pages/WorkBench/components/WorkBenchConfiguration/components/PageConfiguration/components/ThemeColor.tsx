@@ -25,7 +25,7 @@ const ThemeColor = () => {
 			<div className="mt-4 flex flex-col gap-4">
 				{Object.entries(chartColors).map(([key, i], index1) => (
 					<div
-						className={`relative flex items-center cursor-pointer justify-between bg-[#2C2C2D] border-[rgba(255,255,255,0.09)] border-1 ${
+						className={`relative flex items-center cursor-pointer justify-between bg-[#2C2C2D] border-[rgba(255,255,255,0.09)] border-1 border-solid ${
 							activeSelect === key ? "border-[#2C7BE3] border-2" : ""
 						} p-2 rounded-lg`}
 						key={index1}

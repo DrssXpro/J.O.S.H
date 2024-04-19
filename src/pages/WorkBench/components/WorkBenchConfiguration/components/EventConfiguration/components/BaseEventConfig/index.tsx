@@ -79,7 +79,7 @@ const BaseEventConfig = () => {
 					</Button>
 				}
 			>
-				<div className="p-1 border-1 border-[#3E3E3F]">
+				<div className="p-1 border-1 border-solid border-[#3E3E3F]">
 					<JCodeMirror lan="javascript" fontSize={14} code={showCode} disabled />
 				</div>
 			</JCollapseBox>

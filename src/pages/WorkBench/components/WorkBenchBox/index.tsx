@@ -24,7 +24,7 @@ const WorkBenchBox = (props: WorkBenchBoxProps) => {
 		>
 			{showTop && (
 				<div className="flex w-full h-10">
-					<div className="w-full flex items-center justify-between px-2 py-1 border-b-1 border-[#000]">
+					<div className="w-full flex items-center justify-between px-2 py-1 border-b-1 border-b-solid border-[#000]">
 						<div className="flex items-center gap-1">
 							<div>{topTitle}</div>
 							{topIcon}

@@ -42,7 +42,7 @@ const BodyConfig = () => {
 			/>
 		),
 		[RequestBodyEnum.JSON]: (
-			<div className="border-1 border-[#303030] h-[200px]">
+			<div className="border-1 border-solid border-[#303030] h-[200px]">
 				<JCodeMirror
 					code={Body[RequestBodyEnum.JSON]}
 					lan="json"

@@ -92,7 +92,7 @@ const DynamicData = () => {
 					<Input prefix={<IoFlash />} value={component.request.requestUrl || "暂无"} disabled />
 				</JSettingBox>
 				<div
-					className="absolute top-0 left-0 w-full h-full flex items-center justify-center cursor-pointer opacity-0 border-[#1668DC] border-1 hover:opacity-100 transition-all duration-500"
+					className="absolute top-0 left-0 w-full h-full flex items-center justify-center cursor-pointer opacity-0 border-[#1668DC] border-1 border-solid hover:opacity-100 transition-all duration-500"
 					style={{ backdropFilter: "blur(3px)" }}
 				>
 					<Button

@@ -7,8 +7,8 @@ import WorkBenchConfiguration from "./components/WorkBenchConfiguration";
 
 const WorkBench = () => {
 	return (
-		<Layout className="h-100vh w-100vw">
-			<Layout.Header className="dark:bg-[#18181C] bg-[#18181C] border-b-1 border-[#303030]  px-5">
+		<Layout>
+			<Layout.Header className="bg-[#18181C] border-b-1 border-b-solid border-[#303030]  px-5">
 				<WorkBenchHeader />
 			</Layout.Header>
 			<Layout.Content className="w-full overflow-hidden" style={{ height: "calc(100vh - 64px)" }}>

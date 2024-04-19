@@ -8,7 +8,7 @@ import BgRight from "@/assets/bg-right.svg";
 const Login = () => {
 	return (
 		<Layout className="h-screen w-screen">
-			<Layout.Header className="dark:bg-[#18181C] bg-[#18181C] border-b-1 border-[#303030]  px-10">
+			<Layout.Header className="dark:bg-[#18181C] bg-[#18181C] border-b-1 border-b-solid border-[#303030]  px-10">
 				<LoginHeader />
 			</Layout.Header>
 			<Layout.Content className="bg-[#18181C]">

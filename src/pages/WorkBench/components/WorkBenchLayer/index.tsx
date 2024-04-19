@@ -19,7 +19,7 @@ const WorkBenchLayer = () => {
 		<div
 			className={`${showLayer ? "w-50" : "w-0"} ${
 				showLayer ? "" : "opacity-0"
-			} h-full transition-all border-l-1 border-l-[#000]`}
+			} h-full transition-all border-l-1 border-l-solid border-l-[#000]`}
 		>
 			<WorkBenchBox
 				showTop
