@@ -75,7 +75,6 @@ const DataMapAndShow = () => {
 	const component = getTargetData()!;
 	const { isOpenFilter, filterCode, filterError, showFilter, filterRes, sourceData, setIsOpenFilter, setFilterCode } =
 		useFilter(component, requestGlobalConfig);
-
 	// 图表数据源展示
 	const [code, setCode] = useState(component.option.dataset || "此组件无数据源");
 
@@ -115,9 +114,7 @@ const DataMapAndShow = () => {
 
 	useEffect(() => {
 		// 支持 dataset 图表，设置数据展示并计算数据映射
-		if (component.option.dataset && isCharts) {
-			setCode(component.option.dataset);
-		}
+		setCode(component.option.dataset ? component.option.dataset : "此组件无数据源");
 	}, [component.option.dataset]);
 
 	// 处理映射列表状态结果
