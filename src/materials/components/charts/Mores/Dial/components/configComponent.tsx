@@ -22,7 +22,8 @@ const DialConfigComponent = memo((props: ChartConfigComponentProps) => {
 									const color = val.toHexString();
 									const seriesOption = chartOptions.series[0];
 									update(chartIndex, "option", "series", [
-										{ ...seriesOption, axisLabel: { ...seriesOption.axisLabel, color } }
+										{ ...seriesOption, axisLabel: { ...seriesOption.axisLabel, color } },
+										chartOptions.series[1]
 									]);
 								}}
 							/>
