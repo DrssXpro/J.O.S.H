@@ -17,7 +17,7 @@ const ScatterCommonConfigComponent = memo((props: ChartConfigComponentProps) => 
 				<JCollapseBox key={index} name={`散点-${index + 1}`} unfold>
 					<>
 						<JSettingBox name="样式">
-							<div className="config-layout">
+							<div className="config-items-layout">
 								<JSettingItem text="类型">
 									<Select
 										className="w-full"
@@ -59,7 +59,7 @@ const ScatterCommonConfigComponent = memo((props: ChartConfigComponentProps) => 
 							</div>
 						</JSettingBox>
 						<JSettingBox name="标域">
-							<div className="config-layout">
+							<div className="config-items-layout">
 								<JSettingItem text="粗细(0不显示)">
 									<InputNumber
 										className="w-full"
@@ -137,7 +137,7 @@ const ScatterCommonConfigComponent = memo((props: ChartConfigComponentProps) => 
 							</div>
 						</JSettingBox>
 						<JSettingBox name="标点">
-							<div className="config-layout">
+							<div className="config-items-layout">
 								<JSettingItem text="形状">
 									<Select
 										className="w-full"

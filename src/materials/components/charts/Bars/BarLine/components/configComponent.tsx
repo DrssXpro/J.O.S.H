@@ -17,7 +17,7 @@ const BarLineConfigComponent = memo((props: ChartConfigComponentProps) => {
 					<>
 						{i.type === "bar" && (
 							<JSettingBox name="图形">
-								<div className="config-layout">
+								<div className="config-items-layout">
 									<JSettingItem text="宽度">
 										<InputNumber
 											className="w-full"
@@ -55,7 +55,7 @@ const BarLineConfigComponent = memo((props: ChartConfigComponentProps) => {
 						{i.type !== "bar" && (
 							<>
 								<JSettingBox name="线条">
-									<div className="config-layout">
+									<div className="config-items-layout">
 										<JSettingItem text="宽度">
 											<InputNumber
 												className="w-full"
@@ -88,7 +88,7 @@ const BarLineConfigComponent = memo((props: ChartConfigComponentProps) => {
 									</div>
 								</JSettingBox>
 								<JSettingBox name="实心点">
-									<div className="config-layout">
+									<div className="config-items-layout">
 										<JSettingItem text="宽度">
 											<InputNumber
 												className="w-full"
@@ -108,7 +108,7 @@ const BarLineConfigComponent = memo((props: ChartConfigComponentProps) => {
 							</>
 						)}
 						<JSettingBox name="标签">
-							<div className="config-layout">
+							<div className="config-items-layout">
 								<JSettingItem text="展示">
 									<Switch
 										value={i.label.show}

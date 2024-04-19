@@ -60,7 +60,7 @@ const DynamicData = () => {
 		<>
 			<Card bodyStyle={{ padding: "20px 10px", background: "#232324" }} className="relative">
 				<JSettingBox name="请求配置">
-					<div className="config-layout">
+					<div className="config-items-layout">
 						<JSettingItem text="类型">
 							<Button type="primary" ghost block>
 								普通请求

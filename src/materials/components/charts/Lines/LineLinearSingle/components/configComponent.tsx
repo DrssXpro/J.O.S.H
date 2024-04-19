@@ -15,7 +15,7 @@ const LineLinearSingleConfigComponent = memo((props: ChartConfigComponentProps) 
 			<JCollapseBox name="样式" unfold>
 				<>
 					<JSettingBox name="线条">
-						<div className="config-layout">
+						<div className="config-items-layout">
 							<JSettingItem text="颜色1">
 								<ColorPicker
 									className="w-full"

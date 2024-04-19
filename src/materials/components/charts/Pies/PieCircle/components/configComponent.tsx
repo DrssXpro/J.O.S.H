@@ -12,7 +12,7 @@ const PieCircleConfigComponent = memo((props: ChartConfigComponentProps) => {
 			<JCollapseBox name="圆环" unfold>
 				<>
 					<JSettingBox name="标题">
-						<div className="config-layout">
+						<div className="config-items-layout">
 							<JSettingItem text="颜色">
 								<ColorPicker
 									className="w-full"
@@ -44,7 +44,7 @@ const PieCircleConfigComponent = memo((props: ChartConfigComponentProps) => {
 						</div>
 					</JSettingBox>
 					<JSettingBox name="进度条">
-						<div className="config-layout">
+						<div className="config-items-layout">
 							<JSettingItem text="颜色">
 								<ColorPicker
 									className="w-full"
@@ -106,7 +106,7 @@ const PieCircleConfigComponent = memo((props: ChartConfigComponentProps) => {
 						</div>
 					</JSettingBox>
 					<JSettingBox name="轨道">
-						<div className="config-layout">
+						<div className="config-items-layout">
 							<JSettingItem text="颜色">
 								<ColorPicker
 									className="w-full"

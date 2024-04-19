@@ -40,7 +40,7 @@ const ImageConfigComponent = memo((props: ChartConfigComponentProps) => {
 					/>
 				</JSettingBox>
 				<JSettingBox name="样式">
-					<div className="config-layout">
+					<div className="config-items-layout">
 						<JSettingItem text="类型">
 							<Select
 								className="w-full"

@@ -39,7 +39,7 @@ const PieCommonConfigComponent = memo((props: ChartConfigComponentProps) => {
 						</JSettingItem>
 					</JSettingBox>
 					<JSettingBox name="标签">
-						<div className="config-layout">
+						<div className="config-items-layout">
 							<JSettingItem text="展示标签">
 								<Switch
 									value={chartOptions.series[0].label.show}
@@ -91,7 +91,7 @@ const PieCommonConfigComponent = memo((props: ChartConfigComponentProps) => {
 						</div>
 					</JSettingBox>
 					<JSettingBox name="半径">
-						<div className="config-layout">
+						<div className="config-items-layout">
 							<JSettingItem text="内半径（单位: %）">
 								<InputNumber
 									className="w-full"
@@ -131,7 +131,7 @@ const PieCommonConfigComponent = memo((props: ChartConfigComponentProps) => {
 						</div>
 					</JSettingBox>
 					<JSettingBox name="圆心坐标">
-						<div className="config-layout">
+						<div className="config-items-layout">
 							<JSettingItem text="横坐标（单位: %）">
 								<InputNumber
 									className="w-full"
@@ -171,7 +171,7 @@ const PieCommonConfigComponent = memo((props: ChartConfigComponentProps) => {
 						</div>
 					</JSettingBox>
 					<JSettingBox name="圆角">
-						<div className="config-layout">
+						<div className="config-items-layout">
 							<JSettingItem text="圆角大小">
 								<InputNumber
 									className="w-full"

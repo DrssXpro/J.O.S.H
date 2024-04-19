@@ -14,7 +14,7 @@ const Border03ConfigComponent = memo((props: ChartConfigComponentProps) => {
 				<>
 					{chartOptions.colors.map((_: any, index: any) => (
 						<JSettingBox name={`颜色-${index + 1}`} key={index}>
-							<div className="config-layout">
+							<div className="config-items-layout">
 								<JSettingItem text="颜色">
 									<ColorPicker
 										className="w-full"
