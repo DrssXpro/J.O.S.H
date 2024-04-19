@@ -5,8 +5,8 @@ import App from "./App.tsx";
 import "./styles/reset.css";
 // 引入动画
 import "animate.css/animate.min.css";
-// 引入 windicss
-import "virtual:windi.css";
+// 引入 unocss
+import "virtual:uno.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
 	<IconContext.Provider value={{ size: "18px" }}>
