@@ -41,7 +41,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 			{chartOptions.grid && (
 				<JCollapseBox name="容器">
 					<JSettingBox name="距离">
-						<div className="grid grid-cols-2 gap-2">
+						<div className="config-layout">
 							<JSettingItem text="左侧距离">
 								<Input
 									value={chartOptions.grid.left}
@@ -109,7 +109,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 				>
 					<>
 						<JSettingBox name="单位">
-							<div className="grid grid-cols-2 gap-2">
+							<div className="config-layout">
 								<JSettingItem text="名称">
 									<Input
 										placeholder="请输入"
@@ -171,7 +171,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 							</div>
 						</JSettingBox>
 						<JSettingBox name="标签">
-							<div className="grid grid-cols-2 gap-2">
+							<div className="config-layout">
 								<JSettingItem text="展示">
 									<Switch
 										value={chartOptions.xAxis.axisLabel.show}
@@ -239,7 +239,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 							</div>
 						</JSettingBox>
 						<JSettingBox name="轴线">
-							<div className="grid grid-cols-2 gap-2">
+							<div className="config-layout">
 								<JSettingItem text="展示">
 									<Switch
 										value={chartOptions.xAxis.axisLine.show}
@@ -334,7 +334,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 							</div>
 						</JSettingBox>
 						<JSettingBox name="刻度">
-							<div className="grid grid-cols-2 gap-2">
+							<div className="config-layout">
 								<JSettingItem text="展示">
 									<Switch
 										value={chartOptions.xAxis.axisTick.show}
@@ -367,7 +367,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 							</div>
 						</JSettingBox>
 						<JSettingBox name="分割线">
-							<div className="grid grid-cols-2 gap-2">
+							<div className="config-layout">
 								<JSettingItem text="展示">
 									<Switch
 										value={chartOptions.xAxis.splitLine.show}
@@ -465,7 +465,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 				>
 					<>
 						<JSettingBox name="单位">
-							<div className="grid grid-cols-2 gap-2">
+							<div className="config-layout">
 								<JSettingItem text="名称">
 									<Input
 										placeholder="请输入"
@@ -527,7 +527,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 							</div>
 						</JSettingBox>
 						<JSettingBox name="标签">
-							<div className="grid grid-cols-2 gap-2">
+							<div className="config-layout">
 								<JSettingItem text="展示">
 									<Switch
 										value={chartOptions.yAxis.axisLabel.show}
@@ -595,7 +595,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 							</div>
 						</JSettingBox>
 						<JSettingBox name="轴线">
-							<div className="grid grid-cols-2 gap-2">
+							<div className="config-layout">
 								<JSettingItem text="展示">
 									<Switch
 										value={chartOptions.yAxis.axisLine.show}
@@ -690,7 +690,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 							</div>
 						</JSettingBox>
 						<JSettingBox name="刻度">
-							<div className="grid grid-cols-2 gap-2">
+							<div className="config-layout">
 								<JSettingItem text="展示">
 									<Switch
 										value={chartOptions.yAxis.axisTick.show}
@@ -724,7 +724,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 							</div>
 						</JSettingBox>
 						<JSettingBox name="分割线">
-							<div className="grid grid-cols-2 gap-2">
+							<div className="config-layout">
 								<JSettingItem text="展示">
 									<Switch
 										value={chartOptions.yAxis.splitLine.show}
@@ -821,7 +821,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 				>
 					<>
 						<JSettingBox name="图例文字">
-							<div className="grid grid-cols-2 gap-2">
+							<div className="config-layout">
 								<JSettingItem text="颜色">
 									<ColorPicker
 										className="w-full"
@@ -858,7 +858,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 							</div>
 						</JSettingBox>
 						<JSettingBox name="图例位置">
-							<div className="grid grid-cols-2 gap-2">
+							<div className="config-layout">
 								<JSettingItem text="x轴">
 									<Select
 										className="w-full"
@@ -889,7 +889,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 							</div>
 						</JSettingBox>
 						<JSettingBox name="图例信息">
-							<div className="grid grid-cols-2 gap-2">
+							<div className="config-layout">
 								<JSettingItem text="方向">
 									<Select
 										className="w-full"
@@ -919,7 +919,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 							</div>
 						</JSettingBox>
 						<JSettingBox name="图例大小">
-							<div className="grid grid-cols-2 gap-2">
+							<div className="config-layout">
 								<JSettingItem text="宽">
 									<InputNumber
 										className="w-full"

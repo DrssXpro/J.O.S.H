@@ -12,7 +12,7 @@ const DialConfigComponent = memo((props: ChartConfigComponentProps) => {
 		<JCollapseBox name="表盘" unfold>
 			<>
 				<JSettingBox name="字体">
-					<div className="grid grid-cols-2 gap-2">
+					<div className="config-layout">
 						<JSettingItem text="颜色">
 							<ColorPicker
 								className="w-full"
@@ -71,7 +71,7 @@ const DialConfigComponent = memo((props: ChartConfigComponentProps) => {
 					</JSettingItem>
 				</JSettingBox>
 				<JSettingBox name="指针">
-					<div className="grid grid-cols-2 gap-2">
+					<div className="config-layout">
 						<JSettingItem text="颜色">
 							<ColorPicker
 								className="w-full"
@@ -113,7 +113,7 @@ const DialConfigComponent = memo((props: ChartConfigComponentProps) => {
 					</div>
 				</JSettingBox>
 				<JSettingBox name="刻度">
-					<div className="grid grid-cols-2 gap-2">
+					<div className="config-layout">
 						<JSettingItem text="最小值">
 							<InputNumber
 								className="w-full"

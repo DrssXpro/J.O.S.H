@@ -70,7 +70,7 @@ const ImageCarouselConfigComponent = memo((props: ChartConfigComponentProps) => 
 			<JCollapseBox name="轮播属性" unfold>
 				<>
 					<JSettingBox name="播放器">
-						<div className="grid grid-cols-2 gap-2">
+						<div className="config-layout">
 							<JSettingItem text="自动播放">
 								<Switch
 									value={chartOptions.autoPlay}
@@ -108,7 +108,7 @@ const ImageCarouselConfigComponent = memo((props: ChartConfigComponentProps) => 
 						</div>
 					</JSettingBox>
 					<JSettingBox name="指示器">
-						<div className="grid grid-cols-2 gap-2">
+						<div className="config-layout">
 							<JSettingItem text="位置">
 								<Select
 									value={chartOptions.dotPlacement}

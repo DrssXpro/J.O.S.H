@@ -15,7 +15,7 @@ const BarCommonConfigComponent = memo((props: ChartConfigComponentProps) => {
 				<JCollapseBox name={index === 0 ? "柱状图-1" : "柱状图-2"} key={index} unfold>
 					<>
 						<JSettingBox name="图形">
-							<div className="grid grid-cols-2 gap-2">
+							<div className="config-layout">
 								<JSettingItem text="宽度">
 									<InputNumber
 										className="w-full"
@@ -63,7 +63,7 @@ const BarCommonConfigComponent = memo((props: ChartConfigComponentProps) => {
 							</div>
 						</JSettingBox>
 						<JSettingBox name="标签">
-							<div className="grid grid-cols-2 gap-2">
+							<div className="config-layout">
 								<JSettingItem text="展示">
 									<Switch
 										value={i.label.show}

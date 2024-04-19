@@ -21,7 +21,7 @@ const JStylesSetting = () => {
 					</JSettingItem>
 				</JSettingBox>
 				<JSettingBox name="旋转°">
-					<div className="grid grid-cols-2 gap-2">
+					<div className="config-layout">
 						<JSettingItem text="Z轴(平面) - 旋转">
 							<InputNumber className="w-full" defaultValue={600} />
 						</JSettingItem>
@@ -34,7 +34,7 @@ const JStylesSetting = () => {
 					</div>
 				</JSettingBox>
 				<JSettingBox name="倾斜°">
-					<div className="grid grid-cols-2 gap-2">
+					<div className="config-layout">
 						<JSettingItem text="X轴 - 倾斜">
 							<InputNumber className="w-full" defaultValue={600} />
 						</JSettingItem>

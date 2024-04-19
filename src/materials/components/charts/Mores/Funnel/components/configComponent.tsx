@@ -40,7 +40,7 @@ const FunnelConfigComponent = memo((props: ChartConfigComponentProps) => {
 						</JSettingItem>
 					</JSettingBox>
 					<JSettingBox name="区块">
-						<div className="grid grid-cols-2 gap-2">
+						<div className="config-layout">
 							<JSettingItem text="边框大小">
 								<InputNumber
 									className="w-full"
@@ -89,7 +89,7 @@ const FunnelConfigComponent = memo((props: ChartConfigComponentProps) => {
 						</div>
 					</JSettingBox>
 					<JSettingBox name="标签">
-						<div className="grid grid-cols-2 gap-2">
+						<div className="config-layout">
 							<JSettingItem text="是否显示">
 								<Switch
 									value={chartOptions.series[0].label.show}

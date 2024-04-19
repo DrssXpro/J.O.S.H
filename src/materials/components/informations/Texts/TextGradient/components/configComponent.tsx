@@ -36,7 +36,7 @@ const TextGradientConfigComponent = memo((props: ChartConfigComponentProps) => {
 						</JSettingItem>
 					</JSettingBox>
 					<JSettingBox name="渐变参数">
-						<div className="grid grid-cols-2 gap-2">
+						<div className="config-layout">
 							<JSettingItem text="起始值">
 								<ColorPicker
 									className="w-full"

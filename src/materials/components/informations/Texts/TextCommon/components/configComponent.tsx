@@ -90,7 +90,7 @@ const TextCommonConfigComponent = memo((props: ChartConfigComponentProps) => {
 			<JCollapseBox name="样式" unfold>
 				<>
 					<JSettingBox name="文字">
-						<div className="grid grid-cols-2 gap-2">
+						<div className="config-layout">
 							<JSettingItem text="颜色">
 								<ColorPicker
 									className="w-full"
@@ -176,7 +176,7 @@ const TextCommonConfigComponent = memo((props: ChartConfigComponentProps) => {
 						</div>
 					</JSettingBox>
 					<JSettingBox name="边框">
-						<div className="grid grid-cols-2 gap-2">
+						<div className="config-layout">
 							<JSettingItem text="宽度">
 								<InputNumber
 									className="w-full"

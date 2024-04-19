@@ -36,7 +36,7 @@ const TextBarrageConfigComponent = memo((props: ChartConfigComponentProps) => {
 			<JCollapseBox name="样式" unfold>
 				<>
 					<JSettingBox name="文字">
-						<div className="grid grid-cols-2 gap-2">
+						<div className="config-layout">
 							<JSettingItem text="颜色">
 								<ColorPicker
 									className="w-full"
@@ -83,7 +83,7 @@ const TextBarrageConfigComponent = memo((props: ChartConfigComponentProps) => {
 						</div>
 					</JSettingBox>
 					<JSettingBox name="阴影">
-						<div className="grid grid-cols-2 gap-2">
+						<div className="config-layout">
 							<JSettingItem text="展示阴影">
 								<Switch
 									value={chartOptions.showShadow}
@@ -134,7 +134,7 @@ const TextBarrageConfigComponent = memo((props: ChartConfigComponentProps) => {
 						</div>
 					</JSettingBox>
 					<JSettingBox name="动画">
-						<div className="grid grid-cols-2 gap-2">
+						<div className="config-layout">
 							<JSettingItem text="动画速度">
 								<InputNumber
 									className="w-full"
