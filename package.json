@@ -24,6 +24,7 @@
 		"color": "^4.2.3",
 		"echarts": "^5.4.3",
 		"echarts-for-react": "^3.0.2",
+		"echarts-liquidfill": "^3.1.0",
 		"immer": "^10.0.3",
 		"keymaster": "^1.6.2",
 		"lodash-es": "^4.17.21",
