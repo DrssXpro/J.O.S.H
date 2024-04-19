@@ -1,11 +1,32 @@
+import { useMemo } from "react";
 import useChartDataFetch from "@/hooks/useChartDataFetch";
 import { ChartComponentProps } from "@/materials/types";
 import ReactECharts from "echarts-for-react";
-import { useEffect, useState } from "react";
 
 const PieCircleComponent = (props: ChartComponentProps) => {
 	const { chartConfig, themeColor, requestErrorCallback, requestSuccessCallback, baseEvent, advancedEvent } = props;
-	const [pieCircleOption, setPieCircleOption] = useState(chartConfig.option);
+
+	const pieCircleOption = useMemo(() => {
+		const newData = chartConfig.option.dataset;
+		const d = parseFloat(`${newData}`) * 100;
+		return {
+			...chartConfig.option,
+			title: {
+				...chartConfig.option.title,
+				text: `${+d.toFixed(2)}%`
+			},
+			series: [
+				{
+					...chartConfig.option.series[0],
+					data: [
+						{ ...chartConfig.option.series[0].data[0], value: [d] },
+						{ ...chartConfig.option.series[0].data[1], value: [100 - d] }
+					]
+				}
+			]
+		};
+	}, [chartConfig.option]);
+
 	useChartDataFetch(
 		chartConfig,
 		(err) => {
@@ -15,27 +36,6 @@ const PieCircleComponent = (props: ChartComponentProps) => {
 			requestSuccessCallback && requestSuccessCallback();
 		}
 	);
-
-	// dataset change => 手动更新饼图数据
-	useEffect(() => {
-		dataHandle(chartConfig.option.dataset);
-	}, [chartConfig.option.dataset]);
-
-	const dataHandle = (newData: any) => {
-		const d = parseFloat(`${newData}`) * 100;
-		const newOptions = { ...pieCircleOption };
-		newOptions.title = { ...newOptions.title, text: `${+d.toFixed(2)}%` };
-		newOptions.series = [
-			{
-				...newOptions.series[0],
-				data: [
-					{ ...newOptions.series[0].data[0], value: [d] },
-					{ ...newOptions.series[0].data[1], value: [100 - d] }
-				]
-			}
-		];
-		setPieCircleOption(newOptions);
-	};
 
 	return (
 		<ReactECharts

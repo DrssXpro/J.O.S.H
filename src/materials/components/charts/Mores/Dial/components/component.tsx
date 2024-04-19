@@ -1,11 +1,26 @@
+import { useMemo } from "react";
 import useChartDataFetch from "@/hooks/useChartDataFetch";
 import { ChartComponentProps } from "@/materials/types";
 import ReactECharts from "echarts-for-react";
-import { useEffect, useState } from "react";
 
 const DialComponent = (props: ChartComponentProps) => {
 	const { chartConfig, themeColor, requestErrorCallback, requestSuccessCallback, baseEvent, advancedEvent } = props;
-	const [dialOption, setDialOption] = useState(chartConfig.option);
+
+	const dialOption = useMemo(() => {
+		let newData = chartConfig.option.dataset;
+		newData = Number(newData) ? Number(newData) : newData;
+		return {
+			...chartConfig.option,
+			series: [
+				{
+					...chartConfig.option.series[0],
+					data: [{ ...chartConfig.option.series[0].data[0], value: newData }]
+				},
+				chartConfig.option.series[1]
+			]
+		};
+	}, [chartConfig.option]);
+
 	useChartDataFetch(
 		chartConfig,
 		(err) => {
@@ -15,22 +30,6 @@ const DialComponent = (props: ChartComponentProps) => {
 			requestSuccessCallback && requestSuccessCallback();
 		}
 	);
-
-	// dataset change => 手动更新表盘数据
-	useEffect(() => {
-		dataHandle(chartConfig.option.dataset);
-	}, [chartConfig.option.dataset]);
-
-	const dataHandle = (newData: any) => {
-		if (!Number(newData)) return;
-		setDialOption({
-			...dialOption,
-			series: [
-				{ ...dialOption.series[0], data: [{ ...dialOption.series[0].data[0], value: Number(newData) }] },
-				dialOption.series[1]
-			]
-		});
-	};
 
 	return (
 		<ReactECharts
