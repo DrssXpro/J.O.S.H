@@ -1,28 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
+import { Badge, Button, Divider, Modal, Steps, Table, TableProps, Tag, Tooltip, Typography } from "antd";
 import {
-	Badge,
-	Button,
-	Divider,
-	Modal,
-	Steps,
-	Table,
-	TableProps,
-	Tag,
-	Tooltip,
-	Typography,
-	Upload,
-	UploadProps
-} from "antd";
-import {
-	HiOutlineDocumentAdd,
 	HiOutlineDocumentDownload,
 	HiOutlineFilter,
-	HiOutlineDocumentReport
+	HiOutlineDocumentReport,
+	HiOutlinePencilAlt
 } from "react-icons/hi";
 import { IoHelpCircleOutline } from "react-icons/io5";
 import JCodeMirror from "@/components/JCodeMirror";
-import { FileTypeEnum } from "@/types/FileTypes";
-import { downloadTextFile, readFile } from "@/utils/fileUtils";
+import { downloadTextFile } from "@/utils/fileUtils";
 import JEditCode from "@/components/JChartConfiguration/JEditCode";
 import useEditCharts from "@/hooks/useEditCharts";
 import useChartStore from "@/store/chartStore/chartStore";
@@ -78,6 +64,9 @@ const DataMapAndShow = () => {
 		useFilter(component, requestGlobalConfig);
 	// 图表数据源展示
 	const [code, setCode] = useState(component.option.dataset || "此组件无数据源");
+	// 编辑图表数据源 modal
+	const [isOpenEditModal, setIsOpenEditModal] = useState(false);
+	const [editCode, setEditCode] = useState(code);
 
 	const isCharts = useMemo(() => component.chartConfig.chartFrame === ChartFrameEnum.ECHARTS, [component]);
 
@@ -129,38 +118,6 @@ const DataMapAndShow = () => {
 		}
 		return DataResultEnum.SUCCESS;
 	}
-
-	// 导入 json 文件操作配置
-	const uploadProps: UploadProps = {
-		showUploadList: false,
-		customRequest(options) {
-			const { file } = options;
-			readFile(file as File)
-				.then((res) => {
-					const result = safeJSONParse(res);
-					updateChartConfig(chartIndex, "option", "dataset", result);
-					setCode(result);
-					window.$message.success("导入数据成功!");
-				})
-				.catch((err: any) => {
-					console.log(err);
-					window.$message.error("导入数据失败!");
-				});
-		},
-		beforeUpload(file) {
-			const type = file.type;
-			const size = file.size;
-			if (size > 1024 * 1024) {
-				window.$message.warning(`文件超出 1M 限制，请重新上传!`);
-				return false;
-			}
-			if (type !== FileTypeEnum.JSON && type !== FileTypeEnum.TXT) {
-				window.$message.warning("文件格式不符合，请重新上传!");
-				return false;
-			}
-			return true;
-		}
-	};
 
 	// 下载数据形成文件
 	const downloadData = () => {
@@ -346,12 +303,16 @@ const DataMapAndShow = () => {
 					description: (
 						<>
 							<div className="flex items-center gap-2">
-								<Upload {...uploadProps}>
-									<Button icon={<HiOutlineDocumentAdd />} disabled={isNotData}>
-										{"导入(json / txt)"}
-									</Button>
-								</Upload>
-
+								<Button
+									icon={<HiOutlinePencilAlt />}
+									disabled={isNotData}
+									onClick={() => {
+										setEditCode(code);
+										setIsOpenEditModal(true);
+									}}
+								>
+									编辑
+								</Button>
 								<Button
 									icon={<HiOutlineDocumentDownload />}
 									disabled={isNotData}
@@ -367,12 +328,51 @@ const DataMapAndShow = () => {
 							</div>
 							<div className="my-2 border-1 border-solid border-[#303030]">
 								<JCodeMirror
-									code={JSON.stringify(code, null, 2)}
+									code={typeof code === "string" ? code : JSON.stringify(code, null, 2)}
 									lan="json"
 									disabled={true}
 									height={400}
 								/>
 							</div>
+							<Modal
+								open={isOpenEditModal}
+								width="50%"
+								title="编辑数据源"
+								onCancel={() => setIsOpenEditModal(false)}
+								footer={
+									<div className="flex flex-row-reverse gap-2">
+										<Button
+											onClick={() => {
+												updateChartConfig(
+													chartIndex,
+													"option",
+													"dataset",
+													safeJSONParse(editCode)
+												);
+												setIsOpenEditModal(false);
+												window.$message.success("修改成功！");
+											}}
+											type="primary"
+										>
+											保存
+										</Button>
+										<Button onClick={() => setIsOpenEditModal(false)}>取消</Button>
+									</div>
+								}
+							>
+								<div className="my-4 border-1 border-solid border-[#303030]">
+									<JCodeMirror
+										code={
+											typeof editCode === "string" ? editCode : JSON.stringify(editCode, null, 2)
+										}
+										lan="json"
+										height={600}
+										changeCode={(code) => {
+											setEditCode(code);
+										}}
+									/>
+								</div>
+							</Modal>
 						</>
 					)
 				}
