@@ -106,6 +106,16 @@ export const JSONParse = (data: string) => {
 	});
 };
 
+export const safeJSONParse = (data: string) => {
+	let result;
+	try {
+		result = JSON.parse(data);
+	} catch {
+		result = data;
+	}
+	return result;
+};
+
 // 处理请求时间单位配置，统一为毫秒
 export const intervalUnitHandle = (num: number, unit: RequestHttpIntervalEnum) => {
 	switch (unit) {

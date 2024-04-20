@@ -28,6 +28,7 @@ import useEditCharts from "@/hooks/useEditCharts";
 import useChartStore from "@/store/chartStore/chartStore";
 import { ChartFrameEnum } from "@/materials/types";
 import useFilter from "./hooks/useFilter.hook";
+import { safeJSONParse } from "@/utils/utils";
 
 // 数据映射 table 结构
 interface IDataType {
@@ -136,8 +137,9 @@ const DataMapAndShow = () => {
 			const { file } = options;
 			readFile(file as File)
 				.then((res) => {
-					updateChartConfig(chartIndex, "option", "dataset", isCharts ? JSON.parse(res) : res);
-					setCode(res);
+					const result = safeJSONParse(res);
+					updateChartConfig(chartIndex, "option", "dataset", result);
+					setCode(result);
 					window.$message.success("导入数据成功!");
 				})
 				.catch((err: any) => {
