@@ -1,1 +1,3 @@
-export const Maps = [];
+import { MapBase } from "./MapBase";
+
+export const Maps = [MapBase];
