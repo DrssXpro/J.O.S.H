@@ -951,6 +951,173 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 					</>
 				</JCollapseBox>
 			)}
+			{chartOptions.visualMap && (
+				<JCollapseBox
+					name="视觉映射"
+					operator={
+						<Switch
+							checkedChildren="启用"
+							unCheckedChildren="关闭"
+							value={chartOptions.visualMap.show}
+							onChange={(val) => {
+								update(chartIndex, "option", "visualMap", {
+									...chartOptions.visualMap,
+									show: val
+								});
+							}}
+						/>
+					}
+				>
+					<>
+						<JSettingBox name="范围">
+							<div className="config-items-layout">
+								<JSettingItem text="最小值">
+									<InputNumber
+										className="w-full"
+										value={chartOptions.visualMap.min}
+										onChange={(val) => {
+											update(chartIndex, "option", "visualMap", {
+												...chartOptions.visualMap,
+												min: val
+											});
+										}}
+									/>
+								</JSettingItem>
+								<JSettingItem text="最大值">
+									<InputNumber
+										className="w-full"
+										value={chartOptions.visualMap.max}
+										onChange={(val) => {
+											update(chartIndex, "option", "visualMap", {
+												...chartOptions.visualMap,
+												max: val
+											});
+										}}
+									/>
+								</JSettingItem>
+							</div>
+						</JSettingBox>
+						<JSettingBox name="颜色">
+							<div className="config-items-layout">
+								{chartOptions.visualMap.inRange.color.map((item: any, index: number) => (
+									<JSettingItem text={`层级-${index + 1}`} key={index}>
+										<ColorPicker
+											className="w-full"
+											showText
+											value={item}
+											onChange={(val) => {
+												const color = val.toHexString();
+												const colors = [...chartOptions.visualMap.inRange.color];
+												colors[index] = color;
+												update(chartIndex, "option", "visualMap", {
+													...chartOptions.visualMap,
+													inRange: {
+														...chartOptions.visualMap.inRange,
+														color: [...colors]
+													}
+												});
+											}}
+										/>
+									</JSettingItem>
+								))}
+							</div>
+						</JSettingBox>
+						<JSettingBox name="控制块">
+							<div className="config-items-layout">
+								<JSettingItem text="放置方向">
+									<Select
+										className="w-full"
+										options={axisConfig.visualMap.orient}
+										value={chartOptions.visualMap.orient}
+										onChange={(val) => {
+											update(chartIndex, "option", "visualMap", {
+												...chartOptions.visualMap,
+												orient: val
+											});
+										}}
+									/>
+								</JSettingItem>
+								<JSettingItem text="宽度">
+									<InputNumber
+										className="w-full"
+										value={chartOptions.visualMap.itemWidth}
+										onChange={(val) => {
+											update(chartIndex, "option", "visualMap", {
+												...chartOptions.visualMap,
+												itemWidth: val
+											});
+										}}
+									/>
+								</JSettingItem>
+								<JSettingItem text="高度">
+									<InputNumber
+										className="w-full"
+										value={chartOptions.visualMap.itemHeight}
+										onChange={(val) => {
+											update(chartIndex, "option", "visualMap", {
+												...chartOptions.visualMap,
+												itemHeight: val
+											});
+										}}
+									/>
+								</JSettingItem>
+								<JSettingItem text="反转">
+									<Switch
+										value={chartOptions.visualMap.inverse}
+										onChange={(val) => {
+											update(chartIndex, "option", "visualMap", {
+												...chartOptions.visualMap,
+												inverse: val
+											});
+										}}
+									/>
+								</JSettingItem>
+								<JSettingItem text="拖拽组件实时更新">
+									<Switch
+										value={chartOptions.visualMap.realtime}
+										onChange={(val) => {
+											update(chartIndex, "option", "visualMap", {
+												...chartOptions.visualMap,
+												realtime: val
+											});
+										}}
+									/>
+								</JSettingItem>
+							</div>
+						</JSettingBox>
+						<JSettingBox name="位置">
+							<div className="config-items-layout">
+								<JSettingItem text={`偏移 X：${chartOptions.visualMap.left || 0}px`}>
+									<InputNumber
+										className="w-full"
+										placeholder="请输入"
+										value={chartOptions.visualMap.left}
+										onChange={(val) => {
+											update(chartIndex, "option", "visualMap", {
+												...chartOptions.visualMap,
+												left: val
+											});
+										}}
+									/>
+								</JSettingItem>
+								<JSettingItem text={`偏移 Y：${chartOptions.visualMap.top || 0}px`}>
+									<InputNumber
+										className="w-full"
+										placeholder="请输入"
+										value={chartOptions.visualMap.top}
+										onChange={(val) => {
+											update(chartIndex, "option", "visualMap", {
+												...chartOptions.visualMap,
+												top: val
+											});
+										}}
+									/>
+								</JSettingItem>
+							</div>
+						</JSettingBox>
+					</>
+				</JCollapseBox>
+			)}
 		</>
 	);
 };
