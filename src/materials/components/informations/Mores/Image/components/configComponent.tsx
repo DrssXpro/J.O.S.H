@@ -54,6 +54,7 @@ const ImageConfigComponent = memo((props: ChartConfigComponentProps) => {
 						<JSettingItem text="圆角">
 							<InputNumber
 								className="w-full"
+								placeholder="请输入"
 								min={0}
 								value={chartOptions.borderRadius}
 								onChange={(val) => {

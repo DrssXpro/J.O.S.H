@@ -21,6 +21,7 @@ const LineCommonConfigComponent = memo((props: ChartConfigComponentProps) => {
 								<JSettingItem text="宽度">
 									<InputNumber
 										className="w-full"
+										placeholder="请输入"
 										value={i.lineStyle.width}
 										onChange={(val) => {
 											const series1 = chartOptions.series[0];
@@ -64,6 +65,7 @@ const LineCommonConfigComponent = memo((props: ChartConfigComponentProps) => {
 								<JSettingItem text="宽度">
 									<InputNumber
 										className="w-full"
+										placeholder="请输入"
 										value={i.symbolSize}
 										onChange={(val) => {
 											const series1 = chartOptions.series[0];
@@ -105,6 +107,7 @@ const LineCommonConfigComponent = memo((props: ChartConfigComponentProps) => {
 								<JSettingItem text="大小">
 									<InputNumber
 										className="w-full"
+										placeholder="请输入"
 										value={i.label.fontSize}
 										onChange={(val) => {
 											const series1 = chartOptions.series[0];

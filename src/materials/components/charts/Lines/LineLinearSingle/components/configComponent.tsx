@@ -71,6 +71,7 @@ const LineLinearSingleConfigComponent = memo((props: ChartConfigComponentProps) 
 							<JSettingItem text="宽度">
 								<InputNumber
 									className="w-full"
+									placeholder="请输入"
 									value={chartOptions.series[0].lineStyle.width}
 									min={1}
 									onChange={(val) => {
@@ -100,6 +101,7 @@ const LineLinearSingleConfigComponent = memo((props: ChartConfigComponentProps) 
 						<JSettingItem text="大小">
 							<InputNumber
 								className="w-32"
+								placeholder="请输入"
 								value={chartOptions.series[0].symbolSize}
 								min={1}
 								onChange={(val) => {

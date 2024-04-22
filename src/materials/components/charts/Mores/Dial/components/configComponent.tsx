@@ -31,6 +31,7 @@ const DialConfigComponent = memo((props: ChartConfigComponentProps) => {
 						<JSettingItem text="字体大小">
 							<InputNumber
 								className="w-full"
+								placeholder="请输入"
 								min={0}
 								step={1}
 								value={chartOptions.series[0].axisLabel.fontSize}
@@ -99,6 +100,7 @@ const DialConfigComponent = memo((props: ChartConfigComponentProps) => {
 						<JSettingItem text="宽度">
 							<InputNumber
 								className="w-full"
+								placeholder="请输入"
 								min={0}
 								step={1}
 								value={chartOptions.series[0].pointer.width}
@@ -118,6 +120,7 @@ const DialConfigComponent = memo((props: ChartConfigComponentProps) => {
 						<JSettingItem text="最小值">
 							<InputNumber
 								className="w-full"
+								placeholder="请输入"
 								min={0}
 								step={1}
 								value={chartOptions.series[0].min}
@@ -133,6 +136,7 @@ const DialConfigComponent = memo((props: ChartConfigComponentProps) => {
 						<JSettingItem text="最大值">
 							<InputNumber
 								className="w-full"
+								placeholder="请输入"
 								min={0}
 								step={1}
 								value={chartOptions.series[0].max}

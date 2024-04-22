@@ -105,6 +105,7 @@ const TextCommonConfigComponent = memo((props: ChartConfigComponentProps) => {
 							<JSettingItem text="字体大小">
 								<InputNumber
 									className="w-full"
+									placeholder="请输入"
 									min={12}
 									value={chartOptions.fontSize}
 									onChange={(val) => {
@@ -125,6 +126,7 @@ const TextCommonConfigComponent = memo((props: ChartConfigComponentProps) => {
 							<JSettingItem text="X轴内边距">
 								<InputNumber
 									className="w-full"
+									placeholder="请输入"
 									min={0}
 									value={chartOptions.paddingX}
 									onChange={(val) => {
@@ -135,6 +137,7 @@ const TextCommonConfigComponent = memo((props: ChartConfigComponentProps) => {
 							<JSettingItem text="Y轴内边距">
 								<InputNumber
 									className="w-full"
+									placeholder="请输入"
 									min={0}
 									value={chartOptions.paddingY}
 									onChange={(val) => {
@@ -165,6 +168,7 @@ const TextCommonConfigComponent = memo((props: ChartConfigComponentProps) => {
 							<JSettingItem text="字间距">
 								<InputNumber
 									className="w-full"
+									placeholder="请输入"
 									placeholder="输入字间距"
 									min={0}
 									value={chartOptions.letterSpacing}
@@ -180,6 +184,7 @@ const TextCommonConfigComponent = memo((props: ChartConfigComponentProps) => {
 							<JSettingItem text="宽度">
 								<InputNumber
 									className="w-full"
+									placeholder="请输入"
 									placeholder="输入圆角"
 									min={0}
 									value={chartOptions.borderWidth}
@@ -202,6 +207,7 @@ const TextCommonConfigComponent = memo((props: ChartConfigComponentProps) => {
 							<JSettingItem text="圆角">
 								<InputNumber
 									className="w-full"
+									placeholder="请输入"
 									placeholder="输入圆角"
 									min={0}
 									value={chartOptions.borderRadius}

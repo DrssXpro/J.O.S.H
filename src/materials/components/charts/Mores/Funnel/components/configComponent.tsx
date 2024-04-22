@@ -44,6 +44,7 @@ const FunnelConfigComponent = memo((props: ChartConfigComponentProps) => {
 							<JSettingItem text="边框大小">
 								<InputNumber
 									className="w-full"
+									placeholder="请输入"
 									min={0}
 									max={10}
 									value={chartOptions.series[0].itemStyle.borderWidth}
@@ -76,6 +77,7 @@ const FunnelConfigComponent = memo((props: ChartConfigComponentProps) => {
 							<JSettingItem text="间隔">
 								<InputNumber
 									className="w-full"
+									placeholder="请输入"
 									min={0}
 									max={20}
 									value={chartOptions.series[0].gap}
@@ -121,6 +123,7 @@ const FunnelConfigComponent = memo((props: ChartConfigComponentProps) => {
 							<JSettingItem text="大小">
 								<InputNumber
 									className="w-full"
+									placeholder="请输入"
 									min={0}
 									value={chartOptions.series[0].label.fontSize}
 									onChange={(val) => {
@@ -136,6 +139,7 @@ const FunnelConfigComponent = memo((props: ChartConfigComponentProps) => {
 							<JSettingItem text="悬停时大小">
 								<InputNumber
 									className="w-full"
+									placeholder="请输入"
 									min={0}
 									value={chartOptions.series[0].emphasis.label.fontSize}
 									onChange={(val) => {

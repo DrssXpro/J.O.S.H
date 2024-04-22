@@ -130,6 +130,7 @@ const BarLineConfigComponent = memo((props: ChartConfigComponentProps) => {
 								<JSettingItem text="大小">
 									<InputNumber
 										className="w-full"
+										placeholder="请输入"
 										value={i.label.fontSize}
 										onChange={(val) => {
 											const series1 = chartOptions.series[0];

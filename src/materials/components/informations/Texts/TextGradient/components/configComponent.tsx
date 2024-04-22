@@ -27,6 +27,8 @@ const TextGradientConfigComponent = memo((props: ChartConfigComponentProps) => {
 					<JSettingBox name="文字">
 						<JSettingItem text="字体大小">
 							<InputNumber
+								className="w-32"
+								placeholder="请输入"
 								min={12}
 								value={chartOptions.size}
 								onChange={(val) => {
@@ -69,6 +71,8 @@ const TextGradientConfigComponent = memo((props: ChartConfigComponentProps) => {
 							</JSettingItem>
 							<JSettingItem text="偏移角度">
 								<InputNumber
+									className="w-32"
+									placeholder="请输入"
 									value={chartOptions.gradient.deg}
 									onChange={(val) => {
 										update(chartIndex, "option", "gradient", {

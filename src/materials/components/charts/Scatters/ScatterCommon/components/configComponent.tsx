@@ -40,6 +40,7 @@ const ScatterCommonConfigComponent = memo((props: ChartConfigComponentProps) => 
 								<JSettingItem text="大小">
 									<InputNumber
 										className="w-full"
+										placeholder="请输入"
 										min={1}
 										value={item.symbolSize}
 										onChange={(val) => {
@@ -63,6 +64,7 @@ const ScatterCommonConfigComponent = memo((props: ChartConfigComponentProps) => 
 								<JSettingItem text="粗细(0不显示)">
 									<InputNumber
 										className="w-full"
+										placeholder="请输入"
 										min={0}
 										value={item.markArea.itemStyle.borderWidth}
 										onChange={(val) => {
@@ -172,6 +174,7 @@ const ScatterCommonConfigComponent = memo((props: ChartConfigComponentProps) => 
 								<JSettingItem text="大小">
 									<InputNumber
 										className="w-full"
+										placeholder="请输入"
 										min={0}
 										value={item.markPoint.symbolSize}
 										onChange={(val) => {

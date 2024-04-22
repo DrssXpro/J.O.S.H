@@ -27,6 +27,7 @@ const WaterPoloConfigComponent = memo((props: ChartConfigComponentProps) => {
 						<JSettingItem text="文本大小">
 							<InputNumber
 								className="w-full"
+								placeholder="请输入"
 								min={0}
 								step={1}
 								value={chartOptions.series[0].label.fontSize}

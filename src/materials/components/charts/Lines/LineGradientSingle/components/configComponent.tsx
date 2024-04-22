@@ -21,6 +21,7 @@ const LineGradientSingleConfigComponent = memo((props: ChartConfigComponentProps
 								<JSettingItem text="宽度">
 									<InputNumber
 										className="w-full"
+										placeholder="请输入"
 										value={i.lineStyle.width}
 										onChange={(val) => {
 											const series = chartOptions.series[0];
@@ -50,6 +51,7 @@ const LineGradientSingleConfigComponent = memo((props: ChartConfigComponentProps
 								<JSettingItem text="宽度">
 									<InputNumber
 										className="w-full"
+										placeholder="请输入"
 										value={i.symbolSize}
 										onChange={(val) => {
 											const series = chartOptions.series[0];
@@ -75,6 +77,7 @@ const LineGradientSingleConfigComponent = memo((props: ChartConfigComponentProps
 								<JSettingItem text="大小">
 									<InputNumber
 										className="w-full"
+										placeholder="请输入"
 										value={i.label.fontSize}
 										onChange={(val) => {
 											const series = chartOptions.series[0];

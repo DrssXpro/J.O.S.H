@@ -30,6 +30,7 @@ const PieCircleConfigComponent = memo((props: ChartConfigComponentProps) => {
 							<JSettingItem text="字体大小">
 								<InputNumber
 									className="w-full"
+									placeholder="请输入"
 									min={0}
 									step={1}
 									value={chartOptions.title.textStyle.fontSize}
@@ -67,6 +68,7 @@ const PieCircleConfigComponent = memo((props: ChartConfigComponentProps) => {
 							<JSettingItem text="阴影模糊等级">
 								<InputNumber
 									className="w-full"
+									placeholder="请输入"
 									min={0}
 									max={50}
 									step={1}
@@ -129,6 +131,7 @@ const PieCircleConfigComponent = memo((props: ChartConfigComponentProps) => {
 							<JSettingItem text="阴影模糊等级">
 								<InputNumber
 									className="w-full"
+									placeholder="请输入"
 									min={0}
 									max={50}
 									step={1}

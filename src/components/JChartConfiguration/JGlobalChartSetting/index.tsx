@@ -142,6 +142,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 								<JSettingItem text="大小">
 									<InputNumber
 										className="w-full"
+										placeholder="请输入"
 										min={12}
 										value={chartOptions.xAxis.nameTextStyle.fontSize}
 										onChange={(val) => {
@@ -158,6 +159,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 								<JSettingItem text="偏移量">
 									<InputNumber
 										className="w-full"
+										placeholder="请输入"
 										min={5}
 										value={chartOptions.xAxis.nameGap}
 										onChange={(val) => {
@@ -206,6 +208,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 								<JSettingItem text="大小">
 									<InputNumber
 										className="w-full"
+										placeholder="请输入"
 										min={8}
 										value={chartOptions.xAxis.axisLabel.fontSize}
 										onChange={(val) => {
@@ -222,6 +225,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 								<JSettingItem text="偏移量">
 									<InputNumber
 										className="w-full"
+										placeholder="请输入"
 										min={-90}
 										max={90}
 										value={chartOptions.xAxis.axisLabel.rotate}
@@ -277,6 +281,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 								<JSettingItem text="粗细">
 									<InputNumber
 										className="w-full"
+										placeholder="请输入"
 										min={1}
 										value={chartOptions.xAxis.axisLine.lineStyle.width}
 										onChange={(val) => {
@@ -352,6 +357,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 								<JSettingItem text="长度">
 									<InputNumber
 										className="w-full"
+										placeholder="请输入"
 										value={chartOptions.xAxis.axisTick.length}
 										onChange={(val) => {
 											update(chartIndex, "option", "xAxis", {
@@ -405,6 +411,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 								<JSettingItem text="粗细">
 									<InputNumber
 										className="w-full"
+										placeholder="请输入"
 										min={1}
 										value={chartOptions.xAxis.splitLine.lineStyle.width}
 										onChange={(val) => {
@@ -498,6 +505,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 								<JSettingItem text="大小">
 									<InputNumber
 										className="w-full"
+										placeholder="请输入"
 										min={8}
 										value={chartOptions.yAxis.nameTextStyle.fontSize}
 										onChange={(val) => {
@@ -514,6 +522,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 								<JSettingItem text="偏移量">
 									<InputNumber
 										className="w-full"
+										placeholder="请输入"
 										min={5}
 										value={chartOptions.yAxis.nameGap}
 										onChange={(val) => {
@@ -562,6 +571,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 								<JSettingItem text="大小">
 									<InputNumber
 										className="w-full"
+										placeholder="请输入"
 										min={8}
 										value={chartOptions.yAxis.axisLabel.fontSize}
 										onChange={(val) => {
@@ -578,6 +588,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 								<JSettingItem text="偏移量">
 									<InputNumber
 										className="w-full"
+										placeholder="请输入"
 										min={-90}
 										max={90}
 										value={chartOptions.yAxis.axisLabel.rotate}
@@ -633,6 +644,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 								<JSettingItem text="粗细">
 									<InputNumber
 										className="w-full"
+										placeholder="请输入"
 										min={1}
 										value={chartOptions.yAxis.axisLine.lineStyle.width}
 										onChange={(val) => {
@@ -708,6 +720,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 								<JSettingItem text="长度">
 									<InputNumber
 										className="w-full"
+										placeholder="请输入"
 										min={1}
 										value={chartOptions.yAxis.axisTick.length}
 										onChange={(val) => {
@@ -762,6 +775,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 								<JSettingItem text="粗细">
 									<InputNumber
 										className="w-full"
+										placeholder="请输入"
 										min={1}
 										value={chartOptions.yAxis.splitLine.lineStyle.width}
 										onChange={(val) => {
@@ -842,6 +856,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 								<JSettingItem text="大小">
 									<InputNumber
 										className="w-full"
+										placeholder="请输入"
 										min={1}
 										value={chartOptions.legend.textStyle.fontSize}
 										onChange={(val) => {
@@ -923,6 +938,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 								<JSettingItem text="宽">
 									<InputNumber
 										className="w-full"
+										placeholder="请输入"
 										min={1}
 										value={chartOptions.legend.itemWidth}
 										onChange={(val) => {
@@ -936,6 +952,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 								<JSettingItem text="高">
 									<InputNumber
 										className="w-full"
+										placeholder="请输入"
 										min={1}
 										value={chartOptions.legend.itemHeight}
 										onChange={(val) => {
@@ -974,6 +991,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 								<JSettingItem text="最小值">
 									<InputNumber
 										className="w-full"
+										placeholder="请输入"
 										value={chartOptions.visualMap.min}
 										onChange={(val) => {
 											update(chartIndex, "option", "visualMap", {
@@ -986,6 +1004,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 								<JSettingItem text="最大值">
 									<InputNumber
 										className="w-full"
+										placeholder="请输入"
 										value={chartOptions.visualMap.max}
 										onChange={(val) => {
 											update(chartIndex, "option", "visualMap", {
@@ -1040,6 +1059,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 								<JSettingItem text="宽度">
 									<InputNumber
 										className="w-full"
+										placeholder="请输入"
 										value={chartOptions.visualMap.itemWidth}
 										onChange={(val) => {
 											update(chartIndex, "option", "visualMap", {
@@ -1052,6 +1072,7 @@ const JGlobalChartSetting = (props: IJGlobalChartSettingProps) => {
 								<JSettingItem text="高度">
 									<InputNumber
 										className="w-full"
+										placeholder="请输入"
 										value={chartOptions.visualMap.itemHeight}
 										onChange={(val) => {
 											update(chartIndex, "option", "visualMap", {

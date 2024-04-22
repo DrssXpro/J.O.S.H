@@ -95,6 +95,7 @@ const PieCommonConfigComponent = memo((props: ChartConfigComponentProps) => {
 							<JSettingItem text="内半径（单位: %）">
 								<InputNumber
 									className="w-full"
+									placeholder="请输入"
 									min={0}
 									value={parseInt(chartOptions.series[0].radius[0])}
 									onChange={(value) => {
@@ -113,6 +114,7 @@ const PieCommonConfigComponent = memo((props: ChartConfigComponentProps) => {
 							<JSettingItem text="外半径（单位: %）">
 								<InputNumber
 									className="w-full"
+									placeholder="请输入"
 									min={0}
 									value={parseInt(chartOptions.series[0].radius[1])}
 									onChange={(value) => {
@@ -135,6 +137,7 @@ const PieCommonConfigComponent = memo((props: ChartConfigComponentProps) => {
 							<JSettingItem text="横坐标（单位: %）">
 								<InputNumber
 									className="w-full"
+									placeholder="请输入"
 									min={0}
 									value={parseInt(chartOptions.series[0].center[0])}
 									onChange={(value) => {
@@ -153,6 +156,7 @@ const PieCommonConfigComponent = memo((props: ChartConfigComponentProps) => {
 							<JSettingItem text="纵坐标（单位: %）">
 								<InputNumber
 									className="w-full"
+									placeholder="请输入"
 									min={0}
 									value={parseInt(chartOptions.series[0].center[1])}
 									onChange={(value) => {
@@ -175,6 +179,7 @@ const PieCommonConfigComponent = memo((props: ChartConfigComponentProps) => {
 							<JSettingItem text="圆角大小">
 								<InputNumber
 									className="w-full"
+									placeholder="请输入"
 									min={0}
 									value={chartOptions.series[0].itemStyle.borderRadius}
 									onChange={(value) => {
@@ -191,6 +196,7 @@ const PieCommonConfigComponent = memo((props: ChartConfigComponentProps) => {
 							<JSettingItem text="线条宽度">
 								<InputNumber
 									className="w-full"
+									placeholder="请输入"
 									min={0}
 									value={chartOptions.series[0].itemStyle.borderWidth}
 									onChange={(value) => {

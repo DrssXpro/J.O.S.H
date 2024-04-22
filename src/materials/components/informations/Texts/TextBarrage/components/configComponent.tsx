@@ -51,6 +51,7 @@ const TextBarrageConfigComponent = memo((props: ChartConfigComponentProps) => {
 							<JSettingItem text="字体大小">
 								<InputNumber
 									className="w-full"
+									placeholder="请输入"
 									placeholder="字体大小"
 									min={12}
 									value={chartOptions.fontSize}
@@ -72,6 +73,7 @@ const TextBarrageConfigComponent = memo((props: ChartConfigComponentProps) => {
 							<JSettingItem text="字间距">
 								<InputNumber
 									className="w-full"
+									placeholder="请输入"
 									placeholder="输入字间距"
 									min={0}
 									value={chartOptions.letterSpacing}
@@ -106,6 +108,7 @@ const TextBarrageConfigComponent = memo((props: ChartConfigComponentProps) => {
 							<JSettingItem text="x">
 								<InputNumber
 									className="w-full"
+									placeholder="请输入"
 									value={chartOptions.hShadow}
 									onChange={(val) => {
 										update(chartIndex, "option", "hShadow", val);
@@ -115,6 +118,7 @@ const TextBarrageConfigComponent = memo((props: ChartConfigComponentProps) => {
 							<JSettingItem text="y">
 								<InputNumber
 									className="w-full"
+									placeholder="请输入"
 									value={chartOptions.vShadow}
 									onChange={(val) => {
 										update(chartIndex, "option", "vShadow", val);
@@ -124,6 +128,7 @@ const TextBarrageConfigComponent = memo((props: ChartConfigComponentProps) => {
 							<JSettingItem text="模糊">
 								<InputNumber
 									className="w-full"
+									placeholder="请输入"
 									min={0}
 									value={chartOptions.blurShadow}
 									onChange={(val) => {
@@ -138,6 +143,7 @@ const TextBarrageConfigComponent = memo((props: ChartConfigComponentProps) => {
 							<JSettingItem text="动画速度">
 								<InputNumber
 									className="w-full"
+									placeholder="请输入"
 									placeholder="输入动画速度"
 									min={0}
 									value={chartOptions.animationSpeed}
@@ -149,6 +155,7 @@ const TextBarrageConfigComponent = memo((props: ChartConfigComponentProps) => {
 							<JSettingItem text="动画间隔">
 								<InputNumber
 									className="w-full"
+									placeholder="请输入"
 									placeholder="输入动画间隔"
 									min={0}
 									value={chartOptions.animationTime}

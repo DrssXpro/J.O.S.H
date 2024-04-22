@@ -19,6 +19,7 @@ const BarCommonConfigComponent = memo((props: ChartConfigComponentProps) => {
 								<JSettingItem text="宽度">
 									<InputNumber
 										className="w-full"
+										placeholder="请输入"
 										value={i.barWidth}
 										onChange={(val) => {
 											const series1 = chartOptions.series[0];
@@ -38,6 +39,7 @@ const BarCommonConfigComponent = memo((props: ChartConfigComponentProps) => {
 								<JSettingItem text="圆角">
 									<InputNumber
 										className="w-full"
+										placeholder="请输入"
 										value={i.itemStyle.borderRadius}
 										onChange={(val) => {
 											const series1 = chartOptions.series[0];
@@ -85,6 +87,7 @@ const BarCommonConfigComponent = memo((props: ChartConfigComponentProps) => {
 								<JSettingItem text="大小">
 									<InputNumber
 										className="w-full"
+										placeholder="请输入"
 										value={i.label.fontSize}
 										onChange={(val) => {
 											const series1 = chartOptions.series[0];

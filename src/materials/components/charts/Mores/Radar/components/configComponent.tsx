@@ -159,6 +159,7 @@ const RadarConfigComponent = memo((props: ChartConfigComponentProps) => {
 							<JSettingItem text="大小">
 								<InputNumber
 									className="w-full"
+									placeholder="请输入"
 									min={9}
 									value={chartOptions.radar.axisName.fontSize}
 									onChange={(val) => {
@@ -203,6 +204,7 @@ const RadarConfigComponent = memo((props: ChartConfigComponentProps) => {
 							<JSettingItem text="透明度">
 								<InputNumber
 									className="w-full"
+									placeholder="请输入"
 									min={0}
 									max={1}
 									step={0.1}

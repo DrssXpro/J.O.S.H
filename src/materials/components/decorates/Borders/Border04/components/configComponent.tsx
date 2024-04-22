@@ -39,6 +39,7 @@ const Border04ConfigComponent = memo((props: ChartConfigComponentProps) => {
 							<JSettingItem text="文字大小">
 								<InputNumber
 									className="w-full"
+									placeholder="请输入"
 									min={12}
 									value={chartOptions.borderTitleSize}
 									onChange={(val) => {
@@ -49,6 +50,7 @@ const Border04ConfigComponent = memo((props: ChartConfigComponentProps) => {
 							<JSettingItem text="高度">
 								<InputNumber
 									className="w-full"
+									placeholder="请输入"
 									min={24}
 									value={chartOptions.borderTitleHeight}
 									onChange={(val) => {
@@ -59,6 +61,7 @@ const Border04ConfigComponent = memo((props: ChartConfigComponentProps) => {
 							<JSettingItem text="宽度">
 								<InputNumber
 									className="w-full"
+									placeholder="请输入"
 									min={50}
 									step={10}
 									value={chartOptions.borderTitleWidth}
