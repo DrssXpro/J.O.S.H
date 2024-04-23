@@ -21,7 +21,6 @@ const BarCrossrangeConfigComponent = memo((props: ChartConfigComponentProps) => 
 										className="w-full"
 										placeholder="请输入"
 										value={i.barWidth}
-										placeholder="自动计算"
 										onChange={(val) => {
 											const series1 = chartOptions.series[0];
 											const series2 = chartOptions.series[1];
