@@ -169,7 +169,6 @@ const TextCommonConfigComponent = memo((props: ChartConfigComponentProps) => {
 								<InputNumber
 									className="w-full"
 									placeholder="请输入"
-									placeholder="输入字间距"
 									min={0}
 									value={chartOptions.letterSpacing}
 									onChange={(val) => {
@@ -185,7 +184,6 @@ const TextCommonConfigComponent = memo((props: ChartConfigComponentProps) => {
 								<InputNumber
 									className="w-full"
 									placeholder="请输入"
-									placeholder="输入圆角"
 									min={0}
 									value={chartOptions.borderWidth}
 									onChange={(val) => {
@@ -208,7 +206,6 @@ const TextCommonConfigComponent = memo((props: ChartConfigComponentProps) => {
 								<InputNumber
 									className="w-full"
 									placeholder="请输入"
-									placeholder="输入圆角"
 									min={0}
 									value={chartOptions.borderRadius}
 									onChange={(val) => {

@@ -5,20 +5,12 @@ import draw3 from "@/assets/carousel/draw3.svg";
 import draw4 from "@/assets/carousel/draw4.svg";
 
 const LoginCarousel = () => {
+	const images = [draw1, draw2, draw3, draw4];
 	return (
 		<Carousel style={{ width: "550px" }} autoplay>
-			<div>
-				<img src={draw1} />
-			</div>
-			<div>
-				<img src={draw2} />
-			</div>
-			<div>
-				<img src={draw3} />
-			</div>
-			<div>
-				<img src={draw4} />
-			</div>
+			{images.map((i, index) => (
+				<img src={i} key={index} alt="背景图" className="w-full h-full object-cover" />
+			))}
 		</Carousel>
 	);
 };

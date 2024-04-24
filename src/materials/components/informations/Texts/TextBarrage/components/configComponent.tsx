@@ -52,7 +52,6 @@ const TextBarrageConfigComponent = memo((props: ChartConfigComponentProps) => {
 								<InputNumber
 									className="w-full"
 									placeholder="请输入"
-									placeholder="字体大小"
 									min={12}
 									value={chartOptions.fontSize}
 									onChange={(val) => {
@@ -74,7 +73,6 @@ const TextBarrageConfigComponent = memo((props: ChartConfigComponentProps) => {
 								<InputNumber
 									className="w-full"
 									placeholder="请输入"
-									placeholder="输入字间距"
 									min={0}
 									value={chartOptions.letterSpacing}
 									onChange={(val) => {
@@ -144,7 +142,6 @@ const TextBarrageConfigComponent = memo((props: ChartConfigComponentProps) => {
 								<InputNumber
 									className="w-full"
 									placeholder="请输入"
-									placeholder="输入动画速度"
 									min={0}
 									value={chartOptions.animationSpeed}
 									onChange={(val) => {
@@ -156,7 +153,6 @@ const TextBarrageConfigComponent = memo((props: ChartConfigComponentProps) => {
 								<InputNumber
 									className="w-full"
 									placeholder="请输入"
-									placeholder="输入动画间隔"
 									min={0}
 									value={chartOptions.animationTime}
 									onChange={(val) => {
