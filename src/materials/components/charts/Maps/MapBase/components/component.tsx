@@ -1,38 +1,16 @@
+import { useEffect, useRef, useState } from "react";
 import useChartDataFetch from "@/hooks/useChartDataFetch";
-import { ChartComponentProps } from "@/materials/types";
 import ReactECharts from "echarts-for-react";
 import { registerMap } from "echarts/core";
-// import mapJsonWithoutHainanIsLands from "../mapWithoutHainanIsLands.json";
+import { ChartComponentProps } from "@/materials/types";
+import mapJsonWithoutHainanIsLands from "../mapWithoutHainanIsLands.json";
 import mapJsonChina from "../mapGeojson/china.json";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { cloneDeep } from "lodash-es";
 
 const MapBaseComponent = (props: ChartComponentProps) => {
 	const { chartConfig, themeColor, requestErrorCallback, requestSuccessCallback, baseEvent, advancedEvent } = props;
 	const [mapOptions, setMapOptions] = useState(chartConfig.option);
 	const [isInit, setIsInit] = useState(false);
 	const chartRef = useRef<any>(null);
-	// 每次 chartOptions 改变时根据 dataset 重新设置 option
-	const datasetOptions = useMemo(() => {
-		const newOptions = cloneDeep(chartConfig.option);
-		const dataset = newOptions.dataset;
-		newOptions.series.forEach((item: any) => {
-			if (item.type === "effectScatter" && dataset.point) item.data = dataset.point;
-			else if (item.type === "lines" && dataset.line) {
-				item.data = dataset.line.map((it: any) => {
-					return {
-						...it,
-						lineStyle: {
-							color: newOptions.series[2].lineStyle.color
-						}
-					};
-				});
-			} else if (item.type === "map" && dataset.map) item.data = dataset.map;
-		});
-		if (dataset.pieces) newOptions.visualMap.pieces = dataset.pieces;
-
-		return newOptions;
-	}, [chartConfig.option]);
 
 	useChartDataFetch(
 		chartConfig,
@@ -52,35 +30,91 @@ const MapBaseComponent = (props: ChartComponentProps) => {
 	}, []);
 
 	useEffect(() => {
-		setMapOptions({ ...datasetOptions });
+		handleOptionsDataset();
 	}, [chartConfig.option]);
 
-	// //动态获取json注册地图
-	// const getGeojson = (regionId: string) => {
-	// 	return new Promise<boolean>((resolve) => {
-	// 		import(`../mapGeojson/${regionId}.json`).then((data) => {
-	// 			registerMap(regionId, { geoJSON: data.default as any, specialAreas: {} });
-	// 			console.log("first");
-	// 			resolve(true);
-	// 		});
-	// 	});
-	// };
+	// handle showHainanIsLands change
+	useEffect(() => {
+		const isShow = chartConfig.option.mapRegion.showHainanIsLands;
+		hainanLandsHandle(isShow).then(() => {
+			setMapOptions((pre: any) => {
+				vEchartsSetOption(pre);
+				return pre;
+			});
+		});
+	}, [chartConfig.option.mapRegion.showHainanIsLands]);
 
-	// // 手动触发渲染
-	// const vEchartsSetOption = (options: any) => {
-	// 	const echartInstance = chartRef.current.getEchartsInstance();
-	// 	echartInstance.clear();
-	// 	echartInstance.setOption({ ...options });
-	// };
+	// handle area change
+	useEffect(() => {
+		const adcode = String(chartConfig.option.mapRegion.adcode);
+		checkOrMapArea(adcode).then(() => {
+			setMapOptions((pre: any) => {
+				vEchartsSetOption(pre);
+				return pre;
+			});
+		});
+	}, [chartConfig.option.mapRegion.adcode]);
 
-	// // 处理海南群岛
-	// const hainanLandsHandle = async (newData: boolean) => {
-	// 	if (newData) {
-	// 		await getGeojson("china");
-	// 	} else {
-	// 		registerMap("china", { geoJSON: mapJsonWithoutHainanIsLands as any, specialAreas: {} });
-	// 	}
-	// };
+	// 处理 dataset 更改
+	const handleOptionsDataset = () => {
+		const dataset = chartConfig.option.dataset;
+		if (dataset.point && dataset.map && dataset.line) {
+			setMapOptions({
+				...chartConfig.option,
+				series: [
+					{ ...chartConfig.option.series[0], data: dataset.point },
+					{ ...chartConfig.option.series[1], data: dataset.map },
+					{
+						...chartConfig.option.series[2],
+						data: dataset.line.map((it: any) => {
+							return {
+								...it,
+								lineStyle: {
+									color: chartConfig.option.series[2].lineStyle.color
+								}
+							};
+						})
+					}
+				]
+			});
+		}
+	};
+
+	//动态获取json注册地图
+	const getGeojson = (regionId: string) => {
+		return new Promise<boolean>((resolve) => {
+			import(`../mapGeojson/${regionId}.json`).then((data) => {
+				registerMap(regionId, { geoJSON: data.default as any, specialAreas: {} });
+				resolve(true);
+			});
+		});
+	};
+
+	// 手动触发渲染
+	const vEchartsSetOption = (options: any) => {
+		const echartInstance = chartRef.current.getEchartsInstance();
+		echartInstance.clear();
+		echartInstance.setOption({ ...options });
+	};
+
+	// 处理海南群岛
+	const hainanLandsHandle = async (newData: boolean) => {
+		if (newData) {
+			await getGeojson("china");
+		} else {
+			registerMap("china", { geoJSON: mapJsonWithoutHainanIsLands as any, specialAreas: {} });
+		}
+	};
+
+	// 切换地图区域
+	const checkOrMapArea = async (newData: string) => {
+		await getGeojson(newData);
+		setMapOptions((pre: any) => ({
+			...pre,
+			geo: { ...pre.geo, map: newData },
+			series: [pre.series[0], { ...pre.series[1], map: newData }, pre.series[2]]
+		}));
+	};
 
 	return (
 		<ReactECharts
