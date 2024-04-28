@@ -4,7 +4,6 @@ import ReactECharts from "echarts-for-react";
 import { registerMap } from "echarts/core";
 import { ChartComponentProps } from "@/materials/types";
 import mapJsonWithoutHainanIsLands from "../mapWithoutHainanIsLands.json";
-import mapJsonChina from "../mapGeojson/china.json";
 
 const MapBaseComponent = (props: ChartComponentProps) => {
 	const { chartConfig, themeColor, requestErrorCallback, requestSuccessCallback, baseEvent, advancedEvent } = props;
@@ -22,11 +21,8 @@ const MapBaseComponent = (props: ChartComponentProps) => {
 		}
 	);
 
-	//需提前注册地图信息
-	!isInit && registerMap(`${mapOptions.mapRegion.adcode}`, { geoJSON: mapJsonChina as any, specialAreas: {} });
-
 	useEffect(() => {
-		setIsInit(true);
+		registerMapAsync(`${mapOptions.mapRegion.adcode}`);
 	}, []);
 
 	useEffect(() => {
@@ -54,6 +50,16 @@ const MapBaseComponent = (props: ChartComponentProps) => {
 			});
 		});
 	}, [chartConfig.option.mapRegion.adcode]);
+
+	// 注册地图数据（在挂载之前初始化）
+	async function registerMapAsync(adCode: string) {
+		if (adCode !== "china") {
+			await getGeojson(adCode);
+		} else {
+			await hainanLandsHandle(chartConfig.option.mapRegion.showHainanIsLands);
+		}
+		setIsInit(true);
+	}
 
 	// 处理 dataset 更改
 	const handleOptionsDataset = () => {
@@ -92,9 +98,11 @@ const MapBaseComponent = (props: ChartComponentProps) => {
 
 	// 手动触发渲染
 	const vEchartsSetOption = (options: any) => {
-		const echartInstance = chartRef.current.getEchartsInstance();
-		echartInstance.clear();
-		echartInstance.setOption({ ...options });
+		if (chartRef.current) {
+			const echartInstance = chartRef.current.getEchartsInstance();
+			echartInstance.clear();
+			echartInstance.setOption({ ...options });
+		}
 	};
 
 	// 处理海南群岛
@@ -117,17 +125,21 @@ const MapBaseComponent = (props: ChartComponentProps) => {
 	};
 
 	return (
-		<ReactECharts
-			ref={chartRef}
-			theme={themeColor}
-			option={mapOptions}
-			style={{ height: "100%", width: "100%" }}
-			opts={{ renderer: "canvas" }}
-			onChartReady={advancedEvent?.onChartReady}
-			onEvents={{
-				...baseEvent
-			}}
-		/>
+		<>
+			{isInit && (
+				<ReactECharts
+					ref={chartRef}
+					theme={themeColor}
+					option={mapOptions}
+					style={{ height: "100%", width: "100%" }}
+					opts={{ renderer: "canvas" }}
+					onChartReady={advancedEvent?.onChartReady}
+					onEvents={{
+						...baseEvent
+					}}
+				/>
+			)}
+		</>
 	);
 };
 
