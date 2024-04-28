@@ -1,13 +1,18 @@
+import { useMemo } from "react";
 import { Tabs } from "antd";
 import WorkBenchBox from "../WorkBenchBox";
 import { PageTabList, ChartTabList } from "./components";
 import useLayoutStore from "@/store/layoutStore/layoutStore";
 import useChartStore from "@/store/chartStore/chartStore";
-import { useMemo } from "react";
+import useEditCharts from "@/hooks/useEditCharts";
 
 const WorkBenchConfiguration = () => {
-	const { showConfiguration } = useLayoutStore();
-	const { selectId } = useChartStore();
+	const showConfiguration = useLayoutStore((selector) => selector.showConfiguration);
+	const selectId = useChartStore((selector) => selector.selectId);
+	const updateChartConfig = useChartStore((selector) => selector.updateChartConfig);
+	const { getTargetChartIndex, getTargetData } = useEditCharts();
+	const chartIndex = getTargetChartIndex()!;
+	const component = getTargetData()!;
 
 	const isSelect = useMemo(() => {
 		return selectId && selectId.length;
@@ -35,7 +40,7 @@ const WorkBenchConfiguration = () => {
 							items={ChartTabList.map(({ label, key, configRender }) => ({
 								label,
 								key,
-								children: configRender
+								children: configRender({ chartIndex, component, update: updateChartConfig })
 							}))}
 						/>
 					)}

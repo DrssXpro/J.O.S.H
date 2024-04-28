@@ -1,24 +1,22 @@
+import { FC, forwardRef, memo, useImperativeHandle, useRef, useState } from "react";
 import { Button, Card, Divider, Input, InputNumber, Modal, Select, Tag, Typography } from "antd";
 import JSettingBox from "@/components/JChartConfiguration/public/JSettingBox";
 import JSettingItem from "@/components/JChartConfiguration/public/JSettingItem";
 import { IoFlash, IoPulse, IoPencil, IoChevronUpOutline } from "react-icons/io5";
 import DataMapAndShow from "../DataMapAndShow";
-import { FC, forwardRef, useImperativeHandle, useRef, useState } from "react";
 import { SelectHttpTimeNameObj, selectTimeOptions, selectTypeOptions } from "@/types/HttpTypes";
 import NormalRequestConfig from "./components/NormalRequestConfig";
 import PublicRequestConfig from "./components/PublicRequestConfig";
-import useEditCharts from "@/hooks/useEditCharts";
 import useChartStore from "@/store/chartStore/chartStore";
 import { customizeHttp } from "@/service/http";
 import { newFunctionHandle } from "@/utils/utils";
+import { DataConfigProps } from "../..";
 
-const DynamicData = () => {
+const DynamicData = memo((props: DataConfigProps) => {
+	const { chartIndex, chartRequestConfig, chartFilter, update } = props;
 	const modalRef = useRef<any>(null);
 	const [requestLoading, setRequestLoading] = useState(false);
-	const { requestGlobalConfig, updateChartConfig } = useChartStore();
-	const { getTargetChartIndex, getTargetData } = useEditCharts();
-	const chartIndex = getTargetChartIndex()!;
-	const component = getTargetData()!;
+	const requestGlobalConfig = useChartStore((selector) => selector.requestGlobalConfig);
 	// 全局请求配置
 	const {
 		requestOriginUrl,
@@ -27,10 +25,10 @@ const DynamicData = () => {
 	} = requestGlobalConfig;
 
 	const handleSendRequest = async () => {
-		if (!component.request) return;
+		if (!chartRequestConfig) return;
 		try {
 			setRequestLoading(true);
-			const res = await customizeHttp(component.request, requestGlobalConfig);
+			const res = await customizeHttp(chartRequestConfig, requestGlobalConfig);
 			setRequestLoading(false);
 			if (res) {
 				const { data } = res;
@@ -39,12 +37,7 @@ const DynamicData = () => {
 					return;
 				}
 				// 获取到数据，设置图表展示
-				updateChartConfig(
-					chartIndex,
-					"option",
-					"dataset",
-					component.filter ? newFunctionHandle(data, res, component.filter) : data
-				);
+				update(chartIndex, "option", "dataset", chartFilter ? newFunctionHandle(data, res, chartFilter) : data);
 				window.$message.success("获取数据成功！");
 				return;
 			}
@@ -67,12 +60,12 @@ const DynamicData = () => {
 							</Button>
 						</JSettingItem>
 						<JSettingItem text="方式">
-							<Input value={component.request.requestHttpType || "暂无"} disabled />
+							<Input value={chartRequestConfig.requestHttpType || "暂无"} disabled />
 						</JSettingItem>
 						<JSettingItem text="组件间隔">
 							<Input
-								suffix={SelectHttpTimeNameObj[component.request.requestIntervalUnit]}
-								value={component.request.requestInterval || "暂无"}
+								suffix={SelectHttpTimeNameObj[chartRequestConfig.requestIntervalUnit]}
+								value={chartRequestConfig.requestInterval || "暂无"}
 								disabled
 							/>
 						</JSettingItem>
@@ -89,7 +82,7 @@ const DynamicData = () => {
 					<Input prefix={<IoPulse />} value={requestOriginUrl || "暂无"} disabled />
 				</JSettingBox>
 				<JSettingBox name="组件地址">
-					<Input prefix={<IoFlash />} value={component.request.requestUrl || "暂无"} disabled />
+					<Input prefix={<IoFlash />} value={chartRequestConfig.requestUrl || "暂无"} disabled />
 				</JSettingBox>
 				<div
 					className="absolute top-0 left-0 w-full h-full flex items-center justify-center cursor-pointer opacity-0 border-[#1668DC] border-1 border-solid hover:opacity-100 transition-all duration-500"
@@ -120,29 +113,37 @@ const DynamicData = () => {
 				</JSettingBox>
 			</div>
 
-			<DataMapAndShow />
+			<DataMapAndShow {...props} />
 
 			{/* 编辑数据 Modal */}
-			<DynamicDataModal ref={modalRef} sendRequest={handleSendRequest} />
+			<DynamicDataModal
+				ref={modalRef}
+				sendRequest={handleSendRequest}
+				chartIndex={chartIndex}
+				update={update}
+				chartRequestConfig={chartRequestConfig}
+			/>
 		</>
 	);
-};
+});
 
 const DynamicDataModal: FC<{
 	sendRequest: () => void;
 	ref: any;
+	chartRequestConfig: Pick<DataConfigProps, "chartRequestConfig">["chartRequestConfig"];
+	chartIndex: number;
+	update: Pick<DataConfigProps, "update">["update"];
 }> = forwardRef((props, ref) => {
-	const { sendRequest } = props;
+	const { sendRequest, chartRequestConfig, chartIndex, update } = props;
 	const [isOpen, setIsOpen] = useState(false);
 	const [hideTable, setHideTable] = useState(false);
 	const [isHover, setIsHover] = useState(false);
 	const [editPublic, setEditPublic] = useState(false);
-	const { requestGlobalConfig, updateChartConfig, updateGlobalRequestConfig } = useChartStore();
-	const { getTargetData, getTargetChartIndex } = useEditCharts();
-	const chartIndex = getTargetChartIndex()!;
-	const component = getTargetData()!;
-	const requestConfig = component.request;
-	const { requestInterval, requestIntervalUnit, requestHttpType, requestUrl } = requestConfig;
+	const { requestGlobalConfig, updateGlobalRequestConfig } = useChartStore((selector) => ({
+		requestGlobalConfig: selector.requestGlobalConfig,
+		updateGlobalRequestConfig: selector.updateGlobalRequestConfig
+	}));
+	const { requestInterval, requestIntervalUnit, requestHttpType, requestUrl } = chartRequestConfig;
 
 	useImperativeHandle(ref, () => {
 		return {
@@ -257,7 +258,7 @@ const DynamicDataModal: FC<{
 								value={requestUrl}
 								placeholder="请输入地址（去除前置 URL）"
 								onChange={(e) => {
-									updateChartConfig(chartIndex, "request", "requestUrl", e.target.value);
+									update(chartIndex, "request", "requestUrl", e.target.value);
 								}}
 								prefix={
 									requestGlobalConfig.requestOriginUrl ? (
@@ -273,7 +274,7 @@ const DynamicDataModal: FC<{
 										value={requestHttpType}
 										options={selectTypeOptions}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "request", "requestHttpType", val);
+											update(chartIndex, "request", "requestHttpType", val);
 										}}
 									/>
 								}
@@ -284,7 +285,7 @@ const DynamicDataModal: FC<{
 								placeholder="默认使用全局数据"
 								value={requestInterval}
 								onChange={(val) => {
-									updateChartConfig(chartIndex, "request", "requestInterval", val);
+									update(chartIndex, "request", "requestInterval", val);
 								}}
 								addonAfter={
 									<Select
@@ -292,7 +293,7 @@ const DynamicDataModal: FC<{
 										value={requestIntervalUnit}
 										options={selectTimeOptions}
 										onChange={(val) => {
-											updateChartConfig(chartIndex, "request", "requestIntervalUnit", val);
+											update(chartIndex, "request", "requestIntervalUnit", val);
 										}}
 									/>
 								}
@@ -300,7 +301,7 @@ const DynamicDataModal: FC<{
 						</JSettingItem>
 					</div>
 				</JSettingBox>
-				<NormalRequestConfig />
+				<NormalRequestConfig chartIndex={chartIndex} request={chartRequestConfig} />
 			</Card>
 		</Modal>
 	);

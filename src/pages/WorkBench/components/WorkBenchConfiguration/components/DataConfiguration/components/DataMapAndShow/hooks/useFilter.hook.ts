@@ -1,12 +1,15 @@
-import { ComponentType } from "@/materials/types";
 import { customizeHttp } from "@/service/http";
-import { RequestDataValueEnum, RequestGlobalConfigType } from "@/types/HttpTypes";
+import { RequestConfigType, RequestDataValueEnum, RequestGlobalConfigType } from "@/types/HttpTypes";
 import { cloneDeep } from "lodash-es";
 import { useEffect, useMemo, useState } from "react";
 
-const useFilter = (component: ComponentType, requestGlobalConfig: RequestGlobalConfigType) => {
+const useFilter = (
+	chartFilter: string,
+	chartRequestConfig: RequestConfigType,
+	requestGlobalConfig: RequestGlobalConfigType
+) => {
 	// filter code
-	const [filterCode, setFilterCode] = useState(component.filter || "return data;");
+	const [filterCode, setFilterCode] = useState(chartFilter || "return data;");
 	// filter modal
 	const [isOpenFilter, setIsOpenFilter] = useState(false);
 	// filter error
@@ -14,7 +17,7 @@ const useFilter = (component: ComponentType, requestGlobalConfig: RequestGlobalC
 	// 图表动态请求获取数据
 	const [sourceData, setSourceData] = useState<any>("");
 	// filter show or hidden
-	const showFilter = useMemo(() => component.request.requestDataType !== RequestDataValueEnum.STATIC, [component]);
+	const showFilter = useMemo(() => chartRequestConfig.requestDataType !== RequestDataValueEnum.STATIC, []);
 	// filter 执行结果
 	const filterRes = useMemo(() => {
 		try {
@@ -37,7 +40,7 @@ const useFilter = (component: ComponentType, requestGlobalConfig: RequestGlobalC
 	// 动态获取数据
 	const fetchTargetData = async () => {
 		try {
-			const res = await customizeHttp(component.request, requestGlobalConfig);
+			const res = await customizeHttp(chartRequestConfig, requestGlobalConfig);
 			if (res) {
 				setSourceData(res);
 				return;

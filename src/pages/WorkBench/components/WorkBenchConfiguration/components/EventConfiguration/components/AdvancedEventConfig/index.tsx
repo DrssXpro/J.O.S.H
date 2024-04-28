@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import { Button, Divider, Modal, Tabs, Tag, Typography } from "antd";
 import JCollapseBox from "@/components/JChartConfiguration/public/JCollapseBox";
 import JCodeMirror from "@/components/JCodeMirror";
@@ -6,33 +6,29 @@ import { IoDocument, IoPencil } from "react-icons/io5";
 import { computedAdvancedEventCode } from "../codeConfig";
 import { ErrorTypeName, EventLife, VaildError } from "@/types/EventTypes";
 import JEditCode from "@/components/JChartConfiguration/JEditCode";
-import useChartStore from "@/store/chartStore/chartStore";
-import useEditCharts from "@/hooks/useEditCharts";
+import { AllEventsProps } from "../types";
 
 const EventLifeName = {
 	[EventLife.CHART_READY]: "渲染之后"
 };
 
-const AdvancedEventConfig = () => {
+const AdvancedEventConfig = memo((props: AllEventsProps) => {
+	const { chartIndex, events, update } = props;
 	const [errorInfo, setErrorInfo] = useState({
 		[VaildError.ERROR_FN]: "",
 		[VaildError.ERROR_INFO]: "",
 		[VaildError.ERROR_STACK]: ""
 	});
-	const updateChartConfig = useChartStore((selector) => selector.updateChartConfig);
-	const { getTargetChartIndex, getTargetData } = useEditCharts();
-	const chartIndex = getTargetChartIndex()!;
-	const component = getTargetData()!;
 	const [advancedEvent, setAdvancedEvent] = useState({
-		...component.events.advancedEvents
+		...events.advancedEvents
 	});
 	const [isOpen, setIsOpen] = useState(false);
 
 	// 组件图表绑定事件代码展示
 	const showCode = useMemo(() => {
-		const codes = Object.entries(component.events.advancedEvents).map(([, body]) => (body ? body : ""));
+		const codes = Object.entries(events.advancedEvents).map(([, body]) => (body ? body : ""));
 		return computedAdvancedEventCode(codes);
-	}, [component.events.advancedEvents]);
+	}, [events.advancedEvents]);
 
 	// 处理编写的事件函数错误信息上报展示
 	useEffect(() => {
@@ -61,7 +57,7 @@ const AdvancedEventConfig = () => {
 			window.$message.error("事件函数错误，无法进行保存");
 			return;
 		}
-		updateChartConfig(chartIndex, "events", "advancedEvents", advancedEvent);
+		update(chartIndex, "events", "advancedEvents", advancedEvent);
 		setIsOpen(false);
 	};
 	return (
@@ -187,6 +183,6 @@ const AdvancedEventConfig = () => {
 			</Modal>
 		</>
 	);
-};
+});
 
 export default AdvancedEventConfig;

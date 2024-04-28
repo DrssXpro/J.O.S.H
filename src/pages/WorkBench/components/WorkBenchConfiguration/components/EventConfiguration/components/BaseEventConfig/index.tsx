@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import { Button, Divider, Modal, Tabs, Tag, Typography } from "antd";
 import JCollapseBox from "@/components/JChartConfiguration/public/JCollapseBox";
 import JCodeMirror from "@/components/JCodeMirror";
@@ -6,8 +6,7 @@ import { IoDocument, IoPencil } from "react-icons/io5";
 import { computedBaseEventCode } from "../codeConfig";
 import { BaseEvent, ErrorTypeName, VaildError } from "@/types/EventTypes";
 import JEditCode from "@/components/JChartConfiguration/JEditCode";
-import useEditCharts from "@/hooks/useEditCharts";
-import useChartStore from "@/store/chartStore/chartStore";
+import { AllEventsProps } from "../types";
 
 const EventTypeName = {
 	[BaseEvent.ON_CLICK]: "单击",
@@ -16,26 +15,24 @@ const EventTypeName = {
 	[BaseEvent.ON_MOUSE_OUT]: "鼠标移出"
 };
 
-const BaseEventConfig = () => {
+const BaseEventConfig = memo((props: AllEventsProps) => {
+	const { chartIndex, events, update } = props;
 	const [errorInfo, setErrorInfo] = useState({
 		[VaildError.ERROR_FN]: "",
 		[VaildError.ERROR_INFO]: "",
 		[VaildError.ERROR_STACK]: ""
 	});
-	const updateChartConfig = useChartStore((selector) => selector.updateChartConfig);
-	const { getTargetChartIndex, getTargetData } = useEditCharts();
-	const chartIndex = getTargetChartIndex()!;
-	const component = getTargetData()!;
+
 	const [baseEvent, setBaseEvent] = useState({
-		...component.events.baseEvent
+		...events.baseEvent
 	});
 	const [isOpen, setIsOpen] = useState(false);
 
 	// 组件图表绑定事件代码展示
 	const showCode = useMemo(() => {
-		const codes = Object.entries(component.events.baseEvent).map(([, body]) => (body ? body : ""));
+		const codes = Object.entries(events.baseEvent).map(([, body]) => (body ? body : ""));
 		return computedBaseEventCode(codes);
-	}, [component.events.baseEvent]);
+	}, [events.baseEvent]);
 
 	// 处理编写的事件函数错误信息上报展示
 	useEffect(() => {
@@ -64,7 +61,7 @@ const BaseEventConfig = () => {
 			window.$message.error("事件函数错误，无法进行保存");
 			return;
 		}
-		updateChartConfig(chartIndex, "events", "baseEvent", baseEvent);
+		update(chartIndex, "events", "baseEvent", baseEvent);
 		setIsOpen(false);
 	};
 
@@ -182,6 +179,6 @@ const BaseEventConfig = () => {
 			</Modal>
 		</>
 	);
-};
+});
 
 export default BaseEventConfig;

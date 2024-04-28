@@ -1,4 +1,4 @@
-import { UpdateChartConfigType } from "@/store/chartStore/types";
+import { IComponent, UpdateChartConfigType } from "@/store/chartStore/types";
 import { BaseEvent, EventLife } from "@/types/EventTypes";
 import { RequestConfigType } from "@/types/HttpTypes";
 
@@ -79,6 +79,13 @@ export interface ChartConfigComponentProps {
 	update: UpdateChartConfigType;
 }
 
+//  图表配置栏 item 整体 props
+export interface ConfigurationProps {
+	chartIndex: number;
+	component: IComponent;
+	update: UpdateChartConfigType;
+}
+
 // 组件状态
 export interface StatusType {
 	lock: boolean;
@@ -143,13 +150,15 @@ export interface PublicConfigType {
 	};
 	filter?: string;
 	status: StatusType;
-	events: {
-		baseEvent: {
-			[K in BaseEvent]?: string;
-		};
-		advancedEvents: {
-			[K in EventLife]?: string;
-		};
+	events: PublicEventsConfig;
+}
+
+export interface PublicEventsConfig {
+	baseEvent: {
+		[K in BaseEvent]?: string;
+	};
+	advancedEvents: {
+		[K in EventLife]?: string;
 	};
 }
 

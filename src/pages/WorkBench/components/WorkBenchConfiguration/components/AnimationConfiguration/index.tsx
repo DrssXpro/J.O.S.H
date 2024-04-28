@@ -1,34 +1,35 @@
-import JCollapseBox from "@/components/JChartConfiguration/public/JCollapseBox";
-import useEditCharts from "@/hooks/useEditCharts";
-import { animations } from "@/settings/animationSetting";
-import useChartStore from "@/store/chartStore/chartStore";
+import { memo, useMemo, useState } from "react";
 import { Button, Col, Row } from "antd";
-import { useMemo, useState } from "react";
+import JCollapseBox from "@/components/JChartConfiguration/public/JCollapseBox";
+import { animationsList } from "@/settings/animationSetting";
+import { UpdateChartConfigType } from "@/store/chartStore/types";
 
-const AnimationConfiguration = () => {
-	const updateChartConfig = useChartStore((selector) => selector.updateChartConfig);
-	const { getTargetChartIndex, getTargetData } = useEditCharts();
-	const chartIndex = getTargetChartIndex()!;
-	const component = getTargetData()!;
+import { ConfigurationProps } from "@/materials/types";
 
-	const selectAnimate = useMemo(
-		() => (component.styles.animations.length ? component.styles.animations[0] : ""),
-		[component]
-	);
+interface AnimationConfigurationProps {
+	chartIndex: number;
+	animations: string[];
+	update: UpdateChartConfigType;
+}
+
+const AnimationConfiguration = memo(({ chartIndex, animations, update }: AnimationConfigurationProps) => {
+	const selectAnimate = useMemo(() => (animations.length ? animations[0] : ""), [animations]);
 	const [hoverAnimate, setHoverAnimate] = useState("");
+
+	console.log("rneder");
 	return (
 		<div className="flex flex-col gap-4">
 			<Button
 				block
 				disabled={!selectAnimate}
 				onClick={() => {
-					updateChartConfig(chartIndex, "styles", "animations", [""]);
+					update(chartIndex, "styles", "animations", [""]);
 				}}
 			>
 				清除动画
 			</Button>
 			<div>
-				{animations.map((item, index) => (
+				{animationsList.map((item, index) => (
 					<JCollapseBox name={item.label} key={index} unfold>
 						<Row gutter={[10, 10]}>
 							{item.children.map((i) => (
@@ -43,7 +44,7 @@ const AnimationConfiguration = () => {
 											setHoverAnimate(i.value);
 										}}
 										onClick={() => {
-											updateChartConfig(chartIndex, "styles", "animations", [i.value]);
+											update(chartIndex, "styles", "animations", [i.value]);
 										}}
 									>
 										{i.label}
@@ -56,6 +57,12 @@ const AnimationConfiguration = () => {
 			</div>
 		</div>
 	);
+});
+
+// 包裹使用 context，内部组件传入 props 并使用 memo，避免重复渲染
+const AnimationConfigurationWrapper = (props: ConfigurationProps) => {
+	const { chartIndex, component, update } = props;
+	return <AnimationConfiguration chartIndex={chartIndex} animations={component.styles.animations} update={update} />;
 };
 
-export default AnimationConfiguration;
+export default AnimationConfigurationWrapper;

@@ -2,27 +2,23 @@ import JNameSetting from "@/components/JChartConfiguration/JNameSetting";
 import JPosSetting from "@/components/JChartConfiguration/JPosSetting";
 import JSizeSetting from "@/components/JChartConfiguration/JSizeSetting";
 import JStylesSetting from "@/components/JChartConfiguration/JStylesSetting";
-import useEditCharts from "@/hooks/useEditCharts";
-import useChartStore from "@/store/chartStore/chartStore";
+import { ConfigurationProps } from "@/materials/types";
 
-const ChartConfiguration = () => {
-	const updateChartConfig = useChartStore((selector) => selector.updateChartConfig);
-	const { getTargetChartIndex, getTargetData } = useEditCharts();
-	const chartIndex = getTargetChartIndex()!;
-	const component = getTargetData()!;
+const ChartConfiguration = (props: ConfigurationProps) => {
+	const { component, chartIndex, update } = props;
 
 	return (
 		<>
-			<JNameSetting title={component.chartConfig.title} chartIndex={chartIndex} update={updateChartConfig} />
-			<JSizeSetting attr={component.attr} chartIndex={chartIndex} update={updateChartConfig} />
-			<JPosSetting attr={component.attr} chartIndex={chartIndex} update={updateChartConfig} />
+			<JNameSetting title={component.chartConfig.title} chartIndex={chartIndex} update={update} />
+			<JSizeSetting attr={component.attr} chartIndex={chartIndex} update={update} />
+			<JPosSetting attr={component.attr} chartIndex={chartIndex} update={update} />
 			<JStylesSetting />
 			{component && (
 				<component.ChartConfigComponent
 					chartIndex={chartIndex}
 					chartRendererType={component.rendererType}
 					chartOptions={component.option}
-					update={updateChartConfig}
+					update={update}
 				/>
 			)}
 		</>

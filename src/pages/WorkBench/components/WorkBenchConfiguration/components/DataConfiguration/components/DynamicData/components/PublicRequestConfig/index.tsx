@@ -9,7 +9,9 @@ interface IPublicRequestConfig {
 
 const PublicRequestConfig = (props: IPublicRequestConfig) => {
 	const { isEdit } = props;
-	const { requestGlobalConfig, updateGlobalRequestParams } = useChartStore();
+	const { requestGlobalConfig, updateGlobalRequestParams } = useChartStore(
+		({ requestGlobalConfig, updateGlobalRequestParams }) => ({ requestGlobalConfig, updateGlobalRequestParams })
+	);
 	const { requestParams } = requestGlobalConfig;
 
 	const items: TabsProps["items"] = [

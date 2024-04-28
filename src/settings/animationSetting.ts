@@ -1,4 +1,4 @@
-export const animations = [
+export const animationsList = [
 	{
 		label: "强调动画",
 		children: [

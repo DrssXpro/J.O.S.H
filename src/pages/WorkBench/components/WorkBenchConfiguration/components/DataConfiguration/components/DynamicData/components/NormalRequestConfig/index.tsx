@@ -1,17 +1,17 @@
 import { Radio, Tabs, TabsProps, Typography } from "antd";
 import RequestConfigTable from "../RequestConfigTable";
-import { RequestBodyEnum, RequestBodyEnumList, RequestParamsTypeEnum } from "@/types/HttpTypes";
+import { RequestBodyEnum, RequestBodyEnumList, RequestConfigType, RequestParamsTypeEnum } from "@/types/HttpTypes";
 import JCodeMirror from "@/components/JCodeMirror";
-import useEditCharts from "@/hooks/useEditCharts";
 import useChartStore from "@/store/chartStore/chartStore";
+import { memo } from "react";
 
-const BodyConfig = () => {
-	const { updateChartRequestParams, updateChartConfig } = useChartStore();
-	const { getTargetChartIndex, getTargetData } = useEditCharts();
-	const chartIndex = getTargetChartIndex()!;
-	const requestConfig = getTargetData()!.request;
-	const { requestParamsBodyType } = requestConfig;
-	const { Body } = requestConfig.requestParams;
+const BodyConfig = (props: { chartIndex: number; request: RequestConfigType }) => {
+	const { chartIndex, request } = props;
+	const { updateChartRequestParams, updateChartConfig } = useChartStore(
+		({ updateChartRequestParams, updateChartConfig }) => ({ updateChartRequestParams, updateChartConfig })
+	);
+	const { requestParamsBodyType } = request;
+	const { Body } = request.requestParams;
 
 	const bodyMap = {
 		[RequestBodyEnum.NONE]: (
@@ -79,11 +79,10 @@ const BodyConfig = () => {
 	);
 };
 
-const NormalRequestConfig = () => {
-	const { updateChartRequestParams } = useChartStore();
-	const { getTargetChartIndex, getTargetData } = useEditCharts();
-	const chartIndex = getTargetChartIndex()!;
-	const { Params, Header } = getTargetData()!.request.requestParams;
+const NormalRequestConfig = memo((props: { chartIndex: number; request: RequestConfigType }) => {
+	const { chartIndex, request } = props;
+	const updateChartRequestParams = useChartStore((selector) => selector.updateChartRequestParams);
+	const { Params, Header } = request.requestParams;
 	const items: TabsProps["items"] = [
 		{
 			key: "1",
@@ -102,7 +101,7 @@ const NormalRequestConfig = () => {
 		{
 			key: "2",
 			label: "Body",
-			children: <BodyConfig />
+			children: <BodyConfig {...props} />
 		},
 		{
 			key: "3",
@@ -120,6 +119,6 @@ const NormalRequestConfig = () => {
 		}
 	];
 	return <Tabs items={items}></Tabs>;
-};
+});
 
 export default NormalRequestConfig;

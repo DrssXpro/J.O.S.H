@@ -1,17 +1,25 @@
+import { useMemo } from "react";
 import { Select } from "antd";
-import { RequestDataLabelEnum, RequestDataValueEnum } from "@/types/HttpTypes";
+import { RequestConfigType, RequestDataLabelEnum, RequestDataValueEnum } from "@/types/HttpTypes";
 import JSettingBox from "@/components/JChartConfiguration/public/JSettingBox";
 import StaticData from "./components/StaticData";
 import DynamicData from "./components/DynamicData";
-import useEditCharts from "@/hooks/useEditCharts";
-import useChartStore from "@/store/chartStore/chartStore";
-import { useMemo } from "react";
-import { ChartFrameEnum } from "@/materials/types";
+import { ChartFrameEnum, ConfigurationProps, IMaterialConfigType } from "@/materials/types";
+import { UpdateChartConfigType } from "@/store/chartStore/types";
 
 interface IDataOptions {
 	label: RequestDataLabelEnum;
 	value: RequestDataValueEnum;
 	disabled?: boolean;
+}
+
+export interface DataConfigProps {
+	chartIndex: number;
+	chartFilter: string;
+	chartOptions: any;
+	chartConfig: IMaterialConfigType;
+	chartRequestConfig: RequestConfigType;
+	update: UpdateChartConfigType;
 }
 
 const dataOptions: IDataOptions[] = [
@@ -25,23 +33,39 @@ const dataOptions: IDataOptions[] = [
 	}
 ];
 
-const ConfigurationComponentMap: Record<RequestDataValueEnum, JSX.Element> = {
-	[RequestDataValueEnum.STATIC]: <StaticData />,
-	[RequestDataValueEnum.DYNAMIC]: <DynamicData />
+const ConfigurationComponentMap: Record<RequestDataValueEnum, (props: ConfigurationProps) => JSX.Element> = {
+	[RequestDataValueEnum.STATIC]: ({ component, update, chartIndex }) => (
+		<StaticData
+			chartIndex={chartIndex}
+			chartFilter={component.filter || ""}
+			chartOptions={component.option}
+			chartConfig={component.chartConfig}
+			chartRequestConfig={component.request}
+			update={update}
+		/>
+	),
+	[RequestDataValueEnum.DYNAMIC]: ({ component, update, chartIndex }) => (
+		<DynamicData
+			chartIndex={chartIndex}
+			chartFilter={component.filter || ""}
+			chartOptions={component.option}
+			chartConfig={component.chartConfig}
+			chartRequestConfig={component.request}
+			update={update}
+		/>
+	)
 };
 
-const DataConfiguration = () => {
-	const updateChartConfig = useChartStore((selector) => selector.updateChartConfig);
-	const { getTargetChartIndex, getTargetData } = useEditCharts();
-	const chartIndex = getTargetChartIndex()!;
-	const component = getTargetData()!;
-	// 无数据源
+const DataConfiguration = (props: ConfigurationProps) => {
+	const { component, update, chartIndex } = props;
+	//无数据源
 	const isNotData = useMemo(() => {
 		return (
 			component.chartConfig?.chartFrame === ChartFrameEnum.STATIC ||
-			typeof component?.option?.dataset === "undefined"
+			typeof component.option?.dataset === "undefined"
 		);
 	}, [component]);
+
 	return (
 		<>
 			<JSettingBox name="请求方式">
@@ -51,11 +75,16 @@ const DataConfiguration = () => {
 					value={component.request.requestDataType}
 					disabled={isNotData}
 					onChange={(value) => {
-						updateChartConfig(chartIndex, "request", "requestDataType", value);
+						update(chartIndex, "request", "requestDataType", value);
 					}}
 				/>
 			</JSettingBox>
-			{ConfigurationComponentMap[component.request.requestDataType]}
+			{ConfigurationComponentMap[component.request.requestDataType]({
+				component: component,
+				chartIndex: chartIndex,
+				update: update
+			})}
+			{}
 		</>
 	);
 };

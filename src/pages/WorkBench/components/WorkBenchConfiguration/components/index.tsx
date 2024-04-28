@@ -1,16 +1,15 @@
 import { lazy } from "react";
-import { type TabConfig, TabsEnum } from "@/types/LayoutTypes";
+import { TabPageConfig, TabConfig, TabsEnum } from "@/types/LayoutTypes";
 import { AiOutlineFundProjectionScreen } from "react-icons/ai";
 import { IoConstruct, IoLeaf, IoFlash, IoRocket } from "react-icons/io5";
 import JWithLoading from "@/components/JWithLoading";
-
 const PageConfiguration = lazy(() => import("./PageConfiguration"));
 const ChartConfiguration = lazy(() => import("./ChartConfiguration"));
 const AnimationConfiguration = lazy(() => import("./AnimationConfiguration"));
 const DataConfiguration = lazy(() => import("./DataConfiguration"));
 const EventConfiguration = lazy(() => import("./EventConfiguration"));
 
-const PageTabList: TabConfig[] = [
+const PageTabList: TabPageConfig[] = [
 	{
 		key: TabsEnum.PAGE_SETTING,
 		label: (
@@ -32,7 +31,9 @@ const ChartTabList: TabConfig[] = [
 				<IoConstruct />
 			</div>
 		),
-		configRender: <JWithLoading element={<ChartConfiguration />} loadingStyle={{ background: "none" }} />
+		configRender: (props) => (
+			<JWithLoading element={<ChartConfiguration {...props} />} loadingStyle={{ background: "none" }} />
+		)
 	},
 	{
 		key: TabsEnum.CHART_ANIMATION,
@@ -42,7 +43,9 @@ const ChartTabList: TabConfig[] = [
 				<IoLeaf />
 			</div>
 		),
-		configRender: <JWithLoading element={<AnimationConfiguration />} loadingStyle={{ background: "none" }} />
+		configRender: (props) => (
+			<JWithLoading element={<AnimationConfiguration {...props} />} loadingStyle={{ background: "none" }} />
+		)
 	},
 	{
 		key: TabsEnum.CHART_DATA,
@@ -52,7 +55,9 @@ const ChartTabList: TabConfig[] = [
 				<IoFlash />
 			</div>
 		),
-		configRender: <JWithLoading element={<DataConfiguration />} loadingStyle={{ background: "none" }} />
+		configRender: (props) => (
+			<JWithLoading element={<DataConfiguration {...props} />} loadingStyle={{ background: "none" }} />
+		)
 	},
 	{
 		key: TabsEnum.CHART_EVENT,
@@ -62,7 +67,9 @@ const ChartTabList: TabConfig[] = [
 				<IoRocket size={13} />
 			</div>
 		),
-		configRender: <JWithLoading element={<EventConfiguration />} loadingStyle={{ background: "none" }} />
+		configRender: (props) => (
+			<JWithLoading element={<EventConfiguration {...props} />} loadingStyle={{ background: "none" }} />
+		)
 	}
 ];
 
