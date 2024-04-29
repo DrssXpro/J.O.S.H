@@ -31,12 +31,17 @@ const loadConfig = (packageName: string, categoryName: string, keyName: string) 
 
 // 创建图表组件配置
 export const createComponentConfig = async (targetData: IMaterialConfigType) => {
-	const { redirectComponent, category, key, menu } = targetData;
+	const { redirectComponent, category, key, menu, resource } = targetData;
 	// redirectComponent 处理手动上传图片组件
 	if (redirectComponent) {
 		const [packageName, categoryName, keyName] = redirectComponent.split("/");
 		const redirectChart = await loadConfig(packageName, categoryName, keyName);
 		return new redirectChart.default();
+	}
+	// 资源库图片统一使用内置图片组件
+	if (resource) {
+		const imageChart = await loadConfig("informations", "Mores", "Image");
+		return new imageChart.default(targetData);
 	}
 	const chart = await loadConfig(menu, category, key);
 	return new chart.default();
@@ -75,5 +80,7 @@ export const materialsList: Record<MaterialCategoryEnum, IMaterialConfigType[]> 
 	[MaterialCategoryEnum.INFORMATIONS]: InformationsConfig,
 	[MaterialCategoryEnum.TABLES]: TableListConfig,
 	[MaterialCategoryEnum.DECORATES]: DecorateConfig,
-	[MaterialCategoryEnum.PHOTOS]: PhotosConfig
+	[MaterialCategoryEnum.PHOTOS]: PhotosConfig,
+	// 资源库：动态请求获取
+	[MaterialCategoryEnum.SOURCELIB]: []
 };

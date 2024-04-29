@@ -120,6 +120,8 @@ export interface IMaterialConfigType {
 	disabled?: boolean;
 	// 配置事件
 	configEvents?: Record<string, (...args: any[]) => any>;
+	// 是否为远程资源（图片）
+	resource?: boolean;
 }
 
 // 图表组件 props 根配置项

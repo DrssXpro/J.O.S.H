@@ -1,6 +1,7 @@
 import axios, { AxiosResponse, InternalAxiosRequestConfig, AxiosError } from "axios";
 import { ResultEnum } from "@/types/HttpTypes";
 import { ErrorPageNameMap } from "@/types/pageTypes";
+import { PublicResponse } from "./types/requestTypes";
 
 const axiosInstance = axios.create({
 	timeout: ResultEnum.TIMEOUT
@@ -31,5 +32,13 @@ axiosInstance.interceptors.response.use(
 		return Promise.reject(err);
 	}
 );
+
+export function GET<R>(url: string, params?: Record<string, any>) {
+	return axiosInstance.request<any, PublicResponse<R>>({
+		url,
+		method: "get",
+		params
+	});
+}
 
 export default axiosInstance;

@@ -46,11 +46,11 @@ const LayerCard = (props: LayerCardProps) => {
 			>
 				<img
 					src={imageUrl}
-					className={`${mode === LayerModeEnum.THUMBNAIL ? "w-[36%]" : "w-[20%]"}${
+					className={`${mode === LayerModeEnum.THUMBNAIL ? "w-[36%] " : "w-[20%] "}${
 						mode === LayerModeEnum.THUMBNAIL ? "rounded-md" : "rounded"
-					} h-full transition-all`}
+					} h-full transition-all object-contain`}
 				/>
-				<Typography.Text ellipsis className="text-[12px]" title={detail.chartConfig.title}>
+				<Typography.Text ellipsis={{ tooltip: true }} className="text-[12px]">
 					{detail.chartConfig.title}
 				</Typography.Text>
 				<div className="flex items-center">

@@ -3,7 +3,8 @@ export const enum MaterialCategoryEnum {
 	TABLES = "tables",
 	INFORMATIONS = "informations",
 	PHOTOS = "photos",
-	DECORATES = "decorates"
+	DECORATES = "decorates",
+	SOURCELIB = "sourcelib"
 }
 
 export const enum MaterialNameEnum {
@@ -11,5 +12,6 @@ export const enum MaterialNameEnum {
 	TABLES = "列表",
 	INFORMATIONS = "信息",
 	PHOTOS = "图片",
-	DECORATES = "小组件"
+	DECORATES = "小组件",
+	SOURCELIB = "资源库"
 }

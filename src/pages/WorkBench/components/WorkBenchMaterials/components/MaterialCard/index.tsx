@@ -64,7 +64,13 @@ const MaterialCard = (props: IMaterialCardProps) => {
 				draggable={!detail.disabled}
 				onDragStart={handleDragStart}
 			>
-				<ChartGlobImage detail={detail} imageStyle={detail.title === "上传图片" ? updateImageIconStyle : {}} />
+				<ChartGlobImage
+					detail={detail}
+					imageStyle={{
+						...(detail.title === "上传图片" ? updateImageIconStyle : {}),
+						objectFit: detail.resource ? "contain" : "fill"
+					}}
+				/>
 			</div>
 
 			<Typography.Text
