@@ -3,7 +3,9 @@ import { CanvasConfigTypeEnum, ICanvasConfig } from "@/store/canvasStore/types";
 import { CSSProperties } from "react";
 
 type AttrType = Pick<ComponentType, "attr">["attr"];
+type StylesType = Pick<ComponentType, "styles">["styles"];
 
+// 位置
 export const setChartPosStyle = (attr: AttrType, index: number): CSSProperties => {
 	if (!attr) return {};
 
@@ -14,6 +16,7 @@ export const setChartPosStyle = (attr: AttrType, index: number): CSSProperties =
 	};
 };
 
+// 尺寸
 export const setChartSizeStyle = (attr: AttrType, scale?: number): CSSProperties => {
 	if (!attr) return {};
 	return {
@@ -22,11 +25,32 @@ export const setChartSizeStyle = (attr: AttrType, scale?: number): CSSProperties
 	};
 };
 
+// 动画
 export const setChartAnimateStyle = (animations: string[]) => {
 	if (animations.length) {
 		return `animate__animated  animate__${animations[0]}`;
 	}
 	return "";
+};
+
+// 滤镜
+export const setFilterStyle = (styles?: StylesType) => {
+	if (!styles || !styles.filterShow) return {};
+	const { opacity, saturate, contrast, hueRotate, brightness } = styles;
+	return {
+		opacity: opacity,
+		filter: `saturate(${saturate}) contrast(${contrast}) hue-rotate(${hueRotate}deg) brightness(${brightness})`
+	};
+};
+
+// 变换
+export const setTransformStyle = (styles: StylesType) => {
+	const { rotateZ, rotateX, rotateY, skewX, skewY } = styles;
+	return {
+		transform: `rotateZ(${rotateZ || 0}deg) rotateX(${rotateX || 0}deg) rotateY(${rotateY || 0}deg) skewX(${
+			skewX || 0
+		}deg) skewY(${skewY || 0}deg)`
+	};
 };
 
 // 全局画布样式

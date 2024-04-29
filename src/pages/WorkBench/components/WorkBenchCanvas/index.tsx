@@ -8,7 +8,13 @@ import useChartsWithHistory from "@/hooks/useChartsWithHistory";
 import useMouseHandle from "./hooks/useMouseHandle";
 import useContextMenuHandle from "@/hooks/useContextMenuHandle";
 import { initKeyBoardListener, removeKeyBoardEventListener } from "./utils/handleKeyBoardEvent";
-import { setChartAnimateStyle, setChartPosStyle, setChartSizeStyle } from "@/utils/chartStyle";
+import {
+	setChartAnimateStyle,
+	setChartPosStyle,
+	setChartSizeStyle,
+	setFilterStyle,
+	setTransformStyle
+} from "@/utils/chartStyle";
 import { createComponentConfig, fetchComponent } from "@/materials/components";
 import { colorCustomMerge } from "@/utils/colorStyle";
 import { bus } from "@/utils";
@@ -102,7 +108,12 @@ const WorkBenchCanvas = () => {
 							<div
 								key={i.id}
 								className={`absolute ${setChartAnimateStyle(i.styles.animations)}`}
-								style={{ ...setChartPosStyle(i.attr, index), ...setChartSizeStyle(i.attr) }}
+								style={{
+									...setChartPosStyle(i.attr, index),
+									...setChartSizeStyle(i.attr),
+									...setFilterStyle(i.styles),
+									...setTransformStyle(i.styles)
+								}}
 								onMouseDown={(e) => handleMouseDown(e, i)}
 							>
 								<EditShapeBox

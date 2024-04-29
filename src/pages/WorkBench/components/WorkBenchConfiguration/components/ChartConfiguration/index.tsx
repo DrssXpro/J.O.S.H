@@ -12,7 +12,7 @@ const ChartConfiguration = (props: ConfigurationProps) => {
 			<JNameSetting title={component.chartConfig.title} chartIndex={chartIndex} update={update} />
 			<JSizeSetting attr={component.attr} chartIndex={chartIndex} update={update} />
 			<JPosSetting attr={component.attr} chartIndex={chartIndex} update={update} />
-			<JStylesSetting />
+			<JStylesSetting styles={component.styles} chartIndex={chartIndex} update={update} />
 			{component && (
 				<component.ChartConfigComponent
 					chartIndex={chartIndex}

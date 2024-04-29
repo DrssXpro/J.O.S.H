@@ -68,7 +68,6 @@ const DataMapAndShow = memo(
 			setIsOpenFilter,
 			setFilterCode
 		} = useFilter(chartFilter, chartRequestConfig, requestGlobalConfig);
-		console.log("DataMapAndShow render");
 		// 图表数据源展示
 		const [code, setCode] = useState(chartOptions.dataset || "此组件无数据源");
 		// 编辑图表数据源 modal
