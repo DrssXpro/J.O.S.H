@@ -11,9 +11,9 @@ const EventConfiguration = lazy(() => import("./EventConfiguration"));
 
 const PageTabList: TabPageConfig[] = [
 	{
-		key: TabsEnum.PAGE_SETTING,
+		value: TabsEnum.PAGE_SETTING,
 		label: (
-			<div className="flex items-center justify-center gap-2 w-77">
+			<div className="flex items-center justify-center gap-2">
 				<div>页面配置</div>
 				<AiOutlineFundProjectionScreen />
 			</div>
@@ -24,9 +24,9 @@ const PageTabList: TabPageConfig[] = [
 
 const ChartTabList: TabConfig[] = [
 	{
-		key: TabsEnum.CHART_SETTING,
+		value: TabsEnum.CHART_SETTING,
 		label: (
-			<div className="flex items-center justify-center gap-2 w-13">
+			<div className="flex items-center justify-center gap-2">
 				<div>定制</div>
 				<IoConstruct />
 			</div>
@@ -36,9 +36,9 @@ const ChartTabList: TabConfig[] = [
 		)
 	},
 	{
-		key: TabsEnum.CHART_ANIMATION,
+		value: TabsEnum.CHART_ANIMATION,
 		label: (
-			<div className="flex items-center justify-center gap-2 w-12">
+			<div className="flex items-center justify-center gap-2">
 				<div>动画</div>
 				<IoLeaf />
 			</div>
@@ -48,9 +48,9 @@ const ChartTabList: TabConfig[] = [
 		)
 	},
 	{
-		key: TabsEnum.CHART_DATA,
+		value: TabsEnum.CHART_DATA,
 		label: (
-			<div className="flex items-center justify-center gap-2 w-12">
+			<div className="flex items-center justify-center gap-2">
 				<div>数据</div>
 				<IoFlash />
 			</div>
@@ -60,11 +60,11 @@ const ChartTabList: TabConfig[] = [
 		)
 	},
 	{
-		key: TabsEnum.CHART_EVENT,
+		value: TabsEnum.CHART_EVENT,
 		label: (
-			<div className="flex items-center justify-center gap-2 w-13.5">
+			<div className="flex items-center justify-center gap-2">
 				<div>事件</div>
-				<IoRocket size={13} />
+				<IoRocket size={14} />
 			</div>
 		),
 		configRender: (props) => (

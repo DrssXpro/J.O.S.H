@@ -19,12 +19,12 @@ export const enum TabsEnum {
 }
 
 export interface TabConfig {
-	key: TabsEnum;
+	value: TabsEnum;
 	label: JSX.Element | string;
 	configRender: (props: ConfigurationProps) => JSX.Element;
 }
 
-export interface TabPageConfig extends Pick<TabConfig, "key" | "label"> {
+export interface TabPageConfig extends Pick<TabConfig, "value" | "label"> {
 	configRender: JSX.Element;
 }
 
