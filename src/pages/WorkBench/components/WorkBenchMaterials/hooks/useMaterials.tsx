@@ -106,23 +106,29 @@ const handleCategoryData = (menu: MenuOptionsType, key: MaterialCategoryEnum): C
 
 function useMaterials() {
 	const [currentCategory, setCurrnetCategory] = useState("all");
+	const [sourceLoading, setSourceLoading] = useState(false);
 	const [categoryOptions, setCategoryOptions] = useState<CatergoryOptionsType[]>([]);
 	const [materialList, setMaterialList] = useState<IMaterialConfigType[]>([]);
 
 	// 初始默认为 menu 第一项里的 category
 	useEffect(() => {
-		getSourceListApi().then((res) => {
-			const list = res.data.map((i) => ({
-				...imageConfig,
-				category: i.category,
-				categoryName: i.categoryName,
-				image: i.thumbnail,
-				title: i.projectName,
-				attr: JSONParse(i.content).attr
-			}));
-			menuOptions[menuOptions.length - 1].list = list;
-			setCategoryOptions(handleCategoryData(menusMap["charts"], MaterialCategoryEnum.CHARTS));
-		});
+		setSourceLoading(true);
+		getSourceListApi()
+			.then((res) => {
+				const list = res.data.map((i) => ({
+					...imageConfig,
+					category: i.category,
+					categoryName: i.categoryName,
+					image: i.thumbnail,
+					title: i.projectName,
+					attr: JSONParse(i.content).attr
+				}));
+				menuOptions[menuOptions.length - 1].list = list;
+			})
+			.finally(() => {
+				setCategoryOptions(handleCategoryData(menusMap["charts"], MaterialCategoryEnum.CHARTS));
+				setSourceLoading(false);
+			});
 	}, []);
 
 	// 初始默认为 category 第一项里的 materialList
@@ -144,6 +150,7 @@ function useMaterials() {
 		categoryOptions,
 		materialList,
 		currentCategory,
+		sourceLoading,
 		handleClickMenu,
 		handleClickCategory
 	};

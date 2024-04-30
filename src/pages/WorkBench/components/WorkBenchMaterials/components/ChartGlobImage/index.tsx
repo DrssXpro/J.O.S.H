@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import LoadingImage from "@/assets/images/exception/image-loading.png";
 import { fetchImages } from "@/materials/components";
 import { IMaterialConfigType } from "@/materials/types";
 
@@ -8,26 +9,38 @@ interface IChartGlobImageProps {
 }
 const ChartGlobImage = (props: IChartGlobImageProps) => {
 	const { detail, imageStyle } = props;
+	const imageDomRef = useRef<HTMLImageElement>(null);
 	const [imageUrl, setImageUrl] = useState("");
 	const [show, setShow] = useState(false);
 
 	useEffect(() => {
-		fetchImageUrl();
+		fetchImageUrl().then((imageUrl) => {
+			const observer = new IntersectionObserver(async (entries) => {
+				if (entries[0].isIntersecting) {
+					await loadImage(imageUrl);
+					setImageUrl(imageUrl);
+					observer.unobserve(imageDomRef.current!);
+				}
+			});
+			observer.observe(imageDomRef.current!);
+		});
 	}, [detail.key]);
 
 	const fetchImageUrl = async () => {
+		if (detail.resource) {
+			return detail.image;
+		}
 		const image = await fetchImages(detail);
-		await imageLoad(image);
-		setShow(true);
-		setImageUrl(image);
+		return image;
 	};
 
-	const imageLoad = (url: string) => {
+	const loadImage = (url: string) => {
+		const image = new Image();
+		image.src = url;
 		return new Promise((resolve, reject) => {
-			const image = new Image();
-			image.src = url;
 			image.onload = () => {
-				resolve("load");
+				setShow(true);
+				resolve("success");
 			};
 			image.onerror = () => {
 				reject("error");
@@ -37,20 +50,16 @@ const ChartGlobImage = (props: IChartGlobImageProps) => {
 
 	return (
 		<>
-			{show ? (
+			{
 				<img
-					src={imageUrl}
+					ref={imageDomRef}
 					alt="图标图片"
 					draggable={false}
-					onLoad={() => {
-						setShow(true);
-					}}
+					src={show ? imageUrl : LoadingImage}
 					className="object-fill w-full h-full transform group-hover:scale-110 transition-all"
 					style={{ ...imageStyle }}
 				/>
-			) : (
-				<div className="w-full h-full"></div>
-			)}
+			}
 		</>
 	);
 };
