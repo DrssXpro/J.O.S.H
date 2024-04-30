@@ -17,7 +17,7 @@ const WorkBenchConfiguration = () => {
 	const component = getTargetData()!;
 
 	const isSelect = useMemo(() => {
-		return selectId && selectId.length;
+		return selectId && !!selectId.length;
 	}, [selectId]);
 	return (
 		<div className={`${showConfiguration ? "w-[360px]" : "w-0"} h-full transition-all`}>
