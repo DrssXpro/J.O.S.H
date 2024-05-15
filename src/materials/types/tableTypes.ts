@@ -1,5 +1,5 @@
 export enum TableCategoryEnum {
-	TABLE = "tables"
+	TABLE = "Tables"
 }
 
 export enum TableNameEnum {
