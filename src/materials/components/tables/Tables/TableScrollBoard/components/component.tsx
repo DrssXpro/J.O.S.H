@@ -1,19 +1,19 @@
 import { ChartComponentProps } from "@/materials/types";
-import { ScrollBoardConfigType } from "../config";
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { ColumnType, ScrollBoardConfigType, initColumn } from "../config";
+import { memo, useEffect, useMemo, useRef, useState } from "react";
 import { Typography } from "antd";
 
 interface HeaderComponentProps {
 	headerTitles: string[];
+	columnWidths: string[];
 	config: ScrollBoardConfigType;
-	calcColumnWidth: (index: number) => string;
 }
 
 interface BodyComponentProps {
 	data: string[][];
-	config: ScrollBoardConfigType;
+	columnWidths: string[];
 	height: number;
-	calcColumnWidth: (index: number) => string;
+	config: ScrollBoardConfigType;
 }
 
 const justifyAlignMap = {
@@ -23,7 +23,7 @@ const justifyAlignMap = {
 };
 
 const TableHeader = memo((props: HeaderComponentProps) => {
-	const { config, headerTitles, calcColumnWidth } = props;
+	const { config, headerTitles, columnWidths } = props;
 
 	// 头数据整体样式
 	const headerStyle = useMemo<React.CSSProperties>(() => {
@@ -48,7 +48,7 @@ const TableHeader = memo((props: HeaderComponentProps) => {
 			}}
 		>
 			{headerTitles.map((title, index) => (
-				<div key={index} style={{ width: `${calcColumnWidth(index)}`, textAlign: config.columnConfig.align }}>
+				<div key={index} style={{ width: columnWidths[index], textAlign: config.columnConfig.align }}>
 					{title}
 				</div>
 			))}
@@ -62,30 +62,26 @@ const TableBody = memo((props: BodyComponentProps) => {
 		rowIndex: number;
 		scrollKey: number;
 	};
-	const { data, config, height, calcColumnWidth } = props;
+	const { data, config, height, columnWidths } = props;
 	const { animationTime, animationStyle, hoverStop } = config.publicConfig;
 
 	// 滚动动画状态
 	const animationRef = useRef({
 		rowCount: config.rowConfig.body.rowCount,
+		rowsData: [] as RowType[],
 		updater: 0,
 		rowHeight: 0,
 		animationIndex: 0,
 		animationTimer: 0 as unknown as NodeJS.Timeout
 	});
 
+	const [bodyState, setBodyState] = useState<{
+		rows: RowType[];
+		heights: number[];
+	}>(calcRowsData);
+
 	// 列对齐方式计算
 	const calcAlign = useMemo(() => justifyAlignMap[config.columnConfig.align], [config.columnConfig.align]);
-
-	// 行高计算（区分固定高度）
-	const calcRowHeight = (rowCount: number) => {
-		const totalHeight = height - config.rowConfig.header.headerHeight;
-		if (config.rowConfig.body.isFixedHeight) {
-			return config.rowConfig.body.rowHeight;
-		} else {
-			return totalHeight / rowCount;
-		}
-	};
 
 	// 行数据文字样式
 	const rowFontStyle = useMemo<React.CSSProperties>(() => {
@@ -103,47 +99,46 @@ const TableBody = memo((props: BodyComponentProps) => {
 	}, [config.publicConfig]);
 
 	useEffect(() => {
-		resize();
-	}, [config.rowConfig.body.rowCount]);
+		setBodyState(calcRowsData);
+	}, [config.columnConfig, config.rowConfig]);
 
-	const resize = () => {
-		const rowCount = config.rowConfig.body.rowCount;
-		const rowHeight = calcRowHeight(rowCount);
-		animationRef.current = { ...animationRef.current, rowCount, rowHeight };
-		reAnimation();
-	};
+	// 行高计算（区分固定高度）
+	function calcRowHeight(rowCount: number) {
+		const totalHeight = height - config.rowConfig.header.headerHeight;
+		if (config.rowConfig.body.isFixedHeight) {
+			return config.rowConfig.body.rowHeight;
+		} else {
+			return totalHeight / rowCount;
+		}
+	}
 
-	const calcRowsData = () => {
+	// 转化数据源
+	function calcRowsData() {
 		const rowLength = data.length;
-		const { rowCount } = animationRef.current;
+		const rowCount = config.rowConfig.body.rowCount;
 		let newData = data.map((i, index) => ({ ceils: i, rowIndex: index }));
 		if (rowLength > rowCount && rowLength < 2 * rowCount) {
 			newData = [...newData, ...newData];
 		}
 		const scrollData = newData.map((i, index) => ({ ...i, scrollKey: index }));
-
+		const heights = new Array(data.length).fill(calcRowHeight(config.rowConfig.body.rowCount));
+		animationRef.current.rowsData = scrollData;
+		animationRef.current.rowHeight = heights[0];
+		animationRef.current.rowCount = rowCount;
+		reAnimation();
 		return {
 			rows: scrollData,
-			rowsData: scrollData,
-			heights: new Array(data.length).fill(calcRowHeight(config.rowConfig.body.rowCount))
+			heights
 		};
-	};
+	}
 
-	const [bodyState, setBodyState] = useState<{
-		rowsData: RowType[];
-		rows: RowType[];
-		heights: number[];
-	}>(calcRowsData);
-
-	const startAnimation = async (start = false) => {
-		const { rowsData } = bodyState;
-		let { animationIndex } = animationRef.current;
-		const { rowCount, rowHeight, updater } = animationRef.current;
+	async function startAnimation(start = false) {
+		// eslint-disable-next-line prefer-const
+		let { animationIndex, rowsData, rowCount, rowHeight, updater } = animationRef.current;
 		if (animationStyle === "none") return;
 		if (start) {
 			await new Promise((resolve) => setTimeout(resolve, animationTime * 1000));
 			if (updater !== animationRef.current.updater) {
-				console.log("stop update");
 				return;
 			}
 		}
@@ -156,7 +151,6 @@ const TableBody = memo((props: BodyComponentProps) => {
 		setBodyState((pre) => ({ ...pre, rows, heights }));
 		await new Promise((resolve) => setTimeout(resolve, 300));
 		if (updater !== animationRef.current.updater) {
-			console.log("stop update");
 			return;
 		}
 		animationIndex += animationNum;
@@ -167,18 +161,18 @@ const TableBody = memo((props: BodyComponentProps) => {
 		setBodyState((pre) => ({ ...pre, heights: newHeights }));
 		animationRef.current.animationIndex = animationIndex;
 		animationRef.current.animationTimer = setTimeout(startAnimation, animationTime * 1000 + 300);
-	};
+	}
 
-	const stopAnimation = () => {
+	function stopAnimation() {
 		const { updater } = animationRef.current;
 		animationRef.current.updater = (updater + 1) % 999999;
 		animationRef.current.animationTimer && clearTimeout(animationRef.current.animationTimer);
-	};
+	}
 
-	const reAnimation = () => {
+	function reAnimation() {
 		stopAnimation();
 		startAnimation(true);
-	};
+	}
 
 	return (
 		<div
@@ -208,7 +202,7 @@ const TableBody = memo((props: BodyComponentProps) => {
 								className="flex items-center"
 								key={i}
 								style={{
-									width: `${calcColumnWidth(i)}`,
+									width: columnWidths[i],
 									justifyContent: calcAlign
 								}}
 							>
@@ -226,19 +220,36 @@ const TableBody = memo((props: BodyComponentProps) => {
 
 const TableScrollBoardComponent = (props: ChartComponentProps) => {
 	const { chartConfig } = props;
-	const config = chartConfig.option as ScrollBoardConfigType;
+	const [options, setOptions] = useState<ScrollBoardConfigType>(chartConfig.option);
+
+	useEffect(() => {
+		setOptions(chartConfig.option);
+	}, [chartConfig.option]);
+
+	useEffect(() => {
+		setOptions(() => {
+			const newOptions = chartConfig.option as ScrollBoardConfigType;
+			if (!Array.isArray(newOptions.dataset) || typeof newOptions.dataset[0] !== "object") return newOptions;
+			const keys = Object.keys(newOptions.dataset[0]);
+			const columns: ColumnType[] = [];
+			keys.forEach((key) => {
+				columns.push(initColumn(key, key));
+			});
+			return { ...newOptions, columnConfig: { ...newOptions.columnConfig, columns } };
+		});
+	}, [chartConfig.option.dataset]);
 
 	const headerTitles = useMemo(() => {
-		const headers = config.columnConfig.showIndex ? [config.columnConfig.indexColumn.title] : [];
-		config.columnConfig.columns.forEach((column) => headers.push(column.title));
+		const headers = options.columnConfig.showIndex ? [options.columnConfig.indexColumn.title] : [];
+		options.columnConfig.columns.forEach((column) => headers.push(column.title));
 		return headers;
-	}, [config.columnConfig]);
+	}, [options.columnConfig]);
 
 	const rowsData = useMemo(() => {
-		const columnConfig = config.columnConfig;
+		const columnConfig = options.columnConfig;
 		let startIndex = columnConfig.indexColumn.startIndex;
 		const keyFileds = columnConfig.columns.map((i) => i.mapField);
-		const rows = config.dataset.map((item) => {
+		const rows = options.dataset.map((item) => {
 			const row = columnConfig.showIndex ? [`${startIndex++}`] : [];
 			for (const index in keyFileds) {
 				row.push(item[keyFileds[index]] || columnConfig.columns[index].defaultValue);
@@ -246,45 +257,36 @@ const TableScrollBoardComponent = (props: ChartComponentProps) => {
 			return row;
 		});
 		return rows;
-	}, [config.columnConfig]);
+	}, [options.columnConfig]);
 
-	const calcColumnWidth = useCallback(
-		(index: number) => {
-			const columns = config.columnConfig.columns;
-			const indexColumn = config.columnConfig.indexColumn;
-			const showIndex = config.columnConfig.showIndex;
+	const columnWidths = useMemo(() => {
+		const columns = options.columnConfig.columns;
+		const indexColumn = options.columnConfig.indexColumn;
+		const showIndex = options.columnConfig.showIndex;
 
-			const contentTotalWidth = columns
-				.map((col) => col.columnWidth)
-				.reduce((prev, current) => prev + current, 0);
-			const totalWidth = showIndex ? contentTotalWidth + indexColumn.columnWidth : contentTotalWidth;
+		const contentTotalWidth = columns.map((col) => col.columnWidth).reduce((prev, current) => prev + current, 0);
+		const totalWidth = showIndex ? contentTotalWidth + indexColumn.columnWidth : contentTotalWidth;
 
-			if (config.columnConfig.fixedWidth) {
-				if (showIndex) {
-					if (index === 0) return `${indexColumn.columnWidth}px`;
-					else return `${columns[index - 1].columnWidth}px`;
-				} else {
-					return `${columns[index].columnWidth}px`;
-				}
-			} else {
-				if (showIndex) {
-					return `calc(${(
-						((index === 0 ? indexColumn.columnWidth : columns[index - 1].columnWidth) / totalWidth) *
-						100
-					).toFixed(2)}%)`;
-				} else {
-					return `calc(${((columns[index].columnWidth / totalWidth) * 100).toFixed(2)}%)`;
-				}
-			}
-		},
-		[config.columnConfig]
-	);
+		if (options.columnConfig.fixedWidth) {
+			return showIndex
+				? [`${indexColumn.columnWidth}px`, ...columns.map((col) => `${col.columnWidth}px`)]
+				: columns.map((col) => `${col.columnWidth}px`);
+		} else {
+			return showIndex
+				? [
+						`calc(${((indexColumn.columnWidth / totalWidth) * 100).toFixed(2)}%)`,
+						...columns.map((col) => `calc(${((col.columnWidth / totalWidth) * 100).toFixed(2)}%)`)
+					]
+				: columns.map((col) => `calc(${((col.columnWidth / totalWidth) * 100).toFixed(2)}%)`);
+		}
+	}, [options.columnConfig]);
+
 	return (
 		<div className="w-full h-full overflow-hidden">
-			{config.rowConfig.header.show && (
-				<TableHeader headerTitles={headerTitles} config={config} calcColumnWidth={calcColumnWidth} />
+			{options.rowConfig.header.show && (
+				<TableHeader headerTitles={headerTitles} config={options} columnWidths={columnWidths} />
 			)}
-			<TableBody data={rowsData} config={config} calcColumnWidth={calcColumnWidth} height={chartConfig.attr.h} />
+			<TableBody data={rowsData} config={options} columnWidths={columnWidths} height={chartConfig.attr.h} />
 		</div>
 	);
 };
