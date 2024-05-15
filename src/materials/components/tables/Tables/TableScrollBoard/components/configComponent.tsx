@@ -521,6 +521,7 @@ const ColumnConfigComponent = (props: ChartConfigComponentProps) => {
 				</JSettingBox>
 			</JCollapseBox>
 			<JCollapseBox
+				unfold
 				name="内容列"
 				operator={
 					<div className="flex gap-1">
@@ -539,8 +540,13 @@ const ColumnConfigComponent = (props: ChartConfigComponentProps) => {
 							icon={<AiOutlineLine />}
 							onClick={() => {
 								const index = parseInt(currentColumn) - 1;
+								if (index === 0) {
+									window.$message.warning("最后一列数据不能删除！");
+									return;
+								}
 								const newColumns = [...chartOptions.columnConfig.columns];
 								newColumns.splice(index, 1);
+								setCurrentColumn(`${index}`);
 								update(chartIndex, "option", "columnConfig", {
 									...chartOptions.columnConfig,
 									columns: newColumns
