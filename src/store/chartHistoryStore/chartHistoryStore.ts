@@ -29,6 +29,12 @@ const useChartHistoryStore = create<IChartHistoryState & IChartHistoryAction>()(
 			});
 			return currentHistoryItem;
 		},
+		clearHistory() {
+			set((state) => {
+				state.backStack = [];
+				state.forwardStack = [];
+			});
+		},
 		forwardAction() {
 			const forwardStack = get().forwardStack;
 			if (!forwardStack.length) return null;

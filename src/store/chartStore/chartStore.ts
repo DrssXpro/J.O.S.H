@@ -43,6 +43,13 @@ const useChartStore = create<IChartState & IChartAction>()(
 		getComponentList: () => {
 			return get().componentList;
 		},
+		// get 获取画布所有配置
+		getChartConfigs: () => {
+			return {
+				componentList: get().componentList,
+				requestGlobalConfig: get().requestGlobalConfig
+			};
+		},
 		// 设置鼠标位置
 		setMousePosition(x, y, startX, startY) {
 			set((state) => {
@@ -62,6 +69,12 @@ const useChartStore = create<IChartState & IChartAction>()(
 		addComponentList: (component, isHead = false) => {
 			set((state) => {
 				isHead ? state.componentList.unshift(component) : state.componentList.push(component);
+			});
+		},
+		// 清空当前所有图表组件（导入功能）
+		clearComponentList: () => {
+			set((state) => {
+				state.componentList = [];
 			});
 		},
 		// 临时保存记录（图表复制、粘贴）

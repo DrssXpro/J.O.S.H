@@ -66,4 +66,5 @@ export interface ICanvasGlobalAction {
 export interface ICanvasConfigAction {
 	setCanvasConfig: <K extends keyof ICanvasConfig, V extends ICanvasConfig[K]>(key: K, value: V) => void;
 	setGlobalCanvasConfig: (config: ICanvasConfig) => void;
+	getGlobalCanvasConfig: () => ICanvasConfig;
 }

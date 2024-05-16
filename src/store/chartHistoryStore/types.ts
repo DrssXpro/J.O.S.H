@@ -68,7 +68,8 @@ export interface IChartHistoryAction {
 	backAction: () => HistoryItemType | null;
 	// 前进操作：弹出前进栈，压入后退栈
 	forwardAction: () => HistoryItemType | null;
-
+	// 清除当前所有历史记录
+	clearHistory: () => void;
 	/**
 	 * 具体操作
 	 */

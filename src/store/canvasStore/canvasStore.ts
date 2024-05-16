@@ -5,7 +5,7 @@ import { CanvasLayoutEventName } from "@/types/EventTypes";
 import { PreviewScaleEnum } from "@/types/LayoutTypes";
 import { defaultTheme } from "@/theme";
 
-const useCanvasStore = create<ICanvasState & ICanvasGlobalAction & ICanvasConfigAction>((set) => ({
+const useCanvasStore = create<ICanvasState & ICanvasGlobalAction & ICanvasConfigAction>((set, get) => ({
 	canvasGlobal: {
 		canvasDOM: null,
 		canvasContainerDOM: null,
@@ -39,6 +39,10 @@ const useCanvasStore = create<ICanvasState & ICanvasGlobalAction & ICanvasConfig
 	// 重新设置 canvasConfig (preview 从 storage 中获取赋值)
 	setGlobalCanvasConfig: (config) => {
 		set(() => ({ canvasConfig: config }));
+	},
+	// get 获取 canvas 画布整体配置
+	getGlobalCanvasConfig: () => {
+		return get().canvasConfig;
 	},
 	autoLayoutCanvas: () => {
 		set((state) => {

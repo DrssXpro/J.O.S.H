@@ -1,7 +1,6 @@
 import { CSSProperties, useEffect, useMemo } from "react";
 import { Dropdown } from "antd";
 import CanvasRuler from "./components/CanvasRuler/index";
-import CanvasTool from "./components/CanvasTool";
 import EditShapeBox from "./components/EditShapeBox";
 import useCanvasStore from "@/store/canvasStore/canvasStore";
 import useChartsWithHistory from "@/hooks/useChartsWithHistory";
@@ -21,6 +20,8 @@ import { bus } from "@/utils";
 import { ComponentType, FetchComFlagType } from "@/materials/types";
 import { DragKeyEnum } from "@/types/EditCanvasTypes";
 import { KeyBoardEventName } from "@/types/EventTypes";
+import CanvasBottom from "./components/CanvasBottom";
+import CanvasTool from "./components/CanvasTool";
 
 const WorkBenchCanvas = () => {
 	const { canvasConfig } = useCanvasStore();
@@ -129,6 +130,7 @@ const WorkBenchCanvas = () => {
 					</div>
 				</Dropdown>
 			</CanvasRuler>
+			<CanvasBottom />
 			<CanvasTool />
 		</div>
 	);
