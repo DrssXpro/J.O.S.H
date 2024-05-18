@@ -35,16 +35,19 @@ export interface ProjectInfo {
 }
 
 export type UserLoginVo =
-	| {
+	| ({
 			userInfo: UserInfo;
-			accessToken: string;
-			refreshToken: string;
-	  }
+	  } & TokenVo)
 	| string;
 
 export type ProjectListVo = {
 	projects: ProjectInfo[];
 	totalCount: number;
+};
+
+export type TokenVo = {
+	accessToken: string;
+	refreshToken: string;
 };
 
 export type MessageVo = string;

@@ -1,9 +1,19 @@
-import axios, { AxiosResponse, InternalAxiosRequestConfig, AxiosError } from "axios";
+import axios, { AxiosResponse, InternalAxiosRequestConfig, AxiosError, AxiosRequestConfig } from "axios";
 import { ResultEnum } from "@/types/HttpTypes";
 import { ErrorPageNameMap } from "@/types/pageTypes";
 import { PublicResponse } from "./types/requestTypes";
-import { getLocalStorage } from "@/utils/storages";
+import { getLocalStorage, setLocalStorage } from "@/utils/storages";
 import { StorageEnum } from "@/types/StorageTypes";
+import { refreshTokenApi } from "./api/userApi";
+
+interface PendingTask {
+	config: AxiosRequestConfig;
+	resolve: (value: unknown) => void;
+}
+
+// 保存刷新 token 时的请求队列
+let refreshing = false;
+const queue: PendingTask[] = [];
 
 export const BASEURL = import.meta.env.VITE_BASE_URL;
 
@@ -37,10 +47,42 @@ axiosInstance.interceptors.response.use(
 		}
 		return Promise.resolve(res.data);
 	},
-	(err: AxiosError) => {
+	async (err: AxiosError) => {
 		const data = err.response!.data as PublicResponse<string>;
-		window.$message.warning(data.data);
-		return Promise.reject(err);
+		const config = err.response!.config;
+
+		if (refreshing) {
+			return new Promise((resolve) => {
+				queue.push({
+					config,
+					resolve
+				});
+			});
+		}
+
+		if (data.code === 401 && !config.url?.includes("/refresh")) {
+			refreshing = true;
+			const refreshToken = getLocalStorage(StorageEnum.J_USER_REFRESH_TOKEN);
+			const res = await refreshTokenApi(refreshToken);
+			refreshing = false;
+
+			if (res.code === 200) {
+				setLocalStorage(StorageEnum.J_USER_ACCESS_TOKEN, res.data.accessToken);
+				setLocalStorage(StorageEnum.J_USER_REFRESH_TOKEN, res.data.refreshToken);
+
+				queue.forEach(({ resolve, config }) => {
+					resolve(axiosInstance(config));
+				});
+
+				return axiosInstance(config);
+			} else {
+				window.$message.warning(data.data);
+				return Promise.reject(err);
+			}
+		} else {
+			window.$message.warning(data.data);
+			return Promise.reject(err);
+		}
 	}
 );
 
