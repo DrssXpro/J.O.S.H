@@ -3,7 +3,16 @@ import { AiOutlineDelete, AiOutlineEdit, AiOutlineSmallDash, AiOutlineLaptop, Ai
 import { cardColorMap } from "@/config/color";
 import CardBg from "@/assets/card-bg.png";
 import { useNavigate } from "react-router-dom";
-const JProjectCard = () => {
+import { ProjectInfo } from "@/service/types/requestTypes";
+
+interface JProjectCardProps {
+	detail: ProjectInfo;
+	deleteProject: (id: number) => void;
+	updateProjectStatus: (detail: ProjectInfo, status: boolean) => void;
+}
+
+const JProjectCard = (props: JProjectCardProps) => {
+	const { detail, deleteProject, updateProjectStatus } = props;
 	const nav = useNavigate();
 	const items = [
 		{
@@ -18,16 +27,26 @@ const JProjectCard = () => {
 		{
 			key: "2",
 			label: (
-				<div className="flex items-center gap-1">
+				<div
+					className="flex items-center gap-1"
+					onClick={() => {
+						updateProjectStatus(detail, !detail.status);
+					}}
+				>
 					<AiOutlineSend />
-					<span>发布</span>
+					<span>{detail.status ? "取消发布" : "发布"}</span>
 				</div>
 			)
 		},
 		{
 			key: "3",
 			label: (
-				<div className="flex items-center gap-1">
+				<div
+					className="flex items-center gap-1"
+					onClick={() => {
+						deleteProject(detail.id);
+					}}
+				>
 					<AiOutlineDelete />
 					<span>删除</span>
 				</div>
@@ -47,12 +66,15 @@ const JProjectCard = () => {
 				</div>
 			</div>
 			<div className="w-full h-15 bg-[#262629] p-3  flex items-center justify-between">
-				<div>可视化大屏页面</div>
+				<div>{detail.title}</div>
 				<div className="flex items-center gap-2">
-					<div className="w-2 h-2 rounded-full" style={{ backgroundColor: cardColorMap[1] }}></div>
-					<div>未发布</div>
+					<div
+						className="w-2 h-2 rounded-full"
+						style={{ backgroundColor: detail.status ? cardColorMap[1] : cardColorMap[0] }}
+					></div>
+					<div>{detail.status ? "已发布" : "未发布"}</div>
 					<Tooltip title="编辑" placement="bottom">
-						<Button icon={<AiOutlineEdit />} onClick={() => nav("/workBench")}></Button>
+						<Button icon={<AiOutlineEdit />} onClick={() => nav(`/workBench/${detail.id}`)}></Button>
 					</Tooltip>
 					<Dropdown menu={{ items }} placement="bottom">
 						<Button icon={<AiOutlineSmallDash />}></Button>

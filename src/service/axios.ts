@@ -2,13 +2,22 @@ import axios, { AxiosResponse, InternalAxiosRequestConfig, AxiosError } from "ax
 import { ResultEnum } from "@/types/HttpTypes";
 import { ErrorPageNameMap } from "@/types/pageTypes";
 import { PublicResponse } from "./types/requestTypes";
+import { getLocalStorage } from "@/utils/storages";
+import { StorageEnum } from "@/types/StorageTypes";
+
+export const BASEURL = import.meta.env.VITE_BASE_URL;
 
 const axiosInstance = axios.create({
-	timeout: ResultEnum.TIMEOUT
+	timeout: ResultEnum.TIMEOUT,
+	baseURL: BASEURL
 });
 
 axiosInstance.interceptors.request.use(
 	(config: InternalAxiosRequestConfig) => {
+		const accessToken = getLocalStorage(StorageEnum.J_USER_ACCESS_TOKEN);
+		if (accessToken) {
+			config.headers.Authorization = `Bear ${accessToken}`;
+		}
 		return config;
 	},
 	(error: AxiosError) => {
@@ -28,7 +37,9 @@ axiosInstance.interceptors.response.use(
 		}
 		return Promise.resolve(res.data);
 	},
-	(err: AxiosResponse) => {
+	(err: AxiosError) => {
+		const data = err.response!.data as PublicResponse<string>;
+		window.$message.warning(data.data);
 		return Promise.reject(err);
 	}
 );
@@ -38,6 +49,30 @@ export function GET<R>(url: string, params?: Record<string, any>) {
 		url,
 		method: "get",
 		params
+	});
+}
+
+export function POST<R>(url: string, data?: Record<string, any>) {
+	return axiosInstance.request<any, PublicResponse<R>>({
+		url,
+		method: "post",
+		data
+	});
+}
+
+export function DELETE<R>(url: string, data?: Record<string, any>) {
+	return axiosInstance.request<any, PublicResponse<R>>({
+		url,
+		method: "delete",
+		data
+	});
+}
+
+export function PUT<R>(url: string, data?: Record<string, any>) {
+	return axiosInstance.request<any, PublicResponse<R>>({
+		url,
+		method: "put",
+		data
 	});
 }
 

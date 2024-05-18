@@ -1,10 +1,6 @@
 export enum StorageEnum {
 	// 全局设置
 	J_SYSTEM_SETTING_STORE = "J_SYSTEM_SETTING",
-	// token 等信息
-	J_ACCESS_TOKEN_STORE = "J_ACCESS_TOKEN",
-	// 登录信息
-	J_LOGIN_INFO_STORE = "J_LOGIN_INFO",
 	// 当前选择的主题
 	J_DESIGN_STORE = "J_DESIGN",
 	// 工作台布局配置
@@ -12,5 +8,11 @@ export enum StorageEnum {
 	// 工作台需要保存的数据
 	J_CHART_STORAGE_LIST = "J_CHART_STORAGE_LIST",
 	// 用户存储的图片媒体
-	J_USER_MEDIA_PHOTOS = "J_USER_MEDIA_PHOTOS"
+	J_USER_MEDIA_PHOTOS = "J_USER_MEDIA_PHOTOS",
+	// 用户登录凭证
+	J_USER_ACCESS_TOKEN = "J_USER_ACCESS_TOKEN",
+	// 用户刷新凭证
+	J_USER_REFRESH_TOKEN = "J_USER_REFRESH_TOKEN",
+	// 用户信息
+	J_USER_INFO = "J_USER_INFO"
 }

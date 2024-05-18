@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import zhCN from "antd/locale/zh_CN";
 import JWithLoading from "./components/JWithLoading";
 import Preview from "./pages/Preview";
+import JRequireAuth from "./components/JRequireAuth";
 
 const Login = lazy(() => import("@/pages/Login/index"));
 
@@ -37,11 +38,32 @@ function App() {
 				element={
 					<Routes>
 						<Route element={<Login />} path="/"></Route>
-						<Route element={<Layout />} path="/application">
+						<Route
+							element={
+								<JRequireAuth>
+									<Layout />
+								</JRequireAuth>
+							}
+							path="/application"
+						>
 							<Route element={<Projects />} path="projects"></Route>
 						</Route>
-						<Route element={<WorkBench />} path="/workBench"></Route>
-						<Route element={<Preview />} path="/preview/1"></Route>
+						<Route
+							element={
+								<JRequireAuth>
+									<WorkBench />
+								</JRequireAuth>
+							}
+							path="/workBench"
+						></Route>
+						<Route
+							element={
+								<JRequireAuth>
+									<Preview />
+								</JRequireAuth>
+							}
+							path="/preview/1"
+						></Route>
 					</Routes>
 				}
 				loadingStyle={{ width: "100vw", height: "100vh" }}
