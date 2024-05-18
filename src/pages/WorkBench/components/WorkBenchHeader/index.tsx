@@ -13,7 +13,7 @@ import {
 	AiOutlineSend
 } from "react-icons/ai";
 import { Button, Input, Tooltip, type InputRef } from "antd";
-import { useState, useRef, useMemo } from "react";
+import { useState, useRef, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useLayoutStore from "@/store/layoutStore/layoutStore";
 import useCanvasStore from "@/store/canvasStore/canvasStore";
@@ -22,6 +22,11 @@ import useUndoRedo from "./hooks/useUndoRedo";
 import useChartStore from "@/store/chartStore/chartStore";
 import { getLocalStorage, setSessionStorage } from "@/utils/storages";
 import { StorageEnum } from "@/types/StorageTypes";
+
+interface TitleProps {
+	title: string;
+	updateTitle: (title: string) => void;
+}
 
 const LeftOperator = () => {
 	const nav = useNavigate();
@@ -116,12 +121,16 @@ const LeftOperator = () => {
 	);
 };
 
-const CenterTitle = () => {
+const CenterTitle = (props: TitleProps) => {
+	const { title, updateTitle } = props;
 	const [isEdit, setEdit] = useState(false);
-	const [title, setTitle] = useState("test");
+	const [projectTitle, setProjectTitle] = useState("");
+
 	const titleInputRef = useRef<InputRef>(null);
 
-	const changeEditState = () => setEdit(!isEdit);
+	useEffect(() => {
+		setProjectTitle(title);
+	}, [title]);
 
 	return (
 		<div className="flex items-center justify-center">
@@ -134,23 +143,26 @@ const CenterTitle = () => {
 					className="w-50"
 					size="middle"
 					showCount
-					maxLength={16}
-					value={title}
-					onChange={(e) => setTitle(e.target.value)}
-					onBlur={changeEditState}
+					maxLength={20}
+					value={projectTitle}
+					onChange={(e) => setProjectTitle(e.target.value)}
+					onBlur={() => {
+						setEdit(!isEdit);
+						updateTitle(projectTitle);
+					}}
 				></Input>
 			) : (
 				<Button
 					size="small"
 					type="text"
 					onClick={() => {
-						changeEditState();
+						setEdit(!isEdit);
 						setTimeout(() => {
 							titleInputRef.current!.focus();
 						});
 					}}
 				>
-					{title}
+					{projectTitle}
 				</Button>
 			)}
 		</div>
@@ -204,11 +216,11 @@ const RightOperator = () => {
 	);
 };
 
-const WorkBenchHeader = () => {
+const WorkBenchHeader = (props: TitleProps) => {
 	return (
 		<JBaseHeader
 			left={<LeftOperator />}
-			center={<CenterTitle />}
+			center={<CenterTitle {...props} />}
 			right={<RightOperator />}
 			leftWidth="40%"
 			rightWidth="40%"

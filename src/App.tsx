@@ -54,7 +54,7 @@ function App() {
 									<WorkBench />
 								</JRequireAuth>
 							}
-							path="/workBench"
+							path="/workBench/:projectId"
 						></Route>
 						<Route
 							element={
