@@ -10,6 +10,7 @@ import { useMaterials } from "./hooks/useMaterials";
 import { MaterialCategoryEnum } from "@/materials/types";
 import "./menuItem.css";
 import JLoading from "@/components/JLoading";
+import useStoreSelector from "@/hooks/useStoreSelector";
 
 const WorkBenchMaterials = () => {
 	const {
@@ -21,7 +22,7 @@ const WorkBenchMaterials = () => {
 		handleClickMenu,
 		handleClickCategory
 	} = useMaterials();
-	const { showMaterials, materialsMode } = useLayoutStore();
+	const { showMaterials, materialsMode } = useLayoutStore(useStoreSelector(["showMaterials", "materialsMode"]));
 
 	// 展开时左侧文本(“组件”)抖动问题，针对于展开的情况将控制 TopOperator 显隐操作其推入宏任务
 	const [showTopOperator, setShowTopOperator] = useState(true);

@@ -8,10 +8,15 @@ import { getEditCanvasConfigStyle } from "@/utils/chartStyle";
 import { CanvasConfigTypeEnum } from "@/store/canvasStore/types";
 import { PreviewScaleEnum } from "@/types/LayoutTypes";
 import usePreviewFit from "./hooks/usePreviewFit";
+import useStoreSelector from "@/hooks/useStoreSelector";
 
 const Preview = () => {
-	const { canvasConfig, setGlobalCanvasConfig } = useCanvasStore();
-	const { addComponentList, setrequestGlobalConfig } = useChartStore();
+	const { canvasConfig, setGlobalCanvasConfig } = useCanvasStore(
+		useStoreSelector(["canvasConfig", "setGlobalCanvasConfig"])
+	);
+	const { addComponentList, setrequestGlobalConfig } = useChartStore(
+		useStoreSelector(["addComponentList", "setrequestGlobalConfig"])
+	);
 	const config = getSessionStorageCanvasInfo();
 	const { previewScaleRef, entityRef } = usePreviewFit(config.canvasConfig);
 

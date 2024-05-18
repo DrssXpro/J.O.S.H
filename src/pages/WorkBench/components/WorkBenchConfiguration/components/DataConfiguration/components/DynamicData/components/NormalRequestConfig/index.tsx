@@ -4,11 +4,12 @@ import { RequestBodyEnum, RequestBodyEnumList, RequestConfigType, RequestParamsT
 import JCodeMirror from "@/components/JCodeMirror";
 import useChartStore from "@/store/chartStore/chartStore";
 import { memo } from "react";
+import useStoreSelector from "@/hooks/useStoreSelector";
 
 const BodyConfig = (props: { chartIndex: number; request: RequestConfigType }) => {
 	const { chartIndex, request } = props;
 	const { updateChartRequestParams, updateChartConfig } = useChartStore(
-		({ updateChartRequestParams, updateChartConfig }) => ({ updateChartRequestParams, updateChartConfig })
+		useStoreSelector(["updateChartRequestParams", "updateChartConfig"])
 	);
 	const { requestParamsBodyType } = request;
 	const { Body } = request.requestParams;
@@ -81,7 +82,7 @@ const BodyConfig = (props: { chartIndex: number; request: RequestConfigType }) =
 
 const NormalRequestConfig = memo((props: { chartIndex: number; request: RequestConfigType }) => {
 	const { chartIndex, request } = props;
-	const updateChartRequestParams = useChartStore((selector) => selector.updateChartRequestParams);
+	const { updateChartRequestParams } = useChartStore(useStoreSelector(["updateChartRequestParams"]));
 	const { Params, Header } = request.requestParams;
 	const items: TabsProps["items"] = [
 		{

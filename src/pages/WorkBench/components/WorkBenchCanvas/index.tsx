@@ -22,9 +22,10 @@ import { DragKeyEnum } from "@/types/EditCanvasTypes";
 import { KeyBoardEventName } from "@/types/EventTypes";
 import CanvasBottom from "./components/CanvasBottom";
 import CanvasTool from "./components/CanvasTool";
+import useStoreSelector from "@/hooks/useStoreSelector";
 
 const WorkBenchCanvas = () => {
-	const { canvasConfig } = useCanvasStore();
+	const { canvasConfig } = useCanvasStore(useStoreSelector(["canvasConfig"]));
 	const { componentList, handleAddComponents, handleRemoveComponents } = useChartsWithHistory();
 	const { handleMouseDown, mousedownHandleUnStop } = useMouseHandle();
 	const { menuItems, setCanvasMenuItems, setChartMenuItems } = useContextMenuHandle();

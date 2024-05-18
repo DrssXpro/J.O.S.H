@@ -1,11 +1,12 @@
 import useChartsWithHistory from "@/hooks/useChartsWithHistory";
 import useEditCharts from "@/hooks/useEditCharts";
+import useStoreSelector from "@/hooks/useStoreSelector";
 import { ComponentType } from "@/materials/types";
 import { HistoryItemType, HistoryActionTypeEnum } from "@/store/chartHistoryStore/types";
 import useChartStore from "@/store/chartStore/chartStore";
 
 const useUndoRedo = () => {
-	const updateChartConfig = useChartStore((selector) => selector.updateChartConfig);
+	const { updateChartConfig } = useChartStore(useStoreSelector(["updateChartConfig"]));
 	const {
 		handleRemoveComponents,
 		handleAddComponents,

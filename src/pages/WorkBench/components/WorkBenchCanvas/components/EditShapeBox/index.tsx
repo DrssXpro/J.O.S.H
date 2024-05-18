@@ -2,6 +2,7 @@ import { ComponentType } from "@/materials/types";
 import useChartStore from "@/store/chartStore/chartStore";
 import { CSSProperties, useMemo } from "react";
 import useMouseHandle from "../../hooks/useMouseHandle";
+import useStoreSelector from "@/hooks/useStoreSelector";
 
 interface IEditShapeBoxProps {
 	chartConfig: ComponentType;
@@ -109,7 +110,7 @@ const points: Point[] = [
 
 const EditShapeBox = (props: IEditShapeBoxProps) => {
 	const { children, chartConfig, changeContextMenu } = props;
-	const { selectId } = useChartStore();
+	const { selectId } = useChartStore(useStoreSelector(["selectId"]));
 	const { handleMousePointDown } = useMouseHandle();
 
 	const isSelect = useMemo(() => {

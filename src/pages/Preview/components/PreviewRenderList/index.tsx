@@ -5,10 +5,11 @@ import { useState, useMemo } from "react";
 import useCanvasStore from "@/store/canvasStore/canvasStore";
 import { colorCustomMerge } from "@/utils/colorStyle";
 import { handleChartEvent } from "../../utils";
+import useStoreSelector from "@/hooks/useStoreSelector";
 
 const PreviewRenderList = () => {
-	const { canvasConfig } = useCanvasStore();
-	const { componentList } = useChartStore();
+	const { canvasConfig } = useCanvasStore(useStoreSelector(["canvasConfig"]));
+	const { componentList } = useChartStore(useStoreSelector(["componentList"]));
 	const [isError, setIsError] = useState(false);
 
 	const computedThemeColor = useMemo(() => {

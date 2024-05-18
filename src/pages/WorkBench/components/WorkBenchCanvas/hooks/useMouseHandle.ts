@@ -1,4 +1,5 @@
 import useEditCharts from "@/hooks/useEditCharts";
+import useStoreSelector from "@/hooks/useStoreSelector";
 import useCanvasStore from "@/store/canvasStore/canvasStore";
 import { CanvasConfigTypeEnum, CanvasGlobalTypeEnum } from "@/store/canvasStore/types";
 import useChartHistoryStore from "@/store/chartHistoryStore/chartHistoryStore";
@@ -7,8 +8,8 @@ import { IComponent } from "@/store/chartStore/types";
 import { cloneComponent, rafThrottle } from "@/utils/utils";
 
 const useMouseHandle = () => {
-	const { createMoveHistory } = useChartHistoryStore();
-	const { canvasConfig, canvasGlobal } = useCanvasStore();
+	const { createMoveHistory } = useChartHistoryStore(useStoreSelector(["createMoveHistory"]));
+	const { canvasConfig, canvasGlobal } = useCanvasStore(useStoreSelector(["canvasConfig", "canvasGlobal"]));
 	const {
 		componentList,
 		setTargetSelectChart,
@@ -17,7 +18,17 @@ const useMouseHandle = () => {
 		setMousePosition,
 		setClickMousePosition,
 		updateChartConfig
-	} = useChartStore();
+	} = useChartStore(
+		useStoreSelector([
+			"componentList",
+			"setTargetSelectChart",
+			"getSelectId",
+			"getComponentList",
+			"setMousePosition",
+			"setClickMousePosition",
+			"updateChartConfig"
+		])
+	);
 	const { getTargetChartIndex } = useEditCharts();
 	// 画布内 mousedown 事件（选中图表或清空当前选中内容）
 	const mousedownHandleUnStop = (_e: React.MouseEvent, item?: IComponent) => {

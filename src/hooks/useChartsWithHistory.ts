@@ -5,6 +5,7 @@ import useEditCharts from "./useEditCharts";
 import { HistoryActionTypeEnum, HistoryItemType } from "@/store/chartHistoryStore/types";
 import { cloneDeep } from "lodash-es";
 import { nanoid } from "nanoid";
+import useStoreSelector from "./useStoreSelector";
 
 const useChartsWithHistory = () => {
 	const {
@@ -21,7 +22,23 @@ const useChartsWithHistory = () => {
 		removeComponentHeadOrTail,
 		insertComponentByIndex,
 		setRecordChart
-	} = useChartStore();
+	} = useChartStore(
+		useStoreSelector([
+			"recordChart",
+			"mouseClickPosition",
+			"getComponentList",
+			"setTargetSelectChart",
+			"getSelectId",
+			"removeComponents",
+			"addComponentList",
+			"updateChartConfig",
+			"swapComponentByIndex",
+			"removeComponentByIndex",
+			"removeComponentHeadOrTail",
+			"insertComponentByIndex",
+			"setRecordChart"
+		])
+	);
 	const {
 		createDeleteHistory,
 		createAddHistory,
@@ -30,7 +47,17 @@ const useChartsWithHistory = () => {
 		createLockHistory,
 		createUnLockHistory,
 		createLayerHistory
-	} = useChartHistoryStore();
+	} = useChartHistoryStore(
+		useStoreSelector([
+			"createDeleteHistory",
+			"createAddHistory",
+			"createHideHistory",
+			"createShowHistory",
+			"createLockHistory",
+			"createUnLockHistory",
+			"createLayerHistory"
+		])
+	);
 	const { getTargetData, getTargetChartIndex } = useEditCharts();
 
 	const handleAddComponents = (components: IComponent[], isHistory = true) => {

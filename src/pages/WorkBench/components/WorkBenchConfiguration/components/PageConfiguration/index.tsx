@@ -8,6 +8,7 @@ import useCanvasStore from "@/store/canvasStore/canvasStore";
 import { FileTypeEnum } from "@/types/FileTypes";
 import { fileToUrl } from "@/utils/utils";
 import { CanvasConfigTypeEnum } from "@/store/canvasStore/types";
+import useStoreSelector from "@/hooks/useStoreSelector";
 
 const previewTypeList = [
 	{
@@ -37,7 +38,7 @@ const previewTypeList = [
 ];
 
 const PageConfiguration = () => {
-	const { canvasConfig, setCanvasConfig } = useCanvasStore();
+	const { canvasConfig, setCanvasConfig } = useCanvasStore(useStoreSelector(["canvasConfig", "setCanvasConfig"]));
 	const { canvasWidth, canvasHeight, canvasBackground, canvasBackgroundImage } = canvasConfig;
 
 	const uploadProps: UploadProps = {

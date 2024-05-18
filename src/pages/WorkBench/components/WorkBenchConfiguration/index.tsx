@@ -6,12 +6,13 @@ import useLayoutStore from "@/store/layoutStore/layoutStore";
 import useChartStore from "@/store/chartStore/chartStore";
 import useEditCharts from "@/hooks/useEditCharts";
 import { TabsEnum } from "@/types/LayoutTypes";
+import useStoreSelector from "@/hooks/useStoreSelector";
 
 const WorkBenchConfiguration = () => {
 	const [currentConfig, setCurrentConfig] = useState<TabsEnum>(ChartTabList[0].value);
-	const showConfiguration = useLayoutStore((selector) => selector.showConfiguration);
-	const selectId = useChartStore((selector) => selector.selectId);
-	const updateChartConfig = useChartStore((selector) => selector.updateChartConfig);
+	const { showConfiguration } = useLayoutStore(useStoreSelector(["showConfiguration"]));
+	const { selectId } = useChartStore(useStoreSelector(["selectId"]));
+	const { updateChartConfig } = useChartStore(useStoreSelector(["updateChartConfig"]));
 	const { getTargetChartIndex, getTargetData } = useEditCharts();
 	const chartIndex = getTargetChartIndex()!;
 	const component = getTargetData()!;

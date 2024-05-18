@@ -5,6 +5,7 @@ import { listen } from "@/utils/domUtils";
 import { bus } from "@/utils";
 import { KeyBoardEventName, CanvasLayoutEventName } from "@/types/EventTypes";
 import { CanvasGlobalTypeEnum } from "@/store/canvasStore/types";
+import useStoreSelector from "@/hooks/useStoreSelector";
 
 interface CanvasRulerProps {
 	children: JSX.Element;
@@ -16,7 +17,16 @@ const disabledValue = { value: false };
 const CanvasRuler = (props: CanvasRulerProps) => {
 	const { children } = props;
 
-	const { canvasConfig, canvasGlobal, addScale, subScale, setCanvasGlobal, autoLayoutCanvas } = useCanvasStore();
+	const { canvasConfig, canvasGlobal, addScale, subScale, setCanvasGlobal, autoLayoutCanvas } = useCanvasStore(
+		useStoreSelector([
+			"canvasConfig",
+			"canvasGlobal",
+			"addScale",
+			"subScale",
+			"setCanvasGlobal",
+			"autoLayoutCanvas"
+		])
+	);
 	const { canvasWidth, canvasHeight } = canvasConfig;
 	const { scale, lockScale } = canvasGlobal;
 

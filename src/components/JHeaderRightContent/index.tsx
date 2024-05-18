@@ -3,13 +3,11 @@ import useUserStore from "@/store/userStore/userStore";
 import { NavLink } from "react-router-dom";
 import { AiOutlineBgColors } from "react-icons/ai";
 import avatar from "@/assets/avatar.jpg";
+import useStoreSelector from "@/hooks/useStoreSelector";
 
 const JBaseHeaderRightContent = (props: { isLogin?: boolean }) => {
 	const { isLogin = false } = props;
-	const { userInfo, outAndClearInfo } = useUserStore((selector) => ({
-		userInfo: selector.userInfo,
-		outAndClearInfo: selector.outAndClearInfo
-	}));
+	const { userInfo, outAndClearInfo } = useUserStore(useStoreSelector(["userInfo", "outAndClearInfo"]));
 
 	const dropMenus: MenuProps["items"] = [
 		{

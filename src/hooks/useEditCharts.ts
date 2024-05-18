@@ -1,7 +1,8 @@
 import useChartStore from "@/store/chartStore/chartStore";
+import useStoreSelector from "./useStoreSelector";
 
 const useEditCharts = () => {
-	const { selectId, componentList } = useChartStore();
+	const { selectId, componentList } = useChartStore(useStoreSelector(["selectId", "componentList"]));
 	// 获取当前选择的图表在数组中的位置
 	const getTargetChartIndex = (id?: string) => {
 		const targetId = id || (selectId.length && selectId[0]) || undefined;

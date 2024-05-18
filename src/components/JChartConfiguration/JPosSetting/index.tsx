@@ -12,6 +12,7 @@ import {
 import useCanvasStore from "@/store/canvasStore/canvasStore";
 import { chartInitConfig } from "@/settings/designSetting";
 import { UpdateChartConfigType } from "@/store/chartStore/types";
+import useStoreSelector from "@/hooks/useStoreSelector";
 
 interface IPosSettingProps {
 	chartIndex: number;
@@ -20,7 +21,7 @@ interface IPosSettingProps {
 }
 
 const JPosSetting = memo((props: IPosSettingProps) => {
-	const { canvasConfig } = useCanvasStore();
+	const { canvasConfig } = useCanvasStore(useStoreSelector(["canvasConfig"]));
 	const { chartIndex, attr, update } = props;
 
 	const positionList = [

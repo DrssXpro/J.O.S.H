@@ -4,6 +4,7 @@ import { RequestDataValueEnum } from "@/types/HttpTypes";
 import useEditCharts from "./useEditCharts";
 import { customizeHttp } from "@/service/http";
 import { intervalUnitHandle, isPreview, newFunctionHandle } from "@/utils/utils";
+import useStoreSelector from "./useStoreSelector";
 
 // 控制 hook 更新数据后重复执行开启轮询
 let isStart = false;
@@ -13,7 +14,9 @@ const useChartDataFetch = (
 	requestErrorCallback: (error: any) => void,
 	requestSuccessCallback: () => void
 ) => {
-	const { updateChartConfig, requestGlobalConfig } = useChartStore();
+	const { updateChartConfig, requestGlobalConfig } = useChartStore(
+		useStoreSelector(["updateChartConfig", "requestGlobalConfig"])
+	);
 	const { getTargetChartIndex } = useEditCharts();
 
 	// 轮询定时器 id

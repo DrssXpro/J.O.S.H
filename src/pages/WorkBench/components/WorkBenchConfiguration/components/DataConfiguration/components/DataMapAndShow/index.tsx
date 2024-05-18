@@ -15,6 +15,7 @@ import { ChartFrameEnum } from "@/materials/types";
 import useFilter from "./hooks/useFilter.hook";
 import { safeJSONParse } from "@/utils/utils";
 import { DataConfigProps } from "../..";
+import useStoreSelector from "@/hooks/useStoreSelector";
 
 // 数据映射 table 结构
 interface IDataType {
@@ -57,7 +58,7 @@ const columns: TableProps<IDataType>["columns"] = [
 
 const DataMapAndShow = memo(
 	({ chartIndex, chartFilter, chartRequestConfig, chartConfig, chartOptions, update }: DataConfigProps) => {
-		const requestGlobalConfig = useChartStore((selector) => selector.requestGlobalConfig);
+		const { requestGlobalConfig } = useChartStore(useStoreSelector(["requestGlobalConfig"]));
 		const {
 			isOpenFilter,
 			filterCode,

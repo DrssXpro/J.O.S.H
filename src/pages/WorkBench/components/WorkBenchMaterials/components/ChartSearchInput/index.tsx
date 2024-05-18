@@ -8,6 +8,7 @@ import ChartGlobImage from "../ChartGlobImage";
 import { ComponentType, FetchComFlagType, IMaterialConfigType } from "@/materials/types";
 import { createComponentConfig, fetchComponent } from "@/materials/components";
 import useChartsWithHistory from "@/hooks/useChartsWithHistory";
+import useStoreSelector from "@/hooks/useStoreSelector";
 
 interface IChartSearchInputProps {
 	menuOptions: MenuOptionsType[];
@@ -15,7 +16,9 @@ interface IChartSearchInputProps {
 
 const ChartSearchInput = (props: IChartSearchInputProps) => {
 	const { menuOptions } = props;
-	const { materialsMode, controllMaterialsMode } = useLayoutStore();
+	const { materialsMode, controllMaterialsMode } = useLayoutStore(
+		useStoreSelector(["materialsMode", "controllMaterialsMode"])
+	);
 	const { handleAddComponents } = useChartsWithHistory();
 	const [isFocus, setFocus] = useState(false);
 	const [showPopover, setShowPopover] = useState(false);

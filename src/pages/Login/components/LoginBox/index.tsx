@@ -8,10 +8,11 @@ import { loginApi, registerApi } from "@/service/api/userApi";
 import { setLocalStorage } from "@/utils/storages";
 import { StorageEnum } from "@/types/StorageTypes";
 import useUserStore from "@/store/userStore/userStore";
+import useStoreSelector from "@/hooks/useStoreSelector";
 
 const LoginBox = () => {
 	const nav = useNavigate();
-	const { setUserInfo: saveUserInfo } = useUserStore((selector) => ({ setUserInfo: selector.setUserInfo }));
+	const { setUserInfo: saveUserInfo } = useUserStore(useStoreSelector(["setUserInfo"]));
 	const [isRegister, setIsRegister] = useState(false);
 	const [userInfo, setUserInfo] = useState({
 		name: "",

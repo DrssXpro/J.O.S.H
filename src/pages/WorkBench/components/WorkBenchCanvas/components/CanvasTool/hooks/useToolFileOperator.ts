@@ -10,26 +10,27 @@ import { FileTypeEnum } from "@/types/FileTypes";
 import { fetchComponent } from "@/materials/components";
 import { ComponentType, FetchComFlagType } from "@/materials/types";
 import useChartHistoryStore from "@/store/chartHistoryStore/chartHistoryStore";
+import useStoreSelector from "@/hooks/useStoreSelector";
 
 type BeforeUpload = Pick<UploadProps, "beforeUpload">["beforeUpload"];
 type CustomRequest = Pick<UploadProps, "customRequest">["customRequest"];
 
 const useToolFileOperator = () => {
-	const clearHistory = useChartHistoryStore((selector) => selector.clearHistory);
+	const { clearHistory } = useChartHistoryStore(useStoreSelector(["clearHistory"]));
 	const { getChartConfigs, setTargetSelectChart, addComponentList, setrequestGlobalConfig, clearComponentList } =
-		useChartStore((selector) => ({
-			getChartConfigs: selector.getChartConfigs,
-			setTargetSelectChart: selector.setTargetSelectChart,
-			addComponentList: selector.addComponentList,
-			setrequestGlobalConfig: selector.setrequestGlobalConfig,
-			clearComponentList: selector.clearComponentList
-		}));
-	const { scale, getGlobalCanvasConfig, setCanvasGlobal, setGlobalCanvasConfig } = useCanvasStore((selector) => ({
-		scale: selector.canvasGlobal[CanvasGlobalTypeEnum.SCALE],
-		getGlobalCanvasConfig: selector.getGlobalCanvasConfig,
-		setCanvasGlobal: selector.setCanvasGlobal,
-		setGlobalCanvasConfig: selector.setGlobalCanvasConfig
-	}));
+		useChartStore(
+			useStoreSelector([
+				"getChartConfigs",
+				"setTargetSelectChart",
+				"addComponentList",
+				"setrequestGlobalConfig",
+				"clearComponentList"
+			])
+		);
+	const { canvasGlobal, getGlobalCanvasConfig, setCanvasGlobal, setGlobalCanvasConfig } = useCanvasStore(
+		useStoreSelector(["canvasGlobal", "getGlobalCanvasConfig", "setCanvasGlobal", "setGlobalCanvasConfig"])
+	);
+	const scale = canvasGlobal[CanvasGlobalTypeEnum.SCALE];
 
 	const beforeUpload: BeforeUpload = (file) => {
 		if (file.type !== FileTypeEnum.JSON && file.type !== FileTypeEnum.TXT) {

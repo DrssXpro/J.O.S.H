@@ -7,9 +7,10 @@ import { KeyBoardEventName, CanvasLayoutEventName } from "@/types/EventTypes";
 import { CanvasGlobalTypeEnum } from "@/store/canvasStore/types";
 import { HistoryMax } from "@/settings/designSetting";
 import ChartHistory from "./components/ChartHistory";
+import useStoreSelector from "@/hooks/useStoreSelector";
 
 const CanvasBottom = () => {
-	const { canvasGlobal, setCanvasGlobal } = useCanvasStore();
+	const { canvasGlobal, setCanvasGlobal } = useCanvasStore(useStoreSelector(["canvasGlobal", "setCanvasGlobal"]));
 	const { scale, lockScale } = canvasGlobal;
 	const [keyBoardText, setKeyBoardText] = useState("");
 	const selectRef = useRef<any>(null);

@@ -22,6 +22,8 @@ import useUndoRedo from "./hooks/useUndoRedo";
 import useChartStore from "@/store/chartStore/chartStore";
 import { getLocalStorage, setSessionStorage } from "@/utils/storages";
 import { StorageEnum } from "@/types/StorageTypes";
+import useStoreSelector from "@/hooks/useStoreSelector";
+import { HistoryStackEnum } from "@/store/chartHistoryStore/types";
 
 interface TitleProps {
 	title: string;
@@ -31,9 +33,20 @@ interface TitleProps {
 const LeftOperator = () => {
 	const nav = useNavigate();
 	const { showMaterials, showLayer, showConfiguration, controllMaterials, controllLayer, controllConfiguration } =
-		useLayoutStore();
-	const { autoLayoutCanvas } = useCanvasStore();
-	const { backStack, forwardStack, backAction, forwardAction } = useChartHistoryStore();
+		useLayoutStore(
+			useStoreSelector([
+				"showMaterials",
+				"showLayer",
+				"showConfiguration",
+				"controllMaterials",
+				"controllLayer",
+				"controllConfiguration"
+			])
+		);
+	const { autoLayoutCanvas } = useCanvasStore(useStoreSelector(["autoLayoutCanvas"]));
+	const { backStack, forwardStack, backAction, forwardAction } = useChartHistoryStore(
+		useStoreSelector([HistoryStackEnum.BACK_STACK, HistoryStackEnum.FORWARD_STACK, "backAction", "forwardAction"])
+	);
 	const { handleUndo, handleRedo } = useUndoRedo();
 
 	const canBack = useMemo(() => !!backStack.length, [backStack]);
@@ -170,7 +183,7 @@ const CenterTitle = (props: TitleProps) => {
 };
 
 const RightOperator = () => {
-	const { canvasConfig } = useCanvasStore();
+	const { canvasConfig } = useCanvasStore(useStoreSelector(["canvasConfig"]));
 	const { componentList, requestGlobalConfig } = useChartStore();
 	const goPreview = () => {
 		const localStorageInfo = getLocalStorage("chart") || [];

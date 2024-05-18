@@ -13,16 +13,14 @@ import useChartStore from "@/store/chartStore/chartStore";
 import { JSONParse } from "@/utils/utils";
 import { fetchComponent } from "@/materials/components";
 import { ComponentType, FetchComFlagType } from "@/materials/types";
+import useStoreSelector from "@/hooks/useStoreSelector";
 
 const WorkBench = () => {
 	const params = useParams();
-	const { setGlobalCanvasConfig } = useCanvasStore((selector) => ({
-		setGlobalCanvasConfig: selector.setGlobalCanvasConfig
-	}));
-	const { addComponentList, setrequestGlobalConfig } = useChartStore((selector) => ({
-		addComponentList: selector.addComponentList,
-		setrequestGlobalConfig: selector.setrequestGlobalConfig
-	}));
+	const { setGlobalCanvasConfig } = useCanvasStore(useStoreSelector(["setGlobalCanvasConfig"]));
+	const { addComponentList, setrequestGlobalConfig } = useChartStore(
+		useStoreSelector(["addComponentList", "setrequestGlobalConfig"])
+	);
 	const [projectDetail, setProjectDetail] = useState<ProjectInfo>();
 
 	useEffect(() => {

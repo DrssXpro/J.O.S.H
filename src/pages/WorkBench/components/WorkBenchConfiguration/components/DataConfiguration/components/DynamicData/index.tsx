@@ -11,12 +11,13 @@ import useChartStore from "@/store/chartStore/chartStore";
 import { customizeHttp } from "@/service/http";
 import { newFunctionHandle } from "@/utils/utils";
 import { DataConfigProps } from "../..";
+import useStoreSelector from "@/hooks/useStoreSelector";
 
 const DynamicData = memo((props: DataConfigProps) => {
 	const { chartIndex, chartRequestConfig, chartFilter, update } = props;
 	const modalRef = useRef<any>(null);
 	const [requestLoading, setRequestLoading] = useState(false);
-	const requestGlobalConfig = useChartStore((selector) => selector.requestGlobalConfig);
+	const { requestGlobalConfig } = useChartStore(useStoreSelector(["requestGlobalConfig"]));
 	// 全局请求配置
 	const {
 		requestOriginUrl,
@@ -139,10 +140,9 @@ const DynamicDataModal: FC<{
 	const [hideTable, setHideTable] = useState(false);
 	const [isHover, setIsHover] = useState(false);
 	const [editPublic, setEditPublic] = useState(false);
-	const { requestGlobalConfig, updateGlobalRequestConfig } = useChartStore((selector) => ({
-		requestGlobalConfig: selector.requestGlobalConfig,
-		updateGlobalRequestConfig: selector.updateGlobalRequestConfig
-	}));
+	const { requestGlobalConfig, updateGlobalRequestConfig } = useChartStore(
+		useStoreSelector(["requestGlobalConfig", "updateGlobalRequestConfig"])
+	);
 	const { requestInterval, requestIntervalUnit, requestHttpType, requestUrl } = chartRequestConfig;
 
 	useImperativeHandle(ref, () => {

@@ -4,9 +4,10 @@ import { ChartColorsNameType, chartColors } from "@/theme";
 import useCanvasStore from "@/store/canvasStore/canvasStore";
 import { CanvasConfigTypeEnum } from "@/store/canvasStore/types";
 import { useState } from "react";
+import useStoreSelector from "@/hooks/useStoreSelector";
 
 const ThemeColor = () => {
-	const { setCanvasConfig } = useCanvasStore();
+	const { setCanvasConfig } = useCanvasStore(useStoreSelector(["setCanvasConfig"]));
 	const [activeSelect, setActiveSelect] = useState<ChartColorsNameType>("light");
 	const computedGradientColor = (c1: string, c2: string) => `linear-gradient(to right, ${c1} 0%, ${c2} 100%)`;
 

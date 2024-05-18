@@ -2,6 +2,7 @@ import { Tabs, TabsProps } from "antd";
 import RequestConfigTable from "../RequestConfigTable";
 import useChartStore from "@/store/chartStore/chartStore";
 import { RequestParamsTypeEnum } from "@/types/HttpTypes";
+import useStoreSelector from "@/hooks/useStoreSelector";
 
 interface IPublicRequestConfig {
 	isEdit: boolean;
@@ -10,7 +11,7 @@ interface IPublicRequestConfig {
 const PublicRequestConfig = (props: IPublicRequestConfig) => {
 	const { isEdit } = props;
 	const { requestGlobalConfig, updateGlobalRequestParams } = useChartStore(
-		({ requestGlobalConfig, updateGlobalRequestParams }) => ({ requestGlobalConfig, updateGlobalRequestParams })
+		useStoreSelector(["requestGlobalConfig", "updateGlobalRequestParams"])
 	);
 	const { requestParams } = requestGlobalConfig;
 

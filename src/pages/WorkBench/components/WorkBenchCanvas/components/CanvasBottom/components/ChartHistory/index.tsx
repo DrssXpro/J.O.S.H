@@ -2,9 +2,11 @@ import { useMemo } from "react";
 import { Button, Popover, Typography } from "antd";
 import useChartHistoryStore from "@/store/chartHistoryStore/chartHistoryStore";
 import { historyActionTypeName } from "./historyMap";
+import useStoreSelector from "@/hooks/useStoreSelector";
+import { HistoryStackEnum } from "@/store/chartHistoryStore/types";
 
 const ChartHistory = () => {
-	const { backStack } = useChartHistoryStore();
+	const { backStack } = useChartHistoryStore(useStoreSelector([HistoryStackEnum.BACK_STACK]));
 
 	const historyList = useMemo(() => {
 		return backStack

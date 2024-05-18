@@ -7,11 +7,16 @@ import useLayoutStore from "@/store/layoutStore/layoutStore";
 import useCanvasStore from "@/store/canvasStore/canvasStore";
 import useChartStore from "@/store/chartStore/chartStore";
 import { useMemo } from "react";
+import useStoreSelector from "@/hooks/useStoreSelector";
 
 const WorkBenchLayer = () => {
-	const { showLayer, layerMode, controllLayer, controllLayerMode } = useLayoutStore();
-	const { autoLayoutCanvas } = useCanvasStore();
-	const { componentList, selectId, setTargetSelectChart } = useChartStore();
+	const { showLayer, layerMode, controllLayer, controllLayerMode } = useLayoutStore(
+		useStoreSelector(["showLayer", "layerMode", "controllLayer", "controllLayerMode"])
+	);
+	const { autoLayoutCanvas } = useCanvasStore(useStoreSelector(["autoLayoutCanvas"]));
+	const { componentList, selectId, setTargetSelectChart } = useChartStore(
+		useStoreSelector(["componentList", "selectId", "setTargetSelectChart"])
+	);
 
 	const layerList = useMemo(() => [...componentList].reverse(), [componentList]);
 
