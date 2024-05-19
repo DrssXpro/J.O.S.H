@@ -1,5 +1,5 @@
-import { DELETE, GET, PUT } from "../axios";
-import { MessageVo, ProjectInfo, ProjectListVo } from "../types/requestTypes";
+import { DELETE, GET, POST, PUT } from "../axios";
+import { MessageVo, ProjectInfo, ProjectListVo, SelectProjectInfo } from "../types/requestTypes";
 
 // 获取项目列表接口
 function getProjectListApi(data: { page: number; pageSize: number }) {
@@ -21,4 +21,27 @@ function getProjectDetailApi(projectId: number) {
 	return GET<ProjectInfo>(`/project/detail/${projectId}`);
 }
 
-export { getProjectListApi, deleteProjectApi, updateProjectApi, getProjectDetailApi };
+// 创建项目接口
+function addProjectApi(data: Pick<ProjectInfo, "title" | "detail" | "cover">) {
+	return POST<MessageVo>(`/project`, data);
+}
+
+// 获取项目列表(for select)接口
+function getSelectProjectApi() {
+	return GET<SelectProjectInfo[]>("project/select_list");
+}
+
+// 保存模板至自己应用上
+function saveTemplateForProjectApi(projectId: number, data: Pick<ProjectInfo, "title" | "detail" | "cover">) {
+	return POST<MessageVo>(`/project/save/${projectId}`, data);
+}
+
+export {
+	getProjectListApi,
+	deleteProjectApi,
+	updateProjectApi,
+	getProjectDetailApi,
+	addProjectApi,
+	getSelectProjectApi,
+	saveTemplateForProjectApi
+};

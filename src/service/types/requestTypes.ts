@@ -34,6 +34,12 @@ export interface ProjectInfo {
 	updateTime: string;
 }
 
+// 选择项目信息
+export type SelectProjectInfo = Pick<ProjectInfo, "id" | "title">;
+
+// 模板信息
+export type TemplateInfo = Omit<ProjectInfo, "status"> & { user: UserInfo };
+
 export type UserLoginVo =
 	| ({
 			userInfo: UserInfo;
@@ -42,6 +48,11 @@ export type UserLoginVo =
 
 export type ProjectListVo = {
 	projects: ProjectInfo[];
+	totalCount: number;
+};
+
+export type TemplateListVo = {
+	templates: TemplateInfo[];
 	totalCount: number;
 };
 

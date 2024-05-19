@@ -1,5 +1,12 @@
 import { Button, Card, Dropdown, Tooltip } from "antd";
-import { AiOutlineDelete, AiOutlineEdit, AiOutlineSmallDash, AiOutlineLaptop, AiOutlineSend } from "react-icons/ai";
+import {
+	AiOutlineDelete,
+	AiOutlineEdit,
+	AiOutlineSmallDash,
+	AiOutlineLaptop,
+	AiOutlineSend,
+	AiOutlineGroup
+} from "react-icons/ai";
 import { cardColorMap } from "@/config/color";
 import CardBg from "@/assets/card-bg.png";
 import { useNavigate } from "react-router-dom";
@@ -9,10 +16,11 @@ interface JProjectCardProps {
 	detail: ProjectInfo;
 	deleteProject: (id: number) => void;
 	updateProjectStatus: (detail: ProjectInfo, status: boolean) => void;
+	saveProjectTemplate: (detail: ProjectInfo) => void;
 }
 
 const JProjectCard = (props: JProjectCardProps) => {
-	const { detail, deleteProject, updateProjectStatus } = props;
+	const { detail, deleteProject, updateProjectStatus, saveProjectTemplate } = props;
 	const nav = useNavigate();
 	const items = [
 		{
@@ -40,6 +48,20 @@ const JProjectCard = (props: JProjectCardProps) => {
 		},
 		{
 			key: "3",
+			label: (
+				<div
+					className="flex items-center gap-1"
+					onClick={() => {
+						saveProjectTemplate(detail);
+					}}
+				>
+					<AiOutlineGroup />
+					<span>设为模板</span>
+				</div>
+			)
+		},
+		{
+			key: "4",
 			label: (
 				<div
 					className="flex items-center gap-1"

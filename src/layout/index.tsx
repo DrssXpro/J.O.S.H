@@ -7,7 +7,7 @@ import AppMenu from "./components/AppMenu";
 const LayoutContainer = () => {
 	return (
 		<Layout>
-			<Layout.Sider width={250} className="bg-[#18181C] border-r-1 border-r-solid border-[#303030]" theme="light">
+			<Layout.Sider width={200} className="bg-[#18181C] border-r-1 border-r-solid border-[#303030]" theme="light">
 				<AppMenu />
 			</Layout.Sider>
 			<Layout>

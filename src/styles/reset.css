@@ -52,6 +52,12 @@ textarea {
 	justify-content: center;
 }
 
+/* Popconfirm 解决底部按钮不在右下角问题（.ant-btn 导致） */
+.ant-popconfirm-buttons {
+	display: flex;
+	justify-content: end;
+}
+
 /* Modal 组件统一增加透明过滤效果 */
 .ant-modal-content {
 	backdrop-filter: blur(5px);
