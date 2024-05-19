@@ -1,39 +1,24 @@
-import useChartStore from "@/store/chartStore/chartStore";
-import { getSessionStorageCanvasInfo } from "./utils/storage";
 import { useEffect, useMemo } from "react";
+import { getSessionStorageCanvasInfo } from "./utils/storage";
 import useCanvasStore from "@/store/canvasStore/canvasStore";
 import PreviewRenderList from "./components/PreviewRenderList";
-import { loadComponent } from "./utils";
 import { getEditCanvasConfigStyle } from "@/utils/chartStyle";
 import { CanvasConfigTypeEnum } from "@/store/canvasStore/types";
 import { PreviewScaleEnum } from "@/types/LayoutTypes";
 import usePreviewFit from "./hooks/usePreviewFit";
 import useStoreSelector from "@/hooks/useStoreSelector";
+import useTotalChartsInfo from "@/hooks/useTotalChartsInfo";
 
 const Preview = () => {
-	const { canvasConfig, setGlobalCanvasConfig } = useCanvasStore(
-		useStoreSelector(["canvasConfig", "setGlobalCanvasConfig"])
-	);
-	const { addComponentList, setrequestGlobalConfig } = useChartStore(
-		useStoreSelector(["addComponentList", "setrequestGlobalConfig"])
-	);
+	const { canvasConfig } = useCanvasStore(useStoreSelector(["canvasConfig"]));
+
 	const config = getSessionStorageCanvasInfo();
 	const { previewScaleRef, entityRef } = usePreviewFit(config.canvasConfig);
+	const { setTotalChartsInfo } = useTotalChartsInfo();
 
 	useEffect(() => {
-		initStoreData(config);
+		setTotalChartsInfo(config, false);
 	}, []);
-
-	const initStoreData = (config: any) => {
-		if (config) {
-			const { canvasConfig, componentList, requestGlobalConfig } = config;
-			componentList.forEach((item: any) => {
-				addComponentList(loadComponent(item));
-			});
-			setrequestGlobalConfig(requestGlobalConfig);
-			setGlobalCanvasConfig(canvasConfig);
-		}
-	};
 
 	// 根据适配 type 是否展示实体层
 	const showEntity = useMemo(

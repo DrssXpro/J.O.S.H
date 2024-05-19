@@ -62,7 +62,7 @@ function App() {
 									<Preview />
 								</JRequireAuth>
 							}
-							path="/preview/1"
+							path="/preview/:projectId"
 						></Route>
 					</Routes>
 				}

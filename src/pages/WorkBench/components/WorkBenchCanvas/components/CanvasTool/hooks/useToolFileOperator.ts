@@ -1,35 +1,25 @@
 import domToImage from "dom-to-image";
 import { UploadProps } from "antd";
-import { omit } from "lodash-es";
 import useCanvasStore from "@/store/canvasStore/canvasStore";
 import useChartStore from "@/store/chartStore/chartStore";
 import { CanvasGlobalTypeEnum } from "@/store/canvasStore/types";
 import { downloadByLink, downloadTextFile, readFile } from "@/utils/fileUtils";
 import { JSONParse, JSONStringify } from "@/utils/utils";
 import { FileTypeEnum } from "@/types/FileTypes";
-import { fetchComponent } from "@/materials/components";
-import { ComponentType, FetchComFlagType } from "@/materials/types";
 import useChartHistoryStore from "@/store/chartHistoryStore/chartHistoryStore";
 import useStoreSelector from "@/hooks/useStoreSelector";
+import useTotalChartsInfo from "@/hooks/useTotalChartsInfo";
 
 type BeforeUpload = Pick<UploadProps, "beforeUpload">["beforeUpload"];
 type CustomRequest = Pick<UploadProps, "customRequest">["customRequest"];
 
 const useToolFileOperator = () => {
+	const { getTotalChartsInfo, setTotalChartsInfo } = useTotalChartsInfo();
 	const { clearHistory } = useChartHistoryStore(useStoreSelector(["clearHistory"]));
-	const { getChartConfigs, setTargetSelectChart, addComponentList, setrequestGlobalConfig, clearComponentList } =
-		useChartStore(
-			useStoreSelector([
-				"getChartConfigs",
-				"setTargetSelectChart",
-				"addComponentList",
-				"setrequestGlobalConfig",
-				"clearComponentList"
-			])
-		);
-	const { canvasGlobal, getGlobalCanvasConfig, setCanvasGlobal, setGlobalCanvasConfig } = useCanvasStore(
-		useStoreSelector(["canvasGlobal", "getGlobalCanvasConfig", "setCanvasGlobal", "setGlobalCanvasConfig"])
+	const { setTargetSelectChart, clearComponentList } = useChartStore(
+		useStoreSelector(["setTargetSelectChart", "clearComponentList"])
 	);
+	const { canvasGlobal, setCanvasGlobal } = useCanvasStore(useStoreSelector(["canvasGlobal", "setCanvasGlobal"]));
 	const scale = canvasGlobal[CanvasGlobalTypeEnum.SCALE];
 
 	const beforeUpload: BeforeUpload = (file) => {
@@ -57,27 +47,12 @@ const useToolFileOperator = () => {
 
 	// 导入文件内容处理
 	const importDataHandle = (canvasData: any) => {
-		// 先清除之前的所有历史记录和界面组件
+		// 先导入之前清除所有历史记录和界面组件
 		clearHistory();
 		setTargetSelectChart();
 		clearComponentList();
 
-		const { componentList, requestGlobalConfig, canvasConfig } = canvasData;
-
-		// 组件注册
-		componentList.forEach((com: ComponentType) => {
-			// 获取图表组件
-			const ChartComponent: any = fetchComponent(com.key, FetchComFlagType.VIEW);
-			// 获取图表配置组件
-			const ChartConfigComponent: any = fetchComponent(com.key, FetchComFlagType.CONFIG);
-			addComponentList({ ...com, ChartComponent, ChartConfigComponent });
-		});
-
-		// 全局请求设置
-		setrequestGlobalConfig(requestGlobalConfig);
-
-		// 全局 canvas 设置
-		setGlobalCanvasConfig(canvasConfig);
+		setTotalChartsInfo(canvasData);
 	};
 
 	// 导出
@@ -91,18 +66,8 @@ const useToolFileOperator = () => {
 			return;
 		}
 
-		const chartConfigs = getChartConfigs();
-		const canvasConfig = getGlobalCanvasConfig();
-
 		// 导出 json 文件
-		const storageInfo = {
-			canvasConfig,
-			...chartConfigs,
-			// 移除 jsx 组件文本属性
-			componentList: chartConfigs.componentList.map((i) => {
-				return omit(i, ["ChartComponent", "ChartConfigComponent"]);
-			})
-		};
+		const storageInfo = getTotalChartsInfo();
 		downloadTextFile(JSONStringify(storageInfo), undefined, "json");
 
 		// 导出为图片
