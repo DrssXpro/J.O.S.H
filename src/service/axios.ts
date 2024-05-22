@@ -51,6 +51,15 @@ axiosInstance.interceptors.response.use(
 		const data = err.response!.data as PublicResponse<string>;
 		const config = err.response!.config;
 
+		// refresh token 也失效则跳转至登录页
+		if (data.code === 401 && config.url?.includes("/refresh")) {
+			window.$message.warning(data.data);
+			setTimeout(() => {
+				window.location.href = "/";
+			}, 500);
+			return Promise.reject(err);
+		}
+
 		if (refreshing) {
 			return new Promise((resolve) => {
 				queue.push({
