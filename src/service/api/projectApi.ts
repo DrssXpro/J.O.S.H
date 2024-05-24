@@ -1,4 +1,4 @@
-import { DELETE, GET, POST, PUT } from "../axios";
+import { DELETE, GET, POST, PUT, UPLOAD } from "../axios";
 import { MessageVo, ProjectInfo, ProjectListVo, SelectProjectInfo } from "../types/requestTypes";
 
 // 获取项目列表接口
@@ -36,6 +36,11 @@ function saveTemplateForProjectApi(projectId: number, data: Pick<ProjectInfo, "t
 	return POST<MessageVo>(`/project/save/${projectId}`, data);
 }
 
+// 上传项目封面
+function uploadProjectCoverApi(projectId: number, file: FormData) {
+	return UPLOAD<MessageVo>(`/project/upload/${projectId}`, file);
+}
+
 export {
 	getProjectListApi,
 	deleteProjectApi,
@@ -43,5 +48,6 @@ export {
 	getProjectDetailApi,
 	addProjectApi,
 	getSelectProjectApi,
-	saveTemplateForProjectApi
+	saveTemplateForProjectApi,
+	uploadProjectCoverApi
 };

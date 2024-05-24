@@ -1,6 +1,6 @@
 import { Tooltip, Upload } from "antd";
 import { IoShare, IoDownload } from "react-icons/io5";
-import { useToolFileOperator } from "./hooks/useToolFileOperator";
+import { useFileOperator } from "../../hooks/useFileOperator";
 
 type BtnListType = {
 	key: string;
@@ -10,7 +10,18 @@ type BtnListType = {
 };
 
 const CanvasTool = () => {
-	const { exportHandle, fileProps } = useToolFileOperator();
+	const { exportHandle, fileProps } = useFileOperator();
+
+	const handleExport = () => {
+		exportHandle().then(
+			() => {
+				window.$message.success("导出成功");
+			},
+			() => {
+				window.$message.error("导出失败");
+			}
+		);
+	};
 	// 配置列表
 	const btnList: BtnListType[] = [
 		{
@@ -22,7 +33,7 @@ const CanvasTool = () => {
 			key: "export",
 			name: "导出",
 			icon: <IoShare color="#fff" />,
-			handle: exportHandle
+			handle: handleExport
 		}
 	];
 	return (

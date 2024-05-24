@@ -7,7 +7,7 @@ const getSessionStorageCanvasInfo = () => {
 		const storageList = getSessionStorage(StorageEnum.J_CHART_STORAGE_LIST);
 		if (storageList) {
 			for (let i = 0; i < storageList.length; i++) {
-				if (storageList[i].id == previewId) {
+				if (storageList[i].projectId == previewId) {
 					return storageList[i];
 				}
 			}

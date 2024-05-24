@@ -1,8 +1,10 @@
 import { Avatar, Button, Card, Popconfirm, Typography } from "antd";
 import { cardColorMap } from "@/config/color";
-import CardBg from "@/assets/card-bg.png";
 import { TemplateInfo } from "@/service/types/requestTypes";
 import avatar from "@/assets/avatar.jpg";
+import empty from "@/assets/empty_draw.png";
+
+const BASEURL = import.meta.env.VITE_BASE_URL;
 
 interface JTemplateCardProps {
 	isUser: boolean;
@@ -49,7 +51,10 @@ const JTemplateCard = (props: JTemplateCardProps) => {
 
 			<div className="w-full h-full px-3 pb-3">
 				<div className="h-45">
-					<img src={CardBg} className="h-full w-full overflow-hidden rounded-md object-cover" />
+					<img
+						src={detail.cover ? `${BASEURL}/images/${detail.cover}` : empty}
+						className="h-full w-full overflow-hidden rounded-md object-cover"
+					/>
 				</div>
 			</div>
 			<div className="w-full h-15 bg-[#262629] p-3  flex items-center justify-between">

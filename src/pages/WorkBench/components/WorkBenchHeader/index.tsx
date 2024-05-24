@@ -10,7 +10,8 @@ import {
 	AiOutlinePartition,
 	AiOutlineBank,
 	AiOutlineLaptop,
-	AiOutlineSend
+	AiOutlineSend,
+	AiOutlineSave
 } from "react-icons/ai";
 import { Button, Input, Tooltip, type InputRef } from "antd";
 import { useState, useRef, useMemo, useEffect } from "react";
@@ -19,11 +20,9 @@ import useLayoutStore from "@/store/layoutStore/layoutStore";
 import useCanvasStore from "@/store/canvasStore/canvasStore";
 import useChartHistoryStore from "@/store/chartHistoryStore/chartHistoryStore";
 import useUndoRedo from "./hooks/useUndoRedo";
-import { getLocalStorage, setSessionStorage } from "@/utils/storages";
-import { StorageEnum } from "@/types/StorageTypes";
 import useStoreSelector from "@/hooks/useStoreSelector";
 import { HistoryStackEnum } from "@/store/chartHistoryStore/types";
-import useTotalChartsInfo from "@/hooks/useTotalChartsInfo";
+import useInfoOperator from "./hooks/useInfoOperator";
 
 interface TitleProps {
 	title: string;
@@ -184,35 +183,14 @@ const CenterTitle = (props: TitleProps) => {
 
 const RightOperator = () => {
 	const params = useParams();
-	const { getTotalChartsInfo } = useTotalChartsInfo();
-	const goPreview = () => {
-		const id = params.projectId;
-		const localStorageInfo = getLocalStorage("chart") || [];
-		// 当前画布内容打包
-		const storageInfo = getTotalChartsInfo();
-		// 根据当前项目 id 判断 sessionStorage 是否已存在，存在替换，不存在则添加
-		if (localStorageInfo.length) {
-			const repeateIndex = localStorageInfo.findIndex((e: { id: string }) => e.id === id);
-			if (repeateIndex !== -1) {
-				localStorageInfo.splice(repeateIndex, 1, { id, ...storageInfo });
-				setSessionStorage(StorageEnum.J_CHART_STORAGE_LIST, localStorageInfo);
-			} else {
-				localStorageInfo.push({
-					id,
-					...storageInfo
-				});
-				setSessionStorage(StorageEnum.J_CHART_STORAGE_LIST, localStorageInfo);
-			}
-		} else {
-			// 初次 sessionStorage 为空，直接 push
-			setSessionStorage(StorageEnum.J_CHART_STORAGE_LIST, [{ id, ...storageInfo }]);
-		}
-		window.open(`/preview/${id}`);
-	};
+	const { saveLoading, saveScreenDataInfo, previewScreenInfo } = useInfoOperator(Number(params.projectId));
 
 	return (
 		<div className="flex items-center gap-3 float-right">
-			<Button icon={<AiOutlineLaptop />} onClick={goPreview}>
+			<Button icon={<AiOutlineSave />} onClick={saveScreenDataInfo} loading={saveLoading}>
+				保存
+			</Button>
+			<Button icon={<AiOutlineLaptop />} onClick={previewScreenInfo}>
 				预览
 			</Button>
 			<Button

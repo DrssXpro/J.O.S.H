@@ -127,4 +127,15 @@ export function PUT<R>(url: string, data?: Record<string, any>) {
 	});
 }
 
+export function UPLOAD<R>(url: string, data: FormData) {
+	return axiosInstance.request<any, PublicResponse<R>>({
+		url,
+		method: "post",
+		headers: {
+			"Content-Type": "multipart/form-data"
+		},
+		data
+	});
+}
+
 export default axiosInstance;

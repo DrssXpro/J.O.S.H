@@ -13,6 +13,7 @@ const Preview = () => {
 	const { canvasConfig } = useCanvasStore(useStoreSelector(["canvasConfig"]));
 
 	const config = getSessionStorageCanvasInfo();
+	console.log(config);
 	const { previewScaleRef, entityRef } = usePreviewFit(config.canvasConfig);
 	const { setTotalChartsInfo } = useTotalChartsInfo();
 

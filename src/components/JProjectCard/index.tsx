@@ -8,9 +8,11 @@ import {
 	AiOutlineGroup
 } from "react-icons/ai";
 import { cardColorMap } from "@/config/color";
-import CardBg from "@/assets/card-bg.png";
+import empty from "@/assets/empty_draw.png";
 import { useNavigate } from "react-router-dom";
 import { ProjectInfo } from "@/service/types/requestTypes";
+
+const BASEURL = import.meta.env.VITE_BASE_URL;
 
 interface JProjectCardProps {
 	detail: ProjectInfo;
@@ -84,7 +86,10 @@ const JProjectCard = (props: JProjectCardProps) => {
 			</div>
 			<div className="w-full h-full px-3 pb-3">
 				<div className="h-45">
-					<img src={CardBg} className="h-full w-full overflow-hidden rounded-md object-cover" />
+					<img
+						src={detail.cover ? `${BASEURL}/images/${detail.cover}` : empty}
+						className="h-full w-full overflow-hidden rounded-md object-contain"
+					/>
 				</div>
 			</div>
 			<div className="w-full h-15 bg-[#262629] p-3  flex items-center justify-between">

@@ -13,7 +13,7 @@ import useTotalChartsInfo from "@/hooks/useTotalChartsInfo";
 type BeforeUpload = Pick<UploadProps, "beforeUpload">["beforeUpload"];
 type CustomRequest = Pick<UploadProps, "customRequest">["customRequest"];
 
-const useToolFileOperator = () => {
+const useFileOperator = () => {
 	const { getTotalChartsInfo, setTotalChartsInfo } = useTotalChartsInfo();
 	const { clearHistory } = useChartHistoryStore(useStoreSelector(["clearHistory"]));
 	const { setTargetSelectChart, clearComponentList } = useChartStore(
@@ -56,33 +56,35 @@ const useToolFileOperator = () => {
 	};
 
 	// 导出
-	const exportHandle = () => {
-		// 置空当前视图上选择的组件
-		setTargetSelectChart();
-		const canvasDom = document.querySelector("#chartCanvas") as HTMLElement;
+	const exportHandle = (isExportJson = true, isDownloadImage = true): Promise<string> => {
+		return new Promise((resolve, reject) => {
+			// 置空当前视图上选择的组件
+			setTargetSelectChart();
+			const canvasDom = document.querySelector("#chartCanvas") as HTMLElement;
 
-		if (!canvasDom) {
-			window.$message.error("导出失败！");
-			return;
-		}
+			if (!canvasDom) {
+				reject("error");
+			}
+			if (isExportJson) {
+				// 导出 json 文件
+				const storageInfo = getTotalChartsInfo();
+				downloadTextFile(JSONStringify(storageInfo), undefined, "json");
+			}
 
-		// 导出 json 文件
-		const storageInfo = getTotalChartsInfo();
-		downloadTextFile(JSONStringify(storageInfo), undefined, "json");
-
-		// 导出为图片
-		const tempScale = scale;
-		setCanvasGlobal(CanvasGlobalTypeEnum.SCALE, 1);
-		setTimeout(() => {
-			domToImage.toPng(canvasDom).then((image) => {
-				downloadByLink(image, undefined, "png");
-				setCanvasGlobal(CanvasGlobalTypeEnum.SCALE, tempScale);
-				window.$message.success("导出成功！");
-			});
-		}, 600);
+			// 导出为图片
+			const tempScale = scale;
+			setCanvasGlobal(CanvasGlobalTypeEnum.SCALE, 1);
+			setTimeout(() => {
+				domToImage.toPng(canvasDom).then((image) => {
+					if (isDownloadImage) downloadByLink(image, undefined, "png");
+					setCanvasGlobal(CanvasGlobalTypeEnum.SCALE, tempScale);
+					resolve(image);
+				});
+			}, 600);
+		});
 	};
 
 	return { exportHandle, importDataHandle, fileProps: { beforeUpload, customRequest } };
 };
 
-export { useToolFileOperator };
+export { useFileOperator };

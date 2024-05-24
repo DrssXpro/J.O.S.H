@@ -23,12 +23,16 @@ import { KeyBoardEventName } from "@/types/EventTypes";
 import CanvasBottom from "./components/CanvasBottom";
 import CanvasTool from "./components/CanvasTool";
 import useStoreSelector from "@/hooks/useStoreSelector";
+import { useParams } from "react-router-dom";
+import useInfoOperator from "../WorkBenchHeader/hooks/useInfoOperator";
 
 const WorkBenchCanvas = () => {
+	const { projectId } = useParams();
 	const { canvasConfig } = useCanvasStore(useStoreSelector(["canvasConfig"]));
 	const { componentList, handleAddComponents, handleRemoveComponents } = useChartsWithHistory();
 	const { handleMouseDown, mousedownHandleUnStop } = useMouseHandle();
 	const { menuItems, setCanvasMenuItems, setChartMenuItems } = useContextMenuHandle();
+	const { saveScreenDataInfo } = useInfoOperator(Number(projectId));
 	const { canvasBackground, canvasBackgroundImage, chartThemeColor, chartCustomThemeColorInfo } = canvasConfig;
 	useEffect(() => {
 		initKeyBoardListener();
@@ -41,10 +45,12 @@ const WorkBenchCanvas = () => {
 
 	const listenKeyBoradEvent = () => {
 		bus.on(KeyBoardEventName.DELETEPRESS, handleRemoveComponents);
+		bus.on(KeyBoardEventName.SAVEPROJECT, saveScreenDataInfo);
 	};
 
 	const removeListenKeyBoradEvent = () => {
 		bus.off(KeyBoardEventName.DELETEPRESS, handleRemoveComponents);
+		bus.off(KeyBoardEventName.SAVEPROJECT, saveScreenDataInfo);
 	};
 
 	const computedCanvasStyle = useMemo(() => {

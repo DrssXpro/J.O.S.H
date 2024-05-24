@@ -13,6 +13,7 @@ export const winKeyboardValue = {
 	[MenuEnum.ARROW_RIGHT]: winCtrlMerge("right"),
 	[MenuEnum.ARROW_DOWN]: winCtrlMerge("down"),
 	[MenuEnum.ARROW_LEFT]: winCtrlMerge("left"),
+	[MenuEnum.SAVE]: winCtrlMerge("s"),
 	[MenuEnum.COPY]: winCtrlMerge("c"),
 	[MenuEnum.CUT]: winCtrlMerge("x"),
 	[MenuEnum.PARSE]: winCtrlMerge("v"),
@@ -49,7 +50,9 @@ const winKeyList: Array<string> = [
 	winKeyboardValue.unLock,
 
 	winKeyboardValue.hide,
-	winKeyboardValue.show
+	winKeyboardValue.show,
+
+	winKeyboardValue.save
 ];
 
 export function initKeyBoardListener() {
@@ -106,6 +109,12 @@ export const addOperatorKeyboard = () => {
 						return false;
 					}, throttleTime)
 				);
+				break;
+			case keyboardValue[MenuEnum.SAVE]:
+				keymaster(event, () => {
+					bus.emit(KeyBoardEventName.SAVEPROJECT);
+					return false;
+				});
 				break;
 			default:
 				break;
