@@ -1,4 +1,4 @@
-import { Avatar, Button, Card, Popconfirm, Typography } from "antd";
+import { Avatar, Button, Card, Image, Popconfirm, Typography } from "antd";
 import { cardColorMap } from "@/config/color";
 import { TemplateInfo } from "@/service/types/requestTypes";
 import avatar from "@/assets/avatar.jpg";
@@ -9,7 +9,7 @@ const BASEURL = import.meta.env.VITE_BASE_URL;
 interface JTemplateCardProps {
 	isUser: boolean;
 	detail: TemplateInfo;
-	deleteTemplate: (id: number) => void;
+	deleteTemplate?: (id: number) => void;
 	applyTemplate: (detail: TemplateInfo) => void;
 }
 
@@ -38,7 +38,7 @@ const JTemplateCard = (props: JTemplateCardProps) => {
 							title="删除该模板"
 							description="确定要删除这个模板吗？"
 							onConfirm={() => {
-								deleteTemplate(detail.id);
+								deleteTemplate && deleteTemplate(detail.id);
 							}}
 							okText="确定"
 							cancelText="取消"
@@ -51,9 +51,11 @@ const JTemplateCard = (props: JTemplateCardProps) => {
 
 			<div className="w-full h-full px-3 pb-3">
 				<div className="h-45">
-					<img
+					<Image
+						width="100%"
+						height="100%"
+						style={{ borderRadius: "10px" }}
 						src={detail.cover ? `${BASEURL}/images/${detail.cover}` : empty}
-						className="h-full w-full overflow-hidden rounded-md object-cover"
 					/>
 				</div>
 			</div>

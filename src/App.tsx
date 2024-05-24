@@ -5,6 +5,7 @@ import zhCN from "antd/locale/zh_CN";
 import JWithLoading from "./components/JWithLoading";
 import Preview from "./pages/Preview";
 import JRequireAuth from "./components/JRequireAuth";
+import Templates from "./pages/Templates";
 
 const Login = lazy(() => import("@/pages/Login/index"));
 
@@ -47,6 +48,7 @@ function App() {
 							path="/application"
 						>
 							<Route element={<Projects />} path="projects"></Route>
+							<Route element={<Templates />} path="templates"></Route>
 						</Route>
 						<Route
 							element={

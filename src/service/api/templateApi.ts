@@ -18,7 +18,7 @@ function getTemplateListByUserApi(data: { page: number; pageSize: number }) {
 
 // 获取模板列表接口
 function getTemplateListApi(data: { page: number; pageSize: number }) {
-	return GET<TemplateListVo>("template/user_list", data);
+	return GET<TemplateListVo>("template/list", data);
 }
 
 export { addTemplateApi, deleteTemplateApi, getTemplateListByUserApi, getTemplateListApi };

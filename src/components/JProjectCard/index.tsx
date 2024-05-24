@@ -1,4 +1,4 @@
-import { Button, Card, Dropdown, Tooltip } from "antd";
+import { Button, Card, Dropdown, Tooltip, Image } from "antd";
 import {
 	AiOutlineDelete,
 	AiOutlineEdit,
@@ -86,9 +86,11 @@ const JProjectCard = (props: JProjectCardProps) => {
 			</div>
 			<div className="w-full h-full px-3 pb-3">
 				<div className="h-45">
-					<img
+					<Image
+						width="100%"
+						height="100%"
+						style={{ borderRadius: "10px" }}
 						src={detail.cover ? `${BASEURL}/images/${detail.cover}` : empty}
-						className="h-full w-full overflow-hidden rounded-md object-contain"
 					/>
 				</div>
 			</div>
