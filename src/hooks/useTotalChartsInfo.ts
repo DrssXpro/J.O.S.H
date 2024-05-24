@@ -41,7 +41,6 @@ const useTotalChartsInfo = () => {
 	const setTotalChartsInfo = (config: string | Record<string, any>, getConfigComponent = true) => {
 		const { componentList, requestGlobalConfig, canvasConfig }: TotalChartInfo =
 			typeof config === "string" ? JSONParse(config) : config;
-
 		// 组件注册
 		componentList.forEach((com) => {
 			// 获取图表组件

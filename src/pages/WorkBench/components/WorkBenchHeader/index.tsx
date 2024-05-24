@@ -13,7 +13,7 @@ import {
 	AiOutlineSend,
 	AiOutlineSave
 } from "react-icons/ai";
-import { Button, Input, Tooltip, type InputRef } from "antd";
+import { Alert, Button, Divider, Input, Modal, Tooltip, type InputRef } from "antd";
 import { useState, useRef, useMemo, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useLayoutStore from "@/store/layoutStore/layoutStore";
@@ -28,6 +28,8 @@ interface TitleProps {
 	title: string;
 	updateTitle: (title: string) => void;
 }
+
+const HOSTURL = import.meta.env.VITE_HOST_URL;
 
 const LeftOperator = () => {
 	const nav = useNavigate();
@@ -182,8 +184,18 @@ const CenterTitle = (props: TitleProps) => {
 };
 
 const RightOperator = () => {
-	const params = useParams();
-	const { saveLoading, saveScreenDataInfo, previewScreenInfo } = useInfoOperator(Number(params.projectId));
+	const { projectId } = useParams();
+	const publishUrl = `${HOSTURL}/chart/${projectId}`;
+	const {
+		saveLoading,
+		showPublishModal,
+		infoStatus,
+		setShowPublishModal,
+		saveScreenDataInfo,
+		previewScreenInfo,
+		publishOrUnPublishScreenInfo,
+		copyPublishUrl
+	} = useInfoOperator(Number(projectId));
 
 	return (
 		<div className="flex items-center gap-3 float-right">
@@ -195,15 +207,42 @@ const RightOperator = () => {
 			</Button>
 			<Button
 				icon={<AiOutlineSend />}
-				onClick={() => {
-					window.$message.warning("线上展示项目不允许发布！");
-				}}
+				onClick={() => setShowPublishModal(true)}
+				ghost={infoStatus}
+				type={infoStatus ? "primary" : undefined}
 			>
-				发布
+				{infoStatus ? "已发布" : "发布"}
 			</Button>
 			<div className="ml-1">
 				<JBaseHeaderRightContent isLogin={true} />
 			</div>
+			<Modal
+				title="发布管理"
+				styles={{ header: { background: "none" } }}
+				open={showPublishModal}
+				footer={null}
+				onCancel={() => setShowPublishModal(false)}
+			>
+				<div>
+					<Divider />
+					<Alert
+						message="预览地址:"
+						description={publishUrl}
+						type="info"
+						action={
+							<div className="flex flex-col gap-2">
+								<Button size="small" onClick={() => copyPublishUrl(publishUrl)}>
+									复制地址
+								</Button>
+								<Button size="small" type="primary" onClick={publishOrUnPublishScreenInfo}>
+									{infoStatus ? "取消发布" : "发布大屏"}
+								</Button>
+							</div>
+						}
+					/>
+					<Divider />
+				</div>
+			</Modal>
 		</div>
 	);
 };

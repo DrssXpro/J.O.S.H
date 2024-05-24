@@ -40,7 +40,6 @@ const SideMenu = () => {
 				mode="inline"
 				items={items}
 				onClick={(info) => {
-					console.log(info);
 					nav(`/application/${info.key}`);
 				}}
 			/>

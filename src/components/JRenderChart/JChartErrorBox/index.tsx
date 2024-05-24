@@ -1,9 +1,9 @@
-interface IShowComponentBoxProps {
+interface JChartErrorBoxProps {
 	children: any;
 	isError?: boolean;
 }
 
-const ShowComponentBox = (props: IShowComponentBoxProps) => {
+const JChartErrorBox = (props: JChartErrorBoxProps) => {
 	const { children, isError = true } = props;
 
 	return (
@@ -24,4 +24,4 @@ const ShowComponentBox = (props: IShowComponentBoxProps) => {
 	);
 };
 
-export default ShowComponentBox;
+export default JChartErrorBox;

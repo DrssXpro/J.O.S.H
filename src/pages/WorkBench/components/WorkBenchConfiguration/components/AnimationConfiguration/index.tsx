@@ -16,7 +16,6 @@ const AnimationConfiguration = memo(({ chartIndex, animations, update }: Animati
 	const selectAnimate = useMemo(() => (animations.length ? animations[0] : ""), [animations]);
 	const [hoverAnimate, setHoverAnimate] = useState("");
 
-	console.log("rneder");
 	return (
 		<div className="flex flex-col gap-4">
 			<Button

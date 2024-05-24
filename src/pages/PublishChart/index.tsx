@@ -1,22 +1,24 @@
 import { useEffect, useMemo } from "react";
-import { getSessionStorageCanvasInfo } from "./utils/storage";
+import JRenderChartList from "@/components/JRenderChart/JRenderChartList";
+import useStoreSelector from "@/hooks/useStoreSelector";
 import useCanvasStore from "@/store/canvasStore/canvasStore";
-import { getEditCanvasConfigStyle } from "@/utils/chartStyle";
 import { CanvasConfigTypeEnum } from "@/store/canvasStore/types";
 import { PreviewScaleEnum } from "@/types/LayoutTypes";
-import useStoreSelector from "@/hooks/useStoreSelector";
+import { getEditCanvasConfigStyle } from "@/utils/chartStyle";
+import { useNavigate, useParams } from "react-router-dom";
+import { getProjectDetailApi } from "@/service/api/projectApi";
 import useTotalChartsInfo from "@/hooks/useTotalChartsInfo";
-import JRenderChartList from "@/components/JRenderChart/JRenderChartList";
 import usePreviewFitScale from "@/hooks/usePreviewFitScale";
 
-const Preview = () => {
+const PublishChart = () => {
 	const { canvasConfig } = useCanvasStore(useStoreSelector(["canvasConfig"]));
-	const config = getSessionStorageCanvasInfo();
-	const { scaleRef } = usePreviewFitScale(config.canvasConfig);
 	const { setTotalChartsInfo } = useTotalChartsInfo();
+	const { scaleRef } = usePreviewFitScale(canvasConfig);
+	const { projectId } = useParams();
+	const nav = useNavigate();
 
 	useEffect(() => {
-		setTotalChartsInfo(config, false);
+		getCanvasDetail();
 	}, []);
 
 	// 根据适配 type 是否展示实体层
@@ -42,6 +44,21 @@ const Preview = () => {
 				return {};
 		}
 	}, [canvasConfig[CanvasConfigTypeEnum.CANVAS_PREVIEW_TYPE]]);
+
+	const getCanvasDetail = async () => {
+		const res = await getProjectDetailApi(Number(projectId));
+		if (!res.data.status) {
+			window.$notification.warning({
+				message: "无权限访问",
+				description: "无权限访问该大屏，即将返回用户主页！"
+			});
+			setTimeout(() => {
+				nav("/application/projects");
+			}, 2000);
+			return;
+		}
+		setTotalChartsInfo(res.data.detail, false);
+	};
 	return (
 		<div className="relative w-[100vw] h-[100vh] bg-[#18181C]" style={canvasPreviewStyle}>
 			{showEntity ? (
@@ -74,4 +91,4 @@ const Preview = () => {
 	);
 };
 
-export default Preview;
+export default PublishChart;

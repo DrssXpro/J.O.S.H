@@ -3,15 +3,15 @@ import { lazy } from "react";
 import { Route, Routes } from "react-router-dom";
 import zhCN from "antd/locale/zh_CN";
 import JWithLoading from "./components/JWithLoading";
-import Preview from "./pages/Preview";
 import JRequireAuth from "./components/JRequireAuth";
 import Templates from "./pages/Templates";
 
 const Login = lazy(() => import("@/pages/Login/index"));
-
 const Layout = lazy(() => import("@/layout/index"));
 const Projects = lazy(() => import("@/pages/Projects/index"));
 const WorkBench = lazy(() => import("@/pages/WorkBench/index"));
+const Preview = lazy(() => import("@/pages/Preview/index"));
+const PublishChart = lazy(() => import("@/pages/PublishChart/index"));
 
 function App() {
 	const [messageApi, contextMessageHolder] = message.useMessage();
@@ -38,7 +38,12 @@ function App() {
 			<JWithLoading
 				element={
 					<Routes>
-						<Route element={<Login />} path="/"></Route>
+						<Route
+							element={
+								<JWithLoading element={<Login />} loadingStyle={{ width: "100vw", height: "100vh" }} />
+							}
+							path="/"
+						></Route>
 						<Route
 							element={
 								<JRequireAuth>
@@ -61,10 +66,22 @@ function App() {
 						<Route
 							element={
 								<JRequireAuth>
-									<Preview />
+									<JWithLoading
+										element={<Preview />}
+										loadingStyle={{ width: "100vw", height: "100vh" }}
+									/>
 								</JRequireAuth>
 							}
 							path="/preview/:projectId"
+						></Route>
+						<Route
+							element={
+								<JWithLoading
+									element={<PublishChart />}
+									loadingStyle={{ width: "100vw", height: "100vh" }}
+								/>
+							}
+							path="/chart/:projectId"
 						></Route>
 					</Routes>
 				}

@@ -1,13 +1,13 @@
-import useChartStore from "@/store/chartStore/chartStore";
-import { setChartAnimateStyle, setChartPosStyle, setChartSizeStyle } from "@/utils/chartStyle";
-import ComponentErrorBox from "../ComponentErrorBox";
 import { useState, useMemo } from "react";
+import JChartErrorBox from "../JChartErrorBox";
+import useChartStore from "@/store/chartStore/chartStore";
 import useCanvasStore from "@/store/canvasStore/canvasStore";
-import { colorCustomMerge } from "@/utils/colorStyle";
-import { handleChartEvent } from "../../utils";
 import useStoreSelector from "@/hooks/useStoreSelector";
+import { setChartAnimateStyle, setChartPosStyle, setChartSizeStyle } from "@/utils/chartStyle";
+import { colorCustomMerge } from "@/utils/colorStyle";
+import { handleChartEvent } from "@/pages/Preview/utils";
 
-const PreviewRenderList = () => {
+const JRenderChartList = () => {
 	const { canvasConfig } = useCanvasStore(useStoreSelector(["canvasConfig"]));
 	const { componentList } = useChartStore(useStoreSelector(["componentList"]));
 	const [isError, setIsError] = useState(false);
@@ -27,7 +27,7 @@ const PreviewRenderList = () => {
 						key={i.id}
 						style={{ ...setChartPosStyle(i.attr, index), ...setChartSizeStyle(i.attr) }}
 					>
-						<ComponentErrorBox isError={isError}>
+						<JChartErrorBox isError={isError}>
 							<i.ChartComponent
 								chartConfig={i}
 								themeColor={computedThemeColor}
@@ -40,7 +40,7 @@ const PreviewRenderList = () => {
 								baseEvent={baseEvent}
 								advancedEvent={advancedEvent}
 							/>
-						</ComponentErrorBox>
+						</JChartErrorBox>
 					</div>
 				);
 			})}
@@ -48,4 +48,4 @@ const PreviewRenderList = () => {
 	);
 };
 
-export default PreviewRenderList;
+export default JRenderChartList;

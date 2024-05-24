@@ -11,7 +11,10 @@ import { StorageEnum } from "@/types/StorageTypes";
 
 const useInfoOperator = (projectId: number) => {
 	const [saveLoading, setSaveLoading] = useState(false);
-	const { getProjectInfo } = useProjectStore(useStoreSelector(["getProjectInfo"]));
+	const [showPublishModal, setShowPublishModal] = useState(false);
+	const { getProjectInfo, projectInfo, updateProjectInfo } = useProjectStore(
+		useStoreSelector(["getProjectInfo", "projectInfo", "updateProjectInfo"])
+	);
 	const { getTotalChartsInfo } = useTotalChartsInfo();
 	const { exportHandle } = useFileOperator();
 	// 保存逻辑
@@ -23,12 +26,13 @@ const useInfoOperator = (projectId: number) => {
 		const fd = new FormData();
 		fd.append("file", file);
 		const res1 = await uploadProjectCoverApi(projectId, fd);
-		const storageInfo = getTotalChartsInfo();
+		const storageInfo = JSONStringify(getTotalChartsInfo());
 		// 将图片地址和大屏信息进行保存
+		updateProjectInfo({ ...getProjectInfo(), cover: res1.data, detail: storageInfo });
 		const res2 = await updateProjectApi({
 			...getProjectInfo(),
 			cover: res1.data,
-			detail: JSONStringify(storageInfo)
+			detail: storageInfo
 		});
 		window.$message.success(res2.data);
 		setSaveLoading(false);
@@ -58,7 +62,36 @@ const useInfoOperator = (projectId: number) => {
 		window.open(`/preview/${projectId}`);
 	};
 
-	return { saveLoading, saveScreenDataInfo, previewScreenInfo };
+	const copyPublishUrl = async (url: string) => {
+		try {
+			await navigator.clipboard.writeText(url);
+			window.$message.success("复制成功");
+		} catch (error) {
+			window.$message.error("复制失败");
+		}
+	};
+
+	const publishOrUnPublishScreenInfo = async () => {
+		// 将图片地址和大屏信息进行保存
+
+		await updateProjectApi({
+			...getProjectInfo(),
+			status: !projectInfo!.status
+		});
+		window.$message.success(projectInfo!.status ? "取消发布成功" : "发布成功");
+		updateProjectInfo({ ...getProjectInfo(), status: !projectInfo!.status });
+	};
+
+	return {
+		saveLoading,
+		showPublishModal,
+		infoStatus: projectInfo ? projectInfo.status : false,
+		setShowPublishModal,
+		saveScreenDataInfo,
+		previewScreenInfo,
+		publishOrUnPublishScreenInfo,
+		copyPublishUrl
+	};
 };
 
 export default useInfoOperator;
