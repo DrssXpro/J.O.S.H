@@ -1,7 +1,7 @@
 import { IComponent } from "@/store/chartStore/types";
 import { excludeParseEventKeyList } from "@/types/EventTypes";
 import { RequestHttpIntervalEnum } from "@/types/HttpTypes";
-import Image_404 from "@/assets/images/exception/image-404.png";
+import Image_404 from "@/assets/images/image-404.png";
 import { cloneDeep, omit } from "lodash-es";
 
 // file -> url: 设置 canvas 背景图使用
