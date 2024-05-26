@@ -5,7 +5,7 @@ import LoginHeader from "./components/LoginHeader";
 import BgLeft from "@/assets/bg-left.svg";
 import BgRight from "@/assets/bg-right.svg";
 
-const Login = () => {
+const LoginPage = () => {
 	return (
 		<Layout className="h-screen w-screen">
 			<Layout.Header className="dark:bg-[#18181C] bg-[#18181C] border-b-1 border-b-solid border-[#303030]  px-10">
@@ -30,4 +30,4 @@ const Login = () => {
 	);
 };
 
-export default Login;
+export default LoginPage;

@@ -10,7 +10,7 @@ import { getProjectDetailApi } from "@/service/api/projectApi";
 import useTotalChartsInfo from "@/hooks/useTotalChartsInfo";
 import usePreviewFitScale from "@/hooks/usePreviewFitScale";
 
-const PublishChart = () => {
+const PublishChartPage = () => {
 	const { canvasConfig } = useCanvasStore(useStoreSelector(["canvasConfig"]));
 	const { setTotalChartsInfo } = useTotalChartsInfo();
 	const { scaleRef } = usePreviewFitScale(canvasConfig);
@@ -91,4 +91,4 @@ const PublishChart = () => {
 	);
 };
 
-export default PublishChart;
+export default PublishChartPage;

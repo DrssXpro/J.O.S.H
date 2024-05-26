@@ -15,7 +15,7 @@ interface TemplateState {
 	pageSize: number;
 }
 
-const Templates = () => {
+const TemplatesPage = () => {
 	const [templateState, setTemplateState] = useState<TemplateState>({
 		list: [],
 		currentTemplate: undefined,
@@ -136,4 +136,4 @@ const Templates = () => {
 	);
 };
 
-export default Templates;
+export default TemplatesPage;

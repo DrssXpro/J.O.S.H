@@ -15,7 +15,7 @@ import { ComponentType, FetchComFlagType } from "@/materials/types";
 import useStoreSelector from "@/hooks/useStoreSelector";
 import useProjectStore from "@/store/projectStore/projectStore";
 
-const WorkBench = () => {
+const WorkBenchPage = () => {
 	const params = useParams();
 	const { setGlobalCanvasConfig } = useCanvasStore(useStoreSelector(["setGlobalCanvasConfig"]));
 	const { addComponentList, clearComponentList, setrequestGlobalConfig } = useChartStore(
@@ -86,4 +86,4 @@ const WorkBench = () => {
 	);
 };
 
-export default WorkBench;
+export default WorkBenchPage;

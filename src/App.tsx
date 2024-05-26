@@ -4,14 +4,15 @@ import { Route, Routes } from "react-router-dom";
 import zhCN from "antd/locale/zh_CN";
 import JWithLoading from "./components/JWithLoading";
 import JRequireAuth from "./components/JRequireAuth";
-import Templates from "./pages/Templates";
 
-const Login = lazy(() => import("@/pages/Login/index"));
-const Layout = lazy(() => import("@/layout/index"));
-const Projects = lazy(() => import("@/pages/Projects/index"));
-const WorkBench = lazy(() => import("@/pages/WorkBench/index"));
-const Preview = lazy(() => import("@/pages/Preview/index"));
-const PublishChart = lazy(() => import("@/pages/PublishChart/index"));
+const LoginPage = lazy(() => import("@/pages/Login/index"));
+const LayoutPage = lazy(() => import("@/layout/index"));
+const ProjectsPage = lazy(() => import("@/pages/Projects/index"));
+const TemplatesPage = lazy(() => import("@/pages/Templates/index"));
+const WorkBenchPage = lazy(() => import("@/pages/WorkBench/index"));
+const PreviewPage = lazy(() => import("@/pages/Preview/index"));
+const PublishChartPage = lazy(() => import("@/pages/PublishChart/index"));
+const NotFoundPage = lazy(() => import("@/pages/NotFound/index"));
 
 function App() {
 	const [messageApi, contextMessageHolder] = message.useMessage();
@@ -40,25 +41,28 @@ function App() {
 					<Routes>
 						<Route
 							element={
-								<JWithLoading element={<Login />} loadingStyle={{ width: "100vw", height: "100vh" }} />
+								<JWithLoading
+									element={<LoginPage />}
+									loadingStyle={{ width: "100vw", height: "100vh" }}
+								/>
 							}
 							path="/"
 						></Route>
 						<Route
 							element={
 								<JRequireAuth>
-									<Layout />
+									<LayoutPage />
 								</JRequireAuth>
 							}
 							path="/application"
 						>
-							<Route element={<Projects />} path="projects"></Route>
-							<Route element={<Templates />} path="templates"></Route>
+							<Route element={<ProjectsPage />} path="projects"></Route>
+							<Route element={<TemplatesPage />} path="templates"></Route>
 						</Route>
 						<Route
 							element={
 								<JRequireAuth>
-									<WorkBench />
+									<WorkBenchPage />
 								</JRequireAuth>
 							}
 							path="/workBench/:projectId"
@@ -67,7 +71,7 @@ function App() {
 							element={
 								<JRequireAuth>
 									<JWithLoading
-										element={<Preview />}
+										element={<PreviewPage />}
 										loadingStyle={{ width: "100vw", height: "100vh" }}
 									/>
 								</JRequireAuth>
@@ -77,11 +81,20 @@ function App() {
 						<Route
 							element={
 								<JWithLoading
-									element={<PublishChart />}
+									element={<PublishChartPage />}
 									loadingStyle={{ width: "100vw", height: "100vh" }}
 								/>
 							}
 							path="/chart/:projectId"
+						></Route>
+						<Route
+							element={
+								<JWithLoading
+									element={<NotFoundPage />}
+									loadingStyle={{ width: "100vw", height: "100vh" }}
+								></JWithLoading>
+							}
+							path="*"
 						></Route>
 					</Routes>
 				}

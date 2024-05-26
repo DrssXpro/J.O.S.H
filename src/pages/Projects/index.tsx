@@ -296,7 +296,7 @@ const TemplateList = (props: { tabKey: TabKeys }) => {
 	);
 };
 
-const Projects = () => {
+const ProjectsPage = () => {
 	const [key, setKey] = useState<TabKeys>("project");
 	const tabList = [
 		{
@@ -322,4 +322,4 @@ const Projects = () => {
 	);
 };
 
-export default Projects;
+export default ProjectsPage;

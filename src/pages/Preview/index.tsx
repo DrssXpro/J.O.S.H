@@ -9,7 +9,7 @@ import useTotalChartsInfo from "@/hooks/useTotalChartsInfo";
 import JRenderChartList from "@/components/JRenderChart/JRenderChartList";
 import usePreviewFitScale from "@/hooks/usePreviewFitScale";
 
-const Preview = () => {
+const PreviewPage = () => {
 	const { canvasConfig } = useCanvasStore(useStoreSelector(["canvasConfig"]));
 	const config = getSessionStorageCanvasInfo();
 	const { scaleRef } = usePreviewFitScale(config.canvasConfig);
@@ -74,4 +74,4 @@ const Preview = () => {
 	);
 };
 
-export default Preview;
+export default PreviewPage;
