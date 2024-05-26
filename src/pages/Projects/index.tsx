@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { Pagination, Row, type PaginationProps, Col, Tabs, Button, Modal, Input, Select } from "antd";
+import { pick } from "lodash-es";
 import { AiOutlinePlus } from "react-icons/ai";
 import JProjectCard from "@/components/JProjectCard";
+import JTemplateCard from "@/components/JTemplateCard";
+import EmptyImage from "@/assets/images/empty-data.png";
 import {
 	addProjectApi,
 	deleteProjectApi,
@@ -10,14 +13,14 @@ import {
 	saveTemplateForProjectApi,
 	updateProjectApi
 } from "@/service/api/projectApi";
-import { ProjectInfo, TemplateInfo } from "@/service/types/requestTypes";
+
 import { addTemplateApi, deleteTemplateApi, getTemplateListByUserApi } from "@/service/api/templateApi";
-import JTemplateCard from "@/components/JTemplateCard";
-import { pick } from "lodash-es";
+import { ProjectInfo, TemplateInfo } from "@/service/types/requestTypes";
 
 interface ProjectState {
 	list: ProjectInfo[];
 	loading: boolean;
+	empty: boolean;
 	total: number;
 	page: number;
 	pageSize: number;
@@ -27,10 +30,19 @@ type TemplateState = Omit<ProjectState, "list"> & { list: TemplateInfo[]; curren
 
 type TabKeys = "template" | "project";
 
+const EmptyBox = () => {
+	return (
+		<div className="w-full h-full flex items-center justify-center">
+			<img className="w-100 h-85" src={EmptyImage} alt="空" />
+		</div>
+	);
+};
+
 const ProjectList = (props: { tabKey: TabKeys }) => {
 	const [projectState, setProjectState] = useState<ProjectState>({
 		list: [],
 		loading: false,
+		empty: false,
 		total: 0,
 		page: 1,
 		pageSize: 10
@@ -60,7 +72,8 @@ const ProjectList = (props: { tabKey: TabKeys }) => {
 			...pre,
 			list: data.projects,
 			total: data.totalCount,
-			loading: false
+			loading: false,
+			empty: data.projects.length === 0
 		}));
 	};
 
@@ -91,43 +104,51 @@ const ProjectList = (props: { tabKey: TabKeys }) => {
 
 	return (
 		<>
-			<div style={{ minHeight: `calc(100vh - 205px)` }}>
-				<div className="mb-4">
-					<Button
-						type="primary"
-						icon={<AiOutlinePlus />}
-						onClick={() => {
-							setIsOpen(true);
-						}}
-					>
-						创建项目
-					</Button>
-				</div>
-				<Row gutter={[16, 16]}>
-					{projectState.list.map((detail, index) => (
-						<Col md={12} lg={8} xxl={6} key={index}>
-							<JProjectCard
-								detail={detail}
-								deleteProject={handleDeletePropject}
-								updateProjectStatus={handleUpdateProjectStatus}
-								saveProjectTemplate={handleSaveProjectAsTemplate}
-							/>
-						</Col>
-					))}
-				</Row>
-			</div>
-			<div className="w-full flex flex-row-reverse mt-4">
-				<Pagination
-					showSizeChanger
-					onShowSizeChange={onShowSizeChange}
-					onChange={(page) => {
-						setProjectState((pre) => ({ ...pre, page }));
-						getProjectList();
+			<div className="mb-4">
+				<Button
+					type="primary"
+					icon={<AiOutlinePlus />}
+					onClick={() => {
+						setIsOpen(true);
 					}}
-					current={projectState.page}
-					total={projectState.total}
-				/>
+				>
+					创建项目
+				</Button>
 			</div>
+			{projectState.empty ? (
+				<div className="w-full h-full" style={{ height: `calc(100vh - 210px)` }}>
+					<EmptyBox />
+				</div>
+			) : (
+				<>
+					<div style={{ minHeight: `calc(100vh - 210px)` }}>
+						<Row gutter={[16, 16]}>
+							{projectState.list.map((detail, index) => (
+								<Col md={12} lg={8} xxl={6} key={index}>
+									<JProjectCard
+										detail={detail}
+										deleteProject={handleDeletePropject}
+										updateProjectStatus={handleUpdateProjectStatus}
+										saveProjectTemplate={handleSaveProjectAsTemplate}
+									/>
+								</Col>
+							))}
+						</Row>
+					</div>
+					<div className="w-full flex flex-row-reverse mt-4">
+						<Pagination
+							showSizeChanger
+							onShowSizeChange={onShowSizeChange}
+							onChange={(page) => {
+								setProjectState((pre) => ({ ...pre, page }));
+								getProjectList();
+							}}
+							current={projectState.page}
+							total={projectState.total}
+						/>
+					</div>
+				</>
+			)}
 			<Modal
 				open={isOpen}
 				closable
@@ -169,6 +190,7 @@ const TemplateList = (props: { tabKey: TabKeys }) => {
 		list: [],
 		currentTemplate: undefined,
 		loading: false,
+		empty: false,
 		total: 0,
 		page: 1,
 		pageSize: 10
@@ -197,7 +219,8 @@ const TemplateList = (props: { tabKey: TabKeys }) => {
 			...pre,
 			list: data.templates,
 			total: data.totalCount,
-			loading: false
+			loading: false,
+			empty: data.templates.length === 0
 		}));
 	};
 
@@ -229,69 +252,77 @@ const TemplateList = (props: { tabKey: TabKeys }) => {
 
 	return (
 		<>
-			<div style={{ minHeight: `calc(100vh - 205px)` }}>
-				<Row gutter={[16, 16]}>
-					{templateState.list.map((detail, index) => (
-						<Col md={12} lg={8} xxl={6} key={index}>
-							<JTemplateCard
-								isUser
-								detail={detail}
-								deleteTemplate={handleDeleteTemplate}
-								applyTemplate={handleApplyTemplate}
-							/>
-						</Col>
-					))}
-				</Row>
-			</div>
-			<div className="w-full flex flex-row-reverse mt-4">
-				<Pagination
-					showSizeChanger
-					onShowSizeChange={onShowSizeChange}
-					onChange={(page) => {
-						setTemplateState((pre) => ({ ...pre, page }));
-						getTemplateList();
-					}}
-					current={templateState.page}
-					total={templateState.total}
-				/>
-			</div>
-			<Modal
-				styles={{ header: { background: "none" } }}
-				open={projectsState.isOpen}
-				title="应用该模板"
-				footer={
-					<div className="flex items-center justify-end">
-						<Button
-							onClick={() => {
-								setTemplateState((pre) => ({ ...pre, currentTemplate: undefined }));
-								setProjectState((pre) => ({ ...pre, isOpen: false }));
-							}}
-						>
-							取消
-						</Button>
-						<Button type="primary" onClick={handleSaveTemplateForProject}>
-							应用
-						</Button>
-					</div>
-				}
-			>
-				<div className="my-4 flex items-center">
-					<div>选择我的应用：</div>
-					<Select
-						showSearch
-						placeholder="请选择自己的应用"
-						optionFilterProp="label"
-						className="flex-1"
-						onChange={(val) => {
-							setProjectState((pre) => ({ ...pre, currentProject: Number(val) }));
-						}}
-						filterOption={(input: string, option?: { label: string; value: string }) =>
-							(option?.label ?? "").includes(input)
-						}
-						options={projectsState.list}
-					/>
+			{templateState.empty ? (
+				<div className="w-full h-full" style={{ height: `calc(100vh - 160px)` }}>
+					<EmptyBox />
 				</div>
-			</Modal>
+			) : (
+				<>
+					<div style={{ minHeight: `calc(100vh - 205px)` }}>
+						<Row gutter={[16, 16]}>
+							{templateState.list.map((detail, index) => (
+								<Col md={12} lg={8} xxl={6} key={index}>
+									<JTemplateCard
+										isUser
+										detail={detail}
+										deleteTemplate={handleDeleteTemplate}
+										applyTemplate={handleApplyTemplate}
+									/>
+								</Col>
+							))}
+						</Row>
+					</div>
+					<div className="w-full flex flex-row-reverse mt-4">
+						<Pagination
+							showSizeChanger
+							onShowSizeChange={onShowSizeChange}
+							onChange={(page) => {
+								setTemplateState((pre) => ({ ...pre, page }));
+								getTemplateList();
+							}}
+							current={templateState.page}
+							total={templateState.total}
+						/>
+					</div>
+					<Modal
+						styles={{ header: { background: "none" } }}
+						open={projectsState.isOpen}
+						title="应用该模板"
+						footer={
+							<div className="flex items-center justify-end">
+								<Button
+									onClick={() => {
+										setTemplateState((pre) => ({ ...pre, currentTemplate: undefined }));
+										setProjectState((pre) => ({ ...pre, isOpen: false }));
+									}}
+								>
+									取消
+								</Button>
+								<Button type="primary" onClick={handleSaveTemplateForProject}>
+									应用
+								</Button>
+							</div>
+						}
+					>
+						<div className="my-4 flex items-center">
+							<div>选择我的应用：</div>
+							<Select
+								showSearch
+								placeholder="请选择自己的应用"
+								optionFilterProp="label"
+								className="flex-1"
+								onChange={(val) => {
+									setProjectState((pre) => ({ ...pre, currentProject: Number(val) }));
+								}}
+								filterOption={(input: string, option?: { label: string; value: string }) =>
+									(option?.label ?? "").includes(input)
+								}
+								options={projectsState.list}
+							/>
+						</div>
+					</Modal>
+				</>
+			)}
 		</>
 	);
 };

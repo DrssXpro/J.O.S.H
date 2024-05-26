@@ -2,7 +2,7 @@ import { Avatar, Button, Card, Image, Popconfirm, Typography } from "antd";
 import { cardColorMap } from "@/config/color";
 import { TemplateInfo } from "@/service/types/requestTypes";
 import avatar from "@/assets/avatar.jpg";
-import empty from "@/assets/empty_draw.png";
+import initProjectImage from "@/assets/images/init-project-bg.png";
 
 const BASEURL = import.meta.env.VITE_BASE_URL;
 
@@ -55,7 +55,7 @@ const JTemplateCard = (props: JTemplateCardProps) => {
 						width="100%"
 						height="100%"
 						style={{ borderRadius: "10px" }}
-						src={detail.cover ? `${BASEURL}/images/${detail.cover}` : empty}
+						src={detail.cover ? `${BASEURL}/images/${detail.cover}` : initProjectImage}
 					/>
 				</div>
 			</div>

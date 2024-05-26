@@ -8,7 +8,7 @@ import {
 	AiOutlineGroup
 } from "react-icons/ai";
 import { cardColorMap } from "@/config/color";
-import empty from "@/assets/empty_draw.png";
+import initProjectImage from "@/assets/images/init-project-bg.png";
 import { useNavigate } from "react-router-dom";
 import { ProjectInfo } from "@/service/types/requestTypes";
 
@@ -90,7 +90,7 @@ const JProjectCard = (props: JProjectCardProps) => {
 						width="100%"
 						height="100%"
 						style={{ borderRadius: "10px" }}
-						src={detail.cover ? `${BASEURL}/images/${detail.cover}` : empty}
+						src={detail.cover ? `${BASEURL}/images/${detail.cover}` : initProjectImage}
 					/>
 				</div>
 			</div>
