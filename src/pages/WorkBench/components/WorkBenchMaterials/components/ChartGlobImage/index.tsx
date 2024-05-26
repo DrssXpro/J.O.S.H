@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import LoadingImage from "@/assets/images/exception/image-loading.png";
+import LoadingImage from "@/assets/images/image-loading.png";
 import { fetchImages } from "@/materials/components";
 import { IMaterialConfigType } from "@/materials/types";
 
