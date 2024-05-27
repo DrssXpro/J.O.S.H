@@ -1,3 +1,8 @@
+@font-face {
+	font-family: "colorFont";
+	src: url("../assets/font/colorFont.woff2");
+}
+
 body,
 ::before,
 ::after {

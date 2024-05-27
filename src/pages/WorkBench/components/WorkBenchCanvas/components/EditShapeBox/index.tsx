@@ -3,6 +3,7 @@ import useChartStore from "@/store/chartStore/chartStore";
 import { CSSProperties, useMemo } from "react";
 import useMouseHandle from "../../hooks/useMouseHandle";
 import useStoreSelector from "@/hooks/useStoreSelector";
+import { theme } from "antd";
 
 interface IEditShapeBoxProps {
 	chartConfig: ComponentType;
@@ -112,6 +113,7 @@ const EditShapeBox = (props: IEditShapeBoxProps) => {
 	const { children, chartConfig, changeContextMenu } = props;
 	const { selectId } = useChartStore(useStoreSelector(["selectId"]));
 	const { handleMousePointDown } = useMouseHandle();
+	const { token } = theme.useToken();
 
 	const isSelect = useMemo(() => {
 		return selectId.find((i) => chartConfig.id === i);
@@ -129,9 +131,14 @@ const EditShapeBox = (props: IEditShapeBoxProps) => {
 				isSelect &&
 				points.map(({ direction, style }) => (
 					<div
-						className="absolute z-11 w-3 h-3 border-3 border-solid border-[#1668DC] bg-[#fff]"
+						className="absolute z-11 w-3 h-3 border-3 border-solid bg-[#fff]"
 						key={direction}
-						style={{ borderRadius: "5px", cursor: `${PointCursorStyleMap[direction]}-resize`, ...style }}
+						style={{
+							borderRadius: "5px",
+							borderColor: token.colorPrimary,
+							cursor: `${PointCursorStyleMap[direction]}-resize`,
+							...style
+						}}
 						onMouseDown={(e) => handleMousePointDown(e, direction, chartConfig.attr)}
 					></div>
 				))}
@@ -139,10 +146,11 @@ const EditShapeBox = (props: IEditShapeBoxProps) => {
 			{/* select/hover border style */}
 			<div
 				id="chartComponentBox"
-				className={`absolute z-10 top-0 w-full h-full border-[#1668DC] rounded ${
+				className={`absolute z-10 top-0 w-full h-full rounded ${
 					chartConfig.status.lock || "hover:border-2 hover:border-dotted cursor-move"
 				}`}
 				style={{
+					borderColor: token.colorPrimary,
 					borderStyle: isSelect && !chartConfig.status.lock ? "solid" : undefined,
 					borderWidth: isSelect && !chartConfig.status.lock ? "2px" : undefined
 				}}
@@ -152,7 +160,7 @@ const EditShapeBox = (props: IEditShapeBoxProps) => {
 				className="absolute z-9 top-0 w-full h-full"
 				style={{
 					opacity: isSelect && !chartConfig.status.lock ? 0.1 : 1,
-					background: isSelect && !chartConfig.status.lock ? "#1668DC" : undefined
+					background: isSelect && !chartConfig.status.lock ? token.colorPrimary : undefined
 				}}
 			></div>
 		</div>

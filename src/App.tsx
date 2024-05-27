@@ -4,6 +4,8 @@ import { Route, Routes } from "react-router-dom";
 import zhCN from "antd/locale/zh_CN";
 import JWithLoading from "./components/JWithLoading";
 import JRequireAuth from "./components/JRequireAuth";
+import useDesignStore from "./store/designStore/designStore";
+import useStoreSelector from "./hooks/useStoreSelector";
 
 const LoginPage = lazy(() => import("@/pages/Login/index"));
 const LayoutPage = lazy(() => import("@/layout/index"));
@@ -17,6 +19,7 @@ const NotFoundPage = lazy(() => import("@/pages/NotFound/index"));
 function App() {
 	const [messageApi, contextMessageHolder] = message.useMessage();
 	const [notificationApi, contextNotificationApiHolder] = notification.useNotification();
+	const { systemThemeColor } = useDesignStore(useStoreSelector(["systemThemeColor"]));
 	window.$message = messageApi;
 	window.$notification = notificationApi;
 	return (
@@ -24,6 +27,9 @@ function App() {
 			locale={zhCN}
 			theme={{
 				algorithm: theme.darkAlgorithm,
+				token: {
+					colorPrimary: systemThemeColor ? systemThemeColor.hex : "#1677FF"
+				},
 				components: {
 					Menu: {
 						// menu 侧边 border 设置为 0

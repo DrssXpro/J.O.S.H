@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import useCanvasStore from "@/store/canvasStore/canvasStore";
 import { AiOutlineQuestionCircle, AiOutlineCode, AiOutlineUnlock, AiOutlineLock } from "react-icons/ai";
-import { Button, Select, Slider, Tooltip } from "antd";
+import { Button, Select, Slider, Tooltip, theme } from "antd";
 import { bus } from "@/utils";
 import { KeyBoardEventName, CanvasLayoutEventName } from "@/types/EventTypes";
 import { CanvasGlobalTypeEnum } from "@/store/canvasStore/types";
@@ -10,10 +10,11 @@ import ChartHistory from "./components/ChartHistory";
 import useStoreSelector from "@/hooks/useStoreSelector";
 
 const CanvasBottom = () => {
+	const { token } = theme.useToken();
 	const { canvasGlobal, setCanvasGlobal } = useCanvasStore(useStoreSelector(["canvasGlobal", "setCanvasGlobal"]));
-	const { scale, lockScale } = canvasGlobal;
 	const [keyBoardText, setKeyBoardText] = useState("");
 	const selectRef = useRef<any>(null);
+	const { scale, lockScale } = canvasGlobal;
 
 	useEffect(() => {
 		bus.on(KeyBoardEventName.ChANGEKEYBOARDTEXT, handleChangeKeyBoardText);
@@ -67,7 +68,7 @@ const CanvasBottom = () => {
 				<Tooltip title={lockScale ? "解锁当前比例" : "锁定当前比例"}>
 					{lockScale ? (
 						<AiOutlineLock
-							style={{ fontSize: "18px", color: "#1677FF" }}
+							style={{ fontSize: "18px", color: token.colorPrimary }}
 							className="cursor-pointer"
 							onClick={() => setCanvasGlobal(CanvasGlobalTypeEnum.LOCK_SCALE, false)}
 						/>

@@ -1,5 +1,5 @@
 import { memo, useMemo, useState } from "react";
-import { Button, Col, Row } from "antd";
+import { Button, Col, Row, theme } from "antd";
 import JCollapseBox from "@/components/JChartConfiguration/public/JCollapseBox";
 import { animationsList } from "@/settings/animationSetting";
 import { UpdateChartConfigType } from "@/store/chartStore/types";
@@ -15,6 +15,7 @@ interface AnimationConfigurationProps {
 const AnimationConfiguration = memo(({ chartIndex, animations, update }: AnimationConfigurationProps) => {
 	const selectAnimate = useMemo(() => (animations.length ? animations[0] : ""), [animations]);
 	const [hoverAnimate, setHoverAnimate] = useState("");
+	const { token } = theme.useToken();
 
 	return (
 		<div className="flex flex-col gap-4">
@@ -34,11 +35,13 @@ const AnimationConfiguration = memo(({ chartIndex, animations, update }: Animati
 							{item.children.map((i) => (
 								<Col className="gutter-row" key={i.value} span={8}>
 									<div
+										style={{
+											color: hoverAnimate === i.value ? token.colorPrimary : undefined,
+											borderColor: hoverAnimate === i.value ? token.colorPrimary : undefined
+										}}
 										className={`${
 											hoverAnimate === i.value && `animate__animated  animate__${i.value}`
-										} ${
-											selectAnimate === i.value && "text-[#1677FF] border-[#1677FF]"
-										} py-3 px-2 text-[14px] text-center border-[#3E3E3F] border-1 border-solid rounded cursor-pointer hover:border-[#1677FF] hover:text-[#1677FF] transition-all`}
+										}  py-3 px-2 text-[14px] text-center border-[#3E3E3F] border-1 border-solid rounded cursor-pointer transition-all`}
 										onMouseOver={() => {
 											setHoverAnimate(i.value);
 										}}
