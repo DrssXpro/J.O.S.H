@@ -1,5 +1,5 @@
 import { FC, forwardRef, memo, useImperativeHandle, useRef, useState } from "react";
-import { Button, Card, Divider, Input, InputNumber, Modal, Select, Tag, Typography } from "antd";
+import { Button, Card, Divider, Input, InputNumber, Modal, Select, Tag, Typography, theme } from "antd";
 import JSettingBox from "@/components/JChartConfiguration/public/JSettingBox";
 import JSettingItem from "@/components/JChartConfiguration/public/JSettingItem";
 import { IoFlash, IoPulse, IoPencil, IoChevronUpOutline } from "react-icons/io5";
@@ -15,6 +15,7 @@ import useStoreSelector from "@/hooks/useStoreSelector";
 
 const DynamicData = memo((props: DataConfigProps) => {
 	const { chartIndex, chartRequestConfig, chartFilter, update } = props;
+	const { token } = theme.useToken();
 	const modalRef = useRef<any>(null);
 	const [requestLoading, setRequestLoading] = useState(false);
 	const { requestGlobalConfig } = useChartStore(useStoreSelector(["requestGlobalConfig"]));
@@ -86,8 +87,8 @@ const DynamicData = memo((props: DataConfigProps) => {
 					<Input prefix={<IoFlash />} value={chartRequestConfig.requestUrl || "暂无"} disabled />
 				</JSettingBox>
 				<div
-					className="absolute top-0 left-0 w-full h-full flex items-center justify-center cursor-pointer opacity-0 border-[#1668DC] border-1 border-solid hover:opacity-100 transition-all duration-500"
-					style={{ backdropFilter: "blur(3px)" }}
+					className="absolute top-0 left-0 w-full h-full flex items-center justify-center cursor-pointer opacity-0  border-1 border-solid hover:opacity-100 transition-all duration-500"
+					style={{ backdropFilter: "blur(3px)", borderColor: token.colorPrimary }}
 				>
 					<Button
 						type="primary"
@@ -183,11 +184,8 @@ const DynamicDataModal: FC<{
 				</div>
 			}
 		>
-			<Card
-				bodyStyle={{ padding: "20px 10px", background: "#232324" }}
-				className="hover:border-[#1668DC] transition-all"
-			>
-				<Tag color="processing" className="inline-block mb-4">
+			<Card bodyStyle={{ padding: "20px 10px", background: "#232324" }}>
+				<Tag className="inline-block mb-4">
 					<div className="p-2 text-sm">全局公共配置</div>
 				</Tag>
 				<JSettingBox name="服务">
@@ -244,11 +242,8 @@ const DynamicDataModal: FC<{
 			</Card>
 
 			<Divider />
-			<Card
-				bodyStyle={{ padding: "20px 10px", background: "#232324" }}
-				className="hover:border-[#1668DC] transition-all"
-			>
-				<Tag color="processing" className="inline-block mb-4">
+			<Card bodyStyle={{ padding: "20px 10px", background: "#232324" }}>
+				<Tag className="inline-block mb-4">
 					<div className="p-2 text-sm">接口 API 配置</div>
 				</Tag>
 				<JSettingBox name="地址">
