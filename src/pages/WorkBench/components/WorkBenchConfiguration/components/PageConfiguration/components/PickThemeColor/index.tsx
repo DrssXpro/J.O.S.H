@@ -3,12 +3,14 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { ChartColorsNameType, chartColors } from "@/theme";
 import useCanvasStore from "@/store/canvasStore/canvasStore";
 import { CanvasConfigTypeEnum } from "@/store/canvasStore/types";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import useStoreSelector from "@/hooks/useStoreSelector";
+import CreateColorModal, { ColorModalRef } from "../CreateColorModal";
 
-const ThemeColor = () => {
+const PickThemeColor = () => {
 	const { setCanvasConfig } = useCanvasStore(useStoreSelector(["setCanvasConfig"]));
 	const [activeSelect, setActiveSelect] = useState<ChartColorsNameType>("light");
+	const colorModalRef = useRef<ColorModalRef>(null);
 	const computedGradientColor = (c1: string, c2: string) => `linear-gradient(to right, ${c1} 0%, ${c2} 100%)`;
 
 	const selectTheme = (theme: ChartColorsNameType) => {
@@ -17,7 +19,15 @@ const ThemeColor = () => {
 	};
 	return (
 		<div>
-			<Button ghost type="primary" block size="large">
+			<Button
+				ghost
+				type="primary"
+				block
+				size="large"
+				onClick={() => {
+					colorModalRef.current?.controllModal(true);
+				}}
+			>
 				<div className="flex gap-1 items-center justify-between">
 					<div>自定义图表颜色</div>
 					<AiOutlinePlus />
@@ -45,8 +55,9 @@ const ThemeColor = () => {
 					</div>
 				))}
 			</div>
+			<CreateColorModal ref={colorModalRef} />
 		</div>
 	);
 };
 
-export default ThemeColor;
+export default PickThemeColor;

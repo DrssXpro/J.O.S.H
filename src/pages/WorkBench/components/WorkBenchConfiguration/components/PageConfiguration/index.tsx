@@ -3,12 +3,12 @@ import { MdFitScreen, MdZoomOutMap } from "react-icons/md";
 import { AiOutlineColumnWidth, AiOutlineColumnHeight } from "react-icons/ai";
 import UploadImage from "@/assets/upload.png";
 import { PreviewScaleEnum } from "@/types/LayoutTypes";
-import ThemeColor from "./components/ThemeColor";
 import useCanvasStore from "@/store/canvasStore/canvasStore";
 import { FileTypeEnum } from "@/types/FileTypes";
 import { fileToUrl } from "@/utils/utils";
 import { CanvasConfigTypeEnum } from "@/store/canvasStore/types";
 import useStoreSelector from "@/hooks/useStoreSelector";
+import PickThemeColor from "./components/PickThemeColor";
 
 const previewTypeList = [
 	{
@@ -151,7 +151,7 @@ const PageConfiguration = () => {
 				</Form.Item>
 			</Form>
 			<Divider />
-			<ThemeColor />
+			<PickThemeColor />
 			<Divider />
 		</div>
 	);

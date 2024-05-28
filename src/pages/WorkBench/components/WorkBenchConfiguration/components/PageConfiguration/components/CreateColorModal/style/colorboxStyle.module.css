@@ -1,0 +1,26 @@
+.color-picker-box {
+	background: white;
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+}
+
+.color-picker-box::after {
+	background-image: linear-gradient(45deg, #ddd 25%, #0000 25%), linear-gradient(-45deg, #ddd 25%, #0000 25%),
+		linear-gradient(45deg, #0000 75%, #ddd 75%), linear-gradient(-45deg, #0000 75%, #ddd 75%);
+	background-size: 12px 12px;
+	background-position:
+		0 0,
+		0 6px,
+		6px -6px,
+		-6px 0px;
+	background-repeat: repeat;
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+}
