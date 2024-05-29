@@ -1,4 +1,4 @@
-import { Button } from "antd";
+import { Button, theme } from "antd";
 import { AiOutlinePlus } from "react-icons/ai";
 import { ChartColorsNameType, chartColors } from "@/theme";
 import useCanvasStore from "@/store/canvasStore/canvasStore";
@@ -8,9 +8,11 @@ import useStoreSelector from "@/hooks/useStoreSelector";
 import CreateColorModal, { ColorModalRef } from "../CreateColorModal";
 
 const PickThemeColor = () => {
+	const { token } = theme.useToken();
 	const { setCanvasConfig } = useCanvasStore(useStoreSelector(["setCanvasConfig"]));
 	const [activeSelect, setActiveSelect] = useState<ChartColorsNameType>("light");
 	const colorModalRef = useRef<ColorModalRef>(null);
+
 	const computedGradientColor = (c1: string, c2: string) => `linear-gradient(to right, ${c1} 0%, ${c2} 100%)`;
 
 	const selectTheme = (theme: ChartColorsNameType) => {
@@ -36,10 +38,9 @@ const PickThemeColor = () => {
 			<div className="mt-4 flex flex-col gap-4">
 				{Object.entries(chartColors).map(([key, i], index1) => (
 					<div
-						className={`relative flex items-center cursor-pointer justify-between bg-[#2C2C2D] border-[rgba(255,255,255,0.09)] border-1 border-solid ${
-							activeSelect === key ? "border-[#2C7BE3] border-2" : ""
-						} p-2 rounded-lg`}
+						className="relative flex items-center cursor-pointer justify-between bg-[#2C2C2D] border-[rgba(255,255,255,0.09)] border-1 border-solid p-2 rounded-lg"
 						key={index1}
+						style={{ border: activeSelect === key ? `3px solid ${token.colorPrimary}` : undefined }}
 						onClick={() => selectTheme(key as ChartColorsNameType)}
 					>
 						<div>{i.name}</div>

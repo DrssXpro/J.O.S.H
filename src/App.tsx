@@ -38,6 +38,9 @@ function App() {
 					Collapse: {
 						headerPadding: "10px 0",
 						contentPadding: "0"
+					},
+					Badge: {
+						dotSize: 8
 					}
 				}
 			}}

@@ -7,6 +7,7 @@ const useDesignStore = create(
 	persist<IDesignState & IDesignAction>(
 		(set) => ({
 			systemThemeColor: undefined,
+			customChartThemeColorList: [],
 			updateDesign(key, value) {
 				set(() => ({ [key]: value }));
 			}
