@@ -2,9 +2,9 @@ import ReactECharts from "echarts-for-react";
 import { option as barOptions } from "./chartOptions/barOptions";
 import { option as lineOptions } from "./chartOptions/lineOptions";
 import { Segmented, Tag } from "antd";
-import { useState } from "react";
+import { memo, useState } from "react";
 
-const RenderColorChart = (props: { color: string[] }) => {
+const RenderColorChart = memo((props: { color: string[] }) => {
 	const { color } = props;
 	const [showType, setShowType] = useState<"bar" | "line">("bar");
 	return (
@@ -32,6 +32,6 @@ const RenderColorChart = (props: { color: string[] }) => {
 			</div>
 		</>
 	);
-};
+});
 
 export default RenderColorChart;

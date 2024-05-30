@@ -25,15 +25,17 @@ import CanvasTool from "./components/CanvasTool";
 import useStoreSelector from "@/hooks/useStoreSelector";
 import { useParams } from "react-router-dom";
 import useInfoOperator from "../WorkBenchHeader/hooks/useInfoOperator";
+import useDesignStore from "@/store/designStore/designStore";
 
 const WorkBenchCanvas = () => {
 	const { projectId } = useParams();
 	const { canvasConfig } = useCanvasStore(useStoreSelector(["canvasConfig"]));
+	const { customChartThemeColorList } = useDesignStore(useStoreSelector(["customChartThemeColorList"]));
 	const { componentList, handleAddComponents, handleRemoveComponents } = useChartsWithHistory();
 	const { handleMouseDown, mousedownHandleUnStop } = useMouseHandle();
 	const { menuItems, setCanvasMenuItems, setChartMenuItems } = useContextMenuHandle();
 	const { saveScreenDataInfo } = useInfoOperator(Number(projectId));
-	const { canvasBackground, canvasBackgroundImage, chartThemeColor, chartCustomThemeColorInfo } = canvasConfig;
+	const { canvasBackground, canvasBackgroundImage, chartThemeColor } = canvasConfig;
 	useEffect(() => {
 		initKeyBoardListener();
 		listenKeyBoradEvent();
@@ -69,7 +71,7 @@ const WorkBenchCanvas = () => {
 	}, [canvasBackground, canvasBackgroundImage]);
 
 	const computedThemeColor = useMemo(() => {
-		const colorCustomMergeData = colorCustomMerge(chartCustomThemeColorInfo);
+		const colorCustomMergeData = colorCustomMerge(customChartThemeColorList);
 		return colorCustomMergeData[chartThemeColor];
 	}, [chartThemeColor]);
 

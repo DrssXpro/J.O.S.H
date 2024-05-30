@@ -20,9 +20,7 @@ const useCanvasStore = create<ICanvasState & ICanvasGlobalAction & ICanvasConfig
 		canvasBackgroundImage: "",
 		canvasPreviewType: PreviewScaleEnum.FIT,
 		// 图表主题色
-		chartThemeColor: defaultTheme,
-		// 自定义颜色列表
-		chartCustomThemeColorInfo: undefined
+		chartThemeColor: defaultTheme
 	},
 	addScale: (value) => {
 		set(({ canvasGlobal }) => ({ canvasGlobal: { ...canvasGlobal, scale: canvasGlobal.scale + value } }));

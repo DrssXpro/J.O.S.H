@@ -1,5 +1,5 @@
 import { forwardRef, useImperativeHandle, useMemo, useState } from "react";
-import { Badge, Button, ColorPicker, Divider, Input, Modal, Tooltip, Typography, theme } from "antd";
+import { Badge, Button, ColorPicker, Divider, Input, Modal, Popconfirm, Tooltip, Typography, theme } from "antd";
 import { nanoid } from "nanoid";
 import RenderColorChart from "../RenderColorChart";
 import useDesignStore from "@/store/designStore/designStore";
@@ -10,15 +10,16 @@ import styles from "./style/colorboxStyle.module.css";
 import { CustomColorsType } from "@/theme";
 import noDataImage from "@/assets/images/no-data.png";
 import { produce } from "immer";
+import ColorCard from "../ColorCard";
 
 export interface ColorModalRef {
 	controllModal: (status: boolean) => void;
 }
 
 interface CustomStateType {
-	list: CustomColorsType[];
 	current: CustomColorsType | undefined;
 	selectColorIndex: number;
+	selectSingleColorIndex: number;
 }
 
 // 默认颜色组
@@ -30,16 +31,19 @@ const createDefaultColor = (): CustomColorsType => ({
 
 const CreateColorModal = forwardRef<ColorModalRef>((_, ref) => {
 	const { token } = theme.useToken();
-	const { customChartThemeColorList } = useDesignStore(useStoreSelector(["customChartThemeColorList"]));
-
-	const computedGradientColor = (c1: string, c2: string) => `linear-gradient(to right, ${c1} 0%, ${c2} 100%)`;
+	const [modal, contextHolder] = Modal.useModal();
+	const { customChartThemeColorList, updateDesign } = useDesignStore(
+		useStoreSelector(["customChartThemeColorList", "updateDesign"])
+	);
 
 	const [isOpen, setIsOpen] = useState(false);
 	const [isUpdate, setIsUpdate] = useState(false);
 	const [customState, setCustomState] = useState<CustomStateType>({
-		list: [...customChartThemeColorList],
 		current: customChartThemeColorList.length ? customChartThemeColorList[0] : undefined,
-		selectColorIndex: -1
+		// 颜色组索引
+		selectColorIndex: 0,
+		// 单个颜色索引
+		selectSingleColorIndex: 0
 	});
 
 	// 计算扩展背景色
@@ -56,9 +60,11 @@ const CreateColorModal = forwardRef<ColorModalRef>((_, ref) => {
 
 		for (let i = 0; i < num; i++) {
 			comLightenArr.unshift(
-				lighten(customState.current.color[customState.selectColorIndex], (1 / 100) * (i + 1))
+				lighten(customState.current.color[customState.selectSingleColorIndex], (1 / 100) * (i + 1))
 			);
-			comDarkenArr.push(darken(customState.current.color[customState.selectColorIndex], (3.5 / 100) * (i + 1)));
+			comDarkenArr.push(
+				darken(customState.current.color[customState.selectSingleColorIndex], (3.5 / 100) * (i + 1))
+			);
 		}
 
 		// 透明
@@ -73,12 +79,23 @@ const CreateColorModal = forwardRef<ColorModalRef>((_, ref) => {
 			],
 			fade: comDarkenFadeArr.reverse().splice(0, 27)
 		};
-	}, [customState.selectColorIndex]);
+	}, [customState.selectSingleColorIndex]);
 
 	// 创建新颜色组
 	const handleCreateColor = () => {
 		const newColor = createDefaultColor();
-		setCustomState((pre) => ({ list: [newColor, ...pre.list], current: newColor, selectColorIndex: 0 }));
+		updateDesign("customChartThemeColorList", [newColor, ...customChartThemeColorList]);
+		setCustomState({ current: newColor, selectSingleColorIndex: 0, selectColorIndex: 0 });
+	};
+
+	// 修改颜色组名称
+	const handleChangeColorName = (name: string) => {
+		setCustomState(
+			produce((draft) => {
+				draft.current!.name = name;
+				setIsUpdate(true);
+			})
+		);
 	};
 
 	// 新增单个颜色
@@ -86,7 +103,7 @@ const CreateColorModal = forwardRef<ColorModalRef>((_, ref) => {
 		setCustomState(
 			produce((draft) => {
 				const currentColor =
-					draft.current!.color[draft.selectColorIndex] ||
+					draft.current!.color[draft.selectSingleColorIndex] ||
 					draft.current!.color[draft.current!.color.length - 1];
 				draft.current!.color.push(currentColor);
 			})
@@ -102,12 +119,38 @@ const CreateColorModal = forwardRef<ColorModalRef>((_, ref) => {
 					window.$message.warning("删除失败，颜色不能少于 6 个");
 					return;
 				}
-				if (draft.selectColorIndex !== -1) {
-					draft.current!.color.splice(draft.selectColorIndex, 1);
+				if (draft.selectSingleColorIndex !== -1) {
+					draft.current!.color.splice(draft.selectSingleColorIndex, 1);
 					setIsUpdate(true);
 				}
 			})
 		);
+	};
+
+	// 修改单个颜色
+	const handleChangeSingleColor = (color: string, index: number) => {
+		setCustomState(
+			produce((draft) => {
+				draft.current!.color[index] = color;
+				setIsUpdate(true);
+			})
+		);
+	};
+
+	// 应用当前颜色组
+	const handleApplyColor = () => {
+		if (customState.selectColorIndex !== -1) {
+			const newColorList = [...customChartThemeColorList];
+			newColorList[customState.selectColorIndex] = customState.current!;
+			updateDesign("customChartThemeColorList", newColorList);
+			setCustomState(
+				produce((draft) => {
+					draft.selectSingleColorIndex = 0;
+				})
+			);
+			window.$message.success("保存成功");
+			setIsUpdate(false);
+		}
 	};
 
 	useImperativeHandle(ref, () => ({
@@ -124,7 +167,34 @@ const CreateColorModal = forwardRef<ColorModalRef>((_, ref) => {
 				<div className="flex justify-end">
 					<Button
 						onClick={() => {
-							setIsOpen(false);
+							if (isUpdate) {
+								const instance = modal.warning({
+									title: "提示",
+									content: <div>当前有变动未保存，是否直接放弃修改？</div>,
+									footer: (
+										<div className="flex justify-end gap-2 mt-2">
+											<Button
+												onClick={() => {
+													instance.destroy();
+												}}
+											>
+												取消
+											</Button>
+											<Button
+												type="primary"
+												onClick={() => {
+													instance.destroy();
+													setIsOpen(false);
+												}}
+											>
+												确定
+											</Button>
+										</div>
+									)
+								});
+							} else {
+								setIsOpen(false);
+							}
 						}}
 					>
 						操作完成
@@ -146,13 +216,7 @@ const CreateColorModal = forwardRef<ColorModalRef>((_, ref) => {
 									<Input
 										className="w-65"
 										value={customState.current.name}
-										onChange={(e) =>
-											setCustomState(
-												produce((draft) => {
-													draft.current!.name = e.target.value;
-												})
-											)
-										}
+										onChange={(e) => handleChangeColorName(e.target.value)}
 										addonBefore="名称："
 										showCount
 										maxLength={8}
@@ -185,7 +249,7 @@ const CreateColorModal = forwardRef<ColorModalRef>((_, ref) => {
 											onClick={() => {
 												setCustomState(
 													produce((draft) => {
-														draft.selectColorIndex = index;
+														draft.selectSingleColorIndex = index;
 													})
 												);
 											}}
@@ -194,7 +258,7 @@ const CreateColorModal = forwardRef<ColorModalRef>((_, ref) => {
 												className="w-[130px]"
 												style={{
 													border:
-														customState.selectColorIndex === index
+														customState.selectSingleColorIndex === index
 															? `2px solid ${token.colorPrimary}`
 															: undefined
 												}}
@@ -202,11 +266,7 @@ const CreateColorModal = forwardRef<ColorModalRef>((_, ref) => {
 												value={color}
 												onChange={(val) => {
 													const color = val.toHexString();
-													setCustomState(
-														produce((draft) => {
-															draft.current!.color[index] = color;
-														})
-													);
+													handleChangeSingleColor(color, index);
 												}}
 											/>
 										</div>
@@ -223,11 +283,7 @@ const CreateColorModal = forwardRef<ColorModalRef>((_, ref) => {
 												className="relative w-[22px] h-[22px] rounded overflow-hidden cursor-pointer"
 												key={index}
 												onClick={() => {
-													setCustomState(
-														produce((draft) => {
-															draft.current!.color[draft.selectColorIndex] = color;
-														})
-													);
+													handleChangeSingleColor(color, customState.selectSingleColorIndex);
 												}}
 											>
 												<div className={styles["color-picker-box"]}></div>
@@ -248,11 +304,7 @@ const CreateColorModal = forwardRef<ColorModalRef>((_, ref) => {
 												className="relative w-[22px] h-[22px] rounded overflow-hidden cursor-pointer"
 												key={index}
 												onClick={() => {
-													setCustomState(
-														produce((draft) => {
-															draft.current!.color[draft.selectColorIndex] = color;
-														})
-													);
+													handleChangeSingleColor(color, customState.selectSingleColorIndex);
 												}}
 											>
 												<div className={`${styles["color-picker-box"]} rounded`}></div>
@@ -279,7 +331,12 @@ const CreateColorModal = forwardRef<ColorModalRef>((_, ref) => {
 						</Button>
 						{customState.current && (
 							<Badge dot={isUpdate} className="flex-1">
-								<Button icon={<IoArrowDown />} className="w-full" type="primary" ghost>
+								<Button
+									icon={<IoArrowDown />}
+									className="w-full"
+									type="primary"
+									onClick={handleApplyColor}
+								>
 									应用数据
 								</Button>
 							</Badge>
@@ -287,41 +344,47 @@ const CreateColorModal = forwardRef<ColorModalRef>((_, ref) => {
 					</div>
 					<Divider className="my-4" />
 					<div className="flex flex-col gap-2 ">
-						{customState.list.map((i, index1) => (
+						{customChartThemeColorList.map((i, index) => (
 							<div className="flex items-center gap-2">
-								<div
-									className="relative flex flex-1 items-center cursor-pointer justify-between bg-[#2C2C2D] border-[rgba(255,255,255,0.09)] border-1 border-solid p-2 rounded-lg"
-									style={{
-										border:
-											index1 === customState.selectColorIndex
-												? `3px solid ${token.colorPrimary}`
-												: undefined
+								<ColorCard
+									color={i}
+									active={index === customState.selectColorIndex}
+									key={index}
+									clickCard={(color) => {
+										setCustomState({
+											selectColorIndex: index,
+											selectSingleColorIndex: 0,
+											current: color as CustomColorsType
+										});
 									}}
-									key={index1}
-								>
-									<div>{i.name}</div>
-									<div className="flex items-center gap-2">
-										{i.color.slice(0, 6).map((c, index2) => (
-											<div
-												className="w-5 h-5 rounded-md"
-												style={{ background: `${c}` }}
-												key={index2}
-											></div>
-										))}
-									</div>
-									<div
-										className="absolute w-[95%] -bottom-[2px] left-2 h-[3px] rounded"
-										style={{ background: computedGradientColor(i.color[0], i.color[5]) }}
-									></div>
-								</div>
+								/>
 								<Tooltip title="删除自定义颜色">
-									<IoTrash color="#4B4B4C" className="cursor-pointer" />
+									<Popconfirm
+										title="提示"
+										description="是否删除此颜色?"
+										okText="确定"
+										cancelText="取消"
+										placement="right"
+										onConfirm={() => {
+											const newColor = [...customChartThemeColorList];
+											newColor.splice(index, 1);
+											updateDesign("customChartThemeColorList", newColor);
+											setCustomState({
+												selectColorIndex: index > 0 ? index - 1 : 0,
+												selectSingleColorIndex: 0,
+												current: newColor[index > 0 ? index - 1 : 0]
+											});
+										}}
+									>
+										<IoTrash color="#4B4B4C" className="cursor-pointer" />
+									</Popconfirm>
 								</Tooltip>
 							</div>
 						))}
 					</div>
 				</div>
 			</div>
+			{contextHolder}
 		</Modal>
 	);
 });
