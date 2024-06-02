@@ -12,6 +12,7 @@ import {
 	IoChevronUp,
 	IoTrash
 } from "react-icons/io5";
+import { MdOutlineCancel } from "react-icons/md";
 import { BiArrowToTop, BiArrowToBottom, BiPaint } from "react-icons/bi";
 import useChartsWithHistory from "@/hooks/useChartsWithHistory";
 import useEditCharts from "@/hooks/useEditCharts";
@@ -26,7 +27,8 @@ const useContextMenuHandle = () => {
 		handleSetChartDownOrUp,
 		handleChartCopy,
 		handleChartPaste,
-		handleClearPasteContent
+		handleClearPasteContent,
+		handleClearSelect
 	} = useChartsWithHistory();
 	const [clickDetail, setClickDetail] = useState<ComponentType | null>(null);
 	const { getTargetData } = useEditCharts();
@@ -185,6 +187,15 @@ const useContextMenuHandle = () => {
 				</div>
 			),
 			key: MenuEnum.CLEAR
+		},
+		{
+			label: (
+				<div className="flex items-center gap-2" onClick={handleClearSelect}>
+					<MdOutlineCancel />
+					取消选择
+				</div>
+			),
+			key: MenuEnum.CANCEL_SELECT
 		},
 		{
 			label: (

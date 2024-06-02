@@ -72,7 +72,7 @@ const useChartsWithHistory = () => {
 
 	const handleRemoveComponents = (ids?: string[], isHistory = true) => {
 		const selectId = ids ? ids : getSelectId();
-		setTargetSelectChart();
+		handleClearSelect();
 		if (isHistory) {
 			const historyItems: IComponent[] = [];
 			const componentList = getComponentList();
@@ -100,7 +100,7 @@ const useChartsWithHistory = () => {
 		type === "hide"
 			? updateChartConfig(chartIndex, "status", "hide", status)
 			: updateChartConfig(chartIndex, "status", "lock", status);
-		status ? setTargetSelectChart() : setTargetSelectChart(id);
+		status ? handleClearSelect() : setTargetSelectChart(id);
 	};
 
 	const handleSetChartTopOrEnd = (
@@ -198,6 +198,10 @@ const useChartsWithHistory = () => {
 		setRecordChart();
 	};
 
+	const handleClearSelect = () => {
+		setTargetSelectChart();
+	};
+
 	return {
 		handleAddComponents,
 		handleRemoveComponents,
@@ -208,6 +212,7 @@ const useChartsWithHistory = () => {
 		handleChartCopy,
 		handleChartPaste,
 		handleClearPasteContent,
+		handleClearSelect,
 		componentList: getComponentList()
 	};
 };

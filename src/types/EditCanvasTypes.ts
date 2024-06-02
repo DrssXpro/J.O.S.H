@@ -45,7 +45,9 @@ export enum MenuEnum {
 	// 隐藏
 	HIDE = "hide",
 	// 显示
-	SHOW = "show"
+	SHOW = "show",
+	// 取消选择
+	CANCEL_SELECT = "cancelSelect"
 }
 
 // Win 键盘枚举
