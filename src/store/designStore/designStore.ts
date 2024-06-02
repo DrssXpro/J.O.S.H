@@ -5,11 +5,14 @@ import { IDesignAction, IDesignState } from "./types";
 
 const useDesignStore = create(
 	persist<IDesignState & IDesignAction>(
-		(set) => ({
+		(set, get) => ({
 			systemThemeColor: undefined,
 			customChartThemeColorList: [],
 			updateDesign(key, value) {
 				set(() => ({ [key]: value }));
+			},
+			getThemeColorList() {
+				return get().customChartThemeColorList;
 			}
 		}),
 		{

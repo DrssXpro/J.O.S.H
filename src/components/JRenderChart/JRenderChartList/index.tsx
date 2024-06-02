@@ -6,14 +6,16 @@ import useStoreSelector from "@/hooks/useStoreSelector";
 import { setChartAnimateStyle, setChartPosStyle, setChartSizeStyle } from "@/utils/chartStyle";
 import { colorCustomMerge } from "@/utils/colorStyle";
 import { handleChartEvent } from "@/pages/Preview/utils";
+import useDesignStore from "@/store/designStore/designStore";
 
 const JRenderChartList = () => {
 	const { canvasConfig } = useCanvasStore(useStoreSelector(["canvasConfig"]));
 	const { componentList } = useChartStore(useStoreSelector(["componentList"]));
+	const { customChartThemeColorList } = useDesignStore(useStoreSelector(["customChartThemeColorList"]));
 	const [isError, setIsError] = useState(false);
 
 	const computedThemeColor = useMemo(() => {
-		const colorCustomMergeData = colorCustomMerge();
+		const colorCustomMergeData = colorCustomMerge(customChartThemeColorList);
 		return colorCustomMergeData[canvasConfig.chartThemeColor];
 	}, [canvasConfig.chartThemeColor]);
 
