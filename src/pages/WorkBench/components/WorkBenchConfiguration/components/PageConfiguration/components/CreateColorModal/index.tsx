@@ -345,7 +345,7 @@ const CreateColorModal = forwardRef<ColorModalRef>((_, ref) => {
 					<Divider className="my-4" />
 					<div className="flex flex-col gap-2 ">
 						{customChartThemeColorList.map((i, index) => (
-							<div className="flex items-center gap-2">
+							<div className="flex items-center gap-2" key={index}>
 								<ColorCard
 									color={i}
 									active={index === customState.selectColorIndex}
