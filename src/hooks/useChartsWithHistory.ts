@@ -9,7 +9,7 @@ import useStoreSelector from "./useStoreSelector";
 
 const useChartsWithHistory = () => {
 	const {
-		recordChart,
+		getRecordChart,
 		mouseClickPosition,
 		getComponentList,
 		setTargetSelectChart,
@@ -24,7 +24,7 @@ const useChartsWithHistory = () => {
 		setRecordChart
 	} = useChartStore(
 		useStoreSelector([
-			"recordChart",
+			"getRecordChart",
 			"mouseClickPosition",
 			"getComponentList",
 			"setTargetSelectChart",
@@ -182,6 +182,7 @@ const useChartsWithHistory = () => {
 	};
 
 	const handleChartPaste = () => {
+		const recordChart = getRecordChart();
 		if (recordChart) {
 			const newComponent = cloneDeep(recordChart);
 			newComponent.ChartComponent = recordChart.ChartComponent;

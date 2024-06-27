@@ -35,13 +35,17 @@ const useChartStore = create<IChartState & IChartAction>()(
 				Params: {}
 			}
 		},
-		// selectId 更新后立刻使用需要通过 get 获取最新值
+		// selectId 更新后立刻使用需要通过 get 获取最新值且避免闭包问题
 		getSelectId: () => {
 			return get().selectId;
 		},
-		// componentList 更新后立刻使用需要通过 get 获取最新值
+		// componentList 更新后立刻使用需要通过 get 获取最新值且避免闭包问题
 		getComponentList: () => {
 			return get().componentList;
+		},
+		// 避免闭包问题，使用 get 获取最新值
+		getRecordChart: () => {
+			return get().recordChart;
 		},
 		// get 获取画布所有配置
 		getChartConfigs: () => {

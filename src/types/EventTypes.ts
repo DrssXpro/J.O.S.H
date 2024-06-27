@@ -44,7 +44,11 @@ export const enum KeyBoardEventName {
 	// 删除操作
 	DELETEPRESS = "DeletePress",
 	// 保存项目
-	SAVEPROJECT = "SaveProject"
+	SAVEPROJECT = "SaveProject",
+	// 复制操作
+	COPYCHART = "CopyChart",
+	// 粘贴操作
+	PASTECHART = "PasteChart"
 }
 
 // 内置字符串函数对象列表

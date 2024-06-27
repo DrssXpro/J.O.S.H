@@ -116,6 +116,18 @@ export const addOperatorKeyboard = () => {
 					return false;
 				});
 				break;
+			case keyboardValue[MenuEnum.COPY]:
+				keymaster(event, () => {
+					bus.emit(KeyBoardEventName.COPYCHART);
+					return false;
+				});
+				break;
+			case keyboardValue[MenuEnum.PARSE]:
+				keymaster(event, () => {
+					bus.emit(KeyBoardEventName.PASTECHART);
+					return false;
+				});
+				break;
 			default:
 				break;
 		}

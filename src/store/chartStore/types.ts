@@ -40,6 +40,7 @@ export interface IChartAction {
 	setrequestGlobalConfig: (config: RequestGlobalConfigType) => void;
 	getSelectId: () => string[];
 	getComponentList: () => IComponent[];
+	getRecordChart: () => IComponent | undefined;
 	clearComponentList: () => void;
 	getChartConfigs: () => { componentList: IComponent[]; requestGlobalConfig: RequestGlobalConfigType };
 	updateChartConfig: UpdateChartConfigType;
