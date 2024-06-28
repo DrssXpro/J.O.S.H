@@ -9,12 +9,10 @@ const BASEURL = import.meta.env.VITE_BASE_URL;
 interface JTemplateCardProps {
 	isUser: boolean;
 	detail: TemplateInfo;
-	deleteTemplate?: (id: number) => void;
-	applyTemplate: (detail: TemplateInfo) => void;
 }
 
 const JTemplateCard = (props: JTemplateCardProps) => {
-	const { isUser, detail, deleteTemplate, applyTemplate } = props;
+	const { isUser, detail } = props;
 
 	return (
 		<Card bodyStyle={{ padding: 0 }}>
@@ -25,21 +23,11 @@ const JTemplateCard = (props: JTemplateCardProps) => {
 					))}
 				</div>
 				<div className="flex items-center gap-2 p-3">
-					<Button
-						size="small"
-						onClick={() => {
-							applyTemplate(detail);
-						}}
-					>
-						应用
-					</Button>
+					<Button size="small">应用</Button>
 					{isUser && (
 						<Popconfirm
 							title="删除该模板"
 							description="确定要删除这个模板吗？"
-							onConfirm={() => {
-								deleteTemplate && deleteTemplate(detail.id);
-							}}
 							okText="确定"
 							cancelText="取消"
 						>

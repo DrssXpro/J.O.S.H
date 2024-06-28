@@ -16,13 +16,10 @@ const BASEURL = import.meta.env.VITE_BASE_URL;
 
 interface JProjectCardProps {
 	detail: ProjectInfo;
-	deleteProject: (id: number) => void;
-	updateProjectStatus: (detail: ProjectInfo, status: boolean) => void;
-	saveProjectTemplate: (detail: ProjectInfo) => void;
 }
 
 const JProjectCard = (props: JProjectCardProps) => {
-	const { detail, deleteProject, updateProjectStatus, saveProjectTemplate } = props;
+	const { detail } = props;
 	const nav = useNavigate();
 	const items = [
 		{
@@ -37,12 +34,7 @@ const JProjectCard = (props: JProjectCardProps) => {
 		{
 			key: "2",
 			label: (
-				<div
-					className="flex items-center gap-1"
-					onClick={() => {
-						updateProjectStatus(detail, !detail.status);
-					}}
-				>
+				<div className="flex items-center gap-1">
 					<AiOutlineSend />
 					<span>{detail.status ? "取消发布" : "发布"}</span>
 				</div>
@@ -51,12 +43,7 @@ const JProjectCard = (props: JProjectCardProps) => {
 		{
 			key: "3",
 			label: (
-				<div
-					className="flex items-center gap-1"
-					onClick={() => {
-						saveProjectTemplate(detail);
-					}}
-				>
+				<div className="flex items-center gap-1">
 					<AiOutlineGroup />
 					<span>设为模板</span>
 				</div>
@@ -65,12 +52,7 @@ const JProjectCard = (props: JProjectCardProps) => {
 		{
 			key: "4",
 			label: (
-				<div
-					className="flex items-center gap-1"
-					onClick={() => {
-						deleteProject(detail.id);
-					}}
-				>
+				<div className="flex items-center gap-1">
 					<AiOutlineDelete />
 					<span>删除</span>
 				</div>

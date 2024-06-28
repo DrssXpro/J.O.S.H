@@ -1,42 +1,13 @@
 import { useState } from "react";
-import { updateProjectApi, uploadProjectCoverApi } from "@/service/api/projectApi";
-import { useFileOperator } from "../../WorkBenchCanvas/hooks/useFileOperator";
 import useTotalChartsInfo from "@/hooks/useTotalChartsInfo";
-import useProjectStore from "@/store/projectStore/projectStore";
-import useStoreSelector from "@/hooks/useStoreSelector";
-import { JSONStringify } from "@/utils/utils";
-import { dataURLtoFile } from "@/utils/fileUtils";
 import { getLocalStorage, setSessionStorage } from "@/utils/storages";
 import { StorageEnum } from "@/types/StorageTypes";
 
 const useInfoOperator = (projectId: number) => {
-	const [saveLoading, setSaveLoading] = useState(false);
+	const [saveLoading] = useState(false);
 	const [showPublishModal, setShowPublishModal] = useState(false);
-	const { getProjectInfo, projectInfo, updateProjectInfo } = useProjectStore(
-		useStoreSelector(["getProjectInfo", "projectInfo", "updateProjectInfo"])
-	);
+
 	const { getTotalChartsInfo } = useTotalChartsInfo();
-	const { exportHandle } = useFileOperator();
-	// 保存逻辑
-	const saveScreenDataInfo = async () => {
-		setSaveLoading(true);
-		// 上传项目图片
-		const imageDataUrl = await exportHandle(false, false);
-		const file = dataURLtoFile(imageDataUrl, "projectImage.png");
-		const fd = new FormData();
-		fd.append("file", file);
-		const res1 = await uploadProjectCoverApi(projectId, fd);
-		const storageInfo = JSONStringify(getTotalChartsInfo());
-		// 将图片地址和大屏信息进行保存
-		updateProjectInfo({ ...getProjectInfo(), cover: res1.data, detail: storageInfo });
-		const res2 = await updateProjectApi({
-			...getProjectInfo(),
-			cover: res1.data,
-			detail: storageInfo
-		});
-		window.$message.success(res2.data);
-		setSaveLoading(false);
-	};
 
 	const previewScreenInfo = () => {
 		const localStorageInfo = getLocalStorage("chart") || [];
@@ -71,25 +42,12 @@ const useInfoOperator = (projectId: number) => {
 		}
 	};
 
-	const publishOrUnPublishScreenInfo = async () => {
-		// 将图片地址和大屏信息进行保存
-
-		await updateProjectApi({
-			...getProjectInfo(),
-			status: !projectInfo!.status
-		});
-		window.$message.success(projectInfo!.status ? "取消发布成功" : "发布成功");
-		updateProjectInfo({ ...getProjectInfo(), status: !projectInfo!.status });
-	};
-
 	return {
 		saveLoading,
 		showPublishModal,
-		infoStatus: projectInfo ? projectInfo.status : false,
+		infoStatus: false,
 		setShowPublishModal,
-		saveScreenDataInfo,
 		previewScreenInfo,
-		publishOrUnPublishScreenInfo,
 		copyPublishUrl
 	};
 };

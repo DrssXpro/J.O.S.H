@@ -1,21 +1,11 @@
-import { useEffect, useState } from "react";
-import { Pagination, Row, type PaginationProps, Col, Tabs, Button, Modal, Input, Select } from "antd";
-import { pick } from "lodash-es";
+import { useState } from "react";
+import { Pagination, Row, Col, Tabs, Button, Modal, Input, Select } from "antd";
 import { AiOutlinePlus } from "react-icons/ai";
 import JProjectCard from "@/components/JProjectCard";
 import JTemplateCard from "@/components/JTemplateCard";
 import EmptyImage from "@/assets/images/empty-data.png";
-import {
-	addProjectApi,
-	deleteProjectApi,
-	getProjectListApi,
-	getSelectProjectApi,
-	saveTemplateForProjectApi,
-	updateProjectApi
-} from "@/service/api/projectApi";
-
-import { addTemplateApi, deleteTemplateApi, getTemplateListByUserApi } from "@/service/api/templateApi";
 import { ProjectInfo, TemplateInfo } from "@/service/types/requestTypes";
+import { ProjectListData, TemplateListData } from "@/settings/systemDataSetting";
 
 interface ProjectState {
 	list: ProjectInfo[];
@@ -38,9 +28,9 @@ const EmptyBox = () => {
 	);
 };
 
-const ProjectList = (props: { tabKey: TabKeys }) => {
-	const [projectState, setProjectState] = useState<ProjectState>({
-		list: [],
+const ProjectList = () => {
+	const [projectState] = useState<ProjectState>({
+		list: ProjectListData,
 		loading: false,
 		empty: false,
 		total: 0,
@@ -55,51 +45,9 @@ const ProjectList = (props: { tabKey: TabKeys }) => {
 		status: false
 	});
 
-	useEffect(() => {
-		props.tabKey === "project" && getProjectList();
-	}, [props.tabKey]);
-
-	const onShowSizeChange: PaginationProps["onShowSizeChange"] = (_current, pageSize) => {
-		setProjectState((pre) => ({ ...pre, pageSize }));
-		getProjectList();
-	};
-
-	const getProjectList = async () => {
-		setProjectState((pre) => ({ ...pre, loading: true }));
-		const res = await getProjectListApi({ page: projectState.page, pageSize: projectState.pageSize });
-		const data = res.data;
-		setProjectState((pre) => ({
-			...pre,
-			list: data.projects,
-			total: data.totalCount,
-			loading: false,
-			empty: data.projects.length === 0
-		}));
-	};
-
-	const handleDeletePropject = async (id: number) => {
-		const res = await deleteProjectApi(id);
-		window.$message.success(res.data);
-		getProjectList();
-	};
-
-	const handleUpdateProjectStatus = async (detail: ProjectInfo, status: boolean) => {
-		const res = await updateProjectApi({ ...detail, status });
-		window.$message.success(res.data);
-		getProjectList();
-	};
-
-	const handleAddProject = async () => {
-		const res = await addProjectApi({ ...projectDetail });
-		window.$message.success(res.data);
-		getProjectList();
-		setProjectDetail((pre) => ({ ...pre, title: "" }));
+	const handleAddProject = () => {
+		window.$message.success("模拟添加项目");
 		setIsOpen(false);
-	};
-
-	const handleSaveProjectAsTemplate = async (detail: ProjectInfo) => {
-		const res = await addTemplateApi({ title: detail.title, detail: detail.detail, cover: detail.cover });
-		window.$message.success(res.data);
 	};
 
 	return (
@@ -125,27 +73,13 @@ const ProjectList = (props: { tabKey: TabKeys }) => {
 						<Row gutter={[16, 16]}>
 							{projectState.list.map((detail, index) => (
 								<Col md={12} lg={8} xxl={6} key={index}>
-									<JProjectCard
-										detail={detail}
-										deleteProject={handleDeletePropject}
-										updateProjectStatus={handleUpdateProjectStatus}
-										saveProjectTemplate={handleSaveProjectAsTemplate}
-									/>
+									<JProjectCard detail={detail} />
 								</Col>
 							))}
 						</Row>
 					</div>
 					<div className="w-full flex flex-row-reverse mt-4">
-						<Pagination
-							showSizeChanger
-							onShowSizeChange={onShowSizeChange}
-							onChange={(page) => {
-								setProjectState((pre) => ({ ...pre, page }));
-								getProjectList();
-							}}
-							current={projectState.page}
-							total={projectState.total}
-						/>
+						<Pagination showSizeChanger current={projectState.page} total={projectState.total} />
 					</div>
 				</>
 			)}
@@ -185,9 +119,9 @@ const ProjectList = (props: { tabKey: TabKeys }) => {
 	);
 };
 
-const TemplateList = (props: { tabKey: TabKeys }) => {
+const TemplateList = () => {
 	const [templateState, setTemplateState] = useState<TemplateState>({
-		list: [],
+		list: TemplateListData,
 		currentTemplate: undefined,
 		loading: false,
 		empty: false,
@@ -201,55 +135,6 @@ const TemplateList = (props: { tabKey: TabKeys }) => {
 		isOpen: false
 	});
 
-	useEffect(() => {
-		props.tabKey === "template" && getTemplateList();
-		props.tabKey === "template" && getUserProjectList();
-	}, [props.tabKey]);
-
-	const onShowSizeChange: PaginationProps["onShowSizeChange"] = (_current, pageSize) => {
-		setTemplateState((pre) => ({ ...pre, pageSize }));
-		getTemplateList();
-	};
-
-	const getTemplateList = async () => {
-		setTemplateState((pre) => ({ ...pre, loading: true }));
-		const res = await getTemplateListByUserApi({ page: templateState.page, pageSize: templateState.pageSize });
-		const data = res.data;
-		setTemplateState((pre) => ({
-			...pre,
-			list: data.templates,
-			total: data.totalCount,
-			loading: false,
-			empty: data.templates.length === 0
-		}));
-	};
-
-	const getUserProjectList = async () => {
-		const res = await getSelectProjectApi();
-		setProjectState((pre) => ({ ...pre, list: res.data.map((i) => ({ value: String(i.id), label: i.title })) }));
-	};
-
-	const handleDeleteTemplate = async (id: number) => {
-		const res = await deleteTemplateApi(id);
-		window.$message.success(res.data);
-		getTemplateList();
-	};
-
-	const handleApplyTemplate = (detail: TemplateInfo) => {
-		setTemplateState((pre) => ({ ...pre, currentTemplate: detail }));
-		setProjectState((pre) => ({ ...pre, isOpen: true }));
-	};
-
-	const handleSaveTemplateForProject = async () => {
-		const res = await saveTemplateForProjectApi(
-			projectsState.currentProject,
-			pick(templateState.currentTemplate!, ["cover", "title", "detail"])
-		);
-		window.$message.success(res.data);
-		setTemplateState((pre) => ({ ...pre, currentTemplate: undefined }));
-		setProjectState((pre) => ({ ...pre, isOpen: false }));
-	};
-
 	return (
 		<>
 			{templateState.empty ? (
@@ -262,27 +147,13 @@ const TemplateList = (props: { tabKey: TabKeys }) => {
 						<Row gutter={[16, 16]}>
 							{templateState.list.map((detail, index) => (
 								<Col md={12} lg={8} xxl={6} key={index}>
-									<JTemplateCard
-										isUser
-										detail={detail}
-										deleteTemplate={handleDeleteTemplate}
-										applyTemplate={handleApplyTemplate}
-									/>
+									<JTemplateCard isUser detail={detail} />
 								</Col>
 							))}
 						</Row>
 					</div>
 					<div className="w-full flex flex-row-reverse mt-4">
-						<Pagination
-							showSizeChanger
-							onShowSizeChange={onShowSizeChange}
-							onChange={(page) => {
-								setTemplateState((pre) => ({ ...pre, page }));
-								getTemplateList();
-							}}
-							current={templateState.page}
-							total={templateState.total}
-						/>
+						<Pagination showSizeChanger current={templateState.page} total={templateState.total} />
 					</div>
 					<Modal
 						styles={{ header: { background: "none" } }}
@@ -298,9 +169,7 @@ const TemplateList = (props: { tabKey: TabKeys }) => {
 								>
 									取消
 								</Button>
-								<Button type="primary" onClick={handleSaveTemplateForProject}>
-									应用
-								</Button>
+								<Button type="primary">应用</Button>
 							</div>
 						}
 					>
@@ -328,17 +197,17 @@ const TemplateList = (props: { tabKey: TabKeys }) => {
 };
 
 const ProjectsPage = () => {
-	const [key, setKey] = useState<TabKeys>("project");
+	const [, setKey] = useState<TabKeys>("project");
 	const tabList = [
 		{
 			label: "我的应用",
 			key: "project" as TabKeys,
-			children: <ProjectList tabKey={key} />
+			children: <ProjectList />
 		},
 		{
 			label: "我的模板",
 			key: "template" as TabKeys,
-			children: <TemplateList tabKey={key} />
+			children: <TemplateList />
 		}
 	];
 	return (

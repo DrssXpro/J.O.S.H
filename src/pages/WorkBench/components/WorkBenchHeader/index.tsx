@@ -13,7 +13,7 @@ import {
 	AiOutlineSend,
 	AiOutlineSave
 } from "react-icons/ai";
-import { Alert, Button, Divider, Input, Modal, Tooltip, type InputRef } from "antd";
+import { Button, Input, Tooltip, type InputRef } from "antd";
 import { useState, useRef, useMemo, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useLayoutStore from "@/store/layoutStore/layoutStore";
@@ -23,13 +23,6 @@ import useUndoRedo from "./hooks/useUndoRedo";
 import useStoreSelector from "@/hooks/useStoreSelector";
 import { HistoryStackEnum } from "@/store/chartHistoryStore/types";
 import useInfoOperator from "./hooks/useInfoOperator";
-
-interface TitleProps {
-	title: string;
-	updateTitle: (title: string) => void;
-}
-
-const HOSTURL = import.meta.env.VITE_HOST_URL;
 
 const LeftOperator = () => {
 	const nav = useNavigate();
@@ -135,8 +128,8 @@ const LeftOperator = () => {
 	);
 };
 
-const CenterTitle = (props: TitleProps) => {
-	const { title, updateTitle } = props;
+const CenterTitle = () => {
+	const [title, updateTitle] = useState("");
 	const [isEdit, setEdit] = useState(false);
 	const [projectTitle, setProjectTitle] = useState("");
 
@@ -185,21 +178,17 @@ const CenterTitle = (props: TitleProps) => {
 
 const RightOperator = () => {
 	const { projectId } = useParams();
-	const publishUrl = `${HOSTURL}/chart/${projectId}`;
-	const {
-		saveLoading,
-		showPublishModal,
-		infoStatus,
-		setShowPublishModal,
-		saveScreenDataInfo,
-		previewScreenInfo,
-		publishOrUnPublishScreenInfo,
-		copyPublishUrl
-	} = useInfoOperator(Number(projectId));
+	const { saveLoading, infoStatus, previewScreenInfo } = useInfoOperator(Number(projectId));
 
 	return (
 		<div className="flex items-center gap-3 float-right">
-			<Button icon={<AiOutlineSave />} onClick={saveScreenDataInfo} loading={saveLoading}>
+			<Button
+				icon={<AiOutlineSave />}
+				onClick={() => {
+					window.$message.warning("线上 demo 展示，无“保存”功能");
+				}}
+				loading={saveLoading}
+			>
 				保存
 			</Button>
 			<Button icon={<AiOutlineLaptop />} onClick={previewScreenInfo}>
@@ -207,7 +196,9 @@ const RightOperator = () => {
 			</Button>
 			<Button
 				icon={<AiOutlineSend />}
-				onClick={() => setShowPublishModal(true)}
+				onClick={() => {
+					window.$message.warning("线上 demo 展示，无“发布”功能");
+				}}
 				ghost={infoStatus}
 				type={infoStatus ? "primary" : undefined}
 			>
@@ -216,42 +207,15 @@ const RightOperator = () => {
 			<div className="ml-1">
 				<JBaseHeaderRightContent isLogin={true} />
 			</div>
-			<Modal
-				title="发布管理"
-				styles={{ header: { background: "none" } }}
-				open={showPublishModal}
-				footer={null}
-				onCancel={() => setShowPublishModal(false)}
-			>
-				<div>
-					<Divider />
-					<Alert
-						message="预览地址:"
-						description={publishUrl}
-						type="info"
-						action={
-							<div className="flex flex-col gap-2">
-								<Button size="small" onClick={() => copyPublishUrl(publishUrl)}>
-									复制地址
-								</Button>
-								<Button size="small" type="primary" onClick={publishOrUnPublishScreenInfo}>
-									{infoStatus ? "取消发布" : "发布大屏"}
-								</Button>
-							</div>
-						}
-					/>
-					<Divider />
-				</div>
-			</Modal>
 		</div>
 	);
 };
 
-const WorkBenchHeader = (props: TitleProps) => {
+const WorkBenchHeader = () => {
 	return (
 		<JBaseHeader
 			left={<LeftOperator />}
-			center={<CenterTitle {...props} />}
+			center={<CenterTitle />}
 			right={<RightOperator />}
 			leftWidth="40%"
 			rightWidth="40%"

@@ -1,11 +1,9 @@
 import JTemplateCard from "@/components/JTemplateCard";
-import { getSelectProjectApi, saveTemplateForProjectApi } from "@/service/api/projectApi";
-import { getTemplateListApi } from "@/service/api/templateApi";
 import { TemplateInfo } from "@/service/types/requestTypes";
-import { Button, Col, Modal, Pagination, PaginationProps, Row, Select } from "antd";
-import { pick } from "lodash-es";
-import { useEffect, useState } from "react";
+import { Button, Col, Modal, Pagination, Row, Select } from "antd";
+import { useState } from "react";
 import EmptyImage from "@/assets/images/empty-data.png";
+import { TemplateListData } from "@/settings/systemDataSetting";
 
 interface TemplateState {
 	list: TemplateInfo[];
@@ -27,7 +25,7 @@ const EmptyBox = () => {
 
 const TemplatesPage = () => {
 	const [templateState, setTemplateState] = useState<TemplateState>({
-		list: [],
+		list: TemplateListData,
 		currentTemplate: undefined,
 		loading: false,
 		empty: false,
@@ -41,49 +39,6 @@ const TemplatesPage = () => {
 		isOpen: false
 	});
 
-	useEffect(() => {
-		getTemplateList();
-		getUserProjectList();
-	}, []);
-
-	const onShowSizeChange: PaginationProps["onShowSizeChange"] = (_current, pageSize) => {
-		setTemplateState((pre) => ({ ...pre, pageSize }));
-		getTemplateList();
-	};
-
-	const getTemplateList = async () => {
-		setTemplateState((pre) => ({ ...pre, loading: true }));
-		const res = await getTemplateListApi({ page: templateState.page, pageSize: templateState.pageSize });
-		const data = res.data;
-		setTemplateState((pre) => ({
-			...pre,
-			list: data.templates,
-			total: data.totalCount,
-			loading: false,
-			empty: data.templates.length === 0
-		}));
-	};
-
-	const getUserProjectList = async () => {
-		const res = await getSelectProjectApi();
-		setProjectState((pre) => ({ ...pre, list: res.data.map((i) => ({ value: String(i.id), label: i.title })) }));
-	};
-
-	const handleApplyTemplate = (detail: TemplateInfo) => {
-		setTemplateState((pre) => ({ ...pre, currentTemplate: detail }));
-		setProjectState((pre) => ({ ...pre, isOpen: true }));
-	};
-
-	const handleSaveTemplateForProject = async () => {
-		const res = await saveTemplateForProjectApi(
-			projectsState.currentProject,
-			pick(templateState.currentTemplate!, ["cover", "title", "detail"])
-		);
-		window.$message.success(res.data);
-		setTemplateState((pre) => ({ ...pre, currentTemplate: undefined }));
-		setProjectState((pre) => ({ ...pre, isOpen: false }));
-	};
-
 	return (
 		<>
 			{templateState.empty ? (
@@ -96,22 +51,13 @@ const TemplatesPage = () => {
 						<Row gutter={[16, 16]}>
 							{templateState.list.map((detail, index) => (
 								<Col md={12} lg={8} xxl={6} key={index}>
-									<JTemplateCard isUser={false} detail={detail} applyTemplate={handleApplyTemplate} />
+									<JTemplateCard isUser={false} detail={detail} />
 								</Col>
 							))}
 						</Row>
 					</div>
 					<div className="w-full flex flex-row-reverse mt-4">
-						<Pagination
-							showSizeChanger
-							onShowSizeChange={onShowSizeChange}
-							onChange={(page) => {
-								setTemplateState((pre) => ({ ...pre, page }));
-								getTemplateList();
-							}}
-							current={templateState.page}
-							total={templateState.total}
-						/>
+						<Pagination showSizeChanger current={templateState.page} total={templateState.total} />
 					</div>
 					<Modal
 						styles={{ header: { background: "none" } }}
@@ -127,9 +73,7 @@ const TemplatesPage = () => {
 								>
 									取消
 								</Button>
-								<Button type="primary" onClick={handleSaveTemplateForProject}>
-									应用
-								</Button>
+								<Button type="primary">应用</Button>
 							</div>
 						}
 					>

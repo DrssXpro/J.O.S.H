@@ -23,19 +23,15 @@ import { KeyBoardEventName } from "@/types/EventTypes";
 import CanvasBottom from "./components/CanvasBottom";
 import CanvasTool from "./components/CanvasTool";
 import useStoreSelector from "@/hooks/useStoreSelector";
-import { useParams } from "react-router-dom";
-import useInfoOperator from "../WorkBenchHeader/hooks/useInfoOperator";
 import useDesignStore from "@/store/designStore/designStore";
 
 const WorkBenchCanvas = () => {
-	const { projectId } = useParams();
 	const { canvasConfig } = useCanvasStore(useStoreSelector(["canvasConfig"]));
 	const { customChartThemeColorList } = useDesignStore(useStoreSelector(["customChartThemeColorList"]));
 	const { componentList, handleAddComponents, handleRemoveComponents, handleChartCopy, handleChartPaste } =
 		useChartsWithHistory();
 	const { handleMouseDown, mousedownHandleUnStop } = useMouseHandle();
 	const { menuItems, setCanvasMenuItems, setChartMenuItems } = useContextMenuHandle();
-	const { saveScreenDataInfo } = useInfoOperator(Number(projectId));
 	const { canvasBackground, canvasBackgroundImage, chartThemeColor } = canvasConfig;
 	useEffect(() => {
 		initKeyBoardListener();
@@ -48,14 +44,12 @@ const WorkBenchCanvas = () => {
 
 	const listenKeyBoradEvent = () => {
 		bus.on(KeyBoardEventName.DELETEPRESS, handleRemoveComponents);
-		bus.on(KeyBoardEventName.SAVEPROJECT, saveScreenDataInfo);
 		bus.on(KeyBoardEventName.COPYCHART, handleChartCopy);
 		bus.on(KeyBoardEventName.PASTECHART, handleChartPaste);
 	};
 
 	const removeListenKeyBoradEvent = () => {
 		bus.off(KeyBoardEventName.DELETEPRESS, handleRemoveComponents);
-		bus.off(KeyBoardEventName.SAVEPROJECT, saveScreenDataInfo);
 		bus.off(KeyBoardEventName.COPYCHART, handleChartCopy);
 		bus.off(KeyBoardEventName.PASTECHART, handleChartPaste);
 	};

@@ -3,7 +3,6 @@ import { lazy } from "react";
 import { Route, Routes } from "react-router-dom";
 import zhCN from "antd/locale/zh_CN";
 import JWithLoading from "./components/JWithLoading";
-import JRequireAuth from "./components/JRequireAuth";
 import useDesignStore from "./store/designStore/designStore";
 import useStoreSelector from "./hooks/useStoreSelector";
 
@@ -13,7 +12,6 @@ const ProjectsPage = lazy(() => import("@/pages/Projects/index"));
 const TemplatesPage = lazy(() => import("@/pages/Templates/index"));
 const WorkBenchPage = lazy(() => import("@/pages/WorkBench/index"));
 const PreviewPage = lazy(() => import("@/pages/Preview/index"));
-const PublishChartPage = lazy(() => import("@/pages/PublishChart/index"));
 const NotFoundPage = lazy(() => import("@/pages/NotFound/index"));
 
 function App() {
@@ -57,44 +55,19 @@ function App() {
 							}
 							path="/"
 						></Route>
-						<Route
-							element={
-								<JRequireAuth>
-									<LayoutPage />
-								</JRequireAuth>
-							}
-							path="/application"
-						>
+						<Route element={<LayoutPage />} path="/application">
 							<Route element={<ProjectsPage />} path="projects"></Route>
 							<Route element={<TemplatesPage />} path="templates"></Route>
 						</Route>
-						<Route
-							element={
-								<JRequireAuth>
-									<WorkBenchPage />
-								</JRequireAuth>
-							}
-							path="/workBench/:projectId"
-						></Route>
-						<Route
-							element={
-								<JRequireAuth>
-									<JWithLoading
-										element={<PreviewPage />}
-										loadingStyle={{ width: "100vw", height: "100vh" }}
-									/>
-								</JRequireAuth>
-							}
-							path="/preview/:projectId"
-						></Route>
+						<Route element={<WorkBenchPage />} path="/workBench/:projectId"></Route>
 						<Route
 							element={
 								<JWithLoading
-									element={<PublishChartPage />}
+									element={<PreviewPage />}
 									loadingStyle={{ width: "100vw", height: "100vh" }}
 								/>
 							}
-							path="/chart/:projectId"
+							path="/preview/:projectId"
 						></Route>
 						<Route
 							element={

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Avatar, Button, Divider, Dropdown, Modal, Typography, type MenuProps } from "antd";
-import useUserStore from "@/store/userStore/userStore";
 import { NavLink } from "react-router-dom";
 import avatar from "@/assets/avatar.jpg";
 import themeColorImage from "@/assets/images/theme-color.png";
@@ -107,21 +106,11 @@ const JDesignColor = () => {
 
 const JBaseHeaderRightContent = (props: { isLogin?: boolean }) => {
 	const { isLogin = false } = props;
-	const { userInfo, outAndClearInfo } = useUserStore(useStoreSelector(["userInfo", "outAndClearInfo"]));
 
 	const dropMenus: MenuProps["items"] = [
 		{
 			key: "1",
-			label: (
-				<NavLink
-					to={"/"}
-					onClick={() => {
-						outAndClearInfo();
-					}}
-				>
-					退出登录
-				</NavLink>
-			)
+			label: <NavLink to={"/"}>退出登录</NavLink>
 		}
 	];
 	return (
@@ -131,7 +120,7 @@ const JBaseHeaderRightContent = (props: { isLogin?: boolean }) => {
 				<Dropdown menu={{ items: dropMenus }} placement="bottom" className="cursor-pointer ml-3">
 					<div className="flex items-center gap-2">
 						<Avatar src={avatar} size={40} />
-						<Typography.Text>{userInfo?.username}</Typography.Text>
+						<Typography.Text>{"討厭吃香菜"}</Typography.Text>
 					</div>
 				</Dropdown>
 			)}

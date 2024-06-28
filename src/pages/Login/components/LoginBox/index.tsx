@@ -4,48 +4,28 @@ import Logo from "@/assets/logo/logo.png";
 import LogoTitleDark from "@/assets/logo/title-dark.png";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { loginApi, registerApi } from "@/service/api/userApi";
-import { setLocalStorage } from "@/utils/storages";
-import { StorageEnum } from "@/types/StorageTypes";
-import useUserStore from "@/store/userStore/userStore";
-import useStoreSelector from "@/hooks/useStoreSelector";
 
 const LoginBox = () => {
 	const nav = useNavigate();
-	const { setUserInfo: saveUserInfo } = useUserStore(useStoreSelector(["setUserInfo"]));
 	const [isRegister, setIsRegister] = useState(false);
 	const [userInfo, setUserInfo] = useState({
-		name: "",
-		password: "",
+		name: "async",
+		password: "123456",
 		repeatPassword: ""
 	});
 
-	const handleLogin = async () => {
-		const res = await loginApi({ username: userInfo.name, password: userInfo.password });
-		if (res.code === 201 && typeof res.data !== "string") {
-			const data = res.data;
-			setLocalStorage(StorageEnum.J_USER_ACCESS_TOKEN, data.accessToken);
-			setLocalStorage(StorageEnum.J_USER_REFRESH_TOKEN, data.refreshToken);
-			saveUserInfo(data.userInfo);
-			window.$message.success("登录成功");
-			nav("/application/projects");
-		} else {
-			window.$message.warning(res.data as string);
-		}
+	const handleLogin = () => {
+		window.$message.success("登录成功");
+		nav("/application/projects");
 	};
 
-	const handleRegister = async () => {
+	const handleRegister = () => {
 		if (userInfo.password !== userInfo.repeatPassword) {
 			window.$message.warning("两次密码输入不一致");
 			return;
 		}
-		const res = await registerApi({ username: userInfo.name, password: userInfo.password });
-		if (res.code === 201) {
-			window.$message.success(res.data);
-			setIsRegister(false);
-		} else {
-			window.$message.warning(res.data);
-		}
+		window.$message.success("注册成功");
+		setIsRegister(false);
 	};
 
 	return (

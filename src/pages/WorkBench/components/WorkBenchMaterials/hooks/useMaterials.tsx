@@ -1,16 +1,7 @@
 import { useEffect, useState } from "react";
 import { materialsList } from "@/materials/components";
-import { MaterialNameEnum, MaterialCategoryEnum, IMaterialConfigType, ChartFrameEnum } from "@/materials/types";
-import {
-	AiOutlinePicture,
-	AiOutlineAim,
-	AiOutlinePieChart,
-	AiOutlineSketch,
-	AiOutlineTable,
-	AiOutlineGift
-} from "react-icons/ai";
-import { getSourceListApi } from "@/service/api/sourceListApi";
-import { JSONParse } from "@/utils/utils";
+import { MaterialNameEnum, MaterialCategoryEnum, IMaterialConfigType } from "@/materials/types";
+import { AiOutlinePicture, AiOutlineAim, AiOutlinePieChart, AiOutlineSketch, AiOutlineTable } from "react-icons/ai";
 
 export interface MenuOptionsType {
 	key: MaterialCategoryEnum;
@@ -55,30 +46,8 @@ const menuOptions: MenuOptionsType[] = [
 		label: MaterialNameEnum.PHOTOS,
 		icon: <AiOutlinePicture style={{ fontSize: "20px" }} />,
 		list: materialsList[MaterialCategoryEnum.PHOTOS]
-	},
-	// 资源库：动态请求获取
-	{
-		key: MaterialCategoryEnum.SOURCELIB,
-		label: MaterialNameEnum.SOURCELIB,
-		icon: <AiOutlineGift style={{ fontSize: "20px" }} />,
-		list: materialsList[MaterialCategoryEnum.SOURCELIB]
 	}
 ];
-
-// 资源库图片统一配置
-const imageConfig: IMaterialConfigType & { attr: any } = {
-	key: "Image",
-	chartCanvasKey: "ImageCanvas",
-	configKey: "ImageConfig",
-	title: "",
-	category: "",
-	categoryName: "",
-	menu: MaterialCategoryEnum.SOURCELIB,
-	chartFrame: ChartFrameEnum.COMMON,
-	image: "",
-	attr: {},
-	resource: true
-};
 
 const menusMap = menuOptions.reduce<Record<MaterialCategoryEnum, MenuOptionsType>>((prev, current) => {
 	prev[current.key] = current;
@@ -106,29 +75,13 @@ const handleCategoryData = (menu: MenuOptionsType, key: MaterialCategoryEnum): C
 
 function useMaterials() {
 	const [currentCategory, setCurrnetCategory] = useState("all");
-	const [sourceLoading, setSourceLoading] = useState(false);
+
 	const [categoryOptions, setCategoryOptions] = useState<CatergoryOptionsType[]>([]);
 	const [materialList, setMaterialList] = useState<IMaterialConfigType[]>([]);
 
 	// 初始默认为 menu 第一项里的 category
 	useEffect(() => {
-		setSourceLoading(true);
-		getSourceListApi()
-			.then((res) => {
-				const list = res.data.map((i) => ({
-					...imageConfig,
-					category: i.category,
-					categoryName: i.categoryName,
-					image: i.thumbnail,
-					title: i.projectName,
-					attr: JSONParse(i.content).attr
-				}));
-				menuOptions[menuOptions.length - 1].list = list;
-			})
-			.finally(() => {
-				setCategoryOptions(handleCategoryData(menusMap["charts"], MaterialCategoryEnum.CHARTS));
-				setSourceLoading(false);
-			});
+		setCategoryOptions(handleCategoryData(menusMap["charts"], MaterialCategoryEnum.CHARTS));
 	}, []);
 
 	// 初始默认为 category 第一项里的 materialList
@@ -150,7 +103,7 @@ function useMaterials() {
 		categoryOptions,
 		materialList,
 		currentCategory,
-		sourceLoading,
+
 		handleClickMenu,
 		handleClickCategory
 	};
