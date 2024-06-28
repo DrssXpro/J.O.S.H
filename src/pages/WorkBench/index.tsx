@@ -9,7 +9,7 @@ import { useEffect } from "react";
 import { getProjectDetailApi, updateProjectApi } from "@/service/api/projectApi";
 import useCanvasStore from "@/store/canvasStore/canvasStore";
 import useChartStore from "@/store/chartStore/chartStore";
-import { JSONParse } from "@/utils/utils";
+import { safeJSONParse } from "@/utils/utils";
 import { fetchComponent } from "@/materials/components";
 import { ComponentType, FetchComFlagType } from "@/materials/types";
 import useStoreSelector from "@/hooks/useStoreSelector";
@@ -37,7 +37,8 @@ const WorkBenchPage = () => {
 
 	const handleLoadCanvasDetail = (detail: string) => {
 		clearComponentList();
-		const data = JSONParse(detail);
+		const data = safeJSONParse(detail);
+		if (typeof data !== "object") return;
 		const { componentList, requestGlobalConfig, canvasConfig } = data;
 		if (
 			typeof componentList === "object" &&
