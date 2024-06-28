@@ -57,7 +57,7 @@ const useChartDataFetch = (
 
 		if (requestUrl) {
 			// 拼接请求地址 （requestOriginUrl 允许为空）
-			const completePath = requestOriginUrl && requestOriginUrl + requestUrl;
+			const completePath = requestOriginUrl ? requestOriginUrl + requestUrl : requestUrl;
 			if (!completePath) return;
 
 			clearInterval(fetchInterval);
