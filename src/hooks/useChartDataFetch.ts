@@ -57,7 +57,7 @@ const useChartDataFetch = (
 
 		if (requestUrl) {
 			// 拼接请求地址 （requestOriginUrl 允许为空）
-			const completePath = requestOriginUrl && requestOriginUrl + requestUrl;
+			const completePath = requestOriginUrl ? requestOriginUrl + requestUrl : requestUrl;
 			if (!completePath) return;
 
 			clearInterval(fetchInterval);
@@ -82,6 +82,7 @@ const useChartDataFetch = (
 			const time = targetInterval ? targetInterval : globalRequestInterval;
 			// 单位
 			const unit = targetInterval ? targetUnit : globalUnit;
+
 			// 开启轮询
 			if (time) {
 				fetchInterval = setInterval(fetchFn, intervalUnitHandle(time, unit));
